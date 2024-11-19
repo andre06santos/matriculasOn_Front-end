@@ -1,4 +1,4 @@
-import "./style.css";
+import "./styles.css";
 
 const Header = () => {
     return (
@@ -13,4 +13,4 @@ const Header = () => {
     )
 };
 
-export {Header}
+export { Header }
