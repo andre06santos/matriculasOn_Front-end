@@ -1,0 +1,21 @@
+header {
+    display: flex;
+    padding: 0px 30px;
+    justify-content: right;
+    background-color: #0F0050;
+    font-family: sans-serif;
+}
+
+.nav-itens {
+    display: flex;
+}
+
+.nav-itens a {
+    color: #FFFFFF;
+    padding: 20px 30px;
+    text-decoration: none;
+}
+
+.nav-itens a:hover {
+    color: #e3dede;
+}
