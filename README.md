@@ -93,3 +93,11 @@ Exemplos de mensagens de commit: <br />
   <li>melhora desempenho da API</li>
   <li>estiliza o componente Button</li>
 </ul>
+
+#### 3) Padrão dos estilos
+
+Usar o `-` para separar os nomes das classes
+
+Exemplo: <br />
+
+`.button-text { color: gray }`
