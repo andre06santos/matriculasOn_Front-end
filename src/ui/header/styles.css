@@ -14,8 +14,8 @@ header {
     color: #FFFFFF;
     padding: 20px 30px;
     text-decoration: none;
-}
 
-.nav-itens a:hover {
-    color: #e3dede;
+    &:hover {
+        color: #e3dede;
+    }
 }
