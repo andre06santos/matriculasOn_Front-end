@@ -101,3 +101,9 @@ Usar o `-` para separar os nomes das classes
 Exemplo: <br />
 
 `.button-text { color: gray }`
+
+Para cada componente, usar o nome `styles.css` (no plural)
+
+#### 4) Formatar o código
+
+Em vez do formatador de código padrão, sempre utilizar o _prettier_ antes de fazer _push_
