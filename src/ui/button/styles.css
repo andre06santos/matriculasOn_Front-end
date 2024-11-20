@@ -1,0 +1,72 @@
+.button-component{
+    max-width: 150px;
+    width: 100%;
+}
+
+.button{
+    padding: 10px 20px;
+    outline: none;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    color: white;
+    font-weight: bold;
+    transition: scale .2s ease;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    text-align: center;
+}
+
+.button:hover{
+    scale: 1.05;
+}
+
+.btn-cancel{
+    background-color: gray;
+
+    &:hover{
+        background-color: rgba(128, 128, 128, 0.9);
+    }
+}
+
+.btn-success{
+    background-color: #008245;
+
+    &:hover{
+        background-color: rgba(0, 128, 0, 0.9) ;
+    }
+}
+
+.btn-danger{
+    background-color: #FF9B9B;
+
+    &:hover{
+        background-color: #ff9b9be7;
+    }
+}
+
+.button-select{
+    list-style: none;
+    background-color: #419C71;
+    border-radius: 10px;
+    padding: 5px 15px;
+    margin: 0;
+    width: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    & li{
+        color: white;
+        cursor: pointer;
+    }
+}
+
+.fa-caret-up{
+    transform: rotate(180deg);
+
+    &.selected{
+        transform: rotate(360deg);
+    }
+}
