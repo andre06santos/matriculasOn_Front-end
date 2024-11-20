@@ -1,0 +1,57 @@
+.input-component{
+    display: flex;
+    flex-direction: column;
+    max-width: fit-content;
+}
+
+.input-component .input-text{
+    border: 1px solid lightgray ;
+    border-radius: 5px;
+    padding: 5px 10px;
+    outline: none;
+}
+
+
+.input-component label{
+    color: #C3C3C3;
+    font-size: 1.3rem;
+}
+
+.input-component .input-button{
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    width: 100px;
+    cursor: pointer;
+    transition: scale .5s ease;
+
+    &:hover{
+        scale: 1.03;
+    }
+
+    &.reset{
+        background-color: gray;
+
+    }
+    &.reset:hover{
+        background-color: rgba(128, 128, 128, 0.9);
+    }
+
+    &.submit{
+        background-color: #008245;
+    }
+
+    &:hover{
+        background-color: rgba(0, 128, 0, 0.9) ;
+    
+    }
+    
+}
+
+
+.input-select{
+    outline: none;
+    min-width: 250px;
+    width: 100%;
+
+}
