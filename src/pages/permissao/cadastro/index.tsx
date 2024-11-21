@@ -2,7 +2,7 @@ import { Button } from "../../../ui/button";
 import { Input } from "../../../ui/input";
 import "./styles.css";
 
-const CadastroPermissao = () => {
+const CreatePermission = () => {
   return (
     <div className="add-page flex-column-gap20">
       <h1>Cadastrar permissão</h1>
@@ -23,4 +23,4 @@ const CadastroPermissao = () => {
   );
 };
 
-export { CadastroPermissao };
+export { CreatePermission };
