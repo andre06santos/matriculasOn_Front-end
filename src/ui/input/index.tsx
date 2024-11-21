@@ -1,13 +1,7 @@
 import Select from "react-select";
 import "./styles.css";
-import { Fragment } from "react/jsx-runtime";
 
-const Input = ({
-  label,
-  type,
-  selectOptions,
-  ...rest
-}: any) => {
+const Input = ({ label, type = "text", selectOptions, ...rest }: any) => {
   const inputClasses: any = {
     text: "input-text",
     password: "input-text",
@@ -22,19 +16,16 @@ const Input = ({
       {label && <label>{label}</label>}
 
       {selectOptions ? (
-        <Fragment>
-          <Select
-            defaultValue={selectOptions[0]}
-            isClearable
-            isSearchable
-            options={selectOptions}
-            getOptionValue={(option: any) => `${option["id"]}`}
-            getOptionLabel={(option: any) => `${option["text"]}`}
-            className="input-select"
-          />
-        </Fragment>
+        <Select
+          defaultValue={selectOptions[0]}
+          isClearable
+          isSearchable
+          options={selectOptions}
+          getOptionValue={(option: any) => `${option["id"]}`}
+          getOptionLabel={(option: any) => `${option["text"]}`}
+          className="input-select"
+        />
       ) : (
-        
         <input type={type} {...rest} className={inputClass} />
       )}
     </div>
