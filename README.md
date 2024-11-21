@@ -14,7 +14,22 @@ O MatriculasOn é um sistema de matrículas online.
 ### Telas
 
 <div style='display: flex'>
-  <img src='' style='width: 40%' />
+  <img src='./public/images/Login.jpg' style='width: 40%' />
+  <img src='./public/images/Listagem de Alunos.jpg' style='width: 40%' />
+  <img src='./public/images/Listagem de Cursos.jpg' style='width: 40%' />
+  <img src='./public/images/Listagem de Permissões.jpg' style='width: 40%' />
+  <img src='./public/images/Listagem de Usuários.jpg' style='width: 40%' />
+  <img src='./public/images/Cadastro de Alunos.jpg' style='width: 40%' />
+  <img src='./public/images/Cadastro de Permissões.jpg' style='width: 40%' />
+  <img src='./public/images/Cadastro de Servidores.jpg' style='width: 40%' />
+  <img src='./public/images/Cadastro de Usuários.jpg' style='width: 40%' />
+  <img src='./public/images/Edição de Alunos.jpg' style='width: 40%' />
+  <img src='./public/images/Edição de Curso.jpg' style='width: 40%' />
+  <img src='./public/images/Edição de Permissões.jpg' style='width: 40%' />
+  <img src='./public/images/Edição de Servidores.jpg' style='width: 40%' />
+  <img src='./public/images/Exclusão de Curso.jpg' style='width: 40%' />
+  <img src='./public/images/Exclusão de Permissões.jpg' style='width: 40%' />
+  <img src='./public/images/Exclusão de Usuários.jpg' style='width: 40%' />
 </div>
 
 ### Estrutura do projeto
