@@ -1,4 +1,6 @@
+import { Button } from "../button";
 import "./styles.css"
+
 
 const Modal = ({ text }: any) => {
     return (
@@ -6,8 +8,8 @@ const Modal = ({ text }: any) => {
             <div className="modal">
                 <p className="modal-text">{text}</p>
                 <div className="modal-buttons">
-                    <button>CANCELAR</button>
-                    <button>EXCLUIR</button>
+                    <Button label="Cancelar" type="cancel" />
+                    <Button label="Excluir" type="danger" />
                 </div>
             </div>
         </div>
