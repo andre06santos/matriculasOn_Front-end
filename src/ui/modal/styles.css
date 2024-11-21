@@ -32,15 +32,7 @@
     padding-right: 10px;
     gap: 50px;
 
-    /*button temporario*/
-    & button {
-      border: none;
-      padding: 15px;
-      border-radius: 10px;
-      background-color: red;
-      color: white;
-      font-size: 1.1em;
-    }
+
   }
 
   & p {
