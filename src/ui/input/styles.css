@@ -27,6 +27,7 @@
   cursor: pointer;
   transition: scale 0.2s ease;
   outline: none;
+  text-align: center;
 
   &:hover {
     scale: 1.05;
@@ -45,6 +46,14 @@
 
   &.submit:hover {
     background-color: rgba(0, 128, 0, 0.9);
+  }
+
+  &.submit-filter {
+    background-color: #808aff;
+  }
+
+  &.submit-filter:hover {
+    background-color: #808bffe8;
   }
 }
 
