@@ -1,7 +1,11 @@
-.button-component{
-    background-color: #008245;
-    overflow: hidden;
-    border-radius: 6px;
+.button-component {
+  overflow: hidden;
+  border-radius: 6px;
+  transition: scale 0.2s ease;
+
+  &:hover {
+    scale: 1.02;
+  }
 }
 
 .button {
@@ -10,15 +14,10 @@
   border: none;
   cursor: pointer;
   color: white;
-  transition: scale 0.2s ease;
   display: flex;
   justify-content: center;
   gap: 10px;
   width: 100%;
-}
-
-.button:hover {
-  scale: 1.05;
 }
 
 .btn-cancel {
@@ -33,7 +32,7 @@
   background-color: #008245;
 
   &:hover {
-    background-color: rgba(0, 128, 0, 0.9);
+    background-color: #0d8b50;
   }
 }
 
@@ -41,7 +40,7 @@
   background-color: #ff9b9b;
 
   &:hover {
-    background-color: #ff9b9be7;
+    background-color: #ffa5a5;
   }
 }
 
@@ -56,7 +55,7 @@
   flex-direction: column;
   user-select: none;
 
-  & a{
+  & a {
     text-decoration: none;
   }
 
@@ -64,9 +63,9 @@
     color: white;
     cursor: pointer;
     padding: 8px;
-}
+  }
 
-& li:hover{
+  & li:hover {
     background-color: #5ea887;
   }
 }
@@ -79,14 +78,14 @@
   }
 }
 
-.button.select{
-    border-radius: 6px 6px 0px 0px;
+.button.select {
+  border-radius: 6px 6px 0px 0px;
 
-    &:hover{
-        scale: 1.01;
-    }
+  &:hover {
+    scale: 1.01;
+  }
 }
 
-.button-select{
-    border-radius: 0px 0px 6px 6px;
+.button-select {
+  border-radius: 0px 0px 6px 6px;
 }

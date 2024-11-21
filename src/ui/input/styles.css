@@ -20,29 +20,40 @@
 }
 
 .input-component .input-button {
-  padding: 8px 15px;
+  padding: 10px 20px;
+  color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  transition: scale 0.5s ease;
+  transition: scale 0.2s ease;
+  outline: none;
+  text-align: center;
 
   &:hover {
-    scale: 1.03;
+    scale: 1.02;
   }
 
   &.reset {
     background-color: gray;
   }
   &.reset:hover {
-    background-color: rgba(128, 128, 128, 0.9);
+    background-color: rgb(134, 134, 134);
   }
 
   &.submit {
     background-color: #008245;
   }
 
-  &:hover {
-    background-color: rgba(0, 128, 0, 0.9);
+  &.submit:hover {
+    background-color: #008d4b;
+  }
+
+  &.submit-filter {
+    background-color: #808aff;
+  }
+
+  &.submit-filter:hover {
+    background-color: #8993ff;
   }
 }
 
