@@ -1,14 +1,17 @@
 .input-component {
   display: flex;
   flex-direction: column;
-  max-width: fit-content;
 }
 
 .input-component .input-text {
   border: 1px solid lightgray;
   border-radius: 5px;
-  padding: 5px 10px;
+  padding: 10px 15px;
   outline: none;
+
+  &:focus {
+    border: 2px solid #2684ff;
+  }
 }
 
 .input-component label {
@@ -20,7 +23,6 @@
   padding: 8px 15px;
   border: none;
   border-radius: 5px;
-  width: 100px;
   cursor: pointer;
   transition: scale 0.5s ease;
 
@@ -46,6 +48,4 @@
 
 .input-select {
   outline: none;
-  min-width: 250px;
-  width: 100%;
 }
