@@ -1,0 +1,92 @@
+.button-component{
+    background-color: #008245;
+    overflow: hidden;
+    border-radius: 6px;
+}
+
+.button {
+  padding: 10px 20px;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  color: white;
+  transition: scale 0.2s ease;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.button:hover {
+  scale: 1.05;
+}
+
+.btn-cancel {
+  background-color: gray;
+
+  &:hover {
+    background-color: rgba(128, 128, 128, 0.9);
+  }
+}
+
+.btn-success {
+  background-color: #008245;
+
+  &:hover {
+    background-color: rgba(0, 128, 0, 0.9);
+  }
+}
+
+.btn-danger {
+  background-color: #ff9b9b;
+
+  &:hover {
+    background-color: #ff9b9be7;
+  }
+}
+
+.button-select {
+  list-style: none;
+  outline: none;
+  padding: 0;
+  background-color: #419c71;
+  border-radius: 10px;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  user-select: none;
+
+  & a{
+    text-decoration: none;
+  }
+
+  & li {
+    color: white;
+    cursor: pointer;
+    padding: 8px;
+}
+
+& li:hover{
+    background-color: #5ea887;
+  }
+}
+
+.fa-caret-up {
+  transform: rotate(180deg);
+
+  &.selected {
+    transform: rotate(360deg);
+  }
+}
+
+.button.select{
+    border-radius: 6px 6px 0px 0px;
+
+    &:hover{
+        scale: 1.01;
+    }
+}
+
+.button-select{
+    border-radius: 0px 0px 6px 6px;
+}
