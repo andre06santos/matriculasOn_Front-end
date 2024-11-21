@@ -1,0 +1,15 @@
+.form {
+    max-width: 300px;
+}
+
+.container-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    & .input-component {
+        & .input-button {
+            padding: 10px 20px;
+        }
+    }
+}
