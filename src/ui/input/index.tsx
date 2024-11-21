@@ -7,6 +7,7 @@ const Input = ({ label, type = "text", selectOptions, ...rest }: any) => {
     password: "input-text",
     reset: "input-button reset",
     submit: "input-button submit",
+    submitFilter: "input-button submit-filter",
   };
 
   const inputClass = `input ${inputClasses[type]}`;
