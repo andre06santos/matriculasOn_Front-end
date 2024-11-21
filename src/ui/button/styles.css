@@ -33,7 +33,7 @@
   background-color: #008245;
 
   &:hover {
-    background-color: rgba(0, 128, 0, 0.9);
+    background-color: #0d8b50;
   }
 }
 
@@ -41,7 +41,7 @@
   background-color: #ff9b9b;
 
   &:hover {
-    background-color: #ff9b9be7;
+    background-color: #ffa5a5;
   }
 }
 

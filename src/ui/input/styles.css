@@ -37,7 +37,7 @@
     background-color: gray;
   }
   &.reset:hover {
-    background-color: rgba(128, 128, 128, 0.9);
+    background-color: rgb(134, 134, 134);
   }
 
   &.submit {
@@ -45,7 +45,7 @@
   }
 
   &.submit:hover {
-    background-color: rgba(0, 128, 0, 0.9);
+    background-color: #008d4b;
   }
 
   &.submit-filter {
@@ -53,7 +53,7 @@
   }
 
   &.submit-filter:hover {
-    background-color: #808bffe8;
+    background-color: #8993ff;
   }
 }
 
