@@ -33,9 +33,9 @@ const Button = ({ label, onClick, type = "cancel", selectOptions }: any) => {
 
       {isExpanded && (
         <ul className="button-select">
-          {selectOptions.map((option: any) => (
-            <Link to={option.path} key={option.id}>
-              <li key={option.id}>{option.label}</li>
+          {selectOptions.map(({ element, index }: any) => (
+            <Link to={element.path} key={index}>
+              <li>{element.label}</li>
             </Link>
           ))}
         </ul>
