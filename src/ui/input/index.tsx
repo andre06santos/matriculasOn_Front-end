@@ -13,7 +13,6 @@ const Input = ({
     password: "input-text",
     reset: "input-button",
     submit: "input-button",
-    // submitFilter: "input-button submit-filter",
   };
 
   const inputCollors: any = {
