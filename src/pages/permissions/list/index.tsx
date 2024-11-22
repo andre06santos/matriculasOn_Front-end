@@ -50,7 +50,7 @@ const ListPermissions = () => {
           <tr>
             <th>Role</th>
             <th>Descrição</th>
-            <th>Ações</th>
+            <th className="action-column">Ações</th>
           </tr>
         </thead>
         <tbody>
@@ -58,7 +58,7 @@ const ListPermissions = () => {
             <tr key={index}>
               <td>{permission.role}</td>
               <td>{permission.description}</td>
-              <td className="table-actions">
+              <td className="table-actions action-column">
                 <Link to="/permissoes/editar-permissao">
                   <i className="fa-solid fa-pen-to-square"></i>
                 </Link>
