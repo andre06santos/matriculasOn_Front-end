@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Button } from "../../../ui/button";
 import { Input } from "../../../ui/input";
 import "./styles.css";
@@ -21,7 +22,9 @@ const ListPermissions = () => {
   return (
     <div className="flex-column-gap20">
       <div className="add-button">
-        <Button type="success" label="Adicionar" />
+        <Link to="/nova-permissao">
+          <Button type="success" label="Adicionar" />
+        </Link>
       </div>
       <h1>Permissões</h1>
 
@@ -51,7 +54,9 @@ const ListPermissions = () => {
               <td>{permission.role}</td>
               <td>{permission.description}</td>
               <td className="table-actions">
-                <i className="fa-solid fa-pen-to-square"></i>
+                <Link to="/editar-permissao">
+                  <i className="fa-solid fa-pen-to-square"></i>
+                </Link>
                 <i className="fa-solid fa-trash"></i>
               </td>
             </tr>
