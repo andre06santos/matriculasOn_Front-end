@@ -1,16 +1,28 @@
 import Select from "react-select";
 import "./styles.css";
 
-const Input = ({ label, type = "text", selectOptions, ...rest }: any) => {
+const Input = ({
+  label,
+  type = "text",
+  variant,
+  selectOptions,
+  ...rest
+}: any) => {
   const inputClasses: any = {
     text: "input-text",
     password: "input-text",
-    reset: "input-button reset",
-    submit: "input-button submit",
-    submitFilter: "input-button submit-filter",
+    reset: "input-button",
+    submit: "input-button",
+    // submitFilter: "input-button submit-filter",
   };
 
-  const inputClass = `input ${inputClasses[type]}`;
+  const inputCollors: any = {
+    bgNeutral: "bg-neutral",
+    bgInfo: "bg-info",
+    bgSuccess: "bg-success",
+  };
+
+  const inputClass = `input ${inputClasses[type]} ${inputCollors[variant]}`;
 
   return (
     <div className="input-component">
