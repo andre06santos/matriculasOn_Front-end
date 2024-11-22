@@ -28,26 +28,26 @@
   outline: none;
   text-align: center;
 
-  &.reset {
+  &.bg-neutral {
     background-color: gray;
   }
-  &.reset:hover {
+  &.bg-neutral:hover {
     background-color: rgb(134, 134, 134);
   }
 
-  &.submit {
+  &.bg-success {
     background-color: #008245;
   }
 
-  &.submit:hover {
+  &.bg-success:hover {
     background-color: #008d4b;
   }
 
-  &.submit-filter {
+  &.bg-info {
     background-color: #808aff;
   }
 
-  &.submit-filter:hover {
+  &.bg-info:hover {
     background-color: #8993ff;
   }
 }
