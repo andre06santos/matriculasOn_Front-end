@@ -52,7 +52,7 @@ const ListPermissions = () => {
               <td>{permission.description}</td>
               <td className="table-actions">
                 <i className="fa-solid fa-pen-to-square"></i>
-                <i className="fa-solid fa-trash"></i>
+                <i className="fa-solid fa-trash-can"></i>
               </td>
             </tr>
           ))}
