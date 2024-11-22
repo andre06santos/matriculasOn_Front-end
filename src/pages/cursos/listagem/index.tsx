@@ -50,7 +50,7 @@ const ListCourses = () => {
                             <td>{courses.name}</td>
                             <td className="table-actions last-element">
                                 <Link to="/cursos/editar-curso">
-                                    <i className="fa-solid fa-pen-to-square"></i>
+                                    <i className="fa-solid fa-pen-to-square icons-action"></i>
                                 </Link>
                                 <i className="fa-solid fa-trash"></i>
                             </td>
