@@ -2,6 +2,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
 import { Layout } from "./ui/layout";
 import { ListPermissions } from "./pages/permissions/list";
+import { ListCourses } from "./pages/cursos/listagem";
 import { CreatePermission } from "./pages/permissions/create";
 import { EditPermission } from "./pages/permissions/edit";
 import { CourseRegistration } from "./pages/cursos/cadastro";
@@ -22,7 +23,7 @@ const App = () => {
             element={<EditPermission />}
           />
 
-          <Route path="/cursos" element={<ListPermissions />} />
+          <Route path="/cursos" element={<ListCourses />} />
           <Route path="/cursos/novo-curso" element={<CourseRegistration />} />
           <Route path="/cursos/editar-curso" element={<EditCourse />} />
 
