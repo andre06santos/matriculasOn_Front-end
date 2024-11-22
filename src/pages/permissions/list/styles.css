@@ -25,6 +25,10 @@
   position: absolute;
   top: 10px;
   right: 10px;
+
+  & a {
+    text-decoration: none;
+  }
 }
 
 th {
@@ -60,4 +64,8 @@ table tr:nth-child(odd) {
 .table-actions {
   display: flex;
   gap: 5px;
+
+  & .fa-pen-to-square {
+    color: black;
+  }
 }
