@@ -1,11 +1,6 @@
 .button-component {
   overflow: hidden;
   border-radius: 6px;
-  transition: scale 0.2s ease;
-
-  &:hover {
-    scale: 1.02;
-  }
 }
 
 .button {
@@ -80,10 +75,6 @@
 
 .button.select {
   border-radius: 6px 6px 0px 0px;
-
-  &:hover {
-    scale: 1.01;
-  }
 }
 
 .button-select {

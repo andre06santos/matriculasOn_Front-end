@@ -4,7 +4,7 @@
 }
 
 .input-component .input-text {
-  border: 1px solid lightgray;
+  border: 2px solid lightgray;
   border-radius: 5px;
   padding: 10px 15px;
   outline: none;
@@ -25,13 +25,8 @@
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  transition: scale 0.2s ease;
   outline: none;
   text-align: center;
-
-  &:hover {
-    scale: 1.02;
-  }
 
   &.reset {
     background-color: gray;
