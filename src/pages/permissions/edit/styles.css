@@ -2,7 +2,7 @@
   max-width: 300px;
 }
 
-.form__buttons {
+.form-buttons {
   display: flex;
   justify-content: space-between;
 }

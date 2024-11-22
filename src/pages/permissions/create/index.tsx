@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Button } from "../../../ui/button";
 import { Input } from "../../../ui/input";
 import "./styles.css";
@@ -8,15 +9,17 @@ const CreatePermission = () => {
       <h1>Cadastrar permissão</h1>
 
       <form action="" className="form flex-column-gap20">
-        <div className="form__inputs flex-column-gap20">
+        <div className="form-inputs flex-column-gap20">
           <Input label="Role" />
           <Input label="Descrição" />
         </div>
 
-        <div className="form__buttons">
-          <Input type="reset" variant="bgNeutral" value="Limpar" />
-          <Button label="Cancelar" />
-          <Input type="submit" variant="bgSuccess" value="Cadastrar" />
+        <div className="form-buttons">
+          <Input type="reset" value="Limpar" />
+          <Link to="/permissoes">
+            <Button label="Cancelar" />
+          </Link>
+          <Input type="submit" value="Cadastrar" />
         </div>
       </form>
     </div>
