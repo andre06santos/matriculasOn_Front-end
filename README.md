@@ -14,7 +14,22 @@ O MatriculasOn é um sistema de matrículas online.
 ### Telas
 
 <div style='display: flex'>
-  <img src='' style='width: 40%' />
+  <img src='./public/images/Login.jpg' style='width: 40%' />
+  <img src='./public/images/Listagem de Alunos.jpg' style='width: 40%' />
+  <img src='./public/images/Listagem de Cursos.jpg' style='width: 40%' />
+  <img src='./public/images/Listagem de Permissões.jpg' style='width: 40%' />
+  <img src='./public/images/Listagem de Usuários.jpg' style='width: 40%' />
+  <img src='./public/images/Cadastro de Alunos.jpg' style='width: 40%' />
+  <img src='./public/images/Cadastro de Permissões.jpg' style='width: 40%' />
+  <img src='./public/images/Cadastro de Servidores.jpg' style='width: 40%' />
+  <img src='./public/images/Cadastro de Usuários.jpg' style='width: 40%' />
+  <img src='./public/images/Edição de Alunos.jpg' style='width: 40%' />
+  <img src='./public/images/Edição de Curso.jpg' style='width: 40%' />
+  <img src='./public/images/Edição de Permissões.jpg' style='width: 40%' />
+  <img src='./public/images/Edição de Servidores.jpg' style='width: 40%' />
+  <img src='./public/images/Exclusão de Curso.jpg' style='width: 40%' />
+  <img src='./public/images/Exclusão de Permissões.jpg' style='width: 40%' />
+  <img src='./public/images/Exclusão de Usuários.jpg' style='width: 40%' />
 </div>
 
 ### Estrutura do projeto
@@ -93,3 +108,17 @@ Exemplos de mensagens de commit: <br />
   <li>melhora desempenho da API</li>
   <li>estiliza o componente Button</li>
 </ul>
+
+#### 3) Padrão dos estilos
+
+Usar o `-` para separar os nomes das classes
+
+Exemplo: <br />
+
+`.button-text { color: gray }`
+
+Para cada componente, usar o nome `styles.css` (no plural)
+
+#### 4) Formatar o código
+
+Em vez do formatador de código padrão, sempre utilizar o _prettier_ antes de fazer _push_
