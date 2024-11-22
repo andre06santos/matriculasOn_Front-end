@@ -2,6 +2,14 @@
   position: relative;
 }
 
+.filter {
+  gap: 5px;
+
+  & p {
+    font-size: 1rem;
+  }
+}
+
 .form-filter {
   display: flex;
   gap: 20px;
