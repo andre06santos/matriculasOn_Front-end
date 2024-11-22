@@ -31,26 +31,37 @@
     }
 }
 
-th {
+.table th {
     text-align: left;
 }
 
+
+
 .last-element {
-    text-align: right;
     justify-content: flex-end;
+    padding-right: 20px;
+
+    & .fa-trash {
+        padding-right: 20px;
+    }
+}
+
+.table-header .last-element {
+    text-align: right;
     padding-right: 20px;
 }
 
-td {
+
+.table td {
     padding: 3px;
 }
 
-table {
+.table {
     border-collapse: separate;
     border-spacing: 0 3px;
 }
 
-thead {
+.table thead {
     background-color: #c0c0c0;
     color: white;
 
@@ -59,19 +70,19 @@ thead {
     }
 }
 
-table tr:nth-child(even) {
+.table table tr:nth-child(even) {
     background-color: #eeeeee;
 }
 
-table tr:nth-child(odd) {
+.table table tr:nth-child(odd) {
     background-color: #f6f6f6;
 }
 
-table tr:hover {
+.table table tr:hover {
     background-color: #eeeeff;
 }
 
-table td {
+.table table td {
     cursor: default;
 }
 
