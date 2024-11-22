@@ -1,21 +1,22 @@
 header {
-    display: flex;
-    padding: 0px 30px;
-    justify-content: right;
-    background-color: #0F0050;
-    font-family: sans-serif;
+  display: flex;
+  padding: 0px 30px;
+  justify-content: right;
+  background-color: #0f0050;
+  font-family: sans-serif;
 }
 
-.nav-itens {
-    display: flex;
+.nav-links {
+  display: flex;
+  list-style: none;
 }
 
-.nav-itens a {
-    color: #FFFFFF;
-    padding: 20px 30px;
-    text-decoration: none;
+.nav-links a {
+  color: #ffffff;
+  padding: 20px 30px;
+  text-decoration: none;
 
-    &:hover {
-        color: #e3dede;
-    }
+  &:hover {
+    color: #e3dede;
+  }
 }
