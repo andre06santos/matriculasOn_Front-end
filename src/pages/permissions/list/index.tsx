@@ -28,14 +28,17 @@ const ListPermissions = () => {
       </div>
       <h1>Permissões</h1>
 
-      <form action="" className="form-filter">
-        <Input label="Filtro" placeholder="Descrição" />
+      <div className="filter">
+        <h1></h1>
+        <form action="" className="form-filter">
+          <Input placeholder="Descrição" />
 
-        <div className="filter__buttons">
-          <Input type="submit" value="Buscar" />
-          <Input type="reset" value="Limpar" />
-        </div>
-      </form>
+          <div className="filter-buttons">
+            <Input type="submit" variant="" value="Buscar" />
+            <Input type="reset" value="Limpar" />
+          </div>
+        </form>
+      </div>
 
       <p>
         Total de permissões encontradas:{" "}
@@ -43,10 +46,12 @@ const ListPermissions = () => {
       </p>
 
       <table className="table">
-        <thead className="table__header">
-          <th>Role</th>
-          <th>Descrição</th>
-          <th>Ações</th>
+        <thead>
+          <tr>
+            <th>Role</th>
+            <th>Descrição</th>
+            <th>Ações</th>
+          </tr>
         </thead>
         <tbody>
           {permissions.map((permission, index): any => (
@@ -63,6 +68,14 @@ const ListPermissions = () => {
           ))}
         </tbody>
       </table>
+
+      <div className="paginacao-component">
+        <div className="paginacao">
+          <Button label="<" />
+          <Button label="1" />
+          <Button label=">" />
+        </div>
+      </div>
     </div>
   );
 };
