@@ -6,18 +6,18 @@ const Header = () => {
     <header>
       <nav className="nav-itens">
         <ul className="nav-links">
-          <Link to="/alunos">
-            <li>Alunos</li>
-          </Link>
-          <Link to="/cursos">
-            <li>Cursos</li>
-          </Link>
-          <Link to="/usuarios">
-            <li>Usuários</li>
-          </Link>
-          <Link to="/permissoes">
-            <li>Permissões</li>
-          </Link>
+          <li>
+            <Link to="/alunos">Alunos</Link>
+          </li>
+          <li>
+            <Link to="/cursos">Cursos</Link>
+          </li>
+          <li>
+            <Link to="/usuarios">Usuários</Link>
+          </li>
+          <li>
+            <Link to="/permissoes">Permissões</Link>
+          </li>
         </ul>
       </nav>
     </header>
