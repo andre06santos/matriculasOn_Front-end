@@ -45,9 +45,9 @@ const ListCourses = () => {
                     <th className="last-element">Ações</th>
                 </thead>
                 <tbody>
-                    {courses.map((courses, index): any => (
+                    {courses.map((course, index): any => (
                         <tr key={index}>
-                            <td>{courses.name}</td>
+                            <td>{course.name}</td>
                             <td className="table-actions last-element">
                                 <Link to="/cursos/editar-curso">
                                     <i className="fa-solid fa-pen-to-square icons-action"></i>
