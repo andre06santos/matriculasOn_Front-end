@@ -25,13 +25,8 @@
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  transition: scale 0.2s ease;
   outline: none;
   text-align: center;
-
-  &:hover {
-    scale: 1.02;
-  }
 
   &.reset {
     background-color: gray;
