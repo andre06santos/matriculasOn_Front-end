@@ -86,4 +86,8 @@ table tr:nth-child(odd) {
   & .fa-trash-can {
     color: red;
   }
+
+  & .fa-pen-to-square {
+    color: black;
+  }
 }
