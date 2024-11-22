@@ -59,5 +59,18 @@ table tr:nth-child(odd) {
 
 .table-actions {
   display: flex;
-  gap: 5px;
+  gap: 10px;
+
+  & i {
+    cursor: pointer;
+    transition: scale 0.1s ease;
+  }
+
+  & i:hover {
+    scale: 1.1;
+  }
+
+  & .fa-trash-can {
+    color: red;
+  }
 }
