@@ -4,7 +4,7 @@
 }
 
 .input-component .input-text {
-  border: 1px solid lightgray;
+  border: 2px solid lightgray;
   border-radius: 5px;
   padding: 10px 15px;
   outline: none;
