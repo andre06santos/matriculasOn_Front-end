@@ -43,6 +43,7 @@
 
     & .fa-trash {
         padding-right: 20px;
+        cursor: pointer;
     }
 }
 
@@ -78,7 +79,7 @@
     background-color: #f6f6f6;
 }
 
-.table table tr:hover {
+.table tr:hover {
     background-color: #eeeeff;
 }
 
