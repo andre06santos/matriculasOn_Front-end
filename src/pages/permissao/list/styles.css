@@ -38,6 +38,7 @@ td {
 table {
   border-collapse: separate;
   border-spacing: 0 3px;
+  cursor: default;
 }
 
 thead {
