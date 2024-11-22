@@ -1,0 +1,111 @@
+.main-route {
+    position: relative;
+}
+
+.form-filter {
+    display: flex;
+    gap: 20px;
+}
+
+.filter-buttons {
+    display: flex;
+    gap: 10px;
+    align-items: end;
+}
+
+.courses-quantity {
+    background-color: #808aff;
+    padding: 2px 5px;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+}
+
+.add-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+
+    & a {
+        text-decoration: none;
+    }
+}
+
+.table th {
+    text-align: left;
+}
+
+
+
+.last-element {
+    justify-content: flex-end;
+    padding-right: 20px;
+
+    & .fa-trash {
+        padding-right: 20px;
+    }
+}
+
+.table-header .last-element {
+    text-align: right;
+    padding-right: 20px;
+}
+
+
+.table td {
+    padding: 3px;
+}
+
+.table {
+    border-collapse: separate;
+    border-spacing: 0 3px;
+}
+
+.table thead {
+    background-color: #c0c0c0;
+    color: white;
+
+    & th {
+        padding: 5px 3px;
+    }
+}
+
+.table table tr:nth-child(even) {
+    background-color: #eeeeee;
+}
+
+.table table tr:nth-child(odd) {
+    background-color: #f6f6f6;
+}
+
+.table table tr:hover {
+    background-color: #eeeeff;
+}
+
+.table table td {
+    cursor: default;
+}
+
+.table-actions {
+    display: flex;
+    gap: 5px;
+
+    & .fa-pen-to-square {
+        color: black;
+    }
+
+    & .fa-pen-to-square:hover {
+        color: #595757;
+        transform: scale(1.10);
+    }
+
+    & .fa-trash {
+        color: #852221;
+    }
+
+    & .fa-trash:hover {
+        color: #a43c3b;
+        transform: scale(1.10);
+    }
+
+}
