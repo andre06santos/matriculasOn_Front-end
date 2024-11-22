@@ -14,9 +14,9 @@ const CreatePermission = () => {
         </div>
 
         <div className="form__buttons">
-          <Input type="reset" value="Limpar" />
+          <Input type="reset" variant="bgNeutral" value="Limpar" />
           <Button label="Cancelar" />
-          <Input type="submit" value="Cadastrar" />
+          <Input type="submit" variant="bgSuccess" value="Cadastrar" />
         </div>
       </form>
     </div>

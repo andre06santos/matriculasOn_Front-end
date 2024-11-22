@@ -14,9 +14,9 @@ const EditPermission = () => {
         </div>
 
         <div className="form__buttons">
-          <Input type="reset" value="Limpar" />
+          <Input type="reset" variant="bgNeutral" value="Limpar" />
           <Button label="Cancelar" />
-          <Input type="submit" value="Editar" />
+          <Input type="submit" variant="bgSuccess" value="Editar" />
         </div>
       </form>
     </div>

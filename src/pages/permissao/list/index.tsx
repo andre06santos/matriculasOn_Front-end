@@ -29,8 +29,8 @@ const ListPermissions = () => {
         <Input label="Filtro" placeholder="Descrição" />
 
         <div className="filter__buttons">
-          <Input type="submit" value="Buscar" />
-          <Input type="reset" value="Limpar" />
+          <Input type="submit" variant="bgInfo" value="Buscar" />
+          <Input type="reset" variant="bgNeutral" value="Limpar" />
         </div>
       </form>
 
