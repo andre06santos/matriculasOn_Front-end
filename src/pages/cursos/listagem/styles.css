@@ -71,11 +71,11 @@
     }
 }
 
-.table table tr:nth-child(even) {
+.table tr:nth-child(even) {
     background-color: #eeeeee;
 }
 
-.table table tr:nth-child(odd) {
+.table tr:nth-child(odd) {
     background-color: #f6f6f6;
 }
 
@@ -83,7 +83,7 @@
     background-color: #eeeeff;
 }
 
-.table table td {
+.table td {
     cursor: default;
 }
 
