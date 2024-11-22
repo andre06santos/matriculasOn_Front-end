@@ -50,7 +50,7 @@ const ListPermissions = () => {
           <tr>
             <th>Role</th>
             <th>Descrição</th>
-            <th className="action-column">Ações</th>
+            <th className="table-actions action-column">Ações</th>
           </tr>
         </thead>
         <tbody>
