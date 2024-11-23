@@ -14,7 +14,6 @@
 
 .modal {
   top: -100px;
-  z-index: 1000;
   background-color: white;
   position: relative;
   box-shadow: 1px 1px 5px gray;
