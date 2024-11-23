@@ -26,11 +26,11 @@ const ListCourses = () => {
             <h1>Cursos</h1>
 
             <form action="" className="form-filter">
-                <Input label="Filtro" placeholder="Descrição" />
+                <Input label="Filtro" placeholder="Nome" />
 
                 <div className="filter-buttons">
-                    <Input type="submit" value="Buscar" />
-                    <Input type="reset" value="Limpar" />
+                    <Input type="submit" value="Buscar" variant="bgInfo" />
+                    <Input type="reset" value="Limpar" variant="bgNeutral" />
                 </div>
             </form>
 

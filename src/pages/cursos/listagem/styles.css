@@ -43,6 +43,7 @@
 
     & .fa-trash {
         padding-right: 20px;
+        cursor: pointer;
     }
 }
 
@@ -70,19 +71,19 @@
     }
 }
 
-.table table tr:nth-child(even) {
+.table tr:nth-child(even) {
     background-color: #eeeeee;
 }
 
-.table table tr:nth-child(odd) {
+.table tr:nth-child(odd) {
     background-color: #f6f6f6;
 }
 
-.table table tr:hover {
+.table tr:hover {
     background-color: #eeeeff;
 }
 
-.table table td {
+.table td {
     cursor: default;
 }
 
