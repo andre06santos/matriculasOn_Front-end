@@ -1,0 +1,32 @@
+.login-background {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding-top: 90px;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.form-container > img {
+  margin-bottom: 20px;
+}
+
+.form-container > form {
+  height: fit-content;
+  padding: 40px;
+  border-radius: 20px;
+  width: 310px;
+  box-shadow: 3px 3px 4px #6a6ba0;
+  border: 1px solid #6a6ba0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.form-container input[type="submit"] {
+  margin-top: 13px;
+}
