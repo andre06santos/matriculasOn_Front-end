@@ -68,20 +68,6 @@ const ListPermissions = () => {
           ))}
         </tbody>
       </table>
-
-      <div className="pagination-component">
-        <div className="pagination">
-          <a href="" className="laquo">
-            &laquo;
-          </a>
-          <a href="" className="item">
-            1
-          </a>
-          <a href="" className="raquo">
-            &raquo;
-          </a>
-        </div>
-      </div>
     </div>
   );
 };
