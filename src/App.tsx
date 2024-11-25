@@ -7,6 +7,7 @@ import { CreatePermission } from "./pages/permissions/create";
 import { EditPermission } from "./pages/permissions/edit";
 import { CourseRegistration } from "./pages/cursos/cadastro";
 import { EditCourse } from "./pages/cursos/edicao";
+import { ListStudents } from "./pages/alunos/list";
 
 const App = () => {
   return (
@@ -27,7 +28,7 @@ const App = () => {
           <Route path="/cursos/novo-curso" element={<CourseRegistration />} />
           <Route path="/cursos/editar-curso" element={<EditCourse />} />
 
-          <Route path="/alunos" element={<ListPermissions />} />
+          <Route path="/alunos" element={<ListStudents />} />
           <Route path="/alunos/novo-aluno" element={<CourseRegistration />} />
           <Route path="/alunos/editar-aluno" element={<EditCourse />} />
 
