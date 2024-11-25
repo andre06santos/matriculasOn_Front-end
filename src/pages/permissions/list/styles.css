@@ -2,12 +2,20 @@
   position: relative;
 }
 
+.filter {
+  gap: 5px;
+
+  & p {
+    font-size: 1rem;
+  }
+}
+
 .form-filter {
   display: flex;
   gap: 20px;
 }
 
-.filter__buttons {
+.filter-buttons {
   display: flex;
   gap: 10px;
   align-items: end;
@@ -42,9 +50,10 @@ td {
 table {
   border-collapse: separate;
   border-spacing: 0 3px;
+  cursor: default;
 }
 
-thead {
+table thead tr {
   background-color: #c0c0c0;
   color: white;
 
@@ -53,19 +62,46 @@ thead {
   }
 }
 
-table tr:nth-child(even) {
+table tbody tr:nth-child(even) {
   background-color: #eeeeee;
+
+  &:hover {
+    background-color: #f1f1f1;
+  }
 }
 
-table tr:nth-child(odd) {
+table tbody tr:nth-child(odd) {
   background-color: #f6f6f6;
+
+  &:hover {
+    background-color: #f1f1f1;
+  }
 }
 
 .table-actions {
   display: flex;
-  gap: 5px;
+  gap: 10px;
+
+  & i {
+    cursor: pointer;
+    transition: scale 0.1s ease;
+  }
+
+  & i:hover {
+    scale: 1.1;
+  }
+
+  & .fa-trash-can {
+    color: #852221;
+  }
 
   & .fa-pen-to-square {
     color: black;
   }
+}
+
+.action-column {
+  margin-right: 20px;
+  justify-content: end;
+  text-align: right;
 }
