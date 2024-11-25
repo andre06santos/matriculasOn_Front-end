@@ -28,14 +28,17 @@ const ListPermissions = () => {
       </div>
       <h1>Permissões</h1>
 
-      <form action="" className="form-filter">
-        <Input label="Filtro" placeholder="Descrição" />
+      <div className="filter flex-column-gap20">
+        <p>Filtro</p>
+        <form action="" className="form-filter">
+          <Input placeholder="Descrição" />
 
-        <div className="filter__buttons">
-          <Input type="submit" variant="bgInfo" value="Buscar" />
-          <Input type="reset" variant="bgNeutral" value="Limpar" />
-        </div>
-      </form>
+          <div className="filter-buttons">
+            <Input type="submit" variant="bgInfo" value="Buscar" />
+            <Input type="reset" variant="bgNeutral" value="Limpar" />
+          </div>
+        </form>
+      </div>
 
       <p>
         Total de permissões encontradas:{" "}
@@ -43,21 +46,23 @@ const ListPermissions = () => {
       </p>
 
       <table className="table">
-        <thead className="table__header">
-          <th>Role</th>
-          <th>Descrição</th>
-          <th>Ações</th>
+        <thead>
+          <tr>
+            <th>Role</th>
+            <th>Descrição</th>
+            <th className="table-actions action-column">Ações</th>
+          </tr>
         </thead>
         <tbody>
           {permissions.map((permission, index): any => (
             <tr key={index}>
               <td>{permission.role}</td>
               <td>{permission.description}</td>
-              <td className="table-actions">
+              <td className="table-actions action-column">
                 <Link to="/permissoes/editar-permissao">
                   <i className="fa-solid fa-pen-to-square"></i>
                 </Link>
-                <i className="fa-solid fa-trash"></i>
+                <i className="fa-solid fa-trash-can"></i>
               </td>
             </tr>
           ))}
