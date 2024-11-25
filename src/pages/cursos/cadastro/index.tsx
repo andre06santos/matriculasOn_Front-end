@@ -11,7 +11,7 @@ const CourseRegistration = () => {
         <div className="flex-column-gap20">
           <Input label="Nome" type="text" />
         </div>
-        <div className="form-buttons flex-column-gap20">
+        <div className="container-buttons flex-column-gap20">
           <Input type="reset" variant="bgNeutral" value="Limpar" />
           <Link to="/cursos">
             <Button type="cancel" label="Cancelar" />
