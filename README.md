@@ -14,7 +14,7 @@ O MatriculasOn é um sistema de matrículas online.
 ### Telas
 
 <div style='display: flex'>
-  <img src='./public/images/login.jpg' style='width: 40%' />
+  <img src='./public/images/pagina_login.jpg' style='width: 40%' />
   <img src='./public/images/listar_alunos.jpg' style='width: 40%' />
   <img src='./public/images/listar_cursos.jpg' style='width: 40%' />
   <img src='./public/images/listar_permissoes.jpg' style='width: 40%' />
