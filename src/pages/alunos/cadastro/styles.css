@@ -6,6 +6,9 @@
   & input {
     width: 320px;
   }
+  & .input-select {
+    width: 320px;
+  }
 }
 
 .form {
