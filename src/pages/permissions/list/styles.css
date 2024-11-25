@@ -1,0 +1,107 @@
+.main-route {
+  position: relative;
+}
+
+.filter {
+  gap: 5px;
+
+  & p {
+    font-size: 1rem;
+  }
+}
+
+.form-filter {
+  display: flex;
+  gap: 20px;
+}
+
+.filter-buttons {
+  display: flex;
+  gap: 10px;
+  align-items: end;
+}
+
+.permissions-quantity {
+  background-color: #808aff;
+  padding: 2px 5px;
+  border-radius: 5px;
+  color: white;
+  font-weight: bold;
+}
+
+.add-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+
+  & a {
+    text-decoration: none;
+  }
+}
+
+th {
+  text-align: left;
+}
+
+td {
+  padding: 3px;
+}
+
+table {
+  border-collapse: separate;
+  border-spacing: 0 3px;
+  cursor: default;
+}
+
+table thead tr {
+  background-color: #c0c0c0;
+  color: white;
+
+  & th {
+    padding: 5px 3px;
+  }
+}
+
+table tbody tr:nth-child(even) {
+  background-color: #eeeeee;
+
+  &:hover {
+    background-color: #f1f1f1;
+  }
+}
+
+table tbody tr:nth-child(odd) {
+  background-color: #f6f6f6;
+
+  &:hover {
+    background-color: #f1f1f1;
+  }
+}
+
+.table-actions {
+  display: flex;
+  gap: 10px;
+
+  & i {
+    cursor: pointer;
+    transition: scale 0.1s ease;
+  }
+
+  & i:hover {
+    scale: 1.1;
+  }
+
+  & .fa-trash-can {
+    color: #852221;
+  }
+
+  & .fa-pen-to-square {
+    color: black;
+  }
+}
+
+.action-column {
+  margin-right: 20px;
+  justify-content: end;
+  text-align: right;
+}

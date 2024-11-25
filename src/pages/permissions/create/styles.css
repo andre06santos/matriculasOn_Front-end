@@ -1,0 +1,12 @@
+.form {
+  max-width: 300px;
+}
+
+.form-buttons {
+  display: flex;
+  justify-content: space-between;
+
+  & a {
+    text-decoration: none;
+  }
+}
