@@ -14,22 +14,22 @@ O MatriculasOn é um sistema de matrículas online.
 ### Telas
 
 <div style='display: flex'>
-  <img src='./public/images/Login.jpg' style='width: 40%' />
-  <img src='./public/images/Listagem de Alunos.jpg' style='width: 40%' />
-  <img src='./public/images/Listagem de Cursos.jpg' style='width: 40%' />
-  <img src='./public/images/Listagem de Permissões.jpg' style='width: 40%' />
-  <img src='./public/images/Listagem de Usuários.jpg' style='width: 40%' />
-  <img src='./public/images/Cadastro de Alunos.jpg' style='width: 40%' />
-  <img src='./public/images/Cadastro de Permissões.jpg' style='width: 40%' />
-  <img src='./public/images/Cadastro de Servidores.jpg' style='width: 40%' />
-  <img src='./public/images/Cadastro de Usuários.jpg' style='width: 40%' />
-  <img src='./public/images/Edição de Alunos.jpg' style='width: 40%' />
-  <img src='./public/images/Edição de Curso.jpg' style='width: 40%' />
-  <img src='./public/images/Edição de Permissões.jpg' style='width: 40%' />
-  <img src='./public/images/Edição de Servidores.jpg' style='width: 40%' />
-  <img src='./public/images/Exclusão de Curso.jpg' style='width: 40%' />
-  <img src='./public/images/Exclusão de Permissões.jpg' style='width: 40%' />
-  <img src='./public/images/Exclusão de Usuários.jpg' style='width: 40%' />
+  <img src='./public/images/login.jpg' style='width: 40%' />
+  <img src='./public/images/listar_alunos.jpg' style='width: 40%' />
+  <img src='./public/images/listar_cursos.jpg' style='width: 40%' />
+  <img src='./public/images/listar_permissoes.jpg' style='width: 40%' />
+  <img src='./public/images/listar_usuarios.jpg' style='width: 40%' />
+  <img src='./public/images/cadastrar_aluno.jpg' style='width: 40%' />
+  <img src='./public/images/cadastrar_curso.jpg' style='width: 40%'>
+  <img src='./public/images/cadastrar_permissao.jpg' style='width: 40%' />
+  <img src='./public/images/cadastrar_administrador.jpg' style='width: 40%' />
+  <img src='./public/images/editar_aluno.jpg' style='width: 40%' />
+  <img src='./public/images/editar_curso.jpg' style='width: 40%' />
+  <img src='./public/images/editar_permissao.jpg' style='width: 40%' />
+  <img src='./public/images/editar_administrador.jpg' style='width: 40%' />
+  <img src='./public/images/excluir_curso.jpg' style='width: 40%' />
+  <img src='./public/images/excluir_permissao.jpg' style='width: 40%' />
+  <img src='./public/images/excluir_usuario.jpg' style='width: 40%' />
 </div>
 
 ### Estrutura do projeto
