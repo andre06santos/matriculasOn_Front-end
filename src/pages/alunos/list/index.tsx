@@ -51,8 +51,6 @@ const ListStudents = () => {
         </form>
       </div>
 
-      <form action="" className="form-filter"></form>
-
       <p>
         Total de permissões encontradas:{" "}
         <span className="permissions-quantity">3</span>
