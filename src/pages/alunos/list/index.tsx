@@ -3,37 +3,48 @@ import { Button } from "../../../ui/button";
 import { Input } from "../../../ui/input";
 import "./styles.css";
 
-const ListPermissions = () => {
-  const permissions = [
+const ListStudents = () => {
+  const students = [
     {
-      role: "CADASTRAR_USUARIO",
-      description: "Cadastra usuario",
+      matricula: "2568574MJGHF",
+      cpf: "123.456.789-00",
+      nome: "Maria da Silva Costa",
+      email: "maria.silva@live.com",
+      curso: "Engenharia Civil",
     },
     {
-      role: "EDITAR_CADASTRO_ALUNO",
-      description: "Edita o cadastro de um aluno",
+      matricula: "2568574MJGHF",
+      cpf: "123.456.789-00",
+      nome: "Maria da Silva Costa",
+      email: "maria.silva@live.com",
+      curso: "Engenharia Civil",
     },
     {
-      role: "EDITAR_CADASTRO_ALUNO",
-      description: "Edita o cadastro de um aluno",
+      matricula: "2568574MJGHF",
+      cpf: "123.456.789-00",
+      nome: "Maria da Silva Costa",
+      email: "maria.silva@live.com",
+      curso: "Engenharia Civil",
     },
   ];
 
   return (
     <div className="flex-column-gap20">
       <div className="add-button">
-        <Link to="/permissoes/nova-permissao">
+        <Link to="/alunos/novo-aluno">
           <Button type="success" label="Adicionar" />
         </Link>
       </div>
-      <h1>Permissões</h1>
+      <h1>Alunos</h1>
 
       <div className="filter flex-column-gap20">
         <p>Filtro</p>
         <form action="" className="form-filter">
-          <Input placeholder="Descrição" />
+          <Input placeholder="Matrícula" />
+          <Input placeholder="CPF" />
+          <Input placeholder="Nome" />
 
-          <div className="filter-buttons">
+          <div className="filter__buttons">
             <Input type="submit" variant="bgInfo" value="Buscar" />
             <Input type="reset" variant="bgNeutral" value="Limpar" />
           </div>
@@ -46,18 +57,24 @@ const ListPermissions = () => {
       </p>
 
       <table className="table">
-        <thead>
+        <thead className="table__header">
           <tr>
-            <th>Role</th>
-            <th>Descrição</th>
+            <th>Matricula</th>
+            <th>CPF</th>
+            <th>Nome</th>
+            <th>E-mail</th>
+            <th>Curso</th>
             <th className="table-actions action-column">Ações</th>
           </tr>
         </thead>
         <tbody>
-          {permissions.map((permission, index): any => (
+          {students.map((student, index): any => (
             <tr key={index}>
-              <td>{permission.role}</td>
-              <td>{permission.description}</td>
+              <td>{student.matricula}</td>
+              <td>{student.cpf}</td>
+              <td>{student.nome}</td>
+              <td>{student.email}</td>
+              <td>{student.curso}</td>
               <td className="table-actions action-column">
                 <Link to="/permissoes/editar-permissao">
                   <i className="fa-solid fa-pen-to-square"></i>
@@ -72,4 +89,4 @@ const ListPermissions = () => {
   );
 };
 
-export { ListPermissions };
+export { ListStudents };
