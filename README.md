@@ -21,12 +21,12 @@ O MatriculasOn é um sistema de matrículas online.
   <img src='./public/images/Listagem de Usuários.jpg' style='width: 40%' />
   <img src='./public/images/Cadastro de Alunos.jpg' style='width: 40%' />
   <img src='./public/images/Cadastro de Permissões.jpg' style='width: 40%' />
-  <img src='./public/images/Cadastro de Servidores.jpg' style='width: 40%' />
+  <img src='./public/images/Cadastro de Administradores.jpg' style='width: 40%' />
   <img src='./public/images/Cadastro de Usuários.jpg' style='width: 40%' />
   <img src='./public/images/Edição de Alunos.jpg' style='width: 40%' />
   <img src='./public/images/Edição de Curso.jpg' style='width: 40%' />
   <img src='./public/images/Edição de Permissões.jpg' style='width: 40%' />
-  <img src='./public/images/Edição de Servidores.jpg' style='width: 40%' />
+  <img src='./public/images/Edição de Administradores.jpg' style='width: 40%' />
   <img src='./public/images/Exclusão de Curso.jpg' style='width: 40%' />
   <img src='./public/images/Exclusão de Permissões.jpg' style='width: 40%' />
   <img src='./public/images/Exclusão de Usuários.jpg' style='width: 40%' />
