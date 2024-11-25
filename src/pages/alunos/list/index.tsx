@@ -64,7 +64,7 @@ const ListStudents = () => {
             <th>Nome</th>
             <th>E-mail</th>
             <th>Curso</th>
-            <th>Ações</th>
+            <th className="table-actions action-column">Ações</th>
           </tr>
         </thead>
         <tbody>
@@ -75,7 +75,7 @@ const ListStudents = () => {
               <td>{student.nome}</td>
               <td>{student.email}</td>
               <td>{student.curso}</td>
-              <td className="table-actions">
+              <td className="table-actions action-column">
                 <Link to="/permissoes/editar-permissao">
                   <i className="fa-solid fa-pen-to-square"></i>
                 </Link>
