@@ -1,6 +1,7 @@
 import "./styles.css";
 import { Input } from "../../../ui/input";
 import { Button } from "../../../ui/button";
+import { Link } from "react-router-dom";
 
 const CourseRegistration = () => {
   return (
@@ -10,9 +11,11 @@ const CourseRegistration = () => {
         <div className="flex-column-gap20">
           <Input label="Nome" type="text" />
         </div>
-        <div className="container-buttons flex-column-gap20">
+        <div className="form-buttons flex-column-gap20">
           <Input type="reset" variant="bgNeutral" value="Limpar" />
-          <Button type="cancel" label="Cancelar" />
+          <Link to="/cursos">
+            <Button type="cancel" label="Cancelar" />
+          </Link>
           <Input type="submit" variant="bgSuccess" value="Cadastrar" />
         </div>
       </form>
