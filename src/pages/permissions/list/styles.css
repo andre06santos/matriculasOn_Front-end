@@ -92,7 +92,7 @@ table tbody tr:nth-child(odd) {
   }
 
   & .fa-trash-can {
-    color: red;
+    color: #852221;
   }
 
   & .fa-pen-to-square {
