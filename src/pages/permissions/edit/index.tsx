@@ -15,11 +15,11 @@ const EditPermission = () => {
         </div>
 
         <div className="form-buttons">
-          <Input type="reset" value="Limpar" />
+          <Input type="reset" variant="bgNeutral" value="Limpar" />
           <Link to="/permissoes">
             <Button label="Cancelar" />
           </Link>
-          <Input type="submit" value="Editar" />
+          <Input type="submit" variant="bgSuccess" value="Editar" />
         </div>
       </form>
     </div>

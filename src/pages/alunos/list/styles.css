@@ -7,13 +7,13 @@
   gap: 20px;
 }
 
-.filter-buttons {
+.filter__buttons {
   display: flex;
   gap: 10px;
   align-items: end;
 }
 
-.courses-quantity {
+.permissions-quantity {
   background-color: #808aff;
   padding: 2px 5px;
   border-radius: 5px;
@@ -31,35 +31,20 @@
   }
 }
 
-.table th {
+th {
   text-align: left;
 }
 
-.last-element {
-  justify-content: flex-end;
-  padding-right: 20px;
-
-  & .fa-trash {
-    padding-right: 20px;
-    cursor: pointer;
-  }
-}
-
-.table-header .last-element {
-  text-align: right;
-  padding-right: 20px;
-}
-
-.table td {
+td {
   padding: 3px;
 }
 
-.table {
+table {
   border-collapse: separate;
   border-spacing: 0 3px;
 }
 
-.table thead {
+thead {
   background-color: #c0c0c0;
   color: white;
 
@@ -68,41 +53,38 @@
   }
 }
 
-.table tbody tr:nth-child(even) {
+table tbody tr:nth-child(even) {
   background-color: #eeeeee;
 }
 
-.table tbody tr:nth-child(odd) {
+table tbody tr:nth-child(odd) {
   background-color: #f6f6f6;
-}
-
-.table tbody tr:hover {
-  background-color: #eeeeff;
-}
-
-.table td {
-  cursor: default;
 }
 
 .table-actions {
   display: flex;
-  gap: 5px;
+  gap: 10px;
+
+  & i {
+    cursor: pointer;
+    transition: scale 0.1s ease;
+  }
+
+  & i:hover {
+    scale: 1.1;
+  }
+
+  & .fa-trash-can {
+    color: #852221;
+  }
 
   & .fa-pen-to-square {
     color: black;
   }
+}
 
-  & .fa-pen-to-square:hover {
-    color: #595757;
-    transform: scale(1.1);
-  }
-
-  & .fa-trash {
-    color: #852221;
-  }
-
-  & .fa-trash:hover {
-    color: #a43c3b;
-    transform: scale(1.1);
-  }
+.action-column {
+  margin-right: 20px;
+  justify-content: end;
+  text-align: right;
 }
