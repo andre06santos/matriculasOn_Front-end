@@ -2,6 +2,13 @@ import "./styles.css";
 import { Input } from "../../../ui/input";
 import { Button } from "../../../ui/button";
 const RegisterStudent = () => {
+  const cursoOptions = [
+    { id: 1, text: "Análise e Desenvolvimento de Sistemas" },
+    { id: 2, text: "Engenharia de Software" },
+    { id: 3, text: "Redes de Computadores" },
+    { id: 4, text: "Tecnologia da Informação" },
+  ];
+
   return (
     <div className="flex-column-gap20">
       <h1>Cadastrar aluno</h1>
@@ -14,7 +21,7 @@ const RegisterStudent = () => {
         <div className="input-group">
           <Input label="Username" type="text" />
           <Input label="Email" type="text" />
-          <Input label="Curso" type="text" />
+          <Input label="Curso" selectOptions={cursoOptions} />
         </div>
         <div className="input-group">
           <Input label="Senha" type="password" />
