@@ -5,6 +5,13 @@
 .form-filter {
   display: flex;
   gap: 20px;
+
+  & input[type="text"] {
+    padding: 10px;
+    width: 300px;
+    border-radius: 5px;
+    border: 1px solid #C3C3C3;
+  }
 }
 
 .form-actions {
@@ -24,12 +31,18 @@
 .td-ativo,
 .td-inativo {
   color: white;
+  text-align: center;
+  font-size: 0.8em;
+  border-radius: 5px;
+  width: 0;
 }
+
 .td-ativo {
-  background-color: green;
+  background-color: #008245;
 }
+
 .td-inativo {
-  background-color: red;
+  background-color: #852221;
 }
 
 .add-button {
@@ -40,4 +53,21 @@
   & a {
     text-decoration: none;
   }
+}
+
+.last-element {
+  justify-content: flex-end;
+  padding-right: 20px;
+
+  & .fa-trash {
+    padding-right: 20px;
+    cursor: pointer;
+  }
+}
+
+.button.select {
+  width: 120px;
+  font-size: 16px;
+  box-sizing: border-box;
+
 }
