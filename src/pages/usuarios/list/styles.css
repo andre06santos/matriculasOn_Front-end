@@ -40,7 +40,7 @@
 .td-inativo {
   color: white;
   text-align: center;
-  font-size: 0.8em;
+  padding: 2px 5px;
   border-radius: 5px;
   width: 0;
 }
