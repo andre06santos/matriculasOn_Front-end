@@ -29,7 +29,7 @@ const ListPermissions = () => {
       <h1>Permissões</h1>
 
       <div className="filter flex-column-gap20">
-        <p>Filtro</p>
+        <span>Filtros</span>
         <form action="" className="form-filter">
           <Input placeholder="Descrição" />
 
