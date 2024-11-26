@@ -11,9 +11,8 @@ const Button = ({ label, onClick, type = "cancel", selectOptions }: any) => {
     danger: "btn-danger",
   };
 
-  const buttonClass = `button ${buttonClasses[type]} ${
-    selectOptions && "select"
-  }`;
+  const buttonClass = `button ${buttonClasses[type]} ${selectOptions && "select"
+    }`;
 
   const handleChangeExpanded = () => {
     setIsExpanded((prevState) => !prevState);
@@ -33,7 +32,7 @@ const Button = ({ label, onClick, type = "cancel", selectOptions }: any) => {
 
       {isExpanded && (
         <ul className="button-select">
-          {selectOptions.map(({ option, index }: any) => (
+          {selectOptions.map((option: any, index: any) => (
             <Link to={option.path} key={index}>
               <li>{option.label}</li>
             </Link>
