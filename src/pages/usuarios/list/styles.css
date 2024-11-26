@@ -1,0 +1,43 @@
+.main-route {
+  position: relative;
+}
+
+.form-filter {
+  display: flex;
+  gap: 20px;
+}
+
+.form-actions {
+  display: flex;
+  gap: 10px;
+  align-items: end;
+}
+
+.permissions-quantity {
+  background-color: #808aff;
+  padding: 2px 5px;
+  border-radius: 5px;
+  color: white;
+  font-weight: bold;
+}
+
+.td-ativo,
+.td-inativo {
+  color: white;
+}
+.td-ativo {
+  background-color: green;
+}
+.td-inativo {
+  background-color: red;
+}
+
+.add-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+
+  & a {
+    text-decoration: none;
+  }
+}
