@@ -30,6 +30,12 @@ const ListUser = () => {
     { label: "Administrador", path: "/administrador" },
   ];
 
+  const statusOptions = [
+    { id: 0, text: "Inativo" },
+    { id: 1, text: "Ativo" },
+  ];
+
+
   return (
     <div className="flex-column-gap20">
       <div className="add-button">
@@ -40,9 +46,9 @@ const ListUser = () => {
       <div className="filter flex-column-gap20">
         <p>Filtros</p>
         <form className="form-filter">
-          <input type="text" placeholder="Username" />
-          <input type="text" placeholder="Nome" />
-          <input type="text" placeholder="Status" />
+          <Input type="text" placeholder="Username" />
+          <Input type="text" placeholder="Nome" />
+          <Input selectOptions={statusOptions} />
           <div className="form-actions">
             <Input type="submit" variant="bgInfo" value="Buscar" />
             <Input type="reset" variant="bgNeutral" value="Limpar" />
@@ -71,8 +77,8 @@ const ListUser = () => {
               <td>{user.username}</td>
               <td>{user.nome}</td>
               <td>{user.tipo}</td>
-              <td className={user.status == true ? "td-ativo" : "td-inativo"}>
-                {user.status == true ? "ATIVO" : "INATIVO"}
+              <td className={user.status ? "td-ativo" : "td-inativo"}>
+                {user.status ? "Ativo" : "Inativo"}
               </td>
               <td className="table-actions action-column last-element">
                 <i className="fa-solid fa-pen-to-square"></i>
