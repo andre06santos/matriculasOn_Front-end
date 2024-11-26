@@ -84,7 +84,7 @@ table tbody tr:nth-child(odd) {
 }
 
 .action-column {
-  margin-right: 20px;
+  margin: 0;
   justify-content: end;
   text-align: right;
 }
