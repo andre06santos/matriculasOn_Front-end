@@ -52,7 +52,7 @@ const ListStudents = () => {
       </div>
 
       <p>
-        Total de Alunos encontradas:{" "}
+        Total de alunos encontradas:{" "}
         <span className="permissions-quantity">3</span>
       </p>
 
