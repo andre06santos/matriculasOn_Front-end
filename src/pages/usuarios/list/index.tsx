@@ -26,7 +26,7 @@ const ListUser = () => {
   ];
 
   const options = [
-    { label: "Aluno", path: "/aluno" },
+    { label: "Aluno", path: "/alunos/aluno-novo" },
     { label: "Administrador", path: "/administrador" },
   ];
 
@@ -62,7 +62,7 @@ const ListUser = () => {
             <th>Nome</th>
             <th>Tipo</th>
             <th>Status</th>
-            <th>Ações</th>
+            <th className="last-element">Ações</th>
           </tr>
         </thead>
         <tbody>
@@ -74,7 +74,7 @@ const ListUser = () => {
               <td className={user.status == true ? "td-ativo" : "td-inativo"}>
                 {user.status == true ? "ATIVO" : "INATIVO"}
               </td>
-              <td className="table-actions action-column">
+              <td className="table-actions action-column last-element">
                 <i className="fa-solid fa-pen-to-square"></i>
                 <i className="fa-solid fa-trash-can"></i>
               </td>
