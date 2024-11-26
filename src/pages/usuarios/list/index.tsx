@@ -4,6 +4,10 @@ import { Button } from "../../../ui/button";
 import { Input } from "../../../ui/input";
 
 const ListUser = () => {
+  const isAluno = (tipo: any) => {
+    return tipo === "Aluno";
+  };
+
   const users = [
     {
       username: "marisilcs",
@@ -26,15 +30,14 @@ const ListUser = () => {
   ];
 
   const options = [
-    { label: "Aluno", path: "/alunos/aluno-novo" },
-    { label: "Administrador", path: "/administrador" },
+    { label: "Aluno", path: "/alunos/novo-aluno" },
+    { label: "Administrador", path: "/administradores/novo-administrador" },
   ];
 
   const statusOptions = [
     { id: 0, text: "Inativo" },
     { id: 1, text: "Ativo" },
   ];
-
 
   return (
     <div className="flex-column-gap20">
@@ -81,7 +84,15 @@ const ListUser = () => {
                 {user.status ? "Ativo" : "Inativo"}
               </td>
               <td className="table-actions action-column last-element">
-                <i className="fa-solid fa-pen-to-square"></i>
+                <Link
+                  to={
+                    isAluno(user.tipo)
+                      ? "/alunos/editar-aluno"
+                      : "/administradores/editar-administrador"
+                  }
+                >
+                  <i className="fa-solid fa-pen-to-square"></i>
+                </Link>
                 <i className="fa-solid fa-trash-can"></i>
               </td>
             </tr>
