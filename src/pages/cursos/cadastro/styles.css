@@ -1,19 +1,30 @@
-.form {
-  max-width: 300px;
+.form-registration {
+  max-width: 241px;
+
 }
 
-.container-buttons {
+.form-actions-registration {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
-
-  & .input-component {
-    & .input-button {
-      padding: 10px 20px;
-    }
-  }
+  gap: 7px;
 
   & a {
     text-decoration: none;
+  }
+
+  & div {
+
+    & button,
+    input {
+      width: 75px;
+      height: 33px;
+    }
+  }
+
+}
+
+#removePadding {
+  & input {
+    padding: 0px;
   }
 }
