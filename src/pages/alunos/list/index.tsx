@@ -30,11 +30,6 @@ const ListStudents = () => {
 
   return (
     <div className="flex-column-gap20">
-      <div className="add-button">
-        <Link to="/alunos/novo-aluno">
-          <Button type="success" label="Adicionar" />
-        </Link>
-      </div>
       <h1>Alunos</h1>
 
       <div className="filter flex-column-gap20">
@@ -76,7 +71,7 @@ const ListStudents = () => {
               <td>{student.email}</td>
               <td>{student.curso}</td>
               <td className="table-actions action-column">
-                <Link to="/permissoes/editar-permissao">
+                <Link to="/alunos/editar-aluno">
                   <i className="fa-solid fa-pen-to-square"></i>
                 </Link>
                 <i className="fa-solid fa-trash-can"></i>
