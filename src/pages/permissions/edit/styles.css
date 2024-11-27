@@ -19,10 +19,6 @@
   }
 
   & .input-component .input-button {
-
-    &.bg-success,
-    &.bg-neutral {
-      padding: 0px;
-    }
+    padding: 0px;
   }
 }
