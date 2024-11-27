@@ -16,7 +16,7 @@ const CourseRegistration = () => {
           <Link to="/cursos">
             <Button type="cancel" label="Cancelar" />
           </Link>
-          <Input type="submit" variant="bgSuccess" value="Cancelar" />
+          <Input type="submit" variant="bgSuccess" value="Cadastrar" />
         </div>
       </form>
     </div>
