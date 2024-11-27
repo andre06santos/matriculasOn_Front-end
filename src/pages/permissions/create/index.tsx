@@ -14,7 +14,7 @@ const CreatePermission = () => {
           <Input label="Descrição" />
         </div>
 
-        <div className="form-actions-registration flex-column-gap20" id="removePadding">
+        <div className="form-actions-registration flex-column-gap20">
           <Input type="reset" variant="bgNeutral" value="Limpar" />
           <Link to="/permissoes">
             <Button label="Cancelar" />
