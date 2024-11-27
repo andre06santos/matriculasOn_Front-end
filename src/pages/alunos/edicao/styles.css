@@ -17,9 +17,4 @@
   flex-direction: row;
   justify-content: flex-start;
 
-  & .input-component {
-    & .input-button {
-      padding: 10px 20px;
-    }
-  }
 }

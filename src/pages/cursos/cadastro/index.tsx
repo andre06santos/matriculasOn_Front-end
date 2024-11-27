@@ -36,7 +36,10 @@ const CourseRegistration = () => {
   return (
     <div className="flex-column-gap20">
       <h1>Cadastrar curso</h1>
-      <form className="form flex-column-gap20" onSubmit={handleSubmit}>
+      <form
+        className="form-registration flex-column-gap20"
+        onSubmit={handleSubmit}
+      >
         <div className="flex-column-gap20">
           <Input
             label="Nome"
@@ -46,7 +49,7 @@ const CourseRegistration = () => {
             onChange={(e: any) => setNome(e.target.value)}
           />
         </div>
-        <div className="container-buttons flex-column-gap20">
+        <div className="form-actions-registration flex-column-gap20">
           <Input type="reset" variant="bgNeutral" value="Limpar" />
           <Link to="/cursos">
             <Button type="cancel" label="Cancelar" />
