@@ -24,16 +24,17 @@ const ListCourses = () => {
                 </Link>
             </div>
             <h1>Cursos</h1>
+            <div className="filter flex-column-gap20">
+                <span>Filtros</span>
+                <form action="" className="form-filter">
+                    <Input placeholder="Nome" />
 
-            <form action="" className="form-filter">
-                <Input label="Filtro" placeholder="Nome" />
-
-                <div className="filter-buttons">
-                    <Input type="submit" value="Buscar" variant="bgInfo" />
-                    <Input type="reset" value="Limpar" variant="bgNeutral" />
-                </div>
-            </form>
-
+                    <div className="filter-buttons">
+                        <Input type="submit" value="Buscar" variant="bgInfo" />
+                        <Input type="reset" value="Limpar" variant="bgNeutral" />
+                    </div>
+                </form>
+            </div >
             <p>
                 Total de cursos encontrados:{""}
                 <span className="courses-quantity">3</span>
@@ -58,7 +59,7 @@ const ListCourses = () => {
                     ))}
                 </tbody>
             </table>
-        </div>
+        </div >
     );
 };
 

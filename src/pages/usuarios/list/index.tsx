@@ -47,7 +47,7 @@ const ListUser = () => {
       <h1>Usuários</h1>
 
       <div className="filter flex-column-gap20">
-        <p>Filtros</p>
+        <span>Filtros</span>
         <form className="form-filter">
           <Input type="text" placeholder="Username" />
           <Input type="text" placeholder="Nome" />
