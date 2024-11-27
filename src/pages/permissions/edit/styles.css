@@ -1,8 +1,24 @@
-.form {
-  max-width: 300px;
+.form-edit {
+  max-width: 241px;
+
 }
 
-.form-buttons {
+.form-actions-edit {
   display: flex;
-  justify-content: space-between;
+  flex-direction: row;
+  gap: 7px;
+
+  & a {
+    text-decoration: none;
+  }
+
+  & input,
+  button {
+    width: 75px;
+    height: 33px;
+  }
+
+  & .input-component .input-button {
+    padding: 0px;
+  }
 }
