@@ -14,7 +14,7 @@ const EditPermission = () => {
           <Input label="Descrição" />
         </div>
 
-        <div className="form-actions-edit flex-column-gap20" id="removePadding">
+        <div className="form-actions-edit flex-column-gap20">
           <Input type="reset" variant="bgNeutral" value="Limpar" />
           <Link to="/permissoes">
             <Button label="Cancelar" />
