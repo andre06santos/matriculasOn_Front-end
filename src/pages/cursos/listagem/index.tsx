@@ -42,8 +42,10 @@ const ListCourses = () => {
 
             <table className="table">
                 <thead className="table-header">
-                    <th>Nome</th>
-                    <th className="last-element">Ações</th>
+                    <tr>
+                        <th>Nome</th>
+                        <th className="last-element">Ações</th>
+                    </tr>
                 </thead>
                 <tbody>
                     {courses.map((course, index): any => (
