@@ -30,11 +30,6 @@ const ListStudents = () => {
 
   return (
     <div className="flex-column-gap20">
-      <div className="add-button">
-        <Link to="/alunos/novo-aluno">
-          <Button type="success" label="Adicionar" />
-        </Link>
-      </div>
       <h1>Alunos</h1>
 
       <div className="filter flex-column-gap20">
