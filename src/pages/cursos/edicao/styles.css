@@ -12,19 +12,18 @@
         text-decoration: none;
     }
 
-    & div {
+    & input,
+    button {
+        width: 75px;
+        height: 33px;
+    }
 
-        & button,
-        input {
-            width: 75px;
-            height: 33px;
+    & .input-component .input-button {
+
+        &.bg-success,
+        &.bg-neutral {
+            padding: 0px;
         }
     }
 
-}
-
-#removePadding {
-    & input {
-        padding: 0px;
-    }
 }
