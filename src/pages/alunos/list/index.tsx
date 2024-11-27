@@ -2,8 +2,20 @@ import { Link } from "react-router-dom";
 import { Button } from "../../../ui/button";
 import { Input } from "../../../ui/input";
 import "./styles.css";
+import { useState } from "react";
+import { Modal } from "../../../ui/modal";
 
 const ListStudents = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
   const students = [
     {
       matricula: "2568574MJGHF",
@@ -30,6 +42,12 @@ const ListStudents = () => {
 
   return (
     <div className="flex-column-gap20">
+      {isModalOpen && (
+        <Modal
+          message="Tem certeza que deseja excluir o cadastro deste aluno?"
+          cancelOnClick={closeModal}
+        />
+      )}
       <h1>Alunos</h1>
 
       <div className="filter flex-column-gap20">
@@ -74,7 +92,7 @@ const ListStudents = () => {
                 <Link to="/alunos/editar-aluno">
                   <i className="fa-solid fa-pen-to-square"></i>
                 </Link>
-                <i className="fa-solid fa-trash-can"></i>
+                <i className="fa-solid fa-trash-can" onClick={openModal}></i>
               </td>
             </tr>
           ))}
