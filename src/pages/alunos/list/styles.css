@@ -71,12 +71,24 @@ table tbody tr:nth-child(odd) {
   }
 }
 
+table tbody td:last-child,
+thead th:last-child {
+  padding-right: 10px;
+  text-align: right;
+}
+
+table tbody td:first-child,
+thead th:first-child {
+  padding-left: 10px;
+}
+
+
 .table-actions {
-  display: flex;
-  gap: 10px;
+  display: block;
 
   & i {
     cursor: pointer;
+    margin-right: 6px;
     transition: scale 0.1s ease;
   }
 

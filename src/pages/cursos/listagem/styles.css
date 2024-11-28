@@ -35,20 +35,7 @@
   text-align: left;
 }
 
-.last-element {
-  justify-content: flex-end;
-  padding-right: 20px;
 
-  & .fa-trash {
-    padding-right: 20px;
-    cursor: pointer;
-  }
-}
-
-.table-header .last-element {
-  text-align: right;
-  padding-right: 20px;
-}
 
 .table td {
   padding: 3px;
@@ -84,13 +71,23 @@
   }
 }
 
+table tbody td:last-child,
+thead th:last-child {
+  padding-right: 10px;
+  text-align: right;
+}
+
+table tbody td:first-child,
+thead th:first-child {
+  padding-left: 10px;
+}
+
 .table td {
   cursor: default;
 }
 
 .table-actions {
-  display: flex;
-  gap: 5px;
+  display: block;
 
   & .fa-pen-to-square {
     color: black;
