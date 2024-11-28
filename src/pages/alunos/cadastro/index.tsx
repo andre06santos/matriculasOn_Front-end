@@ -27,10 +27,10 @@ const RegisterStudent = () => {
   const navigate = useNavigate();
 
   const cursoOptions = [
-    { id: 1, text: "Análise e Desenvolvimento de Sistemas" },
-    { id: 2, text: "Engenharia de Software" },
-    { id: 3, text: "Redes de Computadores" },
-    { id: 4, text: "Tecnologia da Informação" },
+    { label: "Análise e Desenvolvimento de Sistemas", value: "ADS" },
+    { label: "Engenharia de Software", value: "ENG_SOF" },
+    { label: "Redes de Computadores", value: "RED" },
+    { label: "Tecnologia da Informação", value: "TEC_INF" },
   ];
 
   const handleSubmit = (e: any) => {

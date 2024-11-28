@@ -29,12 +29,12 @@ const Input = ({
 
       {selectOptions ? (
         <Select
-          defaultValue={selectOptions[0]}
-          isClearable
           isSearchable
           options={selectOptions}
-          getOptionValue={(option: any) => `${option["id"]}`}
-          getOptionLabel={(option: any) => `${option["text"]}`}
+          placeholder="Escolha uma opção"
+          noOptionsMessage={() => "Nenhuma opção encontrada!"}
+          getOptionValue={(option: any) => option["value"]}
+          getOptionLabel={(option: any) => option["label"]}
           className="input-select"
           {...rest}
         />
