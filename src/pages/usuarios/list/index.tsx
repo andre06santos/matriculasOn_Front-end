@@ -11,7 +11,11 @@ const ListUser = () => {
   const users = [
     {
       username: "marisilcs",
+      matricula: "2568574MJGHF",
+      cpf: "123.456.789-00",
       nome: "Maria da Silva Costa",
+      email: "maria.silva@live.com",
+      curso: "Engenharia Civil",
       tipo: "Aluno",
       status: true,
     },
@@ -90,6 +94,7 @@ const ListUser = () => {
                       ? "/alunos/editar-aluno"
                       : "/administradores/editar-administrador"
                   }
+                  state={users[index]}
                 >
                   <i className="fa-solid fa-pen-to-square"></i>
                 </Link>
