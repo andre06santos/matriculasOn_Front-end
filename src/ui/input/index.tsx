@@ -36,6 +36,7 @@ const Input = ({
           getOptionValue={(option: any) => `${option["id"]}`}
           getOptionLabel={(option: any) => `${option["text"]}`}
           className="input-select"
+          {...rest}
         />
       ) : (
         <input type={type} {...rest} className={inputClass} />
