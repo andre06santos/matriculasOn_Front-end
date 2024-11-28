@@ -33,8 +33,8 @@ const Input = ({
           isClearable
           isSearchable
           options={selectOptions}
-          getOptionValue={(option: any) => `${option["id"]}`}
-          getOptionLabel={(option: any) => `${option["text"]}`}
+          getOptionValue={(option: any) => `${option["value"]}`}
+          getOptionLabel={(option: any) => `${option["label"]}`}
           className="input-select"
         />
       ) : (

@@ -35,8 +35,8 @@ const ListUser = () => {
   ];
 
   const statusOptions = [
-    { id: 0, text: "Inativo" },
-    { id: 1, text: "Ativo" },
+    { label: "Ativo", value: "ATIVO" },
+    { label: "Inativo", value: "INATIVO" },
   ];
 
   return (
