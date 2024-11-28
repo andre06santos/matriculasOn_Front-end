@@ -62,16 +62,6 @@
   }
 }
 
-.last-element {
-  display: flex;
-  padding-right: 40px;
-  margin-right: 0px;
-
-  & .fa-trash {
-    padding-right: 10px;
-    cursor: pointer;
-  }
-}
 
 .button.select {
   width: 120px;
