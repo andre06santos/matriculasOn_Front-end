@@ -2,7 +2,15 @@ import "./styles.css";
 import { Input } from "../../../ui/input";
 import { Button } from "../../../ui/button";
 import { Link } from "react-router-dom";
+
 const StudentEdit = () => {
+  const selectOptions = [
+    { label: "Análise e Desenvolvimento de Sistemas", value: "ADS" },
+    { label: "Engenharia de Software", value: "ENG_SOF" },
+    { label: "Redes de Computadores", value: "RED" },
+    { label: "Tecnologia da Informação", value: "TEC_INF" },
+  ];
+
   return (
     <div className="flex-column-gap20">
       <h1>Editar aluno</h1>
@@ -15,7 +23,7 @@ const StudentEdit = () => {
         <div className="input-group">
           <Input label="Username" type="text" />
           <Input label="Email" type="text" />
-          <Input label="Curso" type="text" />
+          <Input label="Curso" type="text" selectOptions={selectOptions} />
         </div>
         <div className="input-group">
           <Input label="Senha" type="password" />
