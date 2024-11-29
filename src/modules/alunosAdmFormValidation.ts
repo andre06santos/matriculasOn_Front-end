@@ -28,11 +28,13 @@ export const handleChangeCpf = (
 
   if (!validateCpf(cpf)) {
     if (cpf.length > MAX_CPF_FIELD) {
-      setCpf(cpf.slice(0, MAX_CPF_FIELD));
+      const cpfWithMaxLength = cpf.slice(0, MAX_CPF_FIELD);
+      setCpf(cpfWithMaxLength);
       console.log(`Apenas ${MAX_CPF_FIELD} caracteres`);
       return;
     } else if (!validateOnlyNumbers(cpf) && cpf !== "") {
-      setCpf(cpf.replace(/\D/g, ""));
+      const cpfOnlyNumbers = cpf.replace(/\D/g, "");
+      setCpf(cpfOnlyNumbers);
 
       console.log("Digite apenas números");
     } else {
@@ -61,11 +63,16 @@ export const handleChangeMatricula = (
 
   if (!validateMatricula(matricula)) {
     if (matricula.length > MAX_MATRICULA_FIELD) {
+      const matriculaWithMaxField = matricula.slice(0, MAX_MATRICULA_FIELD);
+      setMatricula(matriculaWithMaxField);
       console.log(`Quantidade de caracteres maximo de ${MAX_MATRICULA_FIELD}`);
-      setMatricula(matricula.slice(0, MAX_MATRICULA_FIELD));
     } else if (!validateLettersAndNumbers(matricula)) {
+      const matriculaOnlyLettersAndNumbers = matricula.replace(
+        /[^a-zA-Z0-9]+$/,
+        ""
+      );
+      setMatricula(matriculaOnlyLettersAndNumbers);
       console.log("Caractere nao permitido");
-      setMatricula(matricula.replace(/[^a-zA-Z0-9]+$/, ""));
     } else {
       setErrorMessages((prevErrors: any) => ({
         ...prevErrors,
@@ -92,13 +99,9 @@ export const handleChangeUsername = (
 
   if (!validateUsername(username)) {
     if (username.length > MAX_USERNAME_FIELD) {
+      const usernameWithMaxField = username.slice(0, MAX_USERNAME_FIELD);
+      setUsername(usernameWithMaxField);
       console.log(`Quantidade de caracteres maximo de ${MAX_USERNAME_FIELD}`);
-      setUsername(username.slice(0, MAX_USERNAME_FIELD));
-
-      setErrorMessages((prevErrors: any) => ({
-        ...prevErrors,
-        username: `Quantidade de caracteres maximo de ${MAX_USERNAME_FIELD}`,
-      }));
     } else {
       setErrorMessages((prevErrors: any) => ({
         ...prevErrors,
@@ -125,20 +128,13 @@ export const handleChangeNome = (
 
   if (!validateNome(nome)) {
     if (!validateOnlyLetters(nome) && nome.length <= MAX_NOME_FIELD) {
+      const nomeOnlyLetters = nome.replace(/[^a-zA-ZÀ-ÿ]+$/, "");
+      setNome(nomeOnlyLetters);
       console.log("Apenas letras são permitidas");
-      setNome(nome.replace(/[^a-zA-ZÀ-ÿ]+$/, ""));
-      setErrorMessages((prevErrors: any) => ({
-        ...prevErrors,
-        nome: "Apenas letras são permitidas",
-      }));
     } else if (nome.length > MAX_NOME_FIELD) {
+      const nomeWithMaxField = nome.slice(0, MAX_NOME_FIELD);
+      setNome(nomeWithMaxField);
       console.log(`Quantidade de caracteres maximo de ${MAX_NOME_FIELD}`);
-      setNome(nome.slice(0, MAX_NOME_FIELD));
-
-      setErrorMessages((prevErrors: any) => ({
-        ...prevErrors,
-        nome: `Quantidade de caracteres maximo de ${MAX_NOME_FIELD}`,
-      }));
     } else {
       setErrorMessages((prevErrors: any) => ({
         ...prevErrors,
@@ -264,20 +260,13 @@ export const handleChangeCargo = (
 
   if (!validateCargo(cargo)) {
     if (!validateOnlyLetters(cargo) && cargo.length <= MAX_CARGO_FIELD) {
+      const cargoOnlyLetters = cargo.replace(/[^a-zA-ZÀ-ÿ´`~^]+$/, "");
+      setCargo(cargoOnlyLetters);
       console.log("Apenas letras são permitidas");
-      setCargo(cargo.replace(/[^a-zA-ZÀ-ÿ´`~^]+$/, ""));
-      setErrorMessages((prevErrors: any) => ({
-        ...prevErrors,
-        cargo: "Apenas letras são permitidas",
-      }));
     } else if (cargo.length > MAX_CARGO_FIELD) {
+      const cargoWithMaxLength = cargo.slice(0, MAX_CARGO_FIELD);
+      setCargo(cargoWithMaxLength);
       console.log(`Quantidade de caracteres maximo de ${MAX_CARGO_FIELD}`);
-      setCargo(cargo.slice(0, MAX_CARGO_FIELD));
-
-      setErrorMessages((prevErrors: any) => ({
-        ...prevErrors,
-        cargo: `Quantidade de caracteres maximo de ${MAX_CARGO_FIELD}`,
-      }));
     } else {
       setErrorMessages((prevErrors: any) => ({
         ...prevErrors,
@@ -307,22 +296,15 @@ export const handleChangeDepartamento = (
       !validateOnlyLetters(departamento) &&
       departamento.length <= MAX_DEPARTAMENTO_FIELD
     ) {
+      const deptoOnlyLetters = departamento.replace(/[^a-zA-ZÀ-ÿ´`~^]+$/, "");
+      setDepartamento(deptoOnlyLetters);
       console.log("Apenas letras são permitidas");
-      setDepartamento(departamento.replace(/[^a-zA-ZÀ-ÿ´`~^]+$/, ""));
-      setErrorMessages((prevErrors: any) => ({
-        ...prevErrors,
-        departamento: "Apenas letras são permitidas",
-      }));
     } else if (departamento.length > MAX_DEPARTAMENTO_FIELD) {
+      const deptoWithMaxLength = departamento.slice(0, MAX_DEPARTAMENTO_FIELD);
+      setDepartamento(deptoWithMaxLength);
       console.log(
         `Quantidade de caracteres maximo de ${MAX_DEPARTAMENTO_FIELD}`
       );
-      setDepartamento(departamento.slice(0, MAX_DEPARTAMENTO_FIELD));
-
-      setErrorMessages((prevErrors: any) => ({
-        ...prevErrors,
-        departamento: `Quantidade de caracteres maximo de ${MAX_DEPARTAMENTO_FIELD}`,
-      }));
     } else {
       setErrorMessages((prevErrors: any) => ({
         ...prevErrors,
