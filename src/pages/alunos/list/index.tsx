@@ -45,7 +45,7 @@ const ListStudents = () => {
       {isModalOpen && (
         <Modal
           message="Tem certeza que deseja excluir o cadastro deste aluno?"
-          cancelOnClick={closeModal}
+          onCancel={closeModal}
         />
       )}
       <h1>Alunos</h1>

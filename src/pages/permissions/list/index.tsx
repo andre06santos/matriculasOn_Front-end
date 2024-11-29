@@ -36,7 +36,7 @@ const ListPermissions = () => {
       {isModalOpen && (
         <Modal
           message="Tem certeza que deseja excluir esta permissão?"
-          cancelOnClick={closeModal}
+          onCancel={closeModal}
         />
       )}
       <div className="add-button">
