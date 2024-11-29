@@ -12,7 +12,7 @@ const Button = ({ label, onClick, type = "cancel", selectOptions }: any) => {
   };
 
   const buttonClass = `button ${buttonClasses[type]} ${
-    selectOptions && "select"
+    selectOptions ? "select" : ""
   }`;
 
   const handleChangeExpanded = () => {

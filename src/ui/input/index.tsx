@@ -21,7 +21,9 @@ const Input = ({
     bgSuccess: "bg-success",
   };
 
-  const inputClass = `input ${inputClasses[type]} ${inputCollors[variant]}`;
+  const inputClass = `input ${inputClasses[type]} ${
+    type === "reset" || type === "submit" ? inputCollors[variant] : ""
+  }`;
 
   return (
     <div className="input-component">
@@ -34,7 +36,7 @@ const Input = ({
           placeholder="Escolha uma opção"
           noOptionsMessage={() => "Nenhuma opção encontrada!"}
           getOptionValue={(option: any) => option["value"]}
-          getOptionLabel={(option: any) => option["label"]}
+          getOptionLabel={(option: any) => option["text"]}
           className="input-select"
           {...rest}
         />
