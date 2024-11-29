@@ -22,7 +22,7 @@ const RegisterStudent = () => {
   const [email, setEmail] = useState("");
   const [curso, setCurso] = useState("");
   const [senha, setSenha] = useState("");
-  const [confSenha, setConfSenha] = useState("");
+  const [conferirSenha, setConferirSenha] = useState("");
   const [errorMessages, setErrorMessages] = useState({});
   const navigate = useNavigate();
 
@@ -125,19 +125,19 @@ const RegisterStudent = () => {
             value={senha}
             onChange={(e: any) => {
               handleChangeSenha(e.target.value, setErrorMessages, setSenha);
-              verificaSenhasIguais(e.target.value, confSenha, setErrorMessages);
+              verificaSenhasIguais(e.target.value, conferirSenha, setErrorMessages);
             }}
           />
           <Input
             label="Confirmar senha"
             type="password"
             required
-            value={confSenha}
+            value={conferirSenha}
             onChange={(e: any) => {
               handleChangeConfSenha(
                 e.target.value,
                 setErrorMessages,
-                setConfSenha
+                setConferirSenha
               );
               verificaSenhasIguais(e.target.value, senha, setErrorMessages);
             }}

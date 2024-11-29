@@ -23,7 +23,7 @@ const EditAdmin = () => {
   const [email, setEmail] = useState("");
   const [departamento, setDepartamento] = useState("");
   const [senha, setSenha] = useState("");
-  const [confSenha, setConfSenha] = useState("");
+  const [conferirSenha, setConferirSenha] = useState("");
   const [errorMessages, setErrorMessages] = useState({});
   const navigate = useNavigate();
 
@@ -45,7 +45,7 @@ const EditAdmin = () => {
   return (
     <div className="flex-column-gap20">
       <h1>Editar administrador</h1>
-      <form className="form">
+      <form className="form" onSubmit={handleSubmit}>
         <div className="input-group">
           <Input
             label="CPF"
@@ -114,18 +114,22 @@ const EditAdmin = () => {
             value={senha}
             onChange={(e: any) => {
               handleChangeSenha(e.target.value, setErrorMessages, setSenha);
-              verificaSenhasIguais(e.target.event, confSenha, setErrorMessages);
+              verificaSenhasIguais(
+                e.target.event,
+                conferirSenha,
+                setErrorMessages
+              );
             }}
           />
           <Input
             label="Confirmar senha"
             type="password"
-            value={confSenha}
+            value={conferirSenha}
             onChange={(e: any) => {
               handleChangeConfSenha(
                 e.target.value,
                 setErrorMessages,
-                setConfSenha
+                setConferirSenha
               );
               verificaSenhasIguais(senha, e.target.value, setErrorMessages);
             }}
