@@ -47,8 +47,8 @@ const ListUser = () => {
   ];
 
   const statusOptions = [
-    { id: 0, text: "Inativo" },
-    { id: 1, text: "Ativo" },
+    { label: "Ativo", value: "ATIVO" },
+    { label: "Inativo", value: "INATIVO" },
   ];
 
   return (
@@ -89,7 +89,7 @@ const ListUser = () => {
             <th>Nome</th>
             <th>Tipo</th>
             <th>Status</th>
-            <th className="last-element">Ações</th>
+            <th>Ações</th>
           </tr>
         </thead>
         <tbody>
@@ -101,7 +101,7 @@ const ListUser = () => {
               <td className={user.status ? "td-ativo" : "td-inativo"}>
                 {user.status ? "Ativo" : "Inativo"}
               </td>
-              <td className="table-actions action-column last-element">
+              <td className="table-actions action-column">
                 <Link
                   to={
                     isAluno(user.tipo)

@@ -62,18 +62,18 @@ const ListCourses = () => {
         <thead className="table-header">
           <tr>
             <th>Nome</th>
-            <th className="last-element">Ações</th>
+            <th>Ações</th>
           </tr>
         </thead>
         <tbody>
           {courses.map((course, index): any => (
             <tr key={index}>
               <td>{course.name}</td>
-              <td className="table-actions last-element">
+              <td className="table-actions">
                 <Link to="/cursos/editar-curso">
                   <i className="fa-solid fa-pen-to-square icons-action"></i>
                 </Link>
-                <i className="fa-solid fa-trash" onClick={openModal}></i>
+                <i className="fa-solid fa-trash-can" onClick={openModal}></i>
               </td>
             </tr>
           ))}
