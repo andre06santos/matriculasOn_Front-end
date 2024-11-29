@@ -3,26 +3,19 @@ import { Input } from "../../../ui/input";
 import { Button } from "../../../ui/button";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { toast } from "react-toastify";
+import { handleChangeCourseName } from "../../../modules/courseFormValidation";
 
 const CourseRegistration = () => {
   const navigate = useNavigate();
   const [nome, setNome] = useState("");
-
-  const verificarApenasLetras = (nome: any) => {
-    const apenasLetras = /^[a-zA-ZÀ-ÿ]+$/.test(nome);
-    return apenasLetras;
-  };
+  const [errorsMessages, setErrorsMessages] = useState({});
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    const novoErro: any = {};
 
-    novoErro["nomeErro"] = verificarApenasLetras(nome)
-      ? ""
-      : "Nome so pode ter letras";
-
-    const listaErros = Object.values(novoErro).filter((error) => error !== "");
+    const listaErros = Object.values(errorsMessages).filter(
+      (error) => error !== ""
+    );
 
     if (listaErros.length > 0) {
       console.log(listaErros[0]);
@@ -46,7 +39,10 @@ const CourseRegistration = () => {
             type="text"
             id="nome"
             required
-            onChange={(e: any) => setNome(e.target.value)}
+            value={nome}
+            onChange={(e: any) =>
+              handleChangeCourseName(e.target.value, setErrorsMessages, setNome)
+            }
           />
         </div>
         <div className="form-actions-registration flex-column-gap20">

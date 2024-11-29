@@ -1,25 +1,28 @@
-import { verifyCourseName, verifyOnlyLetters } from "./formValidationUtils";
+import {
+  MAX_CURSO_FIELD,
+  validateCourseName,
+  validateOnlyLetters,
+} from "./formValidationUtils";
 
 export const handleChangeCourseName = (
-  e: any,
+  nome: any,
   setErrorMessages: any,
   setNome: any
 ) => {
-  const actualNome = e.target.value;
-  setNome(actualNome);
+  setNome(nome);
 
-  if (!verifyCourseName(actualNome)) {
-    if (!verifyOnlyLetters(actualNome)) {
-      setNome(actualNome.replace(/[^a-zA-ZÀ-ÿ]+$/, ""));
+  if (!validateCourseName(nome)) {
+    if (!validateOnlyLetters(nome)) {
+      setNome(nome.replace(/[^a-zA-ZÀ-ÿ´`~^]+$/, ""));
 
       console.log("Permitido apenas letras");
-    } else if (actualNome.length > 20) {
-      console.log("Quantidade de caracteres maximo de 50");
+    } else if (nome.length > MAX_CURSO_FIELD) {
+      console.log(`Quantidade de caracteres maximo de ${MAX_CURSO_FIELD}`);
       setErrorMessages((prevErrors: any) => ({
         ...prevErrors,
-        nome: "Quantidade de caracteres maximo de 50",
+        nome: `Quantidade de caracteres maximo de ${MAX_CURSO_FIELD}`,
       }));
-      setNome(actualNome.slice(0, 50));
+      setNome(nome.slice(0, MAX_CURSO_FIELD));
     } else {
       setErrorMessages((prevErrors: any) => ({
         ...prevErrors,
@@ -28,7 +31,7 @@ export const handleChangeCourseName = (
     }
   }
 
-  if (verifyCourseName(actualNome)) {
+  if (validateCourseName(nome)) {
     setErrorMessages((prevErrors: any) => ({
       ...prevErrors,
       nome: "",
