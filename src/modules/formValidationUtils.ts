@@ -1,78 +1,111 @@
-export const verifyOnlyLetters = (valor: any) => {
-  const apenasLetras = /^[a-zA-ZÀ-ÿ]+$/.test(valor);
+export const TEN_CARAC = 10;
+export const MAX_MATRICULA_FIELD = 10;
+export const MAX_USERNAME_FIELD = 10;
+export const MAX_NOME_FIELD = 50;
+export const MAX_CPF_FIELD = 11;
+export const MAX_CARGO_FIELD = 30;
+export const MAX_DEPARTAMENTO_FIELD = 30;
+export const MAX_DESCRICAO_FIELD = 100;
+export const MAX_ROLE_FIELD = 20;
+export const MAX_CURSO_FIELD = 30;
+export const MIN_PASSWORD = 8;
+export const MIN_EMAIL = 7;
+export const CPF_LENGTH = 11;
+
+export const regexOnlyLetters = new RegExp("^[a-zA-ZÀ-ÿ´`~^]+$");
+export const regexValidEmail = new RegExp(
+  "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$"
+);
+export const regexOnlyNumbers = new RegExp("[0-9]+$");
+export const regexLettersAndNumbers = new RegExp("^[a-zA-Z0-9]+$");
+export const regexUpperLettersAndUnderscore = new RegExp("^[A-Z_]+$");
+
+export const validateOnlyLetters = (valor: any) => {
+  const apenasLetras = regexOnlyLetters.test(valor);
   return apenasLetras;
 };
 
-export const verifyOnlyNumbers = (valor: any) => {
-  const apenasNumeros = /[0-9]+$/.test(valor);
+export const validateOnlyNumbers = (valor: any) => {
+  const apenasNumeros = regexOnlyNumbers.test(valor);
   return apenasNumeros;
 };
 
-export const verifyLettersAndNumbers = (valor: any) => {
-  const letrasENumberos = /^[a-zA-Z0-9]+$/.test(valor);
+export const validateLettersAndNumbers = (valor: any) => {
+  const letrasENumberos = regexLettersAndNumbers.test(valor);
   return letrasENumberos;
 };
 
-export const verifyEmailFormat = (valor: any) => {
-  const emailValido = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(
-    valor
-  );
+export const validateEmailFormat = (valor: any) => {
+  const emailValido = regexValidEmail.test(valor);
   return emailValido;
 };
 
-export const verifyCpf = (valor: string) => {
-  const onlyNumbers = verifyOnlyNumbers(valor);
-  const elevenNumbers = valor.length === 11;
+export const validateCpf = (valor: string) => {
+  const onlyNumbers = validateOnlyNumbers(valor);
+  const elevenNumbers = valor.length === CPF_LENGTH;
   return onlyNumbers && elevenNumbers;
 };
 
-export const verifyMatricula = (valor: string) => {
-  const onlyNumbersAndNumbers = verifyLettersAndNumbers(valor);
-  const checkLength = valor.length <= 10 && valor.length > 0;
+export const validateMatricula = (valor: string) => {
+  const onlyNumbersAndNumbers = validateLettersAndNumbers(valor);
+  const checkLength = valor.length <= MAX_MATRICULA_FIELD && valor.length > 0;
   return onlyNumbersAndNumbers && checkLength;
 };
 
-export const verifyNome = (valor: string) => {
-  const onlyLetters = verifyOnlyLetters(valor);
-  const maxLength = valor.length <= 50 && valor.length > 0;
+export const validateNome = (valor: string) => {
+  const onlyLetters = validateOnlyLetters(valor);
+  const maxLength = valor.length <= MAX_NOME_FIELD && valor.length > 0;
   return onlyLetters && maxLength;
 };
 
-export const verifyUsername = (valor: string) => {
-  const maxLength = valor.length <= 15 && valor.length > 0;
+export const validateUsername = (valor: string) => {
+  const maxLength = valor.length <= MAX_USERNAME_FIELD && valor.length > 0;
   return maxLength;
 };
 
-export const verifyEmail = (valor: string) => {
-  const validEmail = verifyEmailFormat(valor);
-  const minLength = valor.length >= 7;
+export const validateEmail = (valor: string) => {
+  const validEmail = validateEmailFormat(valor);
+  const minLength = valor.length >= MIN_EMAIL;
   return validEmail && minLength;
 };
 
-export const verifyPassword = (valor: string) => {
-  const minLength = valor.length >= 8;
+export const validatePassword = (valor: string) => {
+  const minLength = valor.length >= MIN_PASSWORD;
   return minLength;
 };
 
-export const verifyLettersAndUnderscore = (valor: string) => {
-  const containsOnlyLettersAndUnderscore = /^[A-Z_]+$/.test(valor);
+export const validateLettersAndUnderscore = (valor: string) => {
+  const containsOnlyLettersAndUnderscore =
+    regexUpperLettersAndUnderscore.test(valor);
   return containsOnlyLettersAndUnderscore;
 };
 
-export const verifyRole = (valor: string) => {
-  const maxLength = valor.length <= 20;
-  const validation = /^[A-Z_]+$/.test(valor);
+export const validateRole = (valor: string) => {
+  const maxLength = valor.length <= MAX_ROLE_FIELD;
+  const validation = regexUpperLettersAndUnderscore.test(valor);
   return maxLength && validation;
 };
 
-export const verifyPermissionDescription = (valor: string) => {
-  const onlyLetters = verifyOnlyLetters(valor);
-  const maxLength = valor.length <= 100;
+export const validatePermissionDescription = (valor: string) => {
+  const onlyLetters = validateOnlyLetters(valor);
+  const maxLength = valor.length <= MAX_DESCRICAO_FIELD;
   return onlyLetters && maxLength;
 };
 
-export const verifyCourseName = (valor: string) => {
-  const onlyLetters = verifyOnlyLetters(valor);
-  const maxLength = valor.length <= 50;
+export const validateCourseName = (valor: string) => {
+  const onlyLetters = validateOnlyLetters(valor);
+  const maxLength = valor.length <= MAX_CURSO_FIELD;
+  return onlyLetters && maxLength;
+};
+
+export const validateCargo = (valor: string) => {
+  const onlyLetters = validateOnlyLetters(valor);
+  const maxLength = valor.length <= MAX_CARGO_FIELD;
+  return onlyLetters && maxLength;
+};
+
+export const validateDepartamento = (valor: string) => {
+  const onlyLetters = validateOnlyLetters(valor);
+  const maxLength = valor.length <= MAX_DEPARTAMENTO_FIELD;
   return onlyLetters && maxLength;
 };
