@@ -33,7 +33,7 @@ const ListCourses = () => {
       {isModalOpen && (
         <Modal
           message="Tem certeza que deseja excluir este curso?"
-          cancelOnClick={closeModal}
+          onCancel={closeModal}
         />
       )}
       <div className="add-button">

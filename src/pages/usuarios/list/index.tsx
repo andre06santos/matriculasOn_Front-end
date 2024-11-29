@@ -56,7 +56,7 @@ const ListUser = () => {
       {isModalOpen && (
         <Modal
           message="Tem certeza que deseja excluir o cadastro deste usuário?"
-          cancelOnClick={closeModal}
+          onCancel={closeModal}
         />
       )}
       <div className="add-button">
