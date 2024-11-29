@@ -1,30 +1,27 @@
 import {
-  verifyLettersAndUnderscore,
-  verifyOnlyLetters,
-  verifyPermissionDescription,
-  verifyRole,
+  MAX_DESCRICAO_FIELD,
+  MAX_ROLE_FIELD,
+  validateLettersAndUnderscore,
+  validateOnlyLetters,
+  validatePermissionDescription,
+  validateRole,
 } from "./formValidationUtils";
 
 export const handleChangeRole = (
-  e: any,
+  role: any,
   setErrorMessages: any,
   setRole: any
 ) => {
-  const actualRole = e.target.value;
-  setRole(actualRole);
+  setRole(role);
 
-  if (!verifyRole(actualRole)) {
-    if (!verifyLettersAndUnderscore(actualRole)) {
-      setRole(actualRole.replace(/[^A-Z_]+$/, ""));
+  if (!validateRole(role)) {
+    if (!validateLettersAndUnderscore(role)) {
+      setRole(role.replace(/[^A-Z_]+$/, ""));
 
       console.log("Apenas letras maiúsculas e underscore ( _ )");
-    } else if (actualRole.length > 20) {
-      console.log("Quantidade de caracteres maximo de 20");
-      setErrorMessages((prevErrors: any) => ({
-        ...prevErrors,
-        role: "Quantidade de caracteres maximo de 20",
-      }));
-      setRole(actualRole.slice(0, 20));
+    } else if (role.length > MAX_ROLE_FIELD) {
+      console.log(`Quantidade de caracteres maximo de ${MAX_ROLE_FIELD}`);
+      setRole(role.slice(0, MAX_ROLE_FIELD));
     } else {
       setErrorMessages((prevErrors: any) => ({
         ...prevErrors,
@@ -33,7 +30,7 @@ export const handleChangeRole = (
     }
   }
 
-  if (verifyRole(actualRole)) {
+  if (validateRole(role)) {
     setErrorMessages((prevErrors: any) => ({
       ...prevErrors,
       role: "",
@@ -42,25 +39,20 @@ export const handleChangeRole = (
 };
 
 export const handleChangeDescription = (
-  e: any,
+  descricao: any,
   setErrorMessages: any,
   setDescription: any
 ) => {
-  const actualDescription = e.target.value;
-  setDescription(actualDescription);
+  setDescription(descricao);
 
-  if (!verifyPermissionDescription(actualDescription)) {
-    if (!verifyOnlyLetters(actualDescription)) {
-      setDescription(actualDescription.replace(/[^a-zA-ZÀ-ÿ]+$/, ""));
+  if (!validatePermissionDescription(descricao)) {
+    if (!validateOnlyLetters(descricao)) {
+      setDescription(descricao.replace(/[^a-zA-ZÀ-ÿ]+$/, ""));
 
       console.log("Permitido apenas letras");
-    } else if (actualDescription.length > 20) {
-      console.log("Quantidade de caracteres maximo de 100");
-      setErrorMessages((prevErrors: any) => ({
-        ...prevErrors,
-        descricao: "Quantidade de caracteres maximo de 100",
-      }));
-      setDescription(actualDescription.slice(0, 100));
+    } else if (descricao.length > MAX_DESCRICAO_FIELD) {
+      console.log(`Quantidade de caracteres maximo de ${MAX_DESCRICAO_FIELD}`);
+      setDescription(descricao.slice(0, MAX_DESCRICAO_FIELD));
     } else {
       setErrorMessages((prevErrors: any) => ({
         ...prevErrors,
@@ -69,7 +61,7 @@ export const handleChangeDescription = (
     }
   }
 
-  if (verifyPermissionDescription(actualDescription)) {
+  if (validatePermissionDescription(descricao)) {
     setErrorMessages((prevErrors: any) => ({
       ...prevErrors,
       descricao: "",

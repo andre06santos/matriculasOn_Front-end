@@ -43,7 +43,7 @@ const EditPermission = () => {
             value={role}
             required
             onChange={(e: any) =>
-              handleChangeRole(e, setErrorMessages, setRole)
+              handleChangeRole(e.target.value, setErrorMessages, setRole)
             }
           />
           <Input
@@ -51,7 +51,11 @@ const EditPermission = () => {
             required
             value={descricao}
             onChange={(e: any) =>
-              handleChangeDescription(e, setErrorMessages, setDescricao)
+              handleChangeDescription(
+                e.target.value,
+                setErrorMessages,
+                setDescricao
+              )
             }
           />
         </div>
