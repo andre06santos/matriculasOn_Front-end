@@ -12,7 +12,7 @@ import {
   handleChangeSenha,
   handleChangeUsername,
   verificaSenhasIguais,
-} from "../../../modules/alunosFormValidation";
+} from "../../../modules/alunosAdmFormValidation";
 const StudentEdit = () => {
   const [cpf, setCpf] = useState("");
   const [matricula, setMatricula] = useState("");
@@ -58,7 +58,9 @@ const StudentEdit = () => {
             type="text"
             value={cpf}
             required
-            onChange={(e: any) => handleChangeCpf(e, setErrorMessages, setCpf)}
+            onChange={(e: any) =>
+              handleChangeCpf(e.target.value, setErrorMessages, setCpf)
+            }
           />
           <Input
             label="Matrícula"
@@ -66,7 +68,11 @@ const StudentEdit = () => {
             required
             value={matricula}
             onChange={(e: any) =>
-              handleChangeMatricula(e, setErrorMessages, setMatricula)
+              handleChangeMatricula(
+                e.target.value,
+                setErrorMessages,
+                setMatricula
+              )
             }
           />
           <Input
@@ -75,7 +81,7 @@ const StudentEdit = () => {
             required
             value={nome}
             onChange={(e: any) =>
-              handleChangeNome(e, setErrorMessages, setNome)
+              handleChangeNome(e.target.value, setErrorMessages, setNome)
             }
           />
         </div>
@@ -86,7 +92,11 @@ const StudentEdit = () => {
             value={username}
             required
             onChange={(e: any) =>
-              handleChangeUsername(e, setErrorMessages, setUsername)
+              handleChangeUsername(
+                e.target.value,
+                setErrorMessages,
+                setUsername
+              )
             }
           />
           <Input
@@ -95,7 +105,7 @@ const StudentEdit = () => {
             value={email}
             required
             onChange={(e: any) =>
-              handleChangeEmail(e, setErrorMessages, setEmail)
+              handleChangeEmail(e.target.value, setErrorMessages, setEmail)
             }
           />
           <Input

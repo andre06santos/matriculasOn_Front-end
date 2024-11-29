@@ -12,7 +12,7 @@ import {
   handleChangeSenha,
   handleChangeUsername,
   verificaSenhasIguais,
-} from "../../../modules/alunosFormValidation";
+} from "../../../modules/alunosAdmFormValidation";
 
 const RegisterStudent = () => {
   const [cpf, setCpf] = useState("");
@@ -27,10 +27,10 @@ const RegisterStudent = () => {
   const navigate = useNavigate();
 
   const cursoOptions = [
-    { label: "Análise e Desenvolvimento de Sistemas", value: "ADS" },
-    { label: "Engenharia de Software", value: "ENG_SOF" },
-    { label: "Redes de Computadores", value: "RED" },
-    { label: "Tecnologia da Informação", value: "TEC_INF" },
+    { text: "Análise e Desenvolvimento de Sistemas", value: "ADS" },
+    { text: "Engenharia de Software", value: "ENG_SOF" },
+    { text: "Redes de Computadores", value: "RED" },
+    { text: "Tecnologia da Informação", value: "TEC_INF" },
   ];
 
   const handleSubmit = (e: any) => {
@@ -59,7 +59,9 @@ const RegisterStudent = () => {
             type="text"
             value={cpf}
             required
-            onChange={(e: any) => handleChangeCpf(e, setErrorMessages, setCpf)}
+            onChange={(e: any) =>
+              handleChangeCpf(e.target.value, setErrorMessages, setCpf)
+            }
           />
           <Input
             label="Matrícula"
@@ -67,7 +69,11 @@ const RegisterStudent = () => {
             required
             value={matricula}
             onChange={(e: any) =>
-              handleChangeMatricula(e, setErrorMessages, setMatricula)
+              handleChangeMatricula(
+                e.target.value,
+                setErrorMessages,
+                setMatricula
+              )
             }
           />
           <Input
@@ -76,7 +82,7 @@ const RegisterStudent = () => {
             required
             value={nome}
             onChange={(e: any) =>
-              handleChangeNome(e, setErrorMessages, setNome)
+              handleChangeNome(e.target.value, setErrorMessages, setNome)
             }
           />
         </div>
@@ -87,7 +93,11 @@ const RegisterStudent = () => {
             value={username}
             required
             onChange={(e: any) =>
-              handleChangeUsername(e, setErrorMessages, setUsername)
+              handleChangeUsername(
+                e.target.value,
+                setErrorMessages,
+                setUsername
+              )
             }
           />
           <Input
@@ -96,13 +106,14 @@ const RegisterStudent = () => {
             value={email}
             required
             onChange={(e: any) =>
-              handleChangeEmail(e, setErrorMessages, setEmail)
+              handleChangeEmail(e.target.value, setErrorMessages, setEmail)
             }
           />
           <Input
             label="Curso"
             selectOptions={cursoOptions}
-            value={curso}
+            required
+            text={curso}
             onChange={(e: any) => setCurso(e.text)}
           />
         </div>
