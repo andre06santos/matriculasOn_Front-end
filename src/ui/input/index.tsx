@@ -6,6 +6,7 @@ const Input = ({
   type = "text",
   variant,
   selectOptions,
+  readonly,
   ...rest
 }: any) => {
   const inputClasses: any = {
@@ -38,7 +39,7 @@ const Input = ({
           className="input-select"
         />
       ) : (
-        <input type={type} {...rest} className={inputClass} />
+        <input type={type} {...rest} className={inputClass} readOnly={readonly} />
       )}
     </div>
   );

@@ -1,9 +1,14 @@
 import "./styles.css";
 import { Input } from "../../../ui/input";
 import { Button } from "../../../ui/button";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import { useState } from "react";
 
 const StudentEdit = () => {
+
+  const { state } = useLocation();
+
+
   const selectOptions = [
     { label: "Análise e Desenvolvimento de Sistemas", value: "ADS" },
     { label: "Engenharia de Software", value: "ENG_SOF" },
@@ -16,13 +21,13 @@ const StudentEdit = () => {
       <h1>Editar aluno</h1>
       <form className="form">
         <div className="input-group">
-          <Input label="CPF" type="text" />
-          <Input label="Matrícula" type="text" />
-          <Input label="Nome" type="text" />
+          <Input label="CPF" type="text" value={state.cpf} readonly={true} />
+          <Input label="Matrícula" type="text" value={state.matricula} />
+          <Input label="Nome" type="text" value={state.nome} />
         </div>
         <div className="input-group">
-          <Input label="Username" type="text" />
-          <Input label="Email" type="text" />
+          <Input label="Username" type="text" value={state.username == null ? "" : state.username} />
+          <Input label="Email" type="text" value={state.email} />
           <Input label="Curso" type="text" selectOptions={selectOptions} />
         </div>
         <div className="input-group">
