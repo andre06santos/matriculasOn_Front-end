@@ -49,6 +49,20 @@ const RegisterStudent = () => {
     }
   };
 
+  const onClean = (e: any) => {
+    e.preventDefault();
+
+    setCpf("");
+    setMatricula("");
+    setNome("");
+    setUsername("");
+    setEmail("");
+    setCurso("");
+    setSenha("");
+    setConferirSenha("");
+    setErrorMessages({});
+  };
+
   return (
     <div className="flex-column-gap20">
       <h1>Cadastrar aluno</h1>
@@ -125,7 +139,11 @@ const RegisterStudent = () => {
             value={senha}
             onChange={(e: any) => {
               handleChangeSenha(e.target.value, setErrorMessages, setSenha);
-              verificaSenhasIguais(e.target.value, conferirSenha, setErrorMessages);
+              verificaSenhasIguais(
+                e.target.value,
+                conferirSenha,
+                setErrorMessages
+              );
             }}
           />
           <Input
@@ -144,7 +162,12 @@ const RegisterStudent = () => {
           />
         </div>
         <div className="form-actions flex-column-gap20">
-          <Input type="reset" variant="bgNeutral" value="Limpar" />
+          <Input
+            type="reset"
+            variant="bgNeutral"
+            value="Limpar"
+            onClick={onClean}
+          />
           <Link to="/usuarios">
             <Button type="cancel" label="Cancelar" />
           </Link>

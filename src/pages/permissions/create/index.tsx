@@ -28,6 +28,14 @@ const CreatePermission = () => {
     }
   };
 
+  const onClean = (e: any) => {
+    e.preventDefault();
+
+    setRole("");
+    setDescricao("");
+    setErrorMessages({});
+  };
+
   return (
     <div className="add-page flex-column-gap20">
       <h1>Cadastrar permissão</h1>
@@ -61,7 +69,12 @@ const CreatePermission = () => {
         </div>
 
         <div className="form-actions-registration flex-column-gap20">
-          <Input type="reset" variant="bgNeutral" value="Limpar" />
+          <Input
+            type="reset"
+            variant="bgNeutral"
+            value="Limpar"
+            onClick={onClean}
+          />
           <Link to="/permissoes">
             <Button label="Cancelar" />
           </Link>

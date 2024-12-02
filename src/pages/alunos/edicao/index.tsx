@@ -48,6 +48,20 @@ const StudentEdit = () => {
     }
   };
 
+  const onClean = (e: any) => {
+    e.preventDefault();
+
+    setCpf("");
+    setMatricula("");
+    setNome("");
+    setUsername("");
+    setEmail("");
+    setCurso("");
+    setSenha("");
+    setConferirSenha("");
+    setErrorMessages({});
+  };
+
   return (
     <div className="flex-column-gap20">
       <h1>Editar aluno</h1>
@@ -146,7 +160,12 @@ const StudentEdit = () => {
           />
         </div>
         <div className="form-actions flex-column-gap20">
-          <Input type="reset" variant="bgNeutral" value="Limpar" />
+          <Input
+            type="reset"
+            variant="bgNeutral"
+            value="Limpar"
+            onClick={onClean}
+          />
           <Link to="/usuarios">
             <Button type="cancel" label="Cancelar" />
           </Link>

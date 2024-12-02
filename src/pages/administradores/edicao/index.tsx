@@ -42,6 +42,21 @@ const EditAdmin = () => {
       navigate("/usuarios");
     }
   };
+
+  const onClean = (e: any) => {
+    e.preventDefault();
+
+    setCpf("");
+    setCargo("");
+    setNome("");
+    setUsername("");
+    setEmail("");
+    setDepartamento("");
+    setSenha("");
+    setConferirSenha("");
+    setErrorMessages({});
+  };
+
   return (
     <div className="flex-column-gap20">
       <h1>Editar administrador</h1>
@@ -136,7 +151,12 @@ const EditAdmin = () => {
           />
         </div>
         <div className="form-actions flex-column-gap20">
-          <Input type="reset" variant="bgNeutral" value="Limpar" />
+          <Input
+            type="reset"
+            variant="bgNeutral"
+            value="Limpar"
+            onClick={onClean}
+          />
           <Link to="/usuarios">
             <Button type="cancel" label="Cancelar" />
           </Link>
