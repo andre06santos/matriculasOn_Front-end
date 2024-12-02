@@ -2,7 +2,6 @@ export const TEN_CARAC = 10;
 export const MAX_MATRICULA_FIELD = 10;
 export const MAX_USERNAME_FIELD = 10;
 export const MAX_NOME_FIELD = 50;
-export const MAX_CPF_FIELD = 11;
 export const MAX_CARGO_FIELD = 30;
 export const MAX_DEPARTAMENTO_FIELD = 30;
 export const MAX_DESCRICAO_FIELD = 100;
@@ -12,13 +11,13 @@ export const MIN_PASSWORD = 8;
 export const MIN_EMAIL = 7;
 export const CPF_LENGTH = 11;
 
-export const regexOnlyLetters = new RegExp("^[a-zA-ZÀ-ÿ´`~^]+$");
-export const regexValidEmail = new RegExp(
+const regexOnlyLetters = new RegExp("^[a-zA-ZÀ-ÿ´`~^]+$");
+const regexValidEmail = new RegExp(
   "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$"
 );
-export const regexOnlyNumbers = new RegExp("[0-9]+$");
-export const regexLettersAndNumbers = new RegExp("^[a-zA-Z0-9]+$");
-export const regexUpperLettersAndUnderscore = new RegExp("^[A-Z_]+$");
+const regexOnlyNumbers = new RegExp("[0-9]+$");
+const regexLettersAndNumbers = new RegExp("^[a-zA-Z0-9]+$");
+const regexUpperLettersAndUnderscore = new RegExp("^[A-Z_]+$");
 
 export const validateOnlyLetters = (valor: any) => {
   const apenasLetras = regexOnlyLetters.test(valor);
