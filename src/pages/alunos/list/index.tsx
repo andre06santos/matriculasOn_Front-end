@@ -25,10 +25,10 @@ const ListStudents = () => {
       curso: "Engenharia Civil",
     },
     {
-      matricula: "2568574MJGHF",
-      cpf: "123.456.789-00",
-      nome: "Maria da Silva Costa",
-      email: "maria.silva@live.com",
+      matricula: "2568574DJGHF",
+      cpf: "000.000.000-00",
+      nome: "André Santos",
+      email: "andré.santos@live.com",
       curso: "Engenharia Civil",
     },
     {
@@ -89,7 +89,7 @@ const ListStudents = () => {
               <td>{student.email}</td>
               <td>{student.curso}</td>
               <td className="table-actions action-column">
-                <Link to="/alunos/editar-aluno">
+                <Link to="/alunos/editar-aluno" state={student}>
                   <i className="fa-solid fa-pen-to-square"></i>
                 </Link>
                 <i className="fa-solid fa-trash-can" onClick={openModal}></i>

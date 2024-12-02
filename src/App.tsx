@@ -9,7 +9,7 @@ import { CourseRegistration } from "./pages/cursos/cadastro";
 import { EditCourse } from "./pages/cursos/edicao";
 import { ListStudents } from "./pages/alunos/list";
 import { RegisterStudent } from "./pages/alunos/cadastro";
-import { StudentEdit } from "./pages/alunos/edicao";
+import { EditStudent } from "./pages/alunos/edicao";
 import { AdministratorRegistration } from "./pages/administradores/cadastro";
 import { EditAdmin } from "./pages/administradores/edicao";
 import { ListUser } from "./pages/usuarios/list";
@@ -35,7 +35,7 @@ const App = () => {
 
           <Route path="/alunos" element={<ListStudents />} />
           <Route path="/alunos/novo-aluno" element={<RegisterStudent />} />
-          <Route path="/alunos/editar-aluno" element={<StudentEdit />} />
+          <Route path="/alunos/editar-aluno" element={<EditStudent />} />
 
           <Route
             path="/administradores/novo-administrador"
