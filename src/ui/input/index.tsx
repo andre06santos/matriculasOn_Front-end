@@ -8,21 +8,16 @@ const Input = ({
   selectOptions,
   ...rest
 }: any) => {
-  const inputClasses: any = {
-    text: "input-text",
-    password: "input-text",
-    reset: "input-button",
-    submit: "input-button",
-  };
-
   const inputCollors: any = {
     bgNeutral: "bg-neutral",
     bgInfo: "bg-info",
     bgSuccess: "bg-success",
   };
 
-  const inputClass = `input ${inputClasses[type]} ${
-    type === "reset" || type === "submit" ? inputCollors[variant] : ""
+  const inputClass = `input ${
+    type === "reset" || type === "submit"
+      ? `${inputCollors[variant]} input-button`
+      : "input-text"
   }`;
 
   return (
