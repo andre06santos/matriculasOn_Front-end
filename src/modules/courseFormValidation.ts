@@ -10,29 +10,29 @@ export const handleChangeCourseName = (
   setNome: any
 ) => {
   setNome(nome);
+  const isCourseNameValid = validateCourseName(nome);
 
-  if (!validateCourseName(nome)) {
+  if (isCourseNameValid) {
+    setErrorMessages((prevErrors: any) => ({
+      ...prevErrors,
+      nome: "",
+    }));
+  } else {
     if (!validateOnlyLetters(nome)) {
       const nomeOnlyLetters = nome.replace(/[^a-zA-ZÀ-ÿ´`~^]+$/, "");
       setNome(nomeOnlyLetters);
-
       console.log("Permitido apenas letras");
+      return;
     } else if (nome.length > MAX_CURSO_FIELD) {
       const nomeWithMaxLength = nome.slice(0, MAX_CURSO_FIELD);
       setNome(nomeWithMaxLength);
       console.log(`Quantidade de caracteres maximo de ${MAX_CURSO_FIELD}`);
+      return;
     } else {
       setErrorMessages((prevErrors: any) => ({
         ...prevErrors,
         nome: "Matrícula inválida",
       }));
     }
-  }
-
-  if (validateCourseName(nome)) {
-    setErrorMessages((prevErrors: any) => ({
-      ...prevErrors,
-      nome: "",
-    }));
   }
 };
