@@ -47,6 +47,7 @@ const CourseRegistration = () => {
             id="nome"
             required
             value={nome}
+            onFocus={(e: any) => e.target.select()}
             onChange={(e: any) =>
               handleChangeCourseName(e.target.value, setErrorMessages, setNome)
             }
