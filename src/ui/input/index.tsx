@@ -20,6 +20,8 @@ const Input = ({
       : "input-text"
   }`;
 
+  const { onChange } = { ...rest };
+
   return (
     <div className="input-component">
       {label && <label>{label}</label>}
@@ -33,7 +35,7 @@ const Input = ({
           getOptionValue={(option: any) => option["value"]}
           getOptionLabel={(option: any) => option["text"]}
           className="input-select"
-          {...rest}
+          onChange={onChange}
         />
       ) : (
         <input type={type} {...rest} className={inputClass} />

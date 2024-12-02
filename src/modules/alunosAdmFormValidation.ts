@@ -34,7 +34,7 @@ export const handleChangeCpf = (
     }));
   } else {
     if (cpf.length > CPF_LENGTH) {
-      const cpfWithMaxLength = cpf.slice(0, cpf);
+      const cpfWithMaxLength = cpf.slice(0, CPF_LENGTH);
       setCpf(cpfWithMaxLength);
       console.log(`Apenas ${CPF_LENGTH} caracteres`);
       return;

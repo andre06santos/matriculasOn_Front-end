@@ -26,10 +26,10 @@ const StudentEdit = () => {
   const navigate = useNavigate();
 
   const cursoOptions = [
-    { id: 1, text: "Análise e Desenvolvimento de Sistemas" },
-    { id: 2, text: "Engenharia de Software" },
-    { id: 3, text: "Redes de Computadores" },
-    { id: 4, text: "Tecnologia da Informação" },
+    { text: "Análise e Desenvolvimento de Sistemas", value: "ADS" },
+    { text: "Engenharia de Software", value: "ENG_SOF" },
+    { text: "Redes de Computadores", value: "RED_COMP" },
+    { text: "Tecnologia da Informação", value: "TEC_INFO" },
   ];
 
   const handleSubmit = (e: any) => {
@@ -41,8 +41,6 @@ const StudentEdit = () => {
 
     if (listaErros.length > 0) {
       console.log(listaErros[0]);
-
-      return;
     } else {
       navigate("/usuarios");
     }
@@ -126,7 +124,9 @@ const StudentEdit = () => {
             label="Curso"
             selectOptions={cursoOptions}
             value={curso}
-            onChange={(e: any) => setCurso(e.text)}
+            onChange={(e: any) => {
+              setCurso(e.value);
+            }}
           />
         </div>
         <div className="input-group">

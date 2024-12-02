@@ -19,8 +19,6 @@ const CourseRegistration = () => {
 
     if (listaErros.length > 0) {
       console.log(listaErros[0]);
-
-      return;
     } else {
       navigate("/cursos");
     }
@@ -47,6 +45,7 @@ const CourseRegistration = () => {
             id="nome"
             required
             value={nome}
+            onFocus={(e: any) => e.target.select()}
             onChange={(e: any) =>
               handleChangeCourseName(e.target.value, setErrorMessages, setNome)
             }

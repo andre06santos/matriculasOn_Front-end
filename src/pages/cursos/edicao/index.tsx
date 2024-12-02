@@ -19,8 +19,6 @@ const EditCourse = () => {
 
     if (listaErros.length > 0) {
       console.log(listaErros[0]);
-
-      return;
     } else {
       navigate("/cursos");
     }
@@ -43,6 +41,7 @@ const EditCourse = () => {
             type="text"
             required
             value={nome}
+            onFocus={(e: any) => e.target.select()}
             onChange={(e: any) =>
               handleChangeCourseName(e.target.value, setErrorMessages, setNome)
             }
