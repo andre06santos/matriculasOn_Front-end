@@ -36,8 +36,6 @@ const EditAdmin = () => {
 
     if (listaErros.length > 0) {
       console.log(listaErros[0]);
-
-      return;
     } else {
       navigate("/usuarios");
     }

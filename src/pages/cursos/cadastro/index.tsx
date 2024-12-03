@@ -19,8 +19,6 @@ const CourseRegistration = () => {
 
     if (listaErros.length > 0) {
       console.log(listaErros[0]);
-
-      return;
     } else {
       navigate("/cursos");
     }
@@ -50,6 +48,7 @@ const CourseRegistration = () => {
             onChange={(e: any) =>
               handleChangeCourseName(e.target.value, setErrorMessages, setNome)
             }
+            onFocus={(e: any) => e.target.select()}
           />
         </div>
         <div className="form-actions-registration flex-column-gap20">
