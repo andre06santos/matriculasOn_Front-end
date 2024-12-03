@@ -2,8 +2,20 @@ import { Link } from "react-router-dom";
 import { Button } from "../../../ui/button";
 import { Input } from "../../../ui/input";
 import "./styles.css";
+import { useState } from "react";
+import { Modal } from "../../../ui/modal";
 
 const ListPermissions = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
   const permissions = [
     {
       role: "CADASTRAR_USUARIO",
@@ -21,6 +33,12 @@ const ListPermissions = () => {
 
   return (
     <div className="flex-column-gap20">
+      {isModalOpen && (
+        <Modal
+          message="Tem certeza que deseja excluir esta permissão?"
+          onCancel={closeModal}
+        />
+      )}
       <div className="add-button">
         <Link to="/permissoes/nova-permissao">
           <Button type="success" label="Adicionar" />
@@ -62,7 +80,7 @@ const ListPermissions = () => {
                 <Link to="/permissoes/editar-permissao">
                   <i className="fa-solid fa-pen-to-square"></i>
                 </Link>
-                <i className="fa-solid fa-trash-can"></i>
+                <i className="fa-solid fa-trash-can" onClick={openModal}></i>
               </td>
             </tr>
           ))}

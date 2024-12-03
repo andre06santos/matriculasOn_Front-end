@@ -2,8 +2,20 @@ import { Link } from "react-router-dom";
 import "./styles.css";
 import { Button } from "../../../ui/button";
 import { Input } from "../../../ui/input";
+import { useState } from "react";
+import { Modal } from "../../../ui/modal";
 
 const ListUser = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
   const isAluno = (tipo: any) => {
     return tipo === "Aluno";
   };
@@ -41,6 +53,12 @@ const ListUser = () => {
 
   return (
     <div className="flex-column-gap20">
+      {isModalOpen && (
+        <Modal
+          message="Tem certeza que deseja excluir o cadastro deste usuário?"
+          onCancel={closeModal}
+        />
+      )}
       <div className="add-button">
         <Button label="Adicionar" type="success" selectOptions={options} />
       </div>
@@ -93,7 +111,7 @@ const ListUser = () => {
                 >
                   <i className="fa-solid fa-pen-to-square"></i>
                 </Link>
-                <i className="fa-solid fa-trash-can"></i>
+                <i className="fa-solid fa-trash-can" onClick={openModal}></i>
               </td>
             </tr>
           ))}
