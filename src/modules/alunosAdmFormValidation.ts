@@ -25,7 +25,7 @@ export const handleChangeCpf = (
   setCpf: any
 ) => {
   setCpf(cpf);
-  const isCpfValid = validateCpf(cpf);
+  const isCpfValid = validateCpf(cpf.trim());
 
   if (isCpfValid) {
     setErrorMessages((prevErrors: any) => ({
@@ -44,7 +44,7 @@ export const handleChangeCpf = (
     } else {
       setErrorMessages((prevErrors: any) => ({
         ...prevErrors,
-        cpf: "CPF inválido",
+        cpf: "Digite o CPF corretamente",
       }));
     }
   }
@@ -56,7 +56,7 @@ export const handleChangeMatricula = (
   setMatricula: any
 ) => {
   setMatricula(matricula);
-  const isMatriculaValid = validateMatricula(matricula);
+  const isMatriculaValid = validateMatricula(matricula.trim());
 
   if (isMatriculaValid) {
     setErrorMessages((prevErrors: any) => ({
@@ -75,7 +75,7 @@ export const handleChangeMatricula = (
     } else {
       setErrorMessages((prevErrors: any) => ({
         ...prevErrors,
-        matricula: "Matrícula inválida",
+        matricula: "Digite a matrícula corretamente",
       }));
     }
   }
@@ -87,7 +87,7 @@ export const handleChangeUsername = (
   setUsername: any
 ) => {
   setUsername(username);
-  const isUsernameValid = validateUsername(username);
+  const isUsernameValid = validateUsername(username.trim());
 
   if (isUsernameValid) {
     setErrorMessages((prevErrors: any) => ({
@@ -103,7 +103,7 @@ export const handleChangeUsername = (
     } else {
       setErrorMessages((prevErrors: any) => ({
         ...prevErrors,
-        username: "Username inválido",
+        username: "Digite o username corretamente",
       }));
       return;
     }
@@ -116,7 +116,7 @@ export const handleChangeNome = (
   setNome: any
 ) => {
   setNome(nome);
-  const isNomeValid = validateNome(nome);
+  const isNomeValid = validateNome(nome.trim());
 
   if (isNomeValid) {
     setErrorMessages((prevErrors: any) => ({
@@ -135,7 +135,7 @@ export const handleChangeNome = (
     } else {
       setErrorMessages((prevErrors: any) => ({
         ...prevErrors,
-        nome: "Nome inválido",
+        nome: "Digite o nome corretamente",
       }));
     }
   }
@@ -147,7 +147,7 @@ export const handleChangeEmail = (
   setEmail: any
 ) => {
   setEmail(email);
-  const isEmailValid = validateEmail(email);
+  const isEmailValid = validateEmail(email.trim());
 
   if (isEmailValid) {
     setErrorMessages((prevErrors: any) => ({
@@ -157,7 +157,7 @@ export const handleChangeEmail = (
   } else {
     setErrorMessages((prevErrors: any) => ({
       ...prevErrors,
-      email: "Email inválido",
+      email: "Digite o email corretamente",
     }));
   }
 };
@@ -184,7 +184,7 @@ export const handleChangeSenha = (
     } else {
       setErrorMessages((prevErrors: any) => ({
         ...prevErrors,
-        senha: "Senha inválida",
+        senha: "Digite a senha corretamente",
       }));
     }
   }
@@ -212,7 +212,7 @@ export const handleChangeConfSenha = (
     } else {
       setErrorMessages((prevErrors: any) => ({
         ...prevErrors,
-        confSenha: "Senha inválida",
+        confSenha: "Digite a confirmação de senha corretamente",
       }));
     }
   }
@@ -265,7 +265,7 @@ export const handleChangeCargo = (
     } else {
       setErrorMessages((prevErrors: any) => ({
         ...prevErrors,
-        cargo: "Nome inválido",
+        cargo: "Digite o cargo corretamente",
       }));
     }
   }
@@ -302,7 +302,7 @@ export const handleChangeDepartamento = (
     } else {
       setErrorMessages((prevErrors: any) => ({
         ...prevErrors,
-        departamento: "Nome inválido",
+        departamento: "Digite o departamento corretamente",
       }));
     }
   }

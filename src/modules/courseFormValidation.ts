@@ -29,7 +29,7 @@ export const handleChangeCourseName = (
     } else {
       setErrorMessages((prevErrors: any) => ({
         ...prevErrors,
-        nome: "Matrícula inválida",
+        nome: "Digite o nome corretamente",
       }));
     }
   }

@@ -32,7 +32,7 @@ export const handleChangeRole = (
     } else {
       setErrorMessages((prevErrors: any) => ({
         ...prevErrors,
-        role: "Role inválida",
+        role: "Digite a role corretamente",
       }));
     }
   }
@@ -63,7 +63,7 @@ export const handleChangeDescription = (
     } else {
       setErrorMessages((prevErrors: any) => ({
         ...prevErrors,
-        descricao: "Descrição inválida",
+        descricao: "Digite a descrição corretamente",
       }));
     }
   }
