@@ -10,7 +10,7 @@ export const handleChangeCourseName = (
   setNome: any
 ) => {
   setNome(nome);
-  const isCourseNameValid = validateCourseName(nome);
+  const isCourseNameValid = validateCourseName(nome.trim());
 
   if (isCourseNameValid) {
     setErrorMessages((prevErrors: any) => ({
@@ -18,16 +18,14 @@ export const handleChangeCourseName = (
       nome: "",
     }));
   } else {
-    if (!validateOnlyLetters(nome)) {
-      const nomeOnlyLetters = nome.replace(/[^a-zA-ZÀ-ÿ´`~^]+$/, "");
+    if (!!nome && !validateOnlyLetters(nome)) {
+      const nomeOnlyLetters = nome.slice(0, -1);
       setNome(nomeOnlyLetters);
-      console.log("Permitido apenas letras");
-      return;
+      console.log("Digite apenas letras");
     } else if (nome.length > MAX_CURSO_FIELD) {
       const nomeWithMaxLength = nome.slice(0, MAX_CURSO_FIELD);
       setNome(nomeWithMaxLength);
       console.log(`Quantidade de caracteres maximo de ${MAX_CURSO_FIELD}`);
-      return;
     } else {
       setErrorMessages((prevErrors: any) => ({
         ...prevErrors,

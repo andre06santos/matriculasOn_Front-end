@@ -21,16 +21,14 @@ export const handleChangeRole = (
       role: "",
     }));
   } else {
-    if (!validateLettersAndUnderscore(role)) {
-      const roleOnlyUpperAndUndersc = role.replace(/[^A-Z_]+$/, "");
+    if (!!role && !validateLettersAndUnderscore(role)) {
+      const roleOnlyUpperAndUndersc = role.slice(0, -1);
       setRole(roleOnlyUpperAndUndersc);
       console.log("Apenas letras maiúsculas e underscore ( _ )");
-      return;
     } else if (role.length > MAX_ROLE_FIELD) {
       const roleWithMaxLenght = role.slice(0, MAX_ROLE_FIELD);
       setRole(roleWithMaxLenght);
       console.log(`Quantidade de caracteres maximo de ${MAX_ROLE_FIELD}`);
-      return;
     } else {
       setErrorMessages((prevErrors: any) => ({
         ...prevErrors,
@@ -54,16 +52,14 @@ export const handleChangeDescription = (
       descricao: "",
     }));
   } else {
-    if (!validateOnlyLetters(descricao)) {
-      const descricaoOnlyLetters = descricao.replace(/[^a-zA-ZÀ-ÿ]+$/, "");
+    if (!!descricao && !validateOnlyLetters(descricao)) {
+      const descricaoOnlyLetters = descricao.slice(0, -1);
       setDescription(descricaoOnlyLetters);
       console.log("Permitido apenas letras");
-      return;
     } else if (descricao.length > MAX_DESCRICAO_FIELD) {
       const descricaoWithMaxLength = descricao.slice(0, MAX_DESCRICAO_FIELD);
       setDescription(descricaoWithMaxLength);
       console.log(`Quantidade de caracteres maximo de ${MAX_DESCRICAO_FIELD}`);
-      return;
     } else {
       setErrorMessages((prevErrors: any) => ({
         ...prevErrors,

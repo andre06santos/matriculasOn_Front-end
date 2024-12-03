@@ -33,16 +33,14 @@ export const handleChangeCpf = (
       cpf: "",
     }));
   } else {
-    if (cpf.length > CPF_LENGTH) {
-      const cpfWithMaxLength = cpf.slice(0, cpf);
+    if (!!cpf && cpf.length > CPF_LENGTH) {
+      const cpfWithMaxLength = cpf.slice(0, CPF_LENGTH);
       setCpf(cpfWithMaxLength);
       console.log(`Apenas ${CPF_LENGTH} caracteres`);
-      return;
-    } else if (!validateOnlyNumbers(cpf) && cpf !== "") {
-      const cpfOnlyNumbers = cpf.replace(/\D/g, "");
+    } else if (!validateOnlyNumbers(cpf) && !!cpf) {
+      const cpfOnlyNumbers = cpf.slice(0, -1);
       setCpf(cpfOnlyNumbers);
       console.log("Digite apenas números");
-      return;
     } else {
       setErrorMessages((prevErrors: any) => ({
         ...prevErrors,
@@ -65,27 +63,20 @@ export const handleChangeMatricula = (
       ...prevErrors,
       matricula: "",
     }));
-    return;
   } else {
-    if (matricula.length > MAX_MATRICULA_FIELD) {
+    if (!!matricula && matricula.length > MAX_MATRICULA_FIELD) {
       const matriculaWithMaxField = matricula.slice(0, MAX_MATRICULA_FIELD);
       setMatricula(matriculaWithMaxField);
       console.log(`Quantidade de caracteres maximo de ${MAX_MATRICULA_FIELD}`);
-      return;
-    } else if (!validateLettersAndNumbers(matricula)) {
-      const matriculaOnlyLettersAndNumbers = matricula.replace(
-        /[^a-zA-Z0-9]+$/,
-        ""
-      );
+    } else if (!!matricula && !validateLettersAndNumbers(matricula)) {
+      const matriculaOnlyLettersAndNumbers = matricula.slice(0, -1);
       setMatricula(matriculaOnlyLettersAndNumbers);
       console.log("Caractere nao permitido");
-      return;
     } else {
       setErrorMessages((prevErrors: any) => ({
         ...prevErrors,
         matricula: "Matrícula inválida",
       }));
-      return;
     }
   }
 };
@@ -103,9 +94,8 @@ export const handleChangeUsername = (
       ...prevErrors,
       username: "",
     }));
-    return;
   } else {
-    if (username.length > MAX_USERNAME_FIELD) {
+    if (!!username && username.length > MAX_USERNAME_FIELD) {
       const usernameWithMaxField = username.slice(0, MAX_USERNAME_FIELD);
       setUsername(usernameWithMaxField);
       console.log(`Quantidade de caracteres maximo de ${MAX_USERNAME_FIELD}`);
@@ -133,24 +123,20 @@ export const handleChangeNome = (
       ...prevErrors,
       nome: "",
     }));
-    return;
   } else {
-    if (!validateOnlyLetters(nome) && nome.length <= MAX_NOME_FIELD) {
-      const nomeOnlyLetters = nome.replace(/[^a-zA-ZÀ-ÿ]+$/, "");
+    if (!!nome && !validateOnlyLetters(nome) && nome.length <= MAX_NOME_FIELD) {
+      const nomeOnlyLetters = nome.slice(0, -1);
       setNome(nomeOnlyLetters);
-      console.log("Apenas letras são permitidas");
-      return;
+      console.log("Digite apenas letras");
     } else if (nome.length > MAX_NOME_FIELD) {
       const nomeWithMaxField = nome.slice(0, MAX_NOME_FIELD);
       setNome(nomeWithMaxField);
       console.log(`Quantidade de caracteres maximo de ${MAX_NOME_FIELD}`);
-      return;
     } else {
       setErrorMessages((prevErrors: any) => ({
         ...prevErrors,
         nome: "Nome inválido",
       }));
-      return;
     }
   }
 };
@@ -168,13 +154,11 @@ export const handleChangeEmail = (
       ...prevErrors,
       email: "",
     }));
-    return;
   } else {
     setErrorMessages((prevErrors: any) => ({
       ...prevErrors,
       email: "Email inválido",
     }));
-    return;
   }
 };
 
@@ -191,20 +175,17 @@ export const handleChangeSenha = (
       ...prevErrors,
       senha: "",
     }));
-    return;
   } else {
-    if (senha.length < MIN_PASSWORD) {
+    if (!!senha && senha.length < MIN_PASSWORD) {
       setErrorMessages((prevErrors: any) => ({
         ...prevErrors,
         senha: `Senha precisa ter no mínimo ${MIN_PASSWORD} caracteres`,
       }));
-      return;
     } else {
       setErrorMessages((prevErrors: any) => ({
         ...prevErrors,
         senha: "Senha inválida",
       }));
-      return;
     }
   }
 };
@@ -222,20 +203,17 @@ export const handleChangeConfSenha = (
       ...prevErrors,
       confSenha: "",
     }));
-    return;
   } else {
-    if (confSenha.length < MIN_PASSWORD) {
+    if (!!confSenha && confSenha.length < MIN_PASSWORD) {
       setErrorMessages((prevErrors: any) => ({
         ...prevErrors,
         confSenha: `Senha precisa ter no mínimo ${MIN_PASSWORD} caracteres`,
       }));
-      return;
     } else {
       setErrorMessages((prevErrors: any) => ({
         ...prevErrors,
         confSenha: "Senha inválida",
       }));
-      return;
     }
   }
 };
@@ -250,7 +228,6 @@ export const verificaSenhasIguais = (
       ...prevErrors,
       confSenha: "Senhas não coincidem",
     }));
-    return;
   } else {
     setErrorMessages((prevErrors: any) => ({
       ...prevErrors,
@@ -272,24 +249,24 @@ export const handleChangeCargo = (
       ...prevErrors,
       cargo: "",
     }));
-    return;
   } else {
-    if (!validateOnlyLetters(cargo) && cargo.length <= MAX_CARGO_FIELD) {
-      const cargoOnlyLetters = cargo.replace(/[^a-zA-ZÀ-ÿ´`~^]+$/, "");
+    if (
+      !!cargo &&
+      !validateOnlyLetters(cargo) &&
+      cargo.length <= MAX_CARGO_FIELD
+    ) {
+      const cargoOnlyLetters = cargo.slice(0, -1);
       setCargo(cargoOnlyLetters);
-      console.log("Apenas letras são permitidas");
-      return;
+      console.log("Digite apenas letras");
     } else if (cargo.length > MAX_CARGO_FIELD) {
       const cargoWithMaxLength = cargo.slice(0, MAX_CARGO_FIELD);
       setCargo(cargoWithMaxLength);
       console.log(`Quantidade de caracteres maximo de ${MAX_CARGO_FIELD}`);
-      return;
     } else {
       setErrorMessages((prevErrors: any) => ({
         ...prevErrors,
         cargo: "Nome inválido",
       }));
-      return;
     }
   }
 };
@@ -307,29 +284,26 @@ export const handleChangeDepartamento = (
       ...prevErrors,
       departamento: "",
     }));
-    return;
   } else {
     if (
+      !!departamento &&
       !validateOnlyLetters(departamento) &&
       departamento.length <= MAX_DEPARTAMENTO_FIELD
     ) {
-      const deptoOnlyLetters = departamento.replace(/[^a-zA-ZÀ-ÿ´`~^]+$/, "");
+      const deptoOnlyLetters = departamento.slice(0, -1);
       setDepartamento(deptoOnlyLetters);
       console.log("Apenas letras são permitidas");
-      return;
     } else if (departamento.length > MAX_DEPARTAMENTO_FIELD) {
       const deptoWithMaxLength = departamento.slice(0, MAX_DEPARTAMENTO_FIELD);
       setDepartamento(deptoWithMaxLength);
       console.log(
         `Quantidade de caracteres maximo de ${MAX_DEPARTAMENTO_FIELD}`
       );
-      return;
     } else {
       setErrorMessages((prevErrors: any) => ({
         ...prevErrors,
         departamento: "Nome inválido",
       }));
-      return;
     }
   }
 };
