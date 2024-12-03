@@ -42,8 +42,6 @@ const RegisterStudent = () => {
 
     if (listaErros.length > 0) {
       console.log(listaErros[0]);
-
-      return;
     } else {
       navigate("/usuarios");
     }
@@ -128,7 +126,7 @@ const RegisterStudent = () => {
             selectOptions={cursoOptions}
             required
             text={curso}
-            onChange={(e: any) => setCurso(e.text)}
+            onChange={(e: any) => setCurso(e.value)}
           />
         </div>
         <div className="input-group">
