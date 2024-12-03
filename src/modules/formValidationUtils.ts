@@ -11,7 +11,7 @@ export const MIN_PASSWORD = 8;
 export const MIN_EMAIL = 7;
 export const CPF_LENGTH = 11;
 
-const regexOnlyLetters = new RegExp("^[\\p{L}\\s]+$", "u");
+const regexOnlyLetters = new RegExp("^[a-zA-ZÀ-ÿ´`~^]+$");
 const regexValidEmail = new RegExp(
   "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$"
 );
