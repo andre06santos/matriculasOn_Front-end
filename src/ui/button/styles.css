@@ -58,6 +58,7 @@
     color: white;
     cursor: pointer;
     padding: 8px;
+    font-size: 13px;
   }
 
   & li:hover {
