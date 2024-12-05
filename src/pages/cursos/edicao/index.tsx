@@ -1,26 +1,34 @@
 import "./styles.css";
 import { Input } from "../../../ui/input";
 import { Button } from "../../../ui/button";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { handleChangeCourseName } from "../../../modules/courseFormValidation";
 
 const EditCourse = () => {
-  const { state } = useLocation();
-  const { course } = state;
-
   const navigate = useNavigate();
-  const [name, setName] = useState(course.name);
-
-  useEffect(() => {
-    setName(course.name);
-  }, [course]);
+  const [nome, setNome] = useState("");
+  const [errorMessages, setErrorMessages] = useState({});
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    const updatedCourse = { ...course, name };
-    navigate("/cursos", {
-      state: { updatedCourse },
-    });
+
+    const listaErros = Object.values(errorMessages).filter(
+      (error) => error !== ""
+    );
+
+    if (listaErros.length > 0) {
+      console.log(listaErros[0]);
+    } else {
+      navigate("/cursos");
+    }
+  };
+
+  const onClean = (e: any) => {
+    e.preventDefault();
+
+    setNome("");
+    setErrorMessages({});
   };
 
   return (
@@ -31,12 +39,21 @@ const EditCourse = () => {
           <Input
             label="Nome"
             type="text"
-            value={name}
-            onChange={(e: any) => setName(e.target.value)}
+            required
+            value={nome}
+            onChange={(e: any) =>
+              handleChangeCourseName(e.target.value, setErrorMessages, setNome)
+            }
+            onFocus={(e: any) => e.target.select()}
           />
         </div>
         <div className="form-actions-edit flex-column-gap20">
-          <Input type="reset" variant="bgNeutral" value="Limpar" />
+          <Input
+            type="reset"
+            variant="bgNeutral"
+            value="Limpar"
+            onClick={onClean}
+          />
           <Link to="/cursos">
             <Button type="cancel" label="Cancelar" />
           </Link>
