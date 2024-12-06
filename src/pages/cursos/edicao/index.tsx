@@ -1,15 +1,15 @@
 import "./styles.css";
 import { Input } from "../../../ui/input";
 import { Button } from "../../../ui/button";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { handleChangeCourseName } from "../../../modules/courseFormValidation";
 
 const EditCourse = () => {
+  const { state } = useLocation();
   const navigate = useNavigate();
-  const [nome, setNome] = useState("");
+  const [nome, setNome] = useState(state?.name || "");
   const [errorMessages, setErrorMessages] = useState({});
-
   const handleSubmit = (e: any) => {
     e.preventDefault();
 
@@ -20,13 +20,13 @@ const EditCourse = () => {
     if (listaErros.length > 0) {
       console.log(listaErros[0]);
     } else {
-      navigate("/cursos");
+      const cursoEdit = { name: nome };
+      navigate("/cursos", { state: { cursoEdit } });
     }
   };
 
   const onClean = (e: any) => {
     e.preventDefault();
-
     setNome("");
     setErrorMessages({});
   };
