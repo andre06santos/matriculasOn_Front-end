@@ -9,9 +9,6 @@ const ListCourses = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const location = useLocation();
 
-  console.log(`
-      Curso alterado!!!
-      ${location.state.name}`);
   const closeModal = () => {
     setIsModalOpen(false);
   };
