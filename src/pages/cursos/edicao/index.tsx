@@ -8,7 +8,7 @@ import { handleChangeCourseName } from "../../../modules/courseFormValidation";
 const EditCourse = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
-  const [nome, setNome] = useState(state?.name || "");
+  const [nome, setNome] = useState(state?.name);
   const [errorMessages, setErrorMessages] = useState({});
   const handleSubmit = (e: any) => {
     e.preventDefault();
@@ -20,8 +20,7 @@ const EditCourse = () => {
     if (listaErros.length > 0) {
       console.log(listaErros[0]);
     } else {
-      const cursoEdit = { name: nome };
-      navigate("/cursos", { state: { cursoEdit } });
+      navigate("/cursos");
     }
   };
 
