@@ -6,6 +6,7 @@ const Input = ({
   type = "text",
   variant,
   selectOptions,
+  readonly,
   ...rest
 }: any) => {
   const inputCollors: any = {
@@ -38,7 +39,7 @@ const Input = ({
           onChange={onChange}
         />
       ) : (
-        <input type={type} {...rest} className={inputClass} />
+        <input type={type} {...rest} className={inputClass} readOnly={readonly} />
       )}
     </div>
   );

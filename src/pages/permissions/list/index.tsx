@@ -1,12 +1,55 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Button } from "../../../ui/button";
 import { Input } from "../../../ui/input";
 import "./styles.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Modal } from "../../../ui/modal";
 
 const ListPermissions = () => {
+  const [permissions, setPermissions] = useState([
+    {
+      id: 1,
+      role: "CADASTRAR_USUARIO",
+      description: "Cadastra usuario",
+    },
+    {
+      id: 2,
+      role: "EDITAR_CADASTRO_ALUNO",
+      description: "Edita o cadastro de um aluno",
+    },
+    {
+      id: 3,
+      role: "EDITAR_CADASTRO_ALUNO",
+      description: "Edita o cadastro de um aluno",
+    },
+    {
+      id: 4,
+      role: "EDITAR_CADASTRO_ALUNO",
+      description: "Edita o cadastro de um aluno",
+    },
+  ]);
+
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const location = useLocation();
+  const updatedPermission = location.state?.updatedPermission;
+
+  useEffect(() => {
+    if (updatedPermission) {
+      setPermissions((prevPermissions) => {
+        const updatedPermissions = prevPermissions.map((permission) =>
+          permission.id === updatedPermission.id
+            ? {
+                ...permission,
+                role: updatedPermission.role,
+                description: updatedPermission.description,
+              }
+            : permission
+        );
+
+        return updatedPermissions;
+      });
+    }
+  }, [updatedPermission]);
 
   const closeModal = () => {
     setIsModalOpen(false);
@@ -15,21 +58,6 @@ const ListPermissions = () => {
   const openModal = () => {
     setIsModalOpen(true);
   };
-
-  const permissions = [
-    {
-      role: "CADASTRAR_USUARIO",
-      description: "Cadastra usuario",
-    },
-    {
-      role: "EDITAR_CADASTRO_ALUNO",
-      description: "Edita o cadastro de um aluno",
-    },
-    {
-      role: "EDITAR_CADASTRO_ALUNO",
-      description: "Edita o cadastro de um aluno",
-    },
-  ];
 
   return (
     <div className="flex-column-gap20">
@@ -60,7 +88,7 @@ const ListPermissions = () => {
 
       <p>
         Total de permissões encontradas:{" "}
-        <span className="permissions-quantity">3</span>
+        <span className="permissions-quantity">{permissions.length}</span>
       </p>
 
       <table className="table">
@@ -72,12 +100,12 @@ const ListPermissions = () => {
           </tr>
         </thead>
         <tbody>
-          {permissions.map((permission, index): any => (
-            <tr key={index}>
+          {permissions.map((permission) => (
+            <tr key={permission.id}>
               <td>{permission.role}</td>
               <td>{permission.description}</td>
               <td className="table-actions action-column">
-                <Link to="/permissoes/editar-permissao">
+                <Link to="/permissoes/editar-permissao" state={{ permission }}>
                   <i className="fa-solid fa-pen-to-square"></i>
                 </Link>
                 <i className="fa-solid fa-trash-can" onClick={openModal}></i>

@@ -13,7 +13,7 @@ import {
   handleChangeUsername,
   verificaSenhasIguais,
 } from "../../../modules/alunosAdmFormValidation";
-const StudentEdit = () => {
+const EditStudent = () => {
   const [cpf, setCpf] = useState("");
   const [matricula, setMatricula] = useState("");
   const [nome, setNome] = useState("");
@@ -174,4 +174,4 @@ const StudentEdit = () => {
   );
 };
 
-export { StudentEdit };
+export { EditStudent };
