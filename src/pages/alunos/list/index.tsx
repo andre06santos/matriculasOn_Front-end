@@ -18,6 +18,7 @@ const ListStudents = () => {
 
   const students = [
     {
+      username: "mariaslv",
       matricula: "2568574MJGHF",
       cpf: "123.456.789-00",
       nome: "Maria da Silva Costa",
@@ -25,6 +26,7 @@ const ListStudents = () => {
       curso: "Engenharia Civil",
     },
     {
+      username: "andrest",
       matricula: "2568574DJGHF",
       cpf: "000.000.000-00",
       nome: "André Santos",
@@ -32,6 +34,7 @@ const ListStudents = () => {
       curso: "Engenharia Civil",
     },
     {
+      username: "mariaslv",
       matricula: "2568574MJGHF",
       cpf: "123.456.789-00",
       nome: "Maria da Silva Costa",
