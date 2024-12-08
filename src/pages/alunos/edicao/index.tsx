@@ -1,7 +1,7 @@
 import "./styles.css";
 import { Input } from "../../../ui/input";
 import { Button } from "../../../ui/button";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import {
   handleChangeConfSenha,
@@ -14,12 +14,13 @@ import {
   verificaSenhasIguais,
 } from "../../../modules/alunosAdmFormValidation";
 const EditStudent = () => {
-  const [cpf, setCpf] = useState("");
-  const [matricula, setMatricula] = useState("");
-  const [nome, setNome] = useState("");
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [curso, setCurso] = useState("");
+  const { state: student } = useLocation();
+  const [cpf, setCpf] = useState(student.cpf);
+  const [matricula, setMatricula] = useState(student.matricula);
+  const [nome, setNome] = useState(student.nome);
+  const [username, setUsername] = useState(student.username);
+  const [email, setEmail] = useState(student.email);
+  const [curso, setCurso] = useState(student.curso);
   const [senha, setSenha] = useState("");
   const [conferirSenha, setConferirSenha] = useState("");
   const [errorMessages, setErrorMessages] = useState({});
@@ -69,6 +70,7 @@ const EditStudent = () => {
             label="CPF"
             type="text"
             value={cpf}
+            readOnly={true}
             required
             onChange={(e: any) =>
               handleChangeCpf(e.target.value, setErrorMessages, setCpf)
@@ -123,6 +125,7 @@ const EditStudent = () => {
           <Input
             label="Curso"
             selectOptions={cursoOptions}
+            text={curso}
             value={curso}
             onChange={(e: any) => setCurso(e.value)}
           />
