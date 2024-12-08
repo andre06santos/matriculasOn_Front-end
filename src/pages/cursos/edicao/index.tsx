@@ -6,9 +6,9 @@ import { useState } from "react";
 import { handleChangeCourseName } from "../../../modules/courseFormValidation";
 
 const EditCourse = () => {
-  const { state } = useLocation();
+  const { state: course } = useLocation();
   const navigate = useNavigate();
-  const [nome, setNome] = useState(state?.name);
+  const [nome, setNome] = useState(course.name);
   const [errorMessages, setErrorMessages] = useState({});
   const handleSubmit = (e: any) => {
     e.preventDefault();
