@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Button } from "../../../ui/button";
 import { Input } from "../../../ui/input";
 import "./styles.css";
@@ -7,6 +7,7 @@ import { Modal } from "../../../ui/modal";
 
 const ListCourses = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const location = useLocation();
 
   const closeModal = () => {
     setIsModalOpen(false);
@@ -70,7 +71,7 @@ const ListCourses = () => {
             <tr key={index}>
               <td>{course.name}</td>
               <td className="table-actions">
-                <Link to="/cursos/editar-curso">
+                <Link to="/cursos/editar-curso" state={course}>
                   <i className="fa-solid fa-pen-to-square icons-action"></i>
                 </Link>
                 <i className="fa-solid fa-trash-can" onClick={openModal}></i>

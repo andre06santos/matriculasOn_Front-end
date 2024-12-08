@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "../../../ui/button";
 import { Input } from "../../../ui/input";
 import "./styles.css";
@@ -9,11 +9,13 @@ import {
 } from "../../../modules/permissionsFormValidation";
 
 const EditPermission = () => {
+  const { state: permission } = useLocation();
   const navigate = useNavigate();
-  const [role, setRole] = useState("");
-  const [descricao, setDescricao] = useState("");
+  const [role, setRole] = useState(permission.role);
+  const [descricao, setDescricao] = useState(permission.description);
   const [errorMessages, setErrorMessages] = useState({});
 
+  console.log(permission);
   const handleSubmit = (e: any) => {
     e.preventDefault();
 

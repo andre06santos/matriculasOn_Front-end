@@ -4,8 +4,10 @@ import "./styles.css";
 const Input = ({
   label,
   type = "text",
+  text = "Escolha uma opção",
   variant,
   selectOptions,
+  readOnly,
   ...rest
 }: any) => {
   const inputCollors: any = {
@@ -30,7 +32,7 @@ const Input = ({
         <Select
           isSearchable
           options={selectOptions}
-          placeholder="Escolha uma opção"
+          placeholder={text}
           noOptionsMessage={() => "Nenhuma opção encontrada!"}
           getOptionValue={(option: any) => option["value"]}
           getOptionLabel={(option: any) => option["text"]}
@@ -38,7 +40,12 @@ const Input = ({
           onChange={onChange}
         />
       ) : (
-        <input type={type} {...rest} className={inputClass} />
+        <input
+          type={type}
+          {...rest}
+          className={inputClass}
+          readOnly={readOnly}
+        />
       )}
     </div>
   );

@@ -1,15 +1,15 @@
 import "./styles.css";
 import { Input } from "../../../ui/input";
 import { Button } from "../../../ui/button";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { handleChangeCourseName } from "../../../modules/courseFormValidation";
 
 const EditCourse = () => {
+  const { state: course } = useLocation();
   const navigate = useNavigate();
-  const [nome, setNome] = useState("");
+  const [nome, setNome] = useState(course.name);
   const [errorMessages, setErrorMessages] = useState({});
-
   const handleSubmit = (e: any) => {
     e.preventDefault();
 
@@ -26,7 +26,6 @@ const EditCourse = () => {
 
   const onClean = (e: any) => {
     e.preventDefault();
-
     setNome("");
     setErrorMessages({});
   };
@@ -57,7 +56,7 @@ const EditCourse = () => {
           <Link to="/cursos">
             <Button type="cancel" label="Cancelar" />
           </Link>
-          <Input type="submit" variant="bgSuccess" value="Cadastrar" />
+          <Input type="submit" variant="bgSuccess" value="Salvar" />
         </div>
       </form>
     </div>
