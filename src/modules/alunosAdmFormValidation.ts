@@ -127,15 +127,15 @@ export const handleChangeNome = (
     if (!!nome && !validateOnlyLetters(nome) && nome.length <= MAX_NOME_FIELD) {
       const nomeOnlyLetters = nome.slice(0, -1);
       setNome(nomeOnlyLetters);
-      console.log("Digite apenas letras");
+      console.log("Digite apenas letras!");
     } else if (nome.length > MAX_NOME_FIELD) {
       const nomeWithMaxField = nome.slice(0, MAX_NOME_FIELD);
       setNome(nomeWithMaxField);
-      console.log(`Quantidade de caracteres maximo de ${MAX_NOME_FIELD}`);
+      console.log(`Digite apenas ${MAX_NOME_FIELD} caracteres!`);
     } else {
       setErrorMessages((prevErrors: any) => ({
         ...prevErrors,
-        nome: "Digite o nome corretamente",
+        nome: "Digite o nome corretamente!",
       }));
     }
   }
