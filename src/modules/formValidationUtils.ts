@@ -11,13 +11,26 @@ export const MIN_PASSWORD = 8;
 export const MIN_EMAIL = 7;
 export const CPF_LENGTH = 11;
 
-const regexOnlyLetters = new RegExp("^[a-zA-ZÀ-ÿ´`~^]+$");
+const regexOnlyLetters = new RegExp("^[a-zA-ZÀ-ÿ´`~^\\s]+$");
 const regexValidEmail = new RegExp(
   "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$"
 );
 const regexOnlyNumbers = new RegExp("[0-9]+$");
 const regexLettersAndNumbers = new RegExp("^[a-zA-Z0-9]+$");
 const regexUpperLettersAndUnderscore = new RegExp("^[A-Z_]+$");
+const regexWhitespaceBeginning = new RegExp(/^\s{1,}/);
+
+export const validWhitespaceBeginning = (valor: any) => {
+  const hasWhitespace = valor.match(regexWhitespaceBeginning);
+
+  return hasWhitespace;
+};
+
+export const validateEmptyString = (valor: any) => {
+  const isEmptyString = valor.trim() === "";
+
+  return isEmptyString;
+};
 
 export const validateOnlyLetters = (valor: any) => {
   const apenasLetras = regexOnlyLetters.test(valor);

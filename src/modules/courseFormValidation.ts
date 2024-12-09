@@ -2,14 +2,20 @@ import {
   MAX_CURSO_FIELD,
   validateCourseName,
   validateOnlyLetters,
+  validWhitespaceBeginning,
 } from "./formValidationUtils";
 
-export const handleChangeCourseName = (
+export const handleCourseName = (
   nome: any,
   setErrorMessages: any,
   setNome: any
 ) => {
+  const hasWhitespace = validWhitespaceBeginning(nome);
+
+  if (hasWhitespace) return;
+
   setNome(nome);
+
   const isCourseNameValid = validateCourseName(nome.trim());
 
   if (isCourseNameValid) {

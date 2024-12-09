@@ -1,48 +1,63 @@
-import "./styles.css";
+import { useState } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Input } from "../../../ui/input";
 import { Button } from "../../../ui/button";
-import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
-import { handleChangeCourseName } from "../../../modules/courseFormValidation";
+import { handleCourseName } from "../../../modules/courseFormValidation";
+import { useAdmin } from "../../../modules/administradores/views/hooks/use-administrador";
+import "./styles.css";
 
 const EditCourse = () => {
+  const { state: course } = useLocation();
+  const { editCourse } = useAdmin();
   const navigate = useNavigate();
-  const [nome, setNome] = useState("");
+
+  const [name, setName] = useState(course.nome);
   const [errorMessages, setErrorMessages] = useState({});
 
-  const handleSubmit = (e: any) => {
+  const onSubmit = async (e: any) => {
     e.preventDefault();
 
-    const listaErros = Object.values(errorMessages).filter(
-      (error) => error !== ""
-    );
+    const errors = Object.values(errorMessages).filter((error) => error !== "");
 
-    if (listaErros.length > 0) {
-      console.log(listaErros[0]);
-    } else {
+    if (errors.length > 0) {
+      console.log(errors[0]);
+
+      return;
+    }
+
+    try {
+      const newCourse = {
+        nome: name,
+      };
+
+      await editCourse({ id: course.id, newCourse });
+
+      console.log("Curso editado com sucesso!");
+
       navigate("/cursos");
+    } catch (error) {
+      console.log("Ocorreu um erro ao tentar editar o curso!");
+      console.error((error as Error).message);
     }
   };
 
-  const onClean = (e: any) => {
-    e.preventDefault();
-
-    setNome("");
+  const onClean = () => {
+    setName("");
     setErrorMessages({});
   };
 
   return (
     <div className="flex-column-gap20">
       <h1>Editar curso</h1>
-      <form className="form-edit flex-column-gap20" onSubmit={handleSubmit}>
+      <form className="form-edit flex-column-gap20" onSubmit={onSubmit}>
         <div className="flex-column-gap20">
           <Input
             label="Nome"
             type="text"
             required
-            value={nome}
+            value={name}
             onChange={(e: any) =>
-              handleChangeCourseName(e.target.value, setErrorMessages, setNome)
+              handleCourseName(e.target.value, setErrorMessages, setName)
             }
             onFocus={(e: any) => e.target.select()}
           />
