@@ -3,7 +3,17 @@ import "./styles.css";
 import React from "react";
 
 const Input = React.forwardRef(
-  ({ label, type = "text", variant, selectOptions, ...rest }: any, ref) => {
+  (
+    {
+      label,
+      type = "text",
+      variant,
+      text = "Escolha uma opção",
+      selectOptions,
+      ...rest
+    }: any,
+    ref
+  ) => {
     const inputCollors: any = {
       bgNeutral: "bg-neutral",
       bgInfo: "bg-info",
@@ -26,7 +36,7 @@ const Input = React.forwardRef(
           <Select
             isSearchable
             options={selectOptions}
-            placeholder="Escolha uma opção"
+            placeholder={text}
             noOptionsMessage={() => "Nenhuma opção encontrada!"}
             getOptionValue={(option: any) => option["value"]}
             getOptionLabel={(option: any) => option["text"]}
