@@ -70,7 +70,7 @@ const EditStudent = () => {
             label="CPF"
             type="text"
             value={cpf}
-            readOnly={true}
+            readOnly
             required
             onChange={(e: any) =>
               handleChangeCpf(e.target.value, setErrorMessages, setCpf)
@@ -125,7 +125,6 @@ const EditStudent = () => {
           <Input
             label="Curso"
             selectOptions={cursoOptions}
-            text={curso}
             value={curso}
             onChange={(e: any) => setCurso(e.value)}
           />
