@@ -15,7 +15,6 @@ const EditPermission = () => {
   const [descricao, setDescricao] = useState(permission.description);
   const [errorMessages, setErrorMessages] = useState({});
 
-  console.log(permission);
   const handleSubmit = (e: any) => {
     e.preventDefault();
 
@@ -30,9 +29,7 @@ const EditPermission = () => {
     }
   };
 
-  const onClean = (e: any) => {
-    e.preventDefault();
-
+  const onClean = () => {
     setRole("");
     setDescricao("");
     setErrorMessages({});
@@ -42,11 +39,7 @@ const EditPermission = () => {
     <div className="add-page flex-column-gap20">
       <h1>Editar permissão</h1>
 
-      <form
-        action=""
-        className="form-edit flex-column-gap20"
-        onSubmit={handleSubmit}
-      >
+      <form className="form-edit flex-column-gap20" onSubmit={handleSubmit}>
         <div className="form-inputs flex-column-gap20">
           <Input
             label="Role"
