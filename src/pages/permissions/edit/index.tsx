@@ -12,17 +12,14 @@ const EditPermission = () => {
   const navigate = useNavigate();
   const [role, setRole] = useState("");
   const [descricao, setDescricao] = useState("");
-  const [errorMessages, setErrorMessages] = useState({});
+  const [errorMessages, setErrorMessages] = useState([]);
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
 
-    const listaErros = Object.values(errorMessages).filter(
-      (error) => error !== ""
-    );
-
-    if (listaErros.length > 0) {
-      console.log(listaErros[0]);
+    if (errorMessages.length > 0) {
+      const firstError = Object.values(errorMessages[0]);
+      console.log(firstError);
     } else {
       navigate("/permissoes");
     }
@@ -33,7 +30,7 @@ const EditPermission = () => {
 
     setRole("");
     setDescricao("");
-    setErrorMessages({});
+    setErrorMessages([]);
   };
 
   return (
