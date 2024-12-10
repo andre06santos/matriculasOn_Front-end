@@ -60,7 +60,7 @@ const ListPermissions = () => {
 
       <p>
         Total de permissões encontradas:{" "}
-        <span className="permissions-quantity">3</span>
+        <span className="permissions-quantity">{permissions.length}</span>
       </p>
 
       <table className="table">
@@ -77,7 +77,7 @@ const ListPermissions = () => {
               <td>{permission.role}</td>
               <td>{permission.description}</td>
               <td className="table-actions action-column">
-                <Link to="/permissoes/editar-permissao">
+                <Link to="/permissoes/editar-permissao" state={permission}>
                   <i className="fa-solid fa-pen-to-square"></i>
                 </Link>
                 <i className="fa-solid fa-trash-can" onClick={openModal}></i>
