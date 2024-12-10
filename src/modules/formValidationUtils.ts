@@ -121,3 +121,27 @@ export const validateDepartamento = (valor: string) => {
   const maxLength = valor.length <= MAX_DEPARTAMENTO_FIELD;
   return onlyLetters && maxLength;
 };
+
+export const cleanErrorMessages = (setErrorMessages: any, fieldKey: any) => {
+  setErrorMessages((prevErrors: any) =>
+    prevErrors.filter((error: any) => Object.keys(error)[0] !== fieldKey)
+  );
+};
+
+export const updateErrorMessages = (
+  setErrorMessages: any,
+  fieldKey: any,
+  messageObject: any
+) => {
+  setErrorMessages((prevErrors: any) => {
+    let filteredErrors = prevErrors.filter(
+      (error: any) => Object.keys(error)[0] === fieldKey
+    );
+
+    if (filteredErrors.length === 0) {
+      return [...prevErrors, messageObject];
+    }
+
+    return prevErrors;
+  });
+};
