@@ -12,17 +12,14 @@ const EditCourse = () => {
   const navigate = useNavigate();
 
   const [name, setName] = useState(course.nome);
-  const [errorMessages, setErrorMessages] = useState({});
+  const [errorMessages, setErrorMessages] = useState([]);
 
   const onSubmit = async (e: any) => {
     e.preventDefault();
 
-    const errors = Object.values(errorMessages).filter((error) => error !== "");
-
-    if (errors.length > 0) {
-      console.log(errors[0]);
-
-      return;
+    if (errorMessages.length > 0) {
+      const firstError = Object.values(errorMessages[0]);
+      console.log(firstError);
     }
 
     try {
@@ -43,7 +40,7 @@ const EditCourse = () => {
 
   const onClean = () => {
     setName("");
-    setErrorMessages({});
+    setErrorMessages([]);
   };
 
   return (
@@ -72,7 +69,7 @@ const EditCourse = () => {
           <Link to="/cursos">
             <Button type="cancel" label="Cancelar" />
           </Link>
-          <Input type="submit" variant="bgSuccess" value="Cadastrar" />
+          <Input type="submit" variant="bgSuccess" value="Salvar" />
         </div>
       </form>
     </div>

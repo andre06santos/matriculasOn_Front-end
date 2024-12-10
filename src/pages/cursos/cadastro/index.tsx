@@ -12,25 +12,22 @@ const CourseRegistration = () => {
   const nameInput = useRef<any>(null);
 
   const [name, setName] = useState("");
-  const [errorMessages, setErrorMessages] = useState({});
+  const [errorMessages, setErrorMessages] = useState([]);
 
   const onFocus = () => nameInput.current.focus();
 
   const onClean = () => {
     setName("");
-    setErrorMessages({});
+    setErrorMessages([]);
     onFocus();
   };
 
   const onSubmit = async (e: any) => {
     e.preventDefault();
 
-    const errors = Object.values(errorMessages).filter((error) => error !== "");
-
-    if (errors.length > 0) {
-      console.log(errors[0]);
-
-      return;
+    if (errorMessages.length > 0) {
+      const firstError = Object.values(errorMessages[0]);
+      console.log(firstError);
     }
 
     try {

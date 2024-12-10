@@ -24,18 +24,15 @@ const AdministratorRegistration = () => {
   const [departamento, setDepartamento] = useState("");
   const [senha, setSenha] = useState("");
   const [conferirSenha, setConferirSenha] = useState("");
-  const [errorMessages, setErrorMessages] = useState({});
+  const [errorMessages, setErrorMessages] = useState([]);
   const navigate = useNavigate();
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
 
-    const listaErros = Object.values(errorMessages).filter(
-      (error) => error !== ""
-    );
-
-    if (listaErros.length > 0) {
-      console.log(listaErros[0]);
+    if (errorMessages.length > 0) {
+      const firstError = Object.values(errorMessages[0]);
+      console.log(firstError);
     } else {
       navigate("/usuarios");
     }
@@ -52,7 +49,7 @@ const AdministratorRegistration = () => {
     setDepartamento("");
     setSenha("");
     setConferirSenha("");
-    setErrorMessages({});
+    setErrorMessages([]);
   };
 
   return (
