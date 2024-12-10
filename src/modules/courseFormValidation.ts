@@ -1,5 +1,7 @@
 import {
+  cleanErrorMessages,
   MAX_CURSO_FIELD,
+  updateErrorMessages,
   validateCourseName,
   validateOnlyLetters,
   validWhitespaceBeginning,
@@ -11,18 +13,13 @@ export const handleCourseName = (
   setNome: any
 ) => {
   const hasWhitespace = validWhitespaceBeginning(nome);
-
   if (hasWhitespace) return;
-
   setNome(nome);
-
   const isCourseNameValid = validateCourseName(nome.trim());
+  const fieldKey = "curso";
 
   if (isCourseNameValid) {
-    setErrorMessages((prevErrors: any) => ({
-      ...prevErrors,
-      nome: "",
-    }));
+    cleanErrorMessages(setErrorMessages, fieldKey);
   } else {
     if (!!nome && !validateOnlyLetters(nome)) {
       const nomeOnlyLetters = nome.slice(0, -1);
@@ -33,10 +30,8 @@ export const handleCourseName = (
       setNome(nomeWithMaxLength);
       console.log(`Quantidade de caracteres maximo de ${MAX_CURSO_FIELD}`);
     } else {
-      setErrorMessages((prevErrors: any) => ({
-        ...prevErrors,
-        nome: "Digite o nome corretamente",
-      }));
+      const messageObject = { nome: "Digite o nome corretamente" };
+      updateErrorMessages(setErrorMessages, fieldKey, messageObject);
     }
   }
 };
