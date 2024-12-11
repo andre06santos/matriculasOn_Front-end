@@ -134,14 +134,14 @@ export const updateErrorMessages = (
   messageObject: any
 ) => {
   setErrorMessages((prevErrors: any) => {
-    let filteredErrors = prevErrors.filter(
-      (error: any) => Object.keys(error)[0] === fieldKey
+    const soughtObject = prevErrors.find((error: any) =>
+      error.hasOwnProperty(fieldKey)
     );
 
-    if (filteredErrors.length === 0) {
+    if (soughtObject === undefined) {
       return [...prevErrors, messageObject];
     }
 
-    return prevErrors;
+    return [...prevErrors];
   });
 };
