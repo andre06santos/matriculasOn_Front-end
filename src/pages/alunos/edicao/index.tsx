@@ -125,7 +125,7 @@ const EditStudent = () => {
           <Input
             label="Curso"
             selectOptions={cursoOptions}
-            value={curso}
+            text={curso}
             onChange={(e: any) => setCurso(e.value)}
           />
         </div>
