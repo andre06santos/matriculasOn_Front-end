@@ -35,7 +35,13 @@ const Input = React.forwardRef(
             {...rest}
           />
         ) : (
-          <input type={type} {...rest} ref={ref} className={inputClass} />
+          <input
+            type={type}
+            ref={ref}
+            className={inputClass}
+            autoComplete="off"
+            {...rest}
+          />
         )}
       </div>
     );

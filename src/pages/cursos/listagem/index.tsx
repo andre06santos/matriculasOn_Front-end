@@ -1,13 +1,14 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "../../../ui/button";
-import { Input } from "../../../ui/input";
 import { Modal } from "../../../ui/modal";
 import {
   validateEmptyString,
   validWhitespaceBeginning,
 } from "../../../modules/formValidationUtils";
 import { useAdmin } from "../../../modules/administradores/views/hooks/use-administrador";
+import { NotFound } from "../../../ui/not-found";
+import { Filter } from "./filter";
 import "./styles.css";
 
 const ListCourses = () => {
@@ -16,7 +17,9 @@ const ListCourses = () => {
   const nameInput = useRef<any>(null);
 
   const [name, setName] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
   const [courseId, setCourseId] = useState("");
+  const [isSearching, setIsSearching] = useState(false);
 
   const openModal = (courseId: any) => {
     setIsModalOpen(true);
@@ -27,7 +30,11 @@ const ListCourses = () => {
     setIsModalOpen(false);
   };
 
-  const onClean = () => setName("");
+  const onClean = () => {
+    setName("");
+    setSearchTerm("");
+    setIsSearching(false);
+  };
 
   const onFocus = () => nameInput.current.focus();
 
@@ -81,6 +88,8 @@ const ListCourses = () => {
 
     try {
       await searchCourse(name);
+      setIsSearching(true);
+      setSearchTerm(name);
     } catch (error) {
       console.log("Ocorreu um erro ao tentar filtar curso!");
       console.error((error as Error).message);
@@ -109,59 +118,66 @@ const ListCourses = () => {
 
       <h1>Cursos</h1>
 
-      <div className="filter flex-column-gap20">
-        <span>Filtro</span>
-        <form className="form-filter" onSubmit={onSubmit}>
-          <Input
-            placeholder="Nome"
-            value={name}
-            onChange={(e: any) => {
-              handleCourseName(e.target.value);
-            }}
-            ref={nameInput}
+      {courses.length === 0 ? (
+        isSearching ? (
+          <>
+            <Filter
+              onSubmit={onSubmit}
+              name={name}
+              handleCourseName={handleCourseName}
+              nameInput={nameInput}
+              onReset={onReset}
+            />
+            <NotFound
+              message={`A busca por "${searchTerm}" não retornou nenhum curso!`}
+            />
+          </>
+        ) : (
+          <NotFound message="Nenhum curso foi encontrado!" />
+        )
+      ) : (
+        <>
+          <Filter
+            onSubmit={onSubmit}
+            name={name}
+            handleCourseName={handleCourseName}
+            nameInput={nameInput}
+            onReset={onReset}
           />
 
-          <div className="filter-buttons">
-            <Input type="submit" value="Buscar" variant="bgInfo" />
-            <Input
-              type="reset"
-              value="Limpar"
-              variant="bgNeutral"
-              onClick={onReset}
-            />
-          </div>
-        </form>
-      </div>
+          <p>
+            {isSearching
+              ? `Total de cursos encontrados ao filtrar por "${searchTerm}": `
+              : "Total de cursos encontrados: "}
+            <span className="courses-quantity">{courses.length}</span>
+          </p>
 
-      <p>
-        Total de cursos encontrados:{""}
-        <span className="courses-quantity">{courses.length}</span>
-      </p>
-
-      <table className="table">
-        <thead className="table-header">
-          <tr>
-            <th>Nome</th>
-            <th>Ações</th>
-          </tr>
-        </thead>
-        <tbody>
-          {courses.map((course: any, index: any) => (
-            <tr key={index}>
-              <td>{course.nome}</td>
-              <td className="table-actions">
-                <Link to="/cursos/editar-curso" state={course}>
-                  <i className="fa-solid fa-pen-to-square icons-action"></i>
-                </Link>
-                <i
-                  className="fa-solid fa-trash-can"
-                  onClick={() => openModal(course.id)}
-                ></i>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+          <table className="table">
+            <thead className="table-header">
+              <tr>
+                <th>Nome</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              {courses.map((course: any, index: any) => (
+                <tr key={index}>
+                  <td>{course.nome}</td>
+                  <td className="table-actions">
+                    <Link to="/cursos/editar-curso" state={course}>
+                      <i className="fa-solid fa-pen-to-square icons-action"></i>
+                    </Link>
+                    <i
+                      className="fa-solid fa-trash-can"
+                      onClick={() => openModal(course.id)}
+                    ></i>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </>
+      )}
     </div>
   );
 };
