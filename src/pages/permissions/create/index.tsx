@@ -18,7 +18,7 @@ const CreatePermission = () => {
     e.preventDefault();
 
     if (errorMessages.length > 0) {
-      const firstError = Object.values(errorMessages[0]);
+      const firstError = Object.values(errorMessages[0])[0];
       console.log(firstError);
     } else {
       navigate("/permissoes");
