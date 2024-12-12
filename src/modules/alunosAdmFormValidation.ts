@@ -33,14 +33,8 @@ export const handleChangeCpf = (
   if (isCpfValid) {
     cleanErrorMessages(setErrorMessages, fieldKey);
   } else {
-    if (!!cpf && cpf.length > CPF_LENGTH) {
-      const cpfWithMaxLength = cpf.slice(0, CPF_LENGTH);
-      setCpf(cpfWithMaxLength);
-      console.log(`Apenas ${CPF_LENGTH} caracteres`);
-    } else if (!validateOnlyNumbers(cpf) && !!cpf) {
-      const cpfOnlyNumbers = cpf.slice(0, -1);
-      setCpf(cpfOnlyNumbers);
-      console.log("Digite apenas números");
+    if ((!!cpf && cpf.length > CPF_LENGTH) || !validateOnlyNumbers(cpf)) {
+      showErrorToastCpf(cpf, setCpf);
     } else {
       const messageObject = { cpf: "Digite o CPF corretamente" };
       updateErrorMessages(setErrorMessages, fieldKey, messageObject);
@@ -270,5 +264,25 @@ export const handleChangeDepartamento = (
       };
       updateErrorMessages(setErrorMessages, fieldKey, messageObject);
     }
+  }
+};
+
+export const handleChangeFilterCpf = (cpf: any, setCpf: any) => {
+  handleChangeNoWhiteSpaceInput(cpf, setCpf);
+
+  if (!validateCpf(cpf)) {
+    showErrorToastCpf(cpf, setCpf);
+  }
+};
+
+const showErrorToastCpf = (cpf: any, setCpf: any) => {
+  if (!!cpf && cpf.length > CPF_LENGTH) {
+    const cpfWithMaxLength = cpf.slice(0, CPF_LENGTH);
+    setCpf(cpfWithMaxLength);
+    console.log(`Apenas ${CPF_LENGTH} caracteres`);
+  } else if (!validateOnlyNumbers(cpf) && !!cpf) {
+    const cpfOnlyNumbers = cpf.slice(0, -1);
+    setCpf(cpfOnlyNumbers);
+    console.log("Digite apenas números");
   }
 };
