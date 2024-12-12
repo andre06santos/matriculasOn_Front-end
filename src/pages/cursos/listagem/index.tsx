@@ -108,7 +108,7 @@ const ListCourses = () => {
             <Filter
               onSubmit={onSubmit}
               name={name}
-              handleCourseName={handleChangeFilterCourseNome}
+              handleChange={handleChangeFilterCourseNome}
               setName={setName}
               nameInput={nameInput}
               onReset={onReset}
@@ -126,7 +126,7 @@ const ListCourses = () => {
             onSubmit={onSubmit}
             name={name}
             setName={setName}
-            handleCourseName={handleChangeFilterCourseNome}
+            handleChange={handleChangeFilterCourseNome}
             nameInput={nameInput}
             onReset={onReset}
           />

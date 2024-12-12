@@ -3,7 +3,8 @@ import { Input } from "../../../ui/input";
 const Filter = ({
   onSubmit,
   name,
-  handleCourseName,
+  setName,
+  handleChange,
   nameInput,
   onReset,
 }: any) => {
@@ -15,7 +16,7 @@ const Filter = ({
           placeholder="Nome"
           value={name}
           onChange={(e: any) => {
-            handleCourseName(e.target.value);
+            handleChange(e.target.value, setName);
           }}
           ref={nameInput}
         />
