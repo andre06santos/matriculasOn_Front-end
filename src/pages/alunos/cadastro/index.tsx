@@ -26,13 +26,6 @@ const RegisterStudent = () => {
   const [errorMessages, setErrorMessages] = useState([]);
   const navigate = useNavigate();
 
-  const cursoOptions = [
-    { text: "Análise e Desenvolvimento de Sistemas", value: "ADS" },
-    { text: "Engenharia de Software", value: "ENG_SOF" },
-    { text: "Redes de Computadores", value: "RED" },
-    { text: "Tecnologia da Informação", value: "TEC_INF" },
-  ];
-
   const handleSubmit = (e: any) => {
     e.preventDefault();
 
@@ -174,3 +167,10 @@ const RegisterStudent = () => {
 };
 
 export { RegisterStudent };
+
+const cursoOptions = [
+  { label: "Análise e Desenvolvimento de Sistemas", value: "ADS" },
+  { label: "Engenharia de Software", value: "ENG_SOF" },
+  { label: "Redes de Computadores", value: "RED" },
+  { label: "Tecnologia da Informação", value: "TEC_INF" },
+];

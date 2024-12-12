@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import { Button } from "../../../ui/button";
 import { Input } from "../../../ui/input";
 import "./styles.css";
 import { useRef, useState } from "react";
@@ -124,3 +123,27 @@ const ListStudents = () => {
 };
 
 export { ListStudents };
+
+const students = [
+  {
+    matricula: "2568574MJGHF",
+    cpf: "123.456.789-00",
+    nome: "Maria da Silva Costa",
+    email: "maria.silva@live.com",
+    curso: "Engenharia Civil",
+  },
+  {
+    matricula: "2568574MJGHF",
+    cpf: "123.456.789-00",
+    nome: "Maria da Silva Costa",
+    email: "maria.silva@live.com",
+    curso: "Engenharia Civil",
+  },
+  {
+    matricula: "2568574MJGHF",
+    cpf: "123.456.789-00",
+    nome: "Maria da Silva Costa",
+    email: "maria.silva@live.com",
+    curso: "Engenharia Civil",
+  },
+];

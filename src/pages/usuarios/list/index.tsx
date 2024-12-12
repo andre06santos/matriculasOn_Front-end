@@ -132,3 +132,34 @@ const ListUser = () => {
 };
 
 export { ListUser };
+
+const users = [
+  {
+    username: "marisilcs",
+    nome: "Maria da Silva Costa",
+    tipo: "Aluno",
+    status: true,
+  },
+  {
+    username: "luanmst",
+    nome: "Luan Monteiro de Sá",
+    tipo: "Administrador",
+    status: true,
+  },
+  {
+    username: "lari1988",
+    nome: "Joana Larissa Lima",
+    tipo: "Aluno",
+    status: false,
+  },
+];
+
+const options = [
+  { label: "Aluno", path: "/alunos/novo-aluno" },
+  { label: "Administrador", path: "/administradores/novo-administrador" },
+];
+
+const statusOptions = [
+  { label: "Ativo", value: "ATIVO" },
+  { label: "Inativo", value: "INATIVO" },
+];

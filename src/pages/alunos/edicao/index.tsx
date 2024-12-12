@@ -25,13 +25,6 @@ const StudentEdit = () => {
   const [errorMessages, setErrorMessages] = useState([]);
   const navigate = useNavigate();
 
-  const cursoOptions = [
-    { text: "Análise e Desenvolvimento de Sistemas", value: "ADS" },
-    { text: "Engenharia de Software", value: "ENG_SOF" },
-    { text: "Redes de Computadores", value: "RED_COMP" },
-    { text: "Tecnologia da Informação", value: "TEC_INFO" },
-  ];
-
   const handleSubmit = (e: any) => {
     e.preventDefault();
 
@@ -172,3 +165,10 @@ const StudentEdit = () => {
 };
 
 export { StudentEdit };
+
+const cursoOptions = [
+  { label: "Análise e Desenvolvimento de Sistemas", value: "ADS" },
+  { label: "Engenharia de Software", value: "ENG_SOF" },
+  { label: "Redes de Computadores", value: "RED_COMP" },
+  { label: "Tecnologia da Informação", value: "TEC_INFO" },
+];
