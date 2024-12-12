@@ -2,23 +2,24 @@ import {
   MAX_MATRICULA_FIELD,
   MAX_USERNAME_FIELD,
   MIN_PASSWORD,
-  validateCpf,
-  validateEmail,
-  validateLettersAndNumbers,
-  validateMatricula,
-  validateNome,
-  validateOnlyLetters,
-  validateOnlyNumbers,
-  validatePassword,
-  validateUsername,
   MAX_NOME_FIELD,
   MAX_CARGO_FIELD,
   MAX_DEPARTAMENTO_FIELD,
+  CPF_LENGTH,
+  validateLettersAndNumbers,
+  validateOnlyLetters,
+  validateOnlyNumbers,
+  validateCpf,
+  validateEmail,
+  validateMatricula,
+  validateNome,
+  validatePassword,
+  validateUsername,
   validateCargo,
   validateDepartamento,
-  CPF_LENGTH,
   cleanErrorMessages,
   updateErrorMessages,
+  handleChangeNoWhiteSpaceInput,
 } from "./formValidationUtils";
 
 export const handleChangeCpf = (
@@ -26,7 +27,7 @@ export const handleChangeCpf = (
   setErrorMessages: any,
   setCpf: any
 ) => {
-  setCpf(cpf);
+  handleChangeNoWhiteSpaceInput(cpf, setCpf);
   const isCpfValid = validateCpf(cpf.trim());
   const fieldKey = "cpf";
 
@@ -47,7 +48,7 @@ export const handleChangeMatricula = (
   setErrorMessages: any,
   setMatricula: any
 ) => {
-  setMatricula(matricula);
+  handleChangeNoWhiteSpaceInput(matricula, setMatricula);
   const isMatriculaValid = validateMatricula(matricula.trim());
   const fieldKey = "matricula";
 
@@ -74,7 +75,7 @@ export const handleChangeUsername = (
   setErrorMessages: any,
   setUsername: any
 ) => {
-  setUsername(username);
+  handleChangeNoWhiteSpaceInput(username, setUsername);
   const isUsernameValid = validateUsername(username.trim());
   const fieldKey = "username";
 
@@ -84,7 +85,7 @@ export const handleChangeUsername = (
     if (!!username && username.length > MAX_USERNAME_FIELD) {
       const usernameWithMaxField = username.slice(0, MAX_USERNAME_FIELD);
       setUsername(usernameWithMaxField);
-      console.log(`Quantidade de caracteres maximo de ${MAX_USERNAME_FIELD}`);
+      console.log(`Username possui no maximo ${MAX_USERNAME_FIELD} caracteres`);
     } else {
       const messageObject = { username: "Digite o username corretamente" };
       updateErrorMessages(setErrorMessages, fieldKey, messageObject);
@@ -97,7 +98,7 @@ export const handleChangeNome = (
   setErrorMessages: any,
   setNome: any
 ) => {
-  setNome(nome);
+  handleChangeNoWhiteSpaceInput(nome, setNome);
   const isNomeValid = validateNome(nome.trim());
   const fieldKey = "nome";
 
@@ -124,7 +125,7 @@ export const handleChangeEmail = (
   setErrorMessages: any,
   setEmail: any
 ) => {
-  setEmail(email);
+  handleChangeNoWhiteSpaceInput(email, setEmail);
   const isEmailValid = validateEmail(email.trim());
   const fieldKey = "email";
 
@@ -272,6 +273,47 @@ export const handleChangeFilterCpf = (cpf: any, setCpf: any) => {
 
   if (!validateCpf(cpf)) {
     showErrorToastCpf(cpf, setCpf);
+  }
+};
+
+export const handleChangeFilterMatricula = (
+  matricula: any,
+  setMatricula: any
+) => {
+  handleChangeNoWhiteSpaceInput(matricula, setMatricula);
+
+  if (!!matricula && matricula.length > MAX_MATRICULA_FIELD) {
+    const matriculaWithMaxField = matricula.slice(0, MAX_MATRICULA_FIELD);
+    setMatricula(matriculaWithMaxField);
+    console.log(`Quantidade de caracteres maximo de ${MAX_MATRICULA_FIELD}`);
+  } else if (!!matricula && !validateLettersAndNumbers(matricula)) {
+    const matriculaOnlyLettersAndNumbers = matricula.slice(0, -1);
+    setMatricula(matriculaOnlyLettersAndNumbers);
+    console.log("Caractere nao permitido");
+  }
+};
+
+export const handleChangeFilterNome = (nome: any, setNome: any) => {
+  handleChangeNoWhiteSpaceInput(nome, setNome);
+
+  if (!!nome && !validateOnlyLetters(nome) && nome.length <= MAX_NOME_FIELD) {
+    const nomeOnlyLetters = nome.slice(0, -1);
+    setNome(nomeOnlyLetters);
+    console.log("Digite apenas letras!");
+  } else if (nome.length > MAX_NOME_FIELD) {
+    const nomeWithMaxField = nome.slice(0, MAX_NOME_FIELD);
+    setNome(nomeWithMaxField);
+    console.log(`Digite apenas ${MAX_NOME_FIELD} caracteres!`);
+  }
+};
+
+export const handleChangeFilterUsername = (username: any, setUsername: any) => {
+  handleChangeNoWhiteSpaceInput(username, setUsername);
+
+  if (!!username && username.length > MAX_USERNAME_FIELD) {
+    const usernameWithMaxField = username.slice(0, MAX_USERNAME_FIELD);
+    setUsername(usernameWithMaxField);
+    console.log(`Username possui no maximo ${MAX_USERNAME_FIELD} caracteres`);
   }
 };
 

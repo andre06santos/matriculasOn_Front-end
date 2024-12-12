@@ -3,12 +3,10 @@ import { Link } from "react-router-dom";
 import { Button } from "../../../ui/button";
 import { Input } from "../../../ui/input";
 import { Modal } from "../../../ui/modal";
-import {
-  validateEmptyString,
-  validWhitespaceBeginning,
-} from "../../../modules/formValidationUtils";
+import { validateEmptyString } from "../../../modules/formValidationUtils";
 import { useAdmin } from "../../../modules/administradores/views/hooks/use-administrador";
 import "./styles.css";
+import { handleChangeFilterCourseNome } from "../../../modules/courseFormValidation";
 
 const ListCourses = () => {
   const { courses, getCourses, searchCourse, deleteCourse } = useAdmin();
@@ -37,20 +35,6 @@ const ListCourses = () => {
     onClean();
     onFocus();
     getCourses();
-  };
-
-  const handleCourseName = (name: any) => {
-    const hasWhitespace = validWhitespaceBeginning(name);
-
-    if (hasWhitespace) return;
-
-    setName(name);
-
-    const emptyField = validateEmptyString(name);
-
-    if (emptyField) {
-      onReset();
-    }
   };
 
   const onDelete = async () => {
@@ -116,7 +100,7 @@ const ListCourses = () => {
             placeholder="Nome"
             value={name}
             onChange={(e: any) => {
-              handleCourseName(e.target.value);
+              handleChangeFilterCourseNome(e.target.value, setName);
             }}
             ref={nameInput}
           />

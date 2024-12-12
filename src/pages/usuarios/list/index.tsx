@@ -2,11 +2,21 @@ import { Link } from "react-router-dom";
 import "./styles.css";
 import { Button } from "../../../ui/button";
 import { Input } from "../../../ui/input";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Modal } from "../../../ui/modal";
+import {
+  handleChangeFilterNome,
+  handleChangeFilterUsername,
+} from "../../../modules/alunosAdmFormValidation";
 
 const ListUser = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const [username, setUsername] = useState("");
+  const [nome, setNome] = useState("");
+  const [status, setStatus] = useState("");
+  const usernameInput = useRef<any>(null);
+  const selectInputRef = useRef<any>(null);
 
   const closeModal = () => {
     setIsModalOpen(false);
@@ -20,36 +30,18 @@ const ListUser = () => {
     return tipo === "Aluno";
   };
 
-  const users = [
-    {
-      username: "marisilcs",
-      nome: "Maria da Silva Costa",
-      tipo: "Aluno",
-      status: true,
-    },
-    {
-      username: "luanmst",
-      nome: "Luan Monteiro de Sá",
-      tipo: "Administrador",
-      status: true,
-    },
-    {
-      username: "lari1988",
-      nome: "Joana Larissa Lima",
-      tipo: "Aluno",
-      status: false,
-    },
-  ];
+  const onClean = () => {
+    setUsername("");
+    setNome("");
+    setStatus("");
+  };
 
-  const options = [
-    { label: "Aluno", path: "/alunos/novo-aluno" },
-    { label: "Administrador", path: "/administradores/novo-administrador" },
-  ];
+  const onFocus = () => usernameInput.current.focus();
 
-  const statusOptions = [
-    { label: "Ativo", value: "ATIVO" },
-    { label: "Inativo", value: "INATIVO" },
-  ];
+  const onReset = () => {
+    onClean();
+    onFocus();
+  };
 
   return (
     <div className="flex-column-gap20">
@@ -67,12 +59,30 @@ const ListUser = () => {
       <div className="filter flex-column-gap20">
         <span>Filtros</span>
         <form className="form-filter">
-          <Input type="text" placeholder="Username" />
-          <Input type="text" placeholder="Nome" />
-          <Input selectOptions={statusOptions} />
+          <Input
+            type="text"
+            placeholder="Username"
+            value={username}
+            onChange={(e: any) =>
+              handleChangeFilterUsername(e.target.value, setUsername)
+            }
+            ref={usernameInput}
+          />
+          <Input
+            type="text"
+            placeholder="Nome"
+            value={nome}
+            onChange={(e: any) =>
+              handleChangeFilterNome(e.target.value, setNome)
+            }
           <div className="form-actions">
             <Input type="submit" variant="bgInfo" value="Buscar" />
-            <Input type="reset" variant="bgNeutral" value="Limpar" />
+            <Input
+              type="reset"
+              variant="bgNeutral"
+              value="Limpar"
+              onClick={onReset}
+            />
           </div>
         </form>
       </div>

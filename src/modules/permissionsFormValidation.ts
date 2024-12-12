@@ -1,5 +1,6 @@
 import {
   cleanErrorMessages,
+  handleChangeNoWhiteSpaceInput,
   MAX_DESCRICAO_FIELD,
   MAX_ROLE_FIELD,
   updateErrorMessages,
@@ -14,7 +15,7 @@ export const handleChangeRole = (
   setErrorMessages: any,
   setRole: any
 ) => {
-  setRole(role);
+  handleChangeNoWhiteSpaceInput(role, setRole);
   const isRoleValid = validateRole(role);
   const fieldKey = "role";
 
@@ -37,28 +38,45 @@ export const handleChangeRole = (
 };
 
 export const handleChangeDescription = (
-  descricao: any,
+  description: any,
   setErrorMessages: any,
   setDescription: any
 ) => {
-  setDescription(descricao);
-  const isDescriptionValid = validatePermissionDescription(descricao);
+  handleChangeNoWhiteSpaceInput(description, setDescription);
+  const isDescriptionValid = validatePermissionDescription(description);
   const fieldKey = "descricao";
 
   if (isDescriptionValid) {
     cleanErrorMessages(setErrorMessages, fieldKey);
   } else {
-    if (!!descricao && !validateOnlyLetters(descricao)) {
-      const descricaoOnlyLetters = descricao.slice(0, -1);
+    if (!!description && !validateOnlyLetters(description)) {
+      const descricaoOnlyLetters = description.slice(0, -1);
       setDescription(descricaoOnlyLetters);
       console.log("Permitido apenas letras");
-    } else if (descricao.length > MAX_DESCRICAO_FIELD) {
-      const descricaoWithMaxLength = descricao.slice(0, MAX_DESCRICAO_FIELD);
+    } else if (description.length > MAX_DESCRICAO_FIELD) {
+      const descricaoWithMaxLength = description.slice(0, MAX_DESCRICAO_FIELD);
       setDescription(descricaoWithMaxLength);
       console.log(`Quantidade de caracteres maximo de ${MAX_DESCRICAO_FIELD}`);
     } else {
       const messageObject = { descricao: "Digite a descrição corretamente" };
       updateErrorMessages(setErrorMessages, fieldKey, messageObject);
     }
+  }
+};
+
+export const handleChangeFilterDescription = (
+  description: any,
+  setDescription: any
+) => {
+  handleChangeNoWhiteSpaceInput(description, setDescription);
+
+  if (!!description && !validateOnlyLetters(description)) {
+    const descricaoOnlyLetters = description.slice(0, -1);
+    setDescription(descricaoOnlyLetters);
+    console.log("Permitido apenas letras");
+  } else if (description.length > MAX_DESCRICAO_FIELD) {
+    const descricaoWithMaxLength = description.slice(0, MAX_DESCRICAO_FIELD);
+    setDescription(descricaoWithMaxLength);
+    console.log(`Quantidade de caracteres maximo de ${MAX_DESCRICAO_FIELD}`);
   }
 };
