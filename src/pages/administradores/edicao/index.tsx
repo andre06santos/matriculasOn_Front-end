@@ -69,6 +69,7 @@ const EditAdmin = () => {
           <Input
             label="Cargo"
             type="text"
+            required
             value={cargo}
             onChange={(e: any) =>
               handleChangeCargo(e.target.value, setErrorMessages, setCargo)
@@ -77,6 +78,7 @@ const EditAdmin = () => {
           <Input
             label="Nome"
             type="text"
+            required
             value={nome}
             onChange={(e: any) =>
               handleChangeNome(e.target.value, setErrorMessages, setNome)
@@ -87,6 +89,7 @@ const EditAdmin = () => {
           <Input
             label="Username"
             type="text"
+            required
             value={username}
             onChange={(e: any) =>
               handleChangeUsername(
@@ -99,6 +102,7 @@ const EditAdmin = () => {
           <Input
             label="Email"
             type="text"
+            required
             value={email}
             onChange={(e: any) =>
               handleChangeEmail(e.target.value, setErrorMessages, setEmail)
@@ -107,6 +111,7 @@ const EditAdmin = () => {
           <Input
             label="Departamento"
             type="text"
+            required
             value={departamento}
             onChange={(e: any) =>
               handleChangeDepartamento(
@@ -121,6 +126,7 @@ const EditAdmin = () => {
           <Input
             label="Senha"
             type="password"
+            required
             value={senha}
             onChange={(e: any) => {
               handleChangeSenha(e.target.value, setErrorMessages, setSenha);
@@ -134,6 +140,7 @@ const EditAdmin = () => {
           <Input
             label="Confirmar senha"
             type="password"
+            required
             value={conferirSenha}
             onChange={(e: any) => {
               handleChangeConfSenha(
