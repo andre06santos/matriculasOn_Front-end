@@ -8,7 +8,7 @@ export const MAX_DESCRICAO_FIELD = 100;
 export const MAX_ROLE_FIELD = 20;
 export const MAX_CURSO_FIELD = 30;
 export const MIN_PASSWORD = 8;
-export const MIN_EMAIL = 7;
+export const MIN_EMAIL = 6;
 export const CPF_LENGTH = 11;
 
 const regexOnlyLetters = new RegExp("^[a-zA-ZÀ-ÿ´`~^\\s]+$");
@@ -19,18 +19,6 @@ const regexOnlyNumbers = new RegExp("[0-9]+$");
 const regexLettersAndNumbers = new RegExp("^[a-zA-Z0-9]+$");
 const regexUpperLettersAndUnderscore = new RegExp("^[A-Z_]+$");
 const regexWhitespaceBeginning = new RegExp(/^\s{1,}/);
-
-export const validWhitespaceBeginning = (valor: any) => {
-  const hasWhitespace = valor.match(regexWhitespaceBeginning);
-
-  return hasWhitespace;
-};
-
-export const validateEmptyString = (valor: any) => {
-  const isEmptyString = valor.trim() === "";
-
-  return isEmptyString;
-};
 
 export const validateOnlyLetters = (valor: any) => {
   const apenasLetras = regexOnlyLetters.test(valor);
@@ -144,4 +132,21 @@ export const updateErrorMessages = (
 
     return [...prevErrors];
   });
+};
+
+export const validWhiteSpaceBeginning = (valor: any) => {
+  const hasWhiteSpace = valor.match(regexWhitespaceBeginning);
+  return hasWhiteSpace;
+};
+
+export const validateEmptyString = (valor: any) => {
+  const isEmptyString = valor.trim() === "";
+  return isEmptyString;
+};
+
+export const handleChangeNoWhiteSpaceInput = (value: any, setValue: any) => {
+  const hasWhiteSpace = validWhiteSpaceBeginning(value);
+  if (hasWhiteSpace) return;
+
+  setValue(value);
 };
