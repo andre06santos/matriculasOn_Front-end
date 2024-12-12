@@ -109,7 +109,7 @@ const ListStudents = () => {
               <td>{student.email}</td>
               <td>{student.curso}</td>
               <td className="table-actions action-column">
-                <Link to="/alunos/editar-aluno">
+                <Link to="/alunos/editar-aluno" state={student}>
                   <i className="fa-solid fa-pen-to-square"></i>
                 </Link>
                 <i className="fa-solid fa-trash-can" onClick={openModal}></i>

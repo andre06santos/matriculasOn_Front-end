@@ -1,7 +1,7 @@
 import "./styles.css";
 import { Input } from "../../../ui/input";
 import { Button } from "../../../ui/button";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import {
   handleChangeCargo,
@@ -16,12 +16,13 @@ import {
 } from "../../../modules/alunosAdmFormValidation";
 
 const EditAdmin = () => {
-  const [cpf, setCpf] = useState("");
-  const [cargo, setCargo] = useState("");
-  const [nome, setNome] = useState("");
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [departamento, setDepartamento] = useState("");
+  const { state: admin } = useLocation();
+  const [cpf, setCpf] = useState(admin.cpf);
+  const [cargo, setCargo] = useState(admin.cargo);
+  const [nome, setNome] = useState(admin.nome);
+  const [username, setUsername] = useState(admin.username);
+  const [email, setEmail] = useState(admin.email);
+  const [departamento, setDepartamento] = useState(admin.departamento);
   const [senha, setSenha] = useState("");
   const [conferirSenha, setConferirSenha] = useState("");
   const [errorMessages, setErrorMessages] = useState([]);

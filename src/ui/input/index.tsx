@@ -47,6 +47,7 @@ const Input = React.forwardRef(
             onChange={onChange}
             value={value}
             ref={ref}
+            autoComplete="off"
             {...rest}
           />
         )}
