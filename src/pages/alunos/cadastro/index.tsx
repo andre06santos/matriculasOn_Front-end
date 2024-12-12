@@ -115,8 +115,8 @@ const RegisterStudent = () => {
             label="Curso"
             selectOptions={cursoOptions}
             required
-            text={curso}
-            onChange={(e: any) => setCurso(e.value)}
+            value={curso}
+            onChange={setCurso}
           />
         </div>
         <div className="input-group">

@@ -114,7 +114,7 @@ const StudentEdit = () => {
             label="Curso"
             selectOptions={cursoOptions}
             value={curso}
-            onChange={(e: any) => setCurso(e.value)}
+            onChange={setCurso}
           />
         </div>
         <div className="input-group">

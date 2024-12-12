@@ -75,6 +75,13 @@ const ListUser = () => {
             onChange={(e: any) =>
               handleChangeFilterNome(e.target.value, setNome)
             }
+          />
+          <Input
+            selectOptions={statusOptions}
+            ref={selectInputRef}
+            value={status}
+            onChange={setStatus}
+          />
           <div className="form-actions">
             <Input type="submit" variant="bgInfo" value="Buscar" />
             <Input
