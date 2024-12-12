@@ -30,16 +30,38 @@ export const handleChangeCpf = (
   handleChangeNoWhiteSpaceInput(cpf, setCpf);
   const isCpfValid = validateCpf(cpf.trim());
   const fieldKey = "cpf";
+  const hasErrorToast =
+    (!!cpf && cpf.length > CPF_LENGTH) || !validateOnlyNumbers(cpf);
 
   if (isCpfValid) {
     cleanErrorMessages(setErrorMessages, fieldKey);
   } else {
-    if ((!!cpf && cpf.length > CPF_LENGTH) || !validateOnlyNumbers(cpf)) {
+    if (hasErrorToast) {
       showErrorToastCpf(cpf, setCpf);
     } else {
       const messageObject = { cpf: "Digite o CPF corretamente" };
       updateErrorMessages(setErrorMessages, fieldKey, messageObject);
     }
+  }
+};
+
+export const handleChangeFilterCpf = (cpf: any, setCpf: any) => {
+  handleChangeNoWhiteSpaceInput(cpf, setCpf);
+
+  if (!validateCpf(cpf)) {
+    showErrorToastCpf(cpf, setCpf);
+  }
+};
+
+const showErrorToastCpf = (cpf: any, setCpf: any) => {
+  if (!!cpf && cpf.length > CPF_LENGTH) {
+    const cpfWithMaxLength = cpf.slice(0, CPF_LENGTH);
+    setCpf(cpfWithMaxLength);
+    console.log(`Apenas ${CPF_LENGTH} caracteres`);
+  } else if (!validateOnlyNumbers(cpf) && !!cpf) {
+    const cpfOnlyNumbers = cpf.slice(0, -1);
+    setCpf(cpfOnlyNumbers);
+    console.log("Digite apenas números");
   }
 };
 
@@ -268,14 +290,6 @@ export const handleChangeDepartamento = (
   }
 };
 
-export const handleChangeFilterCpf = (cpf: any, setCpf: any) => {
-  handleChangeNoWhiteSpaceInput(cpf, setCpf);
-
-  if (!validateCpf(cpf)) {
-    showErrorToastCpf(cpf, setCpf);
-  }
-};
-
 export const handleChangeFilterMatricula = (
   matricula: any,
   setMatricula: any
@@ -314,17 +328,5 @@ export const handleChangeFilterUsername = (username: any, setUsername: any) => {
     const usernameWithMaxField = username.slice(0, MAX_USERNAME_FIELD);
     setUsername(usernameWithMaxField);
     console.log(`Username possui no maximo ${MAX_USERNAME_FIELD} caracteres`);
-  }
-};
-
-const showErrorToastCpf = (cpf: any, setCpf: any) => {
-  if (!!cpf && cpf.length > CPF_LENGTH) {
-    const cpfWithMaxLength = cpf.slice(0, CPF_LENGTH);
-    setCpf(cpfWithMaxLength);
-    console.log(`Apenas ${CPF_LENGTH} caracteres`);
-  } else if (!validateOnlyNumbers(cpf) && !!cpf) {
-    const cpfOnlyNumbers = cpf.slice(0, -1);
-    setCpf(cpfOnlyNumbers);
-    console.log("Digite apenas números");
   }
 };
