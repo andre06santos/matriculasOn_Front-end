@@ -4,10 +4,11 @@ import { Input } from "../../../ui/input";
 import "./styles.css";
 import { useState } from "react";
 import { Modal } from "../../../ui/modal";
+import { useAdmin } from "../../../modules/administradores/views/hooks/use-administrador";
 
 const ListStudents = () => {
+  const { students } = useAdmin();
   const [isModalOpen, setIsModalOpen] = useState(false);
-
   const closeModal = () => {
     setIsModalOpen(false);
   };
@@ -15,33 +16,6 @@ const ListStudents = () => {
   const openModal = () => {
     setIsModalOpen(true);
   };
-
-  const students = [
-    {
-      username: "mariaslv",
-      matricula: "2568574MJGHF",
-      cpf: "123.456.789-00",
-      nome: "Maria da Silva Costa",
-      email: "maria.silva@live.com",
-      curso: "Engenharia Civil",
-    },
-    {
-      username: "andrest",
-      matricula: "2568574DJGHF",
-      cpf: "000.000.000-00",
-      nome: "André Santos",
-      email: "andré.santos@live.com",
-      curso: "Engenharia Civil",
-    },
-    {
-      username: "mariaslv",
-      matricula: "2568574MJGHF",
-      cpf: "123.456.789-00",
-      nome: "Maria da Silva Costa",
-      email: "maria.silva@live.com",
-      curso: "Engenharia Civil",
-    },
-  ];
 
   return (
     <div className="flex-column-gap20">
@@ -69,7 +43,7 @@ const ListStudents = () => {
 
       <p>
         Total de alunos encontradas:{" "}
-        <span className="permissions-quantity">3</span>
+        <span className="permissions-quantity">students.length</span>
       </p>
 
       <table className="table">
@@ -84,7 +58,7 @@ const ListStudents = () => {
           </tr>
         </thead>
         <tbody>
-          {students.map((student, index): any => (
+          {students.map((student: any, index: any) => (
             <tr key={index}>
               <td>{student.matricula}</td>
               <td>{student.cpf}</td>
