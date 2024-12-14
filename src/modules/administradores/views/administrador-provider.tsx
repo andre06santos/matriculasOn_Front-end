@@ -11,7 +11,7 @@ export const AdminContext = createContext<any>(undefined);
 
 export const AdminProvider = ({ children }: any) => {
   const [courses, setCourses] = useState<any>([]);
-
+  const [students, setStudents] = useState<any>([]);
   const getCourses = useCallback(async () => {
     try {
       const userRequest = {
@@ -101,8 +101,29 @@ export const AdminProvider = ({ children }: any) => {
       throw new Error((error as Error).message);
     }
   }, []);
+
+  const getStudent = useCallback(async () => {
+    try {
+      const userRequest = {
+        endpoint: "/alunos",
+        config:{
+          method: "GET",
+        }
+      };
+      const _students = await fetchData(userRequest);
+
+      setStudents(_students);
+    } catch (error) {
+      console.log("Ocorreu um erro ao tentar mostrar os alunos!");
+      console.error((error as Error).message);
+    }
+  }, []);
+
+
   const value = useMemo(
     () => ({
+      students,
+      getStudent,
       courses,
       addCourse,
       editCourse,
@@ -111,6 +132,8 @@ export const AdminProvider = ({ children }: any) => {
       deleteCourse,
     }),
     [
+      students,
+      getStudent,
       courses,
       addCourse,
       editCourse,
