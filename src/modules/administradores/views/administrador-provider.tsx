@@ -11,7 +11,7 @@ export const AdminContext = createContext<any>(undefined);
 
 export const AdminProvider = ({ children }: any) => {
   const [courses, setCourses] = useState<any>([]);
-
+  const [student,setStudent] = useState<any>([]);
   const getCourses = useCallback(async () => {
     try {
       const userRequest = {
@@ -123,6 +123,8 @@ export const AdminProvider = ({ children }: any) => {
   const value = useMemo(
     () => ({
       courses,
+      student,
+      addStudents,
       addCourse,
       editCourse,
       getCourses,
@@ -131,6 +133,8 @@ export const AdminProvider = ({ children }: any) => {
     }),
     [
       courses,
+      student,
+      addStudents,
       addCourse,
       editCourse,
       getCourses,
