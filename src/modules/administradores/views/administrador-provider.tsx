@@ -1,18 +1,11 @@
-import {
-  createContext,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import { createContext, useCallback, useMemo, useState } from "react";
 import { fetchData } from "../infrastructure/fetch-data";
 
 export const AdminContext = createContext<any>(undefined);
 
 export const AdminProvider = ({ children }: any) => {
   const [courses, setCourses] = useState<any>([]);
-  const [students,setStudents] = useState<any>([]);
-
+  const [students, setStudents] = useState<any>([]);
   const getCourses = useCallback(async () => {
     try {
       const userRequest = {
@@ -103,29 +96,67 @@ export const AdminProvider = ({ children }: any) => {
     }
   }, []);
 
-  const editStudent = useCallback(async({id,newStudent}:any)=>{
-    try{
+  const editStudent = useCallback(async ({ id, newStudent }: any) => {
+    try {
       const userRequest = {
         endpoint: `/alunos/${id}`,
         config: {
           method: "PUT",
           data: JSON.stringify(newStudent),
-        }
-      }
+        },
+      };
       const editedStudent = await fetchData(userRequest);
 
-      setStudents((prevStudent: any) =>[...prevStudent,editedStudent]);
+      setStudents((prevStudent: any) => [...prevStudent, editedStudent]);
 
       return editedStudent;
-    }  catch (error) {
+    } catch (error) {
       throw new Error((error as Error).message);
     }
-  },[])
-  
+  }, []);
+
+  const getStudent = useCallback(async () => {
+    try {
+      const userRequest = {
+        endpoint: "/alunos",
+        config: {
+          method: "GET",
+        },
+      };
+      const _students = await fetchData(userRequest);
+
+      setStudents(_students);
+    } catch (error) {
+      console.log("Ocorreu um erro ao tentar mostrar os alunos!");
+      console.error((error as Error).message);
+    }
+  }, []);
+
+  const addStudents = useCallback(async (newStudent: any) => {
+    try {
+      const userRequest = {
+        endpoint: "/alunos",
+        config: {
+          method: "POST",
+          data: JSON.stringify(newStudent),
+        },
+      };
+
+      const addedStudent = await fetchData(userRequest);
+
+      setStudents((prevStudent: any) => [...prevStudent, addedStudent]);
+      return addedStudent;
+    } catch (error) {
+      throw new Error((error as Error).message);
+    }
+  }, []);
+
   const value = useMemo(
     () => ({
       students,
       editStudent,
+      getStudent,
+      addStudents,
       courses,
       addCourse,
       editCourse,
@@ -136,7 +167,10 @@ export const AdminProvider = ({ children }: any) => {
     [
       students,
       editStudent,
+      students,
+      getStudent,
       courses,
+      addStudents,
       addCourse,
       editCourse,
       getCourses,
