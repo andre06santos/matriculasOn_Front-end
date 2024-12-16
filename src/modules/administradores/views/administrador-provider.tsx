@@ -151,12 +151,34 @@ export const AdminProvider = ({ children }: any) => {
     }
   }, []);
 
+  const deleteStudent = useCallback(async (id: any) => {
+    try {
+      const userRequest = {
+        endpoint: `/alunos/${id}`,
+        config: {
+          method: "DELETE",
+        },
+      };
+
+      const studentDeleted = await fetchData(userRequest);
+
+      setStudents((prevStudent: any) =>
+        prevStudent.filter((student: any) => student.id !== id)
+      );
+
+      return studentDeleted;
+    } catch (error) {
+      throw new Error((error as Error).message);
+    }
+  }, []);
+
   const value = useMemo(
     () => ({
       students,
       editStudent,
       getStudent,
       addStudents,
+      deleteStudent,
       courses,
       addCourse,
       editCourse,
