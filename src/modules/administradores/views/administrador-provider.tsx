@@ -11,7 +11,7 @@ export const AdminContext = createContext<any>(undefined);
 
 export const AdminProvider = ({ children }: any) => {
   const [courses, setCourses] = useState<any>([]);
-
+  const [student,setStudent] = useState<any>([]);
   const getCourses = useCallback(async () => {
     try {
       const userRequest = {
@@ -61,6 +61,25 @@ export const AdminProvider = ({ children }: any) => {
     }
   }, []);
 
+  const addStudents = useCallback(async (newStudent:any) =>{
+    try{
+      const userRequest = {
+        endpoint: "/alunos",
+        config: {
+          method: "POST",
+          data: JSON.stringify(newStudent),
+        }
+      }
+
+      const addedStudent = await fetchData(userRequest);
+
+      setStudent((prevStudent: any)=>[...prevStudent,addedStudent])
+      return addedStudent;
+    } catch (error) {
+      throw new Error((error as Error).message);
+    }
+  },[]);
+
   const editCourse = useCallback(async ({ id, newCourse }: any) => {
     try {
       const userRequest = {
@@ -104,6 +123,8 @@ export const AdminProvider = ({ children }: any) => {
   const value = useMemo(
     () => ({
       courses,
+      student,
+      addStudents,
       addCourse,
       editCourse,
       getCourses,
@@ -112,6 +133,8 @@ export const AdminProvider = ({ children }: any) => {
     }),
     [
       courses,
+      student,
+      addStudents,
       addCourse,
       editCourse,
       getCourses,
