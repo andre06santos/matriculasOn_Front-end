@@ -4,5 +4,16 @@
       "id": "08d2",
       "nome": "ADS"
     }
+  ],
+  "alunos": [
+    {
+      "id": "4832",
+      "cpf": "000.000.000-00",
+      "nome": "André Santos",
+      "username": "andrests",
+      "matricula": "MAT0001",
+      "email": "andrests@gmail.com",
+      "curso": "ADS"
+    }
   ]
 }
