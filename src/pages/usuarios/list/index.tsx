@@ -2,11 +2,13 @@ import { Link } from "react-router-dom";
 import "./styles.css";
 import { Button } from "../../../ui/button";
 import { Input } from "../../../ui/input";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Modal } from "../../../ui/modal";
+import { useAdmin } from "../../../modules/administradores/views/hooks/use-administrador";
 
 const ListUser = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { users, getUser } = useAdmin();
 
   const closeModal = () => {
     setIsModalOpen(false);
@@ -20,38 +22,9 @@ const ListUser = () => {
     return tipo === "Aluno";
   };
 
-  const users = [
-    {
-      username: "marisilcs",
-      matricula: "2568574MJGHF",
-      cpf: "123.456.789-00",
-      nome: "Maria da Silva Costa",
-      email: "maria.silva@live.com",
-      curso: "Engenharia Civil",
-      tipo: "Aluno",
-      status: true,
-    },
-    {
-      username: "luanmst",
-      cpf: "123.456.789-00",
-      nome: "Luan Monteiro de Sá",
-      email: "luan@gmail.com",
-      cargo: "CHEFE",
-      departamento: "DTI",
-      tipo: "Administrador",
-      status: true,
-    },
-    {
-      username: "luanmst",
-      cpf: "123.456.789-00",
-      nome: "Luan Monteiro de Sá",
-      email: "luan@gmail.com",
-      cargo: "CHEFE",
-      departamento: "DTI",
-      tipo: "Administrador",
-      status: false,
-    },
-  ];
+  useEffect(() => {
+    getUser();
+  }, []);
 
   const options = [
     { label: "Aluno", path: "/alunos/novo-aluno" },
@@ -91,7 +64,7 @@ const ListUser = () => {
 
       <p>
         Total de usuários encontradas:{" "}
-        <span className="permissions-quantity">3</span>
+        <span className="permissions-quantity">{users.length}</span>
       </p>
 
       <table>
@@ -105,7 +78,7 @@ const ListUser = () => {
           </tr>
         </thead>
         <tbody>
-          {users.map((user, index): any => (
+          {users.map((user: any, index: any) => (
             <tr key={index}>
               <td>{user.username}</td>
               <td>{user.nome}</td>
