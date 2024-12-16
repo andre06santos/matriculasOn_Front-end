@@ -13,8 +13,10 @@ import {
   handleChangeUsername,
   verificaSenhasIguais,
 } from "../../../modules/alunosAdmFormValidation";
+import { useAdmin } from "../../../modules/administradores/views/hooks/use-administrador";
 const EditStudent = () => {
   const { state: student } = useLocation();
+  const {editStudent} = useAdmin();
   const [cpf, setCpf] = useState(student.cpf);
   const [matricula, setMatricula] = useState(student.matricula);
   const [nome, setNome] = useState(student.nome);
@@ -33,7 +35,7 @@ const EditStudent = () => {
     { text: "Tecnologia da Informação", value: "TEC_INFO" },
   ];
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
 
     const listaErros = Object.values(errorMessages).filter(
@@ -44,6 +46,26 @@ const EditStudent = () => {
       console.log(listaErros[0]);
     } else {
       navigate("/usuarios");
+    }
+
+    try{
+      const newStudent = {
+        cpf,
+        nome,
+        username,
+        matricula,
+        email,
+        curso,
+      };
+
+      await editStudent({id: student.id, newStudent})
+
+      console.log("Aluno editado com sucesso!");
+
+      navigate("/alunos");
+    }catch (error) {
+      console.log("Ocorreu um erro ao tentar editar o aluno!");
+      console.error((error as Error).message);
     }
   };
 

@@ -96,6 +96,25 @@ export const AdminProvider = ({ children }: any) => {
     }
   }, []);
 
+  const editStudent = useCallback(async ({ id, newStudent }: any) => {
+    try {
+      const userRequest = {
+        endpoint: `/alunos/${id}`,
+        config: {
+          method: "PUT",
+          data: JSON.stringify(newStudent),
+        },
+      };
+      const editedStudent = await fetchData(userRequest);
+
+      setStudents((prevStudent: any) => [...prevStudent, editedStudent]);
+
+      return editedStudent;
+    } catch (error) {
+      throw new Error((error as Error).message);
+    }
+  }, []);
+
   const getStudent = useCallback(async () => {
     try {
       const userRequest = {
@@ -135,6 +154,7 @@ export const AdminProvider = ({ children }: any) => {
   const value = useMemo(
     () => ({
       students,
+      editStudent,
       getStudent,
       addStudents,
       courses,
@@ -145,6 +165,8 @@ export const AdminProvider = ({ children }: any) => {
       deleteCourse,
     }),
     [
+      students,
+      editStudent,
       students,
       getStudent,
       courses,
