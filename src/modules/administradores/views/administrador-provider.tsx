@@ -1,9 +1,4 @@
-import {
-  createContext,
-  useCallback,
-  useMemo,
-  useState,
-} from "react";
+import { createContext, useCallback, useMemo, useState } from "react";
 import { fetchData } from "../infrastructure/fetch-data";
 
 export const AdminContext = createContext<any>(undefined);
@@ -105,9 +100,9 @@ export const AdminProvider = ({ children }: any) => {
     try {
       const userRequest = {
         endpoint: "/alunos",
-        config:{
+        config: {
           method: "GET",
-        }
+        },
       };
       const _students = await fetchData(userRequest);
 
@@ -118,11 +113,30 @@ export const AdminProvider = ({ children }: any) => {
     }
   }, []);
 
+  const addStudents = useCallback(async (newStudent: any) => {
+    try {
+      const userRequest = {
+        endpoint: "/alunos",
+        config: {
+          method: "POST",
+          data: JSON.stringify(newStudent),
+        },
+      };
+
+      const addedStudent = await fetchData(userRequest);
+
+      setStudents((prevStudent: any) => [...prevStudent, addedStudent]);
+      return addedStudent;
+    } catch (error) {
+      throw new Error((error as Error).message);
+    }
+  }, []);
 
   const value = useMemo(
     () => ({
       students,
       getStudent,
+      addStudents,
       courses,
       addCourse,
       editCourse,
@@ -134,6 +148,7 @@ export const AdminProvider = ({ children }: any) => {
       students,
       getStudent,
       courses,
+      addStudents,
       addCourse,
       editCourse,
       getCourses,
