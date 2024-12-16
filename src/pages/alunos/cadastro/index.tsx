@@ -49,15 +49,16 @@ const RegisterStudent = () => {
     }
 
     try{
-      await addStudents({
-        cpf : cpf,
-        nome : nome,
-        username: username,
-        matricula: matricula,
-        email: email,
-        curso: curso,
-
-      })
+      const aluno = {
+        cpf,
+        nome,
+        username,
+        matricula,
+        email,
+        curso,
+      };
+      
+      await addStudents(aluno);
 
       console.log("Aluno cadastrado com sucesso!");
      
