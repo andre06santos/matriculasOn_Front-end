@@ -94,11 +94,7 @@ const EditStudent = () => {
             required
             value={matricula}
             onChange={(e: any) =>
-              handleChangeMatricula(
-                e.target.value,
-                setErrorMessages,
-                setMatricula
-              )
+              handleChangeMatricula(e.target.value, setMatricula)
             }
           />
           <Input
@@ -106,9 +102,7 @@ const EditStudent = () => {
             type="text"
             required
             value={nome}
-            onChange={(e: any) =>
-              handleChangeNome(e.target.value, setErrorMessages, setNome)
-            }
+            onChange={(e: any) => handleChangeNome(e.target.value, setNome)}
           />
         </div>
         <div className="input-group">
@@ -118,11 +112,7 @@ const EditStudent = () => {
             value={username}
             required
             onChange={(e: any) =>
-              handleChangeUsername(
-                e.target.value,
-                setErrorMessages,
-                setUsername
-              )
+              handleChangeUsername(e.target.value, setUsername)
             }
           />
           <Input

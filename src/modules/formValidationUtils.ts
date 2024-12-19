@@ -13,9 +13,9 @@ export const CPF_LENGTH = 11;
 
 const regexOnlyLetters = new RegExp("^[a-zA-ZÀ-ÿ´`~^\\s]+$");
 const regexValidEmail = new RegExp(
-  "^[a-zA-Z0-9._%+-]{1,}@[a-zA-Z0-9-]{1,}.[a-zA-Z]{2,}$"
+  /^[a-zA-Z0-9._%+-]{1,}@[a-zA-Z0-9-]{1,}.[a-zA-Z]{2,}.[a-zA-Z]{0,}.[a-zA-Z]{0,}$/
 );
-const regexOnlyNumbers = new RegExp("[0-9]+$");
+const regexOnlyNumbers = new RegExp(/^\d+$/);
 const regexLettersAndNumbers = new RegExp("^[a-zA-Z0-9]+$");
 const regexUpperLettersAndUnderscore = new RegExp("^[A-Z_]+$");
 const regexWhitespaceBeginning = new RegExp(/^\s{1,}/);
@@ -144,9 +144,9 @@ export const validateEmptyString = (valor: any) => {
   return isEmptyString;
 };
 
-export const handleChangeNoWhiteSpaceInput = (value: any, setValue: any) => {
+export const handleChangeNoWhiteSpaceInput = (value: any) => {
   const hasWhiteSpace = validWhiteSpaceBeginning(value);
-  if (hasWhiteSpace) return;
+  if (hasWhiteSpace) return false;
 
-  setValue(value);
+  return true;
 };

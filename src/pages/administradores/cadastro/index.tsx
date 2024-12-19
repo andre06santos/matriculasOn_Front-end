@@ -71,18 +71,14 @@ const AdministratorRegistration = () => {
             type="text"
             required
             value={cargo}
-            onChange={(e: any) =>
-              handleChangeCargo(e.target.value, setErrorMessages, setCargo)
-            }
+            onChange={(e: any) => handleChangeCargo(e.target.value, setCargo)}
           />
           <Input
             label="Nome"
             type="text"
             required
             value={nome}
-            onChange={(e: any) =>
-              handleChangeNome(e.target.value, setErrorMessages, setNome)
-            }
+            onChange={(e: any) => handleChangeNome(e.target.value, setNome)}
           />
         </div>
         <div className="input-group">
@@ -92,11 +88,7 @@ const AdministratorRegistration = () => {
             required
             value={username}
             onChange={(e: any) =>
-              handleChangeUsername(
-                e.target.value,
-                setErrorMessages,
-                setUsername
-              )
+              handleChangeUsername(e.target.value, setUsername)
             }
           />
           <Input
@@ -114,11 +106,7 @@ const AdministratorRegistration = () => {
             required
             value={departamento}
             onChange={(e: any) =>
-              handleChangeDepartamento(
-                e.target.value,
-                setErrorMessages,
-                setDepartamento
-              )
+              handleChangeDepartamento(e.target.value, setDepartamento)
             }
           />
         </div>

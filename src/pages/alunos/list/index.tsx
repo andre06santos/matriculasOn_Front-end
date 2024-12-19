@@ -5,13 +5,13 @@ import { useEffect, useRef, useState } from "react";
 import { Modal } from "../../../ui/modal";
 import {
   handleChangeFilterCpf,
-  handleChangeFilterMatricula,
-  handleChangeFilterNome,
+  handleChangeMatricula,
+  handleChangeNome,
 } from "../../../modules/alunosAdmFormValidation";
 import { useAdmin } from "../../../modules/administradores/views/hooks/use-administrador";
 
 const ListStudents = () => {
-  const { students, getStudent, deleteStudent } = useAdmin();
+  const { getStudent, deleteStudent } = useAdmin();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [matricula, setMatricula] = useState("");
@@ -27,7 +27,6 @@ const ListStudents = () => {
 
   const openModal = (studentId: any) => {
     setIsModalOpen(true);
-    setStudentId(studentId);
   };
 
   const onDelete = async () => {
@@ -78,7 +77,7 @@ const ListStudents = () => {
             placeholder="Matrícula"
             value={matricula}
             onChange={(e: any) =>
-              handleChangeFilterMatricula(e.target.value, setMatricula)
+              handleChangeMatricula(e.target.value, setMatricula)
             }
             ref={matriculaInput}
           />
@@ -90,9 +89,7 @@ const ListStudents = () => {
           <Input
             placeholder="Nome"
             value={nome}
-            onChange={(e: any) =>
-              handleChangeFilterNome(e.target.value, setNome)
-            }
+            onChange={(e: any) => handleChangeNome(e.target.value, setNome)}
           />
 
           <div className="filter__buttons">
