@@ -1,8 +1,10 @@
 import {
+  cleanErrorMessages,
+  handleChangeNoWhiteSpaceInput,
   MAX_CURSO_FIELD,
+  updateErrorMessages,
   validateCourseName,
   validateOnlyLetters,
-  validWhitespaceBeginning,
 } from "./formValidationUtils";
 
 export const handleCourseName = (
@@ -10,19 +12,12 @@ export const handleCourseName = (
   setErrorMessages: any,
   setNome: any
 ) => {
-  const hasWhitespace = validWhitespaceBeginning(nome);
-
-  if (hasWhitespace) return;
-
-  setNome(nome);
-
+  handleChangeNoWhiteSpaceInput(nome, setNome);
   const isCourseNameValid = validateCourseName(nome.trim());
+  const fieldKey = "curso";
 
   if (isCourseNameValid) {
-    setErrorMessages((prevErrors: any) => ({
-      ...prevErrors,
-      nome: "",
-    }));
+    cleanErrorMessages(setErrorMessages, fieldKey);
   } else {
     if (!!nome && !validateOnlyLetters(nome)) {
       const nomeOnlyLetters = nome.slice(0, -1);
@@ -33,10 +28,22 @@ export const handleCourseName = (
       setNome(nomeWithMaxLength);
       console.log(`Quantidade de caracteres maximo de ${MAX_CURSO_FIELD}`);
     } else {
-      setErrorMessages((prevErrors: any) => ({
-        ...prevErrors,
-        nome: "Digite o nome corretamente",
-      }));
+      const messageObject = { nome: "Digite o nome corretamente" };
+      updateErrorMessages(setErrorMessages, fieldKey, messageObject);
     }
+  }
+};
+
+export const handleChangeFilterCourseNome = (nome: any, setNome: any) => {
+  handleChangeNoWhiteSpaceInput(nome, setNome);
+
+  if (!!nome && !validateOnlyLetters(nome)) {
+    const nomeOnlyLetters = nome.slice(0, -1);
+    setNome(nomeOnlyLetters);
+    console.log("Digite apenas letras");
+  } else if (nome.length > MAX_CURSO_FIELD) {
+    const nomeWithMaxLength = nome.slice(0, MAX_CURSO_FIELD);
+    setNome(nomeWithMaxLength);
+    console.log(`Quantidade de caracteres maximo de ${MAX_CURSO_FIELD}`);
   }
 };

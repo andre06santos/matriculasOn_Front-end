@@ -3,7 +3,18 @@ import "./styles.css";
 import React from "react";
 
 const Input = React.forwardRef(
-  ({ label, type = "text", variant, selectOptions, ...rest }: any, ref) => {
+  (
+    {
+      label,
+      type = "text",
+      variant,
+      selectOptions,
+      onChange,
+      value,
+      ...rest
+    }: any,
+    ref
+  ) => {
     const inputCollors: any = {
       bgNeutral: "bg-neutral",
       bgInfo: "bg-info",
@@ -16,29 +27,26 @@ const Input = React.forwardRef(
         : "input-text"
     }`;
 
-    const { onChange } = { ...rest };
-
     return (
       <div className="input-component">
         {label && <label>{label}</label>}
 
         {selectOptions ? (
           <Select
-            isSearchable
             options={selectOptions}
             placeholder="Escolha uma opção"
             noOptionsMessage={() => "Nenhuma opção encontrada!"}
-            getOptionValue={(option: any) => option["value"]}
-            getOptionLabel={(option: any) => option["text"]}
             className="input-select"
+            value={value}
             onChange={onChange}
-            {...rest}
           />
         ) : (
           <input
             type={type}
-            ref={ref}
             className={inputClass}
+            onChange={onChange}
+            value={value}
+            ref={ref}
             autoComplete="off"
             {...rest}
           />

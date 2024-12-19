@@ -1,15 +1,13 @@
 import { useEffect, useRef, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Button } from "../../../ui/button";
 import { Modal } from "../../../ui/modal";
-import {
-  validateEmptyString,
-  validWhitespaceBeginning,
-} from "../../../modules/formValidationUtils";
+import { validateEmptyString } from "../../../modules/formValidationUtils";
 import { useAdmin } from "../../../modules/administradores/views/hooks/use-administrador";
 import { NotFound } from "../../../ui/not-found";
 import { Filter } from "./filter";
 import "./styles.css";
+import { handleChangeFilterCourseNome } from "../../../modules/courseFormValidation";
 
 const ListCourses = () => {
   const { courses, getCourses, searchCourse, deleteCourse } = useAdmin();
@@ -44,20 +42,6 @@ const ListCourses = () => {
     onClean();
     onFocus();
     getCourses();
-  };
-
-  const handleCourseName = (name: any) => {
-    const hasWhitespace = validWhitespaceBeginning(name);
-
-    if (hasWhitespace) return;
-
-    setName(name);
-
-    const emptyField = validateEmptyString(name);
-
-    if (emptyField) {
-      onReset();
-    }
   };
 
   const onDelete = async () => {
@@ -124,7 +108,8 @@ const ListCourses = () => {
             <Filter
               onSubmit={onSubmit}
               name={name}
-              handleCourseName={handleCourseName}
+              handleChange={handleChangeFilterCourseNome}
+              setName={setName}
               nameInput={nameInput}
               onReset={onReset}
             />
@@ -140,7 +125,8 @@ const ListCourses = () => {
           <Filter
             onSubmit={onSubmit}
             name={name}
-            handleCourseName={handleCourseName}
+            setName={setName}
+            handleChange={handleChangeFilterCourseNome}
             nameInput={nameInput}
             onReset={onReset}
           />

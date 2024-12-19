@@ -25,18 +25,15 @@ const EditAdmin = () => {
   const [departamento, setDepartamento] = useState(admin.departamento);
   const [senha, setSenha] = useState("");
   const [conferirSenha, setConferirSenha] = useState("");
-  const [errorMessages, setErrorMessages] = useState({});
+  const [errorMessages, setErrorMessages] = useState([]);
   const navigate = useNavigate();
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
 
-    const listaErros = Object.values(errorMessages).filter(
-      (error) => error !== ""
-    );
-
-    if (listaErros.length > 0) {
-      console.log(listaErros[0]);
+    if (errorMessages.length > 0) {
+      const firstError = Object.values(errorMessages[0])[0];
+      console.log(firstError);
     } else {
       navigate("/usuarios");
     }
@@ -53,7 +50,7 @@ const EditAdmin = () => {
     setDepartamento("");
     setSenha("");
     setConferirSenha("");
-    setErrorMessages({});
+    setErrorMessages([]);
   };
 
   return (
@@ -73,36 +70,32 @@ const EditAdmin = () => {
           <Input
             label="Cargo"
             type="text"
+            required
             value={cargo}
-            onChange={(e: any) =>
-              handleChangeCargo(e.target.value, setErrorMessages, setCargo)
-            }
+            onChange={(e: any) => handleChangeCargo(e.target.value, setCargo)}
           />
           <Input
             label="Nome"
             type="text"
+            required
             value={nome}
-            onChange={(e: any) =>
-              handleChangeNome(e.target.value, setErrorMessages, setNome)
-            }
+            onChange={(e: any) => handleChangeNome(e.target.value, setNome)}
           />
         </div>
         <div className="input-group">
           <Input
             label="Username"
             type="text"
+            required
             value={username}
             onChange={(e: any) =>
-              handleChangeUsername(
-                e.target.value,
-                setErrorMessages,
-                setUsername
-              )
+              handleChangeUsername(e.target.value, setUsername)
             }
           />
           <Input
             label="Email"
             type="text"
+            required
             value={email}
             onChange={(e: any) =>
               handleChangeEmail(e.target.value, setErrorMessages, setEmail)
@@ -111,13 +104,10 @@ const EditAdmin = () => {
           <Input
             label="Departamento"
             type="text"
+            required
             value={departamento}
             onChange={(e: any) =>
-              handleChangeDepartamento(
-                e.target.value,
-                setErrorMessages,
-                setDepartamento
-              )
+              handleChangeDepartamento(e.target.value, setDepartamento)
             }
           />
         </div>
@@ -125,6 +115,7 @@ const EditAdmin = () => {
           <Input
             label="Senha"
             type="password"
+            required
             value={senha}
             onChange={(e: any) => {
               handleChangeSenha(e.target.value, setErrorMessages, setSenha);
@@ -138,6 +129,7 @@ const EditAdmin = () => {
           <Input
             label="Confirmar senha"
             type="password"
+            required
             value={conferirSenha}
             onChange={(e: any) => {
               handleChangeConfSenha(
