@@ -9,41 +9,33 @@ import {
 
 export const handleCourseName = (
   nome: any,
-  setErrorMessages: any,
   setNome: any
 ) => {
-  handleChangeNoWhiteSpaceInput(nome, setNome);
-  const isCourseNameValid = validateCourseName(nome.trim());
-  const fieldKey = "curso";
+  const hasError = !validateOnlyLetters(nome) || nome.length > MAX_CURSO_FIELD;
 
-  if (isCourseNameValid) {
-    cleanErrorMessages(setErrorMessages, fieldKey);
-  } else {
-    if (!!nome && !validateOnlyLetters(nome)) {
-      const nomeOnlyLetters = nome.slice(0, -1);
-      setNome(nomeOnlyLetters);
-      console.log("Digite apenas letras");
-    } else if (nome.length > MAX_CURSO_FIELD) {
-      const nomeWithMaxLength = nome.slice(0, MAX_CURSO_FIELD);
-      setNome(nomeWithMaxLength);
-      console.log(`Quantidade de caracteres maximo de ${MAX_CURSO_FIELD}`);
-    } else {
-      const messageObject = { nome: "Digite o nome corretamente" };
-      updateErrorMessages(setErrorMessages, fieldKey, messageObject);
-    }
+  if (nome === "") {
+    setNome(nome);
+    return;
   }
+
+  if (hasError) {
+    showCourseNomeError(nome);
+    return;
+  }
+
+  setNome(nome);
 };
 
-export const handleChangeFilterCourseNome = (nome: any, setNome: any) => {
-  handleChangeNoWhiteSpaceInput(nome, setNome);
+const showCourseNomeError = (nome: any) => {
+  const hasOnlyLetters = validateOnlyLetters(nome);
 
-  if (!!nome && !validateOnlyLetters(nome)) {
-    const nomeOnlyLetters = nome.slice(0, -1);
-    setNome(nomeOnlyLetters);
-    console.log("Digite apenas letras");
-  } else if (nome.length > MAX_CURSO_FIELD) {
-    const nomeWithMaxLength = nome.slice(0, MAX_CURSO_FIELD);
-    setNome(nomeWithMaxLength);
+  if (!hasOnlyLetters) {
+    console.log("Caractere nao permitido");
+    return;
+  }
+
+  if (nome.length > MAX_CURSO_FIELD) {
     console.log(`Quantidade de caracteres maximo de ${MAX_CURSO_FIELD}`);
+    return;
   }
 };
