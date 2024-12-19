@@ -1,42 +1,41 @@
 import {
+  cleanErrorMessages,
+  handleChangeNoWhiteSpaceInput,
   MAX_CURSO_FIELD,
+  updateErrorMessages,
   validateCourseName,
   validateOnlyLetters,
-  validWhitespaceBeginning,
 } from "./formValidationUtils";
 
 export const handleCourseName = (
   nome: any,
-  setErrorMessages: any,
   setNome: any
 ) => {
-  const hasWhitespace = validWhitespaceBeginning(nome);
+  const hasError = !validateOnlyLetters(nome) || nome.length > MAX_CURSO_FIELD;
 
-  if (hasWhitespace) return;
+  if (nome === "") {
+    setNome(nome);
+    return;
+  }
+
+  if (hasError) {
+    showCourseNomeError(nome);
+    return;
+  }
 
   setNome(nome);
+};
 
-  const isCourseNameValid = validateCourseName(nome.trim());
+const showCourseNomeError = (nome: any) => {
+  const hasOnlyLetters = validateOnlyLetters(nome);
 
-  if (isCourseNameValid) {
-    setErrorMessages((prevErrors: any) => ({
-      ...prevErrors,
-      nome: "",
-    }));
-  } else {
-    if (!!nome && !validateOnlyLetters(nome)) {
-      const nomeOnlyLetters = nome.slice(0, -1);
-      setNome(nomeOnlyLetters);
-      console.log("Digite apenas letras");
-    } else if (nome.length > MAX_CURSO_FIELD) {
-      const nomeWithMaxLength = nome.slice(0, MAX_CURSO_FIELD);
-      setNome(nomeWithMaxLength);
-      console.log(`Quantidade de caracteres maximo de ${MAX_CURSO_FIELD}`);
-    } else {
-      setErrorMessages((prevErrors: any) => ({
-        ...prevErrors,
-        nome: "Digite o nome corretamente",
-      }));
-    }
+  if (!hasOnlyLetters) {
+    console.log("Caractere nao permitido");
+    return;
+  }
+
+  if (nome.length > MAX_CURSO_FIELD) {
+    console.log(`Quantidade de caracteres maximo de ${MAX_CURSO_FIELD}`);
+    return;
   }
 };

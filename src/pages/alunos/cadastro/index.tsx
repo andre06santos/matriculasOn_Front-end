@@ -24,31 +24,23 @@ const RegisterStudent = () => {
   const [curso, setCurso] = useState("");
   const [senha, setSenha] = useState("");
   const [conferirSenha, setConferirSenha] = useState("");
-  const [errorMessages, setErrorMessages] = useState({});
+  const [errorMessages, setErrorMessages] = useState([]);
   const navigate = useNavigate();
-  const {addStudents} = useAdmin();
-
-  const cursoOptions = [
-    { text: "Análise e Desenvolvimento de Sistemas", value: "ADS" },
-    { text: "Engenharia de Software", value: "ENG_SOF" },
-    { text: "Redes de Computadores", value: "RED" },
-    { text: "Tecnologia da Informação", value: "TEC_INF" },
-  ];
+  const { addStudents } = useAdmin();
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
 
-    const listaErros = Object.values(errorMessages).filter(
-      (error) => error !== ""
-    );
+    console.log(errorMessages);
+    
 
-    if (listaErros.length > 0) {
-      console.log(listaErros[0]);
-    } else {
-      navigate("/usuarios");
-    }
+    if (errorMessages.length > 0) {
+      const firstError = Object.values(errorMessages[0])[0];
+      console.log(firstError);
+      return
+    } 
 
-    try{
+    try {
       const aluno = {
         cpf,
         nome,
@@ -57,12 +49,12 @@ const RegisterStudent = () => {
         email,
         curso,
       };
-      
+
       await addStudents(aluno);
 
       console.log("Aluno cadastrado com sucesso!");
-     
-      navigate("/alunos")
+
+      navigate("/alunos");
     } catch (error) {
       console.log("Ocorreu um erro ao tentar cadastrar o aluno!");
       console.error((error as Error).message);
@@ -80,7 +72,7 @@ const RegisterStudent = () => {
     setCurso("");
     setSenha("");
     setConferirSenha("");
-    setErrorMessages({});
+    setErrorMessages([]);
   };
 
   return (
@@ -103,11 +95,7 @@ const RegisterStudent = () => {
             required
             value={matricula}
             onChange={(e: any) =>
-              handleChangeMatricula(
-                e.target.value,
-                setErrorMessages,
-                setMatricula
-              )
+              handleChangeMatricula(e.target.value, setMatricula)
             }
           />
           <Input
@@ -115,9 +103,7 @@ const RegisterStudent = () => {
             type="text"
             required
             value={nome}
-            onChange={(e: any) =>
-              handleChangeNome(e.target.value, setErrorMessages, setNome)
-            }
+            onChange={(e: any) => handleChangeNome(e.target.value, setNome)}
           />
         </div>
         <div className="input-group">
@@ -127,11 +113,7 @@ const RegisterStudent = () => {
             value={username}
             required
             onChange={(e: any) =>
-              handleChangeUsername(
-                e.target.value,
-                setErrorMessages,
-                setUsername
-              )
+              handleChangeUsername(e.target.value, setUsername)
             }
           />
           <Input
@@ -147,8 +129,8 @@ const RegisterStudent = () => {
             label="Curso"
             selectOptions={cursoOptions}
             required
-            text={curso}
-            onChange={(e: any) => setCurso(e.value)}
+            value={curso}
+            onChange={setCurso}
           />
         </div>
         <div className="input-group">
@@ -199,3 +181,10 @@ const RegisterStudent = () => {
 };
 
 export { RegisterStudent };
+
+const cursoOptions = [
+  { label: "Análise e Desenvolvimento de Sistemas", value: "ADS" },
+  { label: "Engenharia de Software", value: "ENG_SOF" },
+  { label: "Redes de Computadores", value: "RED" },
+  { label: "Tecnologia da Informação", value: "TEC_INF" },
+];

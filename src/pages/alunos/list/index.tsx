@@ -1,14 +1,24 @@
 import { Link } from "react-router-dom";
-import { Button } from "../../../ui/button";
 import { Input } from "../../../ui/input";
 import "./styles.css";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Modal } from "../../../ui/modal";
+import {
+  handleChangeFilterCpf,
+  handleChangeMatricula,
+  handleChangeNome,
+} from "../../../modules/alunosAdmFormValidation";
 import { useAdmin } from "../../../modules/administradores/views/hooks/use-administrador";
 
 const ListStudents = () => {
   const { students, getStudent, deleteStudent } = useAdmin();
+  
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const [matricula, setMatricula] = useState("");
+  const [cpf, setCpf] = useState("");
+  const [nome, setNome] = useState("");
+  const matriculaInput = useRef<any>(null);
 
   const [studentId, setStudentId] = useState("");
 
@@ -18,7 +28,7 @@ const ListStudents = () => {
 
   const openModal = (studentId: any) => {
     setIsModalOpen(true);
-    setStudentId(studentId);
+    setStudentId(studentId)
   };
 
   const onDelete = async () => {
@@ -38,6 +48,19 @@ const ListStudents = () => {
     getStudent();
   }, []);
 
+  const onClean = () => {
+    setMatricula("");
+    setCpf("");
+    setNome("");
+  };
+
+  const onFocus = () => matriculaInput.current.focus();
+
+  const onReset = () => {
+    onClean();
+    onFocus();
+  };
+
   return (
     <div className="flex-column-gap20">
       {isModalOpen && (
@@ -52,13 +75,33 @@ const ListStudents = () => {
       <div className="filter flex-column-gap20">
         <span>Filtros</span>
         <form action="" className="form-filter">
-          <Input placeholder="Matrícula" />
-          <Input placeholder="CPF" />
-          <Input placeholder="Nome" />
+          <Input
+            placeholder="Matrícula"
+            value={matricula}
+            onChange={(e: any) =>
+              handleChangeMatricula(e.target.value, setMatricula)
+            }
+            ref={matriculaInput}
+          />
+          <Input
+            placeholder="CPF"
+            value={cpf}
+            onChange={(e: any) => handleChangeFilterCpf(e.target.value, setCpf)}
+          />
+          <Input
+            placeholder="Nome"
+            value={nome}
+            onChange={(e: any) => handleChangeNome(e.target.value, setNome)}
+          />
 
           <div className="filter__buttons">
             <Input type="submit" variant="bgInfo" value="Buscar" />
-            <Input type="reset" variant="bgNeutral" value="Limpar" />
+            <Input
+              type="reset"
+              variant="bgNeutral"
+              value="Limpar"
+              onClick={onReset}
+            />
           </div>
         </form>
       </div>
@@ -86,7 +129,7 @@ const ListStudents = () => {
               <td>{student.cpf}</td>
               <td>{student.nome}</td>
               <td>{student.email}</td>
-              <td>{student.curso}</td>
+              <td>{student.curso.value}</td>
               <td className="table-actions action-column">
                 <Link to="/alunos/editar-aluno" state={student}>
                   <i className="fa-solid fa-pen-to-square"></i>
@@ -105,3 +148,27 @@ const ListStudents = () => {
 };
 
 export { ListStudents };
+
+// const students = [
+//   {
+//     matricula: "2568574MJGHF",
+//     cpf: "123.456.789-00",
+//     nome: "Maria da Silva Costa",
+//     email: "maria.silva@live.com",
+//     curso: "Engenharia Civil",
+//   },
+//   {
+//     matricula: "2568574MJGHF",
+//     cpf: "123.456.789-00",
+//     nome: "Maria da Silva Costa",
+//     email: "maria.silva@live.com",
+//     curso: "Engenharia Civil",
+//   },
+//   {
+//     matricula: "2568574MJGHF",
+//     cpf: "123.456.789-00",
+//     nome: "Maria da Silva Costa",
+//     email: "maria.silva@live.com",
+//     curso: "Engenharia Civil",
+//   },
+// ];

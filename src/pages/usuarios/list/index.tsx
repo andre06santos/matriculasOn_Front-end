@@ -2,13 +2,20 @@ import { Link } from "react-router-dom";
 import "./styles.css";
 import { Button } from "../../../ui/button";
 import { Input } from "../../../ui/input";
-import { useEffect, useState } from "react";
+import { useRef, useEffect, useState } from "react";
 import { Modal } from "../../../ui/modal";
+import { handleChangeNome, handleChangeUsername } from "../../../modules/alunosAdmFormValidation";
 import { useAdmin } from "../../../modules/administradores/views/hooks/use-administrador";
 
 const ListUser = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { users, getUser } = useAdmin();
+
+  const [username, setUsername] = useState("");
+  const [nome, setNome] = useState("");
+  const [status, setStatus] = useState("");
+  const usernameInput = useRef<any>(null);
+  const selectInputRef = useRef<any>(null);
 
   const closeModal = () => {
     setIsModalOpen(false);
@@ -22,19 +29,18 @@ const ListUser = () => {
     return tipo === "Aluno";
   };
 
-  useEffect(() => {
-    getUser();
-  }, []);
+  const onClean = () => {
+    setUsername("");
+    setNome("");
+    setStatus("");
+  };
 
-  const options = [
-    { label: "Aluno", path: "/alunos/novo-aluno" },
-    { label: "Administrador", path: "/administradores/novo-administrador" },
-  ];
+  const onFocus = () => usernameInput.current.focus();
 
-  const statusOptions = [
-    { label: "Ativo", value: "ATIVO" },
-    { label: "Inativo", value: "INATIVO" },
-  ];
+  const onReset = () => {
+    onClean();
+    onFocus();
+  };
 
   return (
     <div className="flex-column-gap20">
@@ -52,12 +58,37 @@ const ListUser = () => {
       <div className="filter flex-column-gap20">
         <span>Filtros</span>
         <form className="form-filter">
-          <Input type="text" placeholder="Username" />
-          <Input type="text" placeholder="Nome" />
-          <Input selectOptions={statusOptions} />
+          <Input
+            type="text"
+            placeholder="Username"
+            value={username}
+            onChange={(e: any) =>
+              handleChangeUsername(e.target.value, setUsername)
+            }
+            ref={usernameInput}
+          />
+          <Input
+            type="text"
+            placeholder="Nome"
+            value={nome}
+            onChange={(e: any) =>
+              handleChangeNome(e.target.value, setNome)
+            }
+          />
+          <Input
+            selectOptions={statusOptions}
+            ref={selectInputRef}
+            value={status}
+            onChange={setStatus}
+          />
           <div className="form-actions">
             <Input type="submit" variant="bgInfo" value="Buscar" />
-            <Input type="reset" variant="bgNeutral" value="Limpar" />
+            <Input
+              type="reset"
+              variant="bgNeutral"
+              value="Limpar"
+              onClick={onReset}
+            />
           </div>
         </form>
       </div>
@@ -108,3 +139,46 @@ const ListUser = () => {
 };
 
 export { ListUser };
+
+const users = [
+  {
+    username: "marisilcs",
+    matricula: "2568574MJGHF",
+    cpf: "123.456.789-00",
+    nome: "Maria da Silva Costa",
+    email: "maria.silva@live.com",
+    curso: "Engenharia Civil",
+    tipo: "Aluno",
+    status: true,
+  },
+  {
+    username: "luanmst",
+    cpf: "123.456.789-00",
+    nome: "Luan Monteiro de Sá",
+    email: "luan@gmail.com",
+    cargo: "CHEFE",
+    departamento: "DTI",
+    tipo: "Administrador",
+    status: true,
+  },
+  {
+    username: "luanmst",
+    cpf: "123.456.789-00",
+    nome: "Luan Monteiro de Sá",
+    email: "luan@gmail.com",
+    cargo: "CHEFE",
+    departamento: "DTI",
+    tipo: "Administrador",
+    status: false,
+  },
+];
+
+const options = [
+  { label: "Aluno", path: "/alunos/novo-aluno" },
+  { label: "Administrador", path: "/administradores/novo-administrador" },
+];
+
+const statusOptions = [
+  { label: "Ativo", value: "ATIVO" },
+  { label: "Inativo", value: "INATIVO" },
+];

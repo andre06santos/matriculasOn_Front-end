@@ -1,9 +1,10 @@
+import { handleCourseName } from "../../../modules/courseFormValidation";
 import { Input } from "../../../ui/input";
 
 const Filter = ({
   onSubmit,
   name,
-  handleCourseName,
+  setName,
   nameInput,
   onReset,
 }: any) => {
@@ -15,7 +16,7 @@ const Filter = ({
           placeholder="Nome"
           value={name}
           onChange={(e: any) => {
-            handleCourseName(e.target.value);
+            handleCourseName(e.target.value, setName);
           }}
           ref={nameInput}
         />

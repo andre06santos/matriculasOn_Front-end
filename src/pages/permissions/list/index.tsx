@@ -2,11 +2,15 @@ import { Link } from "react-router-dom";
 import { Button } from "../../../ui/button";
 import { Input } from "../../../ui/input";
 import "./styles.css";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Modal } from "../../../ui/modal";
+import { handleChangeDescription } from "../../../modules/permissionsFormValidation";
 
 const ListPermissions = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const [descricao, setDescricao] = useState("");
+  const descricaoInput = useRef<any>(null);
 
   const closeModal = () => {
     setIsModalOpen(false);
@@ -14,6 +18,17 @@ const ListPermissions = () => {
 
   const openModal = () => {
     setIsModalOpen(true);
+  };
+
+  const onClean = () => setDescricao("");
+
+  const onFocus = () => descricaoInput.current.focus();
+
+  const onReset = () => {
+    if (descricao === "") return;
+
+    onClean();
+    onFocus();
   };
 
   const permissions = [
@@ -49,11 +64,23 @@ const ListPermissions = () => {
       <div className="filter flex-column-gap20">
         <span>Filtros</span>
         <form action="" className="form-filter">
-          <Input placeholder="Descrição" />
+          <Input
+            placeholder="Descrição"
+            value={descricao}
+            onChange={(e: any) =>
+              handleChangeDescription(e.target.value, setDescricao)
+            }
+            ref={descricaoInput}
+          />
 
           <div className="filter-buttons">
             <Input type="submit" variant="bgInfo" value="Buscar" />
-            <Input type="reset" variant="bgNeutral" value="Limpar" />
+            <Input
+              type="reset"
+              variant="bgNeutral"
+              value="Limpar"
+              onClick={onReset}
+            />
           </div>
         </form>
       </div>

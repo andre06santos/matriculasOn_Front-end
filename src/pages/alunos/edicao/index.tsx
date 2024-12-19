@@ -16,7 +16,7 @@ import {
 import { useAdmin } from "../../../modules/administradores/views/hooks/use-administrador";
 const EditStudent = () => {
   const { state: student } = useLocation();
-  const {editStudent} = useAdmin();
+  const { editStudent } = useAdmin();
   const [cpf, setCpf] = useState(student.cpf);
   const [matricula, setMatricula] = useState(student.matricula);
   const [nome, setNome] = useState(student.nome);
@@ -25,30 +25,19 @@ const EditStudent = () => {
   const [curso, setCurso] = useState(student.curso);
   const [senha, setSenha] = useState("");
   const [conferirSenha, setConferirSenha] = useState("");
-  const [errorMessages, setErrorMessages] = useState({});
+  const [errorMessages, setErrorMessages] = useState([]);
   const navigate = useNavigate();
-
-  const cursoOptions = [
-    { text: "Análise e Desenvolvimento de Sistemas", value: "ADS" },
-    { text: "Engenharia de Software", value: "ENG_SOF" },
-    { text: "Redes de Computadores", value: "RED_COMP" },
-    { text: "Tecnologia da Informação", value: "TEC_INFO" },
-  ];
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
 
-    const listaErros = Object.values(errorMessages).filter(
-      (error) => error !== ""
-    );
+    if (errorMessages.length > 0) {
+      const firstError = Object.values(errorMessages[0])[0];
+      console.log(firstError);
+      return
+    } 
 
-    if (listaErros.length > 0) {
-      console.log(listaErros[0]);
-    } else {
-      navigate("/usuarios");
-    }
-
-    try{
+    try {
       const newStudent = {
         cpf,
         nome,
@@ -58,12 +47,12 @@ const EditStudent = () => {
         curso,
       };
 
-      await editStudent({id: student.id, newStudent})
+      await editStudent({ id: student.id, newStudent });
 
       console.log("Aluno editado com sucesso!");
 
       navigate("/alunos");
-    }catch (error) {
+    } catch (error) {
       console.log("Ocorreu um erro ao tentar editar o aluno!");
       console.error((error as Error).message);
     }
@@ -80,7 +69,7 @@ const EditStudent = () => {
     setCurso("");
     setSenha("");
     setConferirSenha("");
-    setErrorMessages({});
+    setErrorMessages([]);
   };
 
   return (
@@ -104,11 +93,7 @@ const EditStudent = () => {
             required
             value={matricula}
             onChange={(e: any) =>
-              handleChangeMatricula(
-                e.target.value,
-                setErrorMessages,
-                setMatricula
-              )
+              handleChangeMatricula(e.target.value, setMatricula)
             }
           />
           <Input
@@ -116,9 +101,7 @@ const EditStudent = () => {
             type="text"
             required
             value={nome}
-            onChange={(e: any) =>
-              handleChangeNome(e.target.value, setErrorMessages, setNome)
-            }
+            onChange={(e: any) => handleChangeNome(e.target.value, setNome)}
           />
         </div>
         <div className="input-group">
@@ -128,11 +111,7 @@ const EditStudent = () => {
             value={username}
             required
             onChange={(e: any) =>
-              handleChangeUsername(
-                e.target.value,
-                setErrorMessages,
-                setUsername
-              )
+              handleChangeUsername(e.target.value, setUsername)
             }
           />
           <Input
@@ -147,8 +126,8 @@ const EditStudent = () => {
           <Input
             label="Curso"
             selectOptions={cursoOptions}
-            text={curso}
-            onChange={(e: any) => setCurso(e.value)}
+            value={curso}
+            onChange={setCurso}
           />
         </div>
         <div className="input-group">
@@ -199,3 +178,10 @@ const EditStudent = () => {
 };
 
 export { EditStudent };
+
+const cursoOptions = [
+  { label: "Análise e Desenvolvimento de Sistemas", value: "ADS" },
+  { label: "Engenharia de Software", value: "ENG_SOF" },
+  { label: "Redes de Computadores", value: "RED_COMP" },
+  { label: "Tecnologia da Informação", value: "TEC_INFO" },
+];

@@ -2,21 +2,16 @@ import {
   MAX_MATRICULA_FIELD,
   MAX_USERNAME_FIELD,
   MIN_PASSWORD,
-  validateCpf,
-  validateEmail,
-  validateLettersAndNumbers,
-  validateMatricula,
-  validateNome,
-  validateOnlyLetters,
-  validateOnlyNumbers,
-  validatePassword,
-  validateUsername,
   MAX_NOME_FIELD,
   MAX_CARGO_FIELD,
   MAX_DEPARTAMENTO_FIELD,
-  validateCargo,
-  validateDepartamento,
   CPF_LENGTH,
+  validateLettersAndNumbers,
+  validateOnlyLetters,
+  validateOnlyNumbers,
+  validateEmail,
+  cleanErrorMessages,
+  updateErrorMessages,
 } from "./formValidationUtils";
 
 export const handleChangeCpf = (
@@ -24,121 +19,135 @@ export const handleChangeCpf = (
   setErrorMessages: any,
   setCpf: any
 ) => {
+  const fieldKey = "cpf";
+  const hasError = !validateOnlyNumbers(cpf) || cpf.length > CPF_LENGTH;
+
+  if (cpf === "") {
+    setCpf(cpf);
+    return;
+  }
+
+  if (hasError) {
+    showCpfError(cpf);
+    return;
+  }
+
   setCpf(cpf);
-  const isCpfValid = validateCpf(cpf.trim());
 
-  if (isCpfValid) {
-    setErrorMessages((prevErrors: any) => ({
-      ...prevErrors,
-      cpf: "",
-    }));
-  } else {
-    if (!!cpf && cpf.length > CPF_LENGTH) {
-      const cpfWithMaxLength = cpf.slice(0, CPF_LENGTH);
-      setCpf(cpfWithMaxLength);
-      console.log(`Apenas ${CPF_LENGTH} caracteres`);
-    } else if (!validateOnlyNumbers(cpf) && !!cpf) {
-      const cpfOnlyNumbers = cpf.slice(0, -1);
-      setCpf(cpfOnlyNumbers);
-      console.log("Digite apenas números");
-    } else {
-      setErrorMessages((prevErrors: any) => ({
-        ...prevErrors,
-        cpf: "Digite o CPF corretamente",
-      }));
-    }
+  if (cpf.length < CPF_LENGTH) {
+    const messageObject = { cpf: "Digite o CPF corretamente" };
+    updateErrorMessages(setErrorMessages, fieldKey, messageObject);
+  }
+
+  if (cpf.length === CPF_LENGTH) {
+    cleanErrorMessages(setErrorMessages, fieldKey);
   }
 };
 
-export const handleChangeMatricula = (
-  matricula: any,
-  setErrorMessages: any,
-  setMatricula: any
-) => {
+export const handleChangeFilterCpf = (cpf: any, setCpf: any) => {
+  const hasError = !validateOnlyNumbers(cpf) || cpf.length > CPF_LENGTH;
+
+  if (cpf === "") {
+    setCpf(cpf);
+    return;
+  }
+
+  if (hasError) {
+    showCpfError(cpf);
+    return;
+  }
+
+  setCpf(cpf);
+};
+
+const showCpfError = (cpf: any) => {
+  const isNumber = validateOnlyNumbers(cpf);
+
+  if (!isNumber) {
+    console.log("Digite apenas números!");
+    return;
+  }
+
+  if (cpf.length > CPF_LENGTH) {
+    console.log(`Digite apenas ${CPF_LENGTH} caracteres!`);
+    return;
+  }
+};
+
+export const handleChangeMatricula = (matricula: any, setMatricula: any) => {
+  const hasError =
+    !validateLettersAndNumbers(matricula) ||
+    matricula.length > MAX_MATRICULA_FIELD;
+
+  if (matricula === "") {
+    setMatricula(matricula);
+    return;
+  }
+
+  if (hasError) {
+    showMatriculaError(matricula);
+    return;
+  }
+
   setMatricula(matricula);
-  const isMatriculaValid = validateMatricula(matricula.trim());
+};
 
-  if (isMatriculaValid) {
-    setErrorMessages((prevErrors: any) => ({
-      ...prevErrors,
-      matricula: "",
-    }));
-  } else {
-    if (!!matricula && matricula.length > MAX_MATRICULA_FIELD) {
-      const matriculaWithMaxField = matricula.slice(0, MAX_MATRICULA_FIELD);
-      setMatricula(matriculaWithMaxField);
-      console.log(`Quantidade de caracteres maximo de ${MAX_MATRICULA_FIELD}`);
-    } else if (!!matricula && !validateLettersAndNumbers(matricula)) {
-      const matriculaOnlyLettersAndNumbers = matricula.slice(0, -1);
-      setMatricula(matriculaOnlyLettersAndNumbers);
-      console.log("Caractere nao permitido");
-    } else {
-      setErrorMessages((prevErrors: any) => ({
-        ...prevErrors,
-        matricula: "Digite a matrícula corretamente",
-      }));
-    }
+const showMatriculaError = (matricula: any) => {
+  const hasLettersAndNumbers = validateLettersAndNumbers(matricula);
+
+  if (!hasLettersAndNumbers) {
+    console.log("Caractere nao permitido");
+    return;
+  }
+
+  if (matricula.length > MAX_MATRICULA_FIELD) {
+    console.log(`Quantidade de caracteres maximo de ${MAX_MATRICULA_FIELD}`);
+    return;
   }
 };
 
-export const handleChangeUsername = (
-  username: any,
-  setErrorMessages: any,
-  setUsername: any
-) => {
-  setUsername(username);
-  const isUsernameValid = validateUsername(username.trim());
+export const handleChangeNome = (nome: any, setNome: any) => {
+  const hasError = !validateOnlyLetters(nome) || nome.length > MAX_NOME_FIELD;
 
-  if (isUsernameValid) {
-    setErrorMessages((prevErrors: any) => ({
-      ...prevErrors,
-      username: "",
-    }));
-  } else {
-    if (!!username && username.length > MAX_USERNAME_FIELD) {
-      const usernameWithMaxField = username.slice(0, MAX_USERNAME_FIELD);
-      setUsername(usernameWithMaxField);
-      console.log(`Quantidade de caracteres maximo de ${MAX_USERNAME_FIELD}`);
-      return;
-    } else {
-      setErrorMessages((prevErrors: any) => ({
-        ...prevErrors,
-        username: "Digite o username corretamente",
-      }));
-      return;
-    }
+  if (nome === "") {
+    setNome(nome);
+    return;
   }
-};
 
-export const handleChangeNome = (
-  nome: any,
-  setErrorMessages: any,
-  setNome: any
-) => {
+  if (hasError) {
+    showNomeError(nome);
+    return;
+  }
+
   setNome(nome);
-  const isNomeValid = validateNome(nome.trim());
+};
 
-  if (isNomeValid) {
-    setErrorMessages((prevErrors: any) => ({
-      ...prevErrors,
-      nome: "",
-    }));
-  } else {
-    if (!!nome && !validateOnlyLetters(nome) && nome.length <= MAX_NOME_FIELD) {
-      const nomeOnlyLetters = nome.slice(0, -1);
-      setNome(nomeOnlyLetters);
-      console.log("Digite apenas letras!");
-    } else if (nome.length > MAX_NOME_FIELD) {
-      const nomeWithMaxField = nome.slice(0, MAX_NOME_FIELD);
-      setNome(nomeWithMaxField);
-      console.log(`Digite apenas ${MAX_NOME_FIELD} caracteres!`);
-    } else {
-      setErrorMessages((prevErrors: any) => ({
-        ...prevErrors,
-        nome: "Digite o nome corretamente!",
-      }));
-    }
+const showNomeError = (nome: any) => {
+  const hasOnlyLetters = validateOnlyLetters(nome);
+
+  if (!hasOnlyLetters) {
+    console.log("Caractere nao permitido");
+    return;
   }
+
+  if (nome.length > MAX_NOME_FIELD) {
+    console.log(`Quantidade de caracteres maximo de ${MAX_NOME_FIELD}`);
+    return;
+  }
+};
+
+export const handleChangeUsername = (username: any, setUsername: any) => {
+  if (username === "") {
+    setUsername(username);
+    return;
+  }
+
+  if (username.length > MAX_USERNAME_FIELD) {
+    console.log(`Quantidade de caracteres maximo de ${MAX_USERNAME_FIELD}`);
+    return;
+  }
+
+  setUsername(username);
 };
 
 export const handleChangeEmail = (
@@ -146,19 +155,22 @@ export const handleChangeEmail = (
   setErrorMessages: any,
   setEmail: any
 ) => {
-  setEmail(email);
-  const isEmailValid = validateEmail(email.trim());
+  const fieldKey = "email";
+  const hasError = !validateEmail(email);
 
-  if (isEmailValid) {
-    setErrorMessages((prevErrors: any) => ({
-      ...prevErrors,
-      email: "",
-    }));
+  if (email === "") {
+    setEmail(email);
+    return;
+  }
+
+  setEmail(email);
+
+  if (hasError) {
+    const messageObject = { email: "Digite o email corretamente" };
+    updateErrorMessages(setErrorMessages, fieldKey, messageObject);
+    return;
   } else {
-    setErrorMessages((prevErrors: any) => ({
-      ...prevErrors,
-      email: "Digite o email corretamente",
-    }));
+    cleanErrorMessages(setErrorMessages, fieldKey);
   }
 };
 
@@ -167,27 +179,24 @@ export const handleChangeSenha = (
   setErrorMessages: any,
   setSenha: any
 ) => {
-  setSenha(senha);
-  const isSenhaValid = validatePassword(senha);
+  const fieldKey = "senha";
 
-  if (isSenhaValid) {
-    setErrorMessages((prevErrors: any) => ({
-      ...prevErrors,
-      senha: "",
-    }));
-  } else {
-    if (!!senha && senha.length < MIN_PASSWORD) {
-      setErrorMessages((prevErrors: any) => ({
-        ...prevErrors,
-        senha: `Senha precisa ter no mínimo ${MIN_PASSWORD} caracteres`,
-      }));
-    } else {
-      setErrorMessages((prevErrors: any) => ({
-        ...prevErrors,
-        senha: "Digite a senha corretamente",
-      }));
-    }
+  if (senha === "") {
+    setSenha(senha);
+    return;
   }
+
+  if (senha.length < MIN_PASSWORD) {
+    const messageObject = {
+      senha: `Senha precisa ter no mínimo ${MIN_PASSWORD} caracteres`,
+    };
+    updateErrorMessages(setErrorMessages, fieldKey, messageObject);
+    setSenha(senha);
+    return;
+  }
+
+  cleanErrorMessages(setErrorMessages, fieldKey);
+  setSenha(senha);
 };
 
 export const handleChangeConfSenha = (
@@ -195,27 +204,24 @@ export const handleChangeConfSenha = (
   setErrorMessages: any,
   setConfSenha: any
 ) => {
-  setConfSenha(confSenha);
-  const isConferirSenhaValid = validatePassword(confSenha);
+  const fieldKey = "confSenha";
 
-  if (isConferirSenhaValid) {
-    setErrorMessages((prevErrors: any) => ({
-      ...prevErrors,
-      confSenha: "",
-    }));
-  } else {
-    if (!!confSenha && confSenha.length < MIN_PASSWORD) {
-      setErrorMessages((prevErrors: any) => ({
-        ...prevErrors,
-        confSenha: `Senha precisa ter no mínimo ${MIN_PASSWORD} caracteres`,
-      }));
-    } else {
-      setErrorMessages((prevErrors: any) => ({
-        ...prevErrors,
-        confSenha: "Digite a confirmação de senha corretamente",
-      }));
-    }
+  if (confSenha === "") {
+    setConfSenha(confSenha);
+    return;
   }
+
+  if (confSenha.length < MIN_PASSWORD) {
+    const messageObject = {
+      conferirSenha: `Confirmação de senha precisa ter no mínimo ${MIN_PASSWORD} caracteres`,
+    };
+    updateErrorMessages(setErrorMessages, fieldKey, messageObject);
+    setConfSenha(confSenha);
+    return;
+  }
+
+  cleanErrorMessages(setErrorMessages, fieldKey);
+  setConfSenha(confSenha);
 };
 
 export const verificaSenhasIguais = (
@@ -223,87 +229,57 @@ export const verificaSenhasIguais = (
   confSenha: any,
   setErrorMessages: any
 ) => {
+  const fieldKey = "conferirSenha";
+
   if (senha !== confSenha) {
-    setErrorMessages((prevErrors: any) => ({
-      ...prevErrors,
-      confSenha: "Senhas não coincidem",
-    }));
+    const messageObject = { conferirSenha: "Senhas não coincidem" };
+    updateErrorMessages(setErrorMessages, fieldKey, messageObject);
   } else {
-    setErrorMessages((prevErrors: any) => ({
-      ...prevErrors,
-      confSenha: "",
-    }));
+    cleanErrorMessages(setErrorMessages, fieldKey);
   }
 };
 
-export const handleChangeCargo = (
-  cargo: any,
-  setErrorMessages: any,
-  setCargo: any
-) => {
-  setCargo(cargo);
-  const isCargoValid = validateCargo(cargo);
+export const handleChangeCargo = (cargo: any, setCargo: any) => {
+  const hasOnlyLetters = validateOnlyLetters(cargo);
 
-  if (isCargoValid) {
-    setErrorMessages((prevErrors: any) => ({
-      ...prevErrors,
-      cargo: "",
-    }));
-  } else {
-    if (
-      !!cargo &&
-      !validateOnlyLetters(cargo) &&
-      cargo.length <= MAX_CARGO_FIELD
-    ) {
-      const cargoOnlyLetters = cargo.slice(0, -1);
-      setCargo(cargoOnlyLetters);
-      console.log("Digite apenas letras");
-    } else if (cargo.length > MAX_CARGO_FIELD) {
-      const cargoWithMaxLength = cargo.slice(0, MAX_CARGO_FIELD);
-      setCargo(cargoWithMaxLength);
-      console.log(`Quantidade de caracteres maximo de ${MAX_CARGO_FIELD}`);
-    } else {
-      setErrorMessages((prevErrors: any) => ({
-        ...prevErrors,
-        cargo: "Digite o cargo corretamente",
-      }));
-    }
+  if (cargo === "") {
+    setCargo(cargo);
+    return;
   }
+
+  if (!hasOnlyLetters) {
+    console.log("Digite apenas letras");
+    return;
+  }
+
+  if (cargo.length > MAX_CARGO_FIELD) {
+    console.log(`Quantidade de caracteres maximo de ${MAX_CARGO_FIELD}`);
+    return;
+  }
+
+  setCargo(cargo);
 };
 
 export const handleChangeDepartamento = (
   departamento: any,
-  setErrorMessages: any,
   setDepartamento: any
 ) => {
-  setDepartamento(departamento);
-  const isDepartamentoValid = validateDepartamento(departamento);
+  const hasOnlyLetters = validateOnlyLetters(departamento);
 
-  if (isDepartamentoValid) {
-    setErrorMessages((prevErrors: any) => ({
-      ...prevErrors,
-      departamento: "",
-    }));
-  } else {
-    if (
-      !!departamento &&
-      !validateOnlyLetters(departamento) &&
-      departamento.length <= MAX_DEPARTAMENTO_FIELD
-    ) {
-      const deptoOnlyLetters = departamento.slice(0, -1);
-      setDepartamento(deptoOnlyLetters);
-      console.log("Apenas letras são permitidas");
-    } else if (departamento.length > MAX_DEPARTAMENTO_FIELD) {
-      const deptoWithMaxLength = departamento.slice(0, MAX_DEPARTAMENTO_FIELD);
-      setDepartamento(deptoWithMaxLength);
-      console.log(
-        `Quantidade de caracteres maximo de ${MAX_DEPARTAMENTO_FIELD}`
-      );
-    } else {
-      setErrorMessages((prevErrors: any) => ({
-        ...prevErrors,
-        departamento: "Digite o departamento corretamente",
-      }));
-    }
+  if (departamento === "") {
+    setDepartamento(departamento);
+    return;
   }
+
+  if (!hasOnlyLetters) {
+    console.log("Digite apenas letras");
+    return;
+  }
+
+  if (departamento.length > MAX_DEPARTAMENTO_FIELD) {
+    console.log(`Quantidade de caracteres maximo de ${MAX_DEPARTAMENTO_FIELD}`);
+    return;
+  }
+
+  setDepartamento(departamento);
 };

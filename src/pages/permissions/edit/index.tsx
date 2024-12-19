@@ -13,17 +13,14 @@ const EditPermission = () => {
   const navigate = useNavigate();
   const [role, setRole] = useState(permission.role);
   const [descricao, setDescricao] = useState(permission.description);
-  const [errorMessages, setErrorMessages] = useState({});
+  const [errorMessages, setErrorMessages] = useState([]);
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
 
-    const listaErros = Object.values(errorMessages).filter(
-      (error) => error !== ""
-    );
-
-    if (listaErros.length > 0) {
-      console.log(listaErros[0]);
+    if (errorMessages.length > 0) {
+      const firstError = Object.values(errorMessages[0])[0];
+      console.log(firstError);
     } else {
       navigate("/permissoes");
     }
@@ -32,7 +29,7 @@ const EditPermission = () => {
   const onClean = () => {
     setRole("");
     setDescricao("");
-    setErrorMessages({});
+    setErrorMessages([]);
   };
 
   return (
@@ -46,7 +43,7 @@ const EditPermission = () => {
             value={role}
             required
             onChange={(e: any) =>
-              handleChangeRole(e.target.value, setErrorMessages, setRole)
+              handleChangeRole(e.target.value, setRole)
             }
           />
           <Input
@@ -56,7 +53,6 @@ const EditPermission = () => {
             onChange={(e: any) =>
               handleChangeDescription(
                 e.target.value,
-                setErrorMessages,
                 setDescricao
               )
             }
@@ -68,7 +64,7 @@ const EditPermission = () => {
             type="reset"
             variant="bgNeutral"
             value="Limpar"
-            onCLick={onClean}
+            onClick={onClean}
           />
           <Link to="/permissoes">
             <Button label="Cancelar" />
