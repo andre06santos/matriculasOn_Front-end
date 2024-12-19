@@ -1,15 +1,17 @@
 import { Link } from "react-router-dom";
 import { Input } from "../../../ui/input";
 import "./styles.css";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Modal } from "../../../ui/modal";
 import {
   handleChangeFilterCpf,
   handleChangeFilterMatricula,
   handleChangeFilterNome,
 } from "../../../modules/alunosAdmFormValidation";
+import { useAdmin } from "../../../modules/administradores/views/hooks/use-administrador";
 
 const ListStudents = () => {
+  const { students, getStudent, deleteStudent } = useAdmin();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [matricula, setMatricula] = useState("");
@@ -17,13 +19,33 @@ const ListStudents = () => {
   const [nome, setNome] = useState("");
   const matriculaInput = useRef<any>(null);
 
+  const [studentId, setStudentId] = useState("");
+
   const closeModal = () => {
     setIsModalOpen(false);
   };
 
-  const openModal = () => {
+  const openModal = (studentId: any) => {
     setIsModalOpen(true);
+    setStudentId(studentId);
   };
+
+  const onDelete = async () => {
+    try {
+      await deleteStudent(studentId);
+
+      console.log("Aluno excluído com sucesso!");
+    } catch (error) {
+      console.log("Ocorreu um erro ao tentar excluir o aluno!");
+      console.error((error as Error).message);
+    } finally {
+      closeModal();
+    }
+  };
+
+  useEffect(() => {
+    getStudent();
+  }, []);
 
   const onClean = () => {
     setMatricula("");
@@ -44,6 +66,7 @@ const ListStudents = () => {
         <Modal
           message="Tem certeza que deseja excluir o cadastro deste aluno?"
           onCancel={closeModal}
+          onDelete={onDelete}
         />
       )}
       <h1>Alunos</h1>
@@ -86,7 +109,7 @@ const ListStudents = () => {
 
       <p>
         Total de alunos encontradas:{" "}
-        <span className="permissions-quantity">3</span>
+        <span className="permissions-quantity">{students.length}</span>
       </p>
 
       <table className="table">
@@ -101,7 +124,7 @@ const ListStudents = () => {
           </tr>
         </thead>
         <tbody>
-          {students.map((student, index): any => (
+          {students.map((student: any, index: any) => (
             <tr key={index}>
               <td>{student.matricula}</td>
               <td>{student.cpf}</td>
@@ -112,7 +135,10 @@ const ListStudents = () => {
                 <Link to="/alunos/editar-aluno" state={student}>
                   <i className="fa-solid fa-pen-to-square"></i>
                 </Link>
-                <i className="fa-solid fa-trash-can" onClick={openModal}></i>
+                <i
+                  className="fa-solid fa-trash-can"
+                  onClick={() => openModal(student.id)}
+                ></i>
               </td>
             </tr>
           ))}

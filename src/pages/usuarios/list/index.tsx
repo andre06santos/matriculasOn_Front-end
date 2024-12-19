@@ -2,15 +2,17 @@ import { Link } from "react-router-dom";
 import "./styles.css";
 import { Button } from "../../../ui/button";
 import { Input } from "../../../ui/input";
-import { useRef, useState } from "react";
+import { useRef, useEffect, useState } from "react";
 import { Modal } from "../../../ui/modal";
 import {
   handleChangeFilterNome,
   handleChangeFilterUsername,
 } from "../../../modules/alunosAdmFormValidation";
+import { useAdmin } from "../../../modules/administradores/views/hooks/use-administrador";
 
 const ListUser = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { users, getUser } = useAdmin();
 
   const [username, setUsername] = useState("");
   const [nome, setNome] = useState("");
@@ -96,7 +98,7 @@ const ListUser = () => {
 
       <p>
         Total de usuários encontradas:{" "}
-        <span className="permissions-quantity">3</span>
+        <span className="permissions-quantity">{users.length}</span>
       </p>
 
       <table>
@@ -110,7 +112,7 @@ const ListUser = () => {
           </tr>
         </thead>
         <tbody>
-          {users.map((user, index): any => (
+          {users.map((user: any, index: any) => (
             <tr key={index}>
               <td>{user.username}</td>
               <td>{user.nome}</td>

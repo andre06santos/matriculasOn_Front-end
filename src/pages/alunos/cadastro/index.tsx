@@ -13,6 +13,7 @@ import {
   handleChangeUsername,
   verificaSenhasIguais,
 } from "../../../modules/alunosAdmFormValidation";
+import { useAdmin } from "../../../modules/administradores/views/hooks/use-administrador";
 
 const RegisterStudent = () => {
   const [cpf, setCpf] = useState("");
@@ -25,8 +26,9 @@ const RegisterStudent = () => {
   const [conferirSenha, setConferirSenha] = useState("");
   const [errorMessages, setErrorMessages] = useState([]);
   const navigate = useNavigate();
+  const { addStudents } = useAdmin();
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
 
     if (errorMessages.length > 0) {
@@ -34,6 +36,26 @@ const RegisterStudent = () => {
       console.log(firstError);
     } else {
       navigate("/usuarios");
+    }
+
+    try {
+      const aluno = {
+        cpf,
+        nome,
+        username,
+        matricula,
+        email,
+        curso,
+      };
+
+      await addStudents(aluno);
+
+      console.log("Aluno cadastrado com sucesso!");
+
+      navigate("/alunos");
+    } catch (error) {
+      console.log("Ocorreu um erro ao tentar cadastrar o aluno!");
+      console.error((error as Error).message);
     }
   };
 

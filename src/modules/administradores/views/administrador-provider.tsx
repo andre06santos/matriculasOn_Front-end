@@ -1,16 +1,12 @@
-import {
-  createContext,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import { createContext, useCallback, useMemo, useState } from "react";
 import { fetchData } from "../infrastructure/fetch-data";
 
 export const AdminContext = createContext<any>(undefined);
 
 export const AdminProvider = ({ children }: any) => {
   const [courses, setCourses] = useState<any>([]);
+  const [students, setStudents] = useState<any>([]);
+  const [users, setUsers] = useState<any>([]);
 
   const getCourses = useCallback(async () => {
     try {
@@ -101,8 +97,110 @@ export const AdminProvider = ({ children }: any) => {
       throw new Error((error as Error).message);
     }
   }, []);
+
+  const editStudent = useCallback(async ({ id, newStudent }: any) => {
+    try {
+      const userRequest = {
+        endpoint: `/alunos/${id}`,
+        config: {
+          method: "PUT",
+          data: JSON.stringify(newStudent),
+        },
+      };
+      const editedStudent = await fetchData(userRequest);
+
+      setStudents((prevStudent: any) => [...prevStudent, editedStudent]);
+
+      return editedStudent;
+    } catch (error) {
+      throw new Error((error as Error).message);
+    }
+  }, []);
+
+  const getStudent = useCallback(async () => {
+    try {
+      const userRequest = {
+        endpoint: "/alunos",
+        config: {
+          method: "GET",
+        },
+      };
+      const _students = await fetchData(userRequest);
+
+      setStudents(_students);
+    } catch (error) {
+      console.log("Ocorreu um erro ao tentar mostrar os alunos!");
+      console.error((error as Error).message);
+    }
+  }, []);
+
+  const addStudents = useCallback(async (newStudent: any) => {
+    try {
+      const userRequest = {
+        endpoint: "/alunos",
+        config: {
+          method: "POST",
+          data: JSON.stringify(newStudent),
+        },
+      };
+
+      const addedStudent = await fetchData(userRequest);
+
+      setStudents((prevStudent: any) => [...prevStudent, addedStudent]);
+      return addedStudent;
+    } catch (error) {
+      throw new Error((error as Error).message);
+    }
+  }, []);
+
+  const deleteStudent = useCallback(async (id: any) => {
+    try {
+      const userRequest = {
+        endpoint: `/alunos/${id}`,
+        config: {
+          method: "DELETE",
+        },
+      };
+
+      const studentDeleted = await fetchData(userRequest);
+
+      setStudents((prevStudent: any) =>
+        prevStudent.filter((student: any) => student.id !== id)
+      );
+
+      return studentDeleted;
+    } catch (error) {
+      throw new Error((error as Error).message);
+    }
+  }, []);
+
+  const getUser = useCallback(async () => {
+    try {
+      const userRequest = {
+        endpoint: "/usuarios",
+        config: {
+          method: "GET",
+        },
+      };
+
+      const _users = await fetchData(userRequest);
+
+      setUsers(_users);
+    } catch (error) {
+      console.log("Ocorreu um erro ao tentar mostrar os usuarios!");
+      console.error((error as Error).message);
+    }
+  }, []);
+
   const value = useMemo(
     () => ({
+      users,
+      getUser,
+      students,
+      editStudent,
+      getStudent,
+      addStudents,
+      deleteStudent,
       courses,
       addCourse,
       editCourse,
@@ -111,7 +209,14 @@ export const AdminProvider = ({ children }: any) => {
       deleteCourse,
     }),
     [
+      users,
+      getUser,
+      students,
+      editStudent,
+      students,
+      getStudent,
       courses,
+      addStudents,
       addCourse,
       editCourse,
       getCourses,
