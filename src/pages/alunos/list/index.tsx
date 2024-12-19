@@ -11,7 +11,8 @@ import {
 import { useAdmin } from "../../../modules/administradores/views/hooks/use-administrador";
 
 const ListStudents = () => {
-  const { getStudent, deleteStudent } = useAdmin();
+  const { students, getStudent, deleteStudent } = useAdmin();
+  
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [matricula, setMatricula] = useState("");
@@ -27,6 +28,7 @@ const ListStudents = () => {
 
   const openModal = (studentId: any) => {
     setIsModalOpen(true);
+    setStudentId(studentId)
   };
 
   const onDelete = async () => {
@@ -127,7 +129,7 @@ const ListStudents = () => {
               <td>{student.cpf}</td>
               <td>{student.nome}</td>
               <td>{student.email}</td>
-              <td>{student.curso}</td>
+              <td>{student.curso.value}</td>
               <td className="table-actions action-column">
                 <Link to="/alunos/editar-aluno" state={student}>
                   <i className="fa-solid fa-pen-to-square"></i>
@@ -147,26 +149,26 @@ const ListStudents = () => {
 
 export { ListStudents };
 
-const students = [
-  {
-    matricula: "2568574MJGHF",
-    cpf: "123.456.789-00",
-    nome: "Maria da Silva Costa",
-    email: "maria.silva@live.com",
-    curso: "Engenharia Civil",
-  },
-  {
-    matricula: "2568574MJGHF",
-    cpf: "123.456.789-00",
-    nome: "Maria da Silva Costa",
-    email: "maria.silva@live.com",
-    curso: "Engenharia Civil",
-  },
-  {
-    matricula: "2568574MJGHF",
-    cpf: "123.456.789-00",
-    nome: "Maria da Silva Costa",
-    email: "maria.silva@live.com",
-    curso: "Engenharia Civil",
-  },
-];
+// const students = [
+//   {
+//     matricula: "2568574MJGHF",
+//     cpf: "123.456.789-00",
+//     nome: "Maria da Silva Costa",
+//     email: "maria.silva@live.com",
+//     curso: "Engenharia Civil",
+//   },
+//   {
+//     matricula: "2568574MJGHF",
+//     cpf: "123.456.789-00",
+//     nome: "Maria da Silva Costa",
+//     email: "maria.silva@live.com",
+//     curso: "Engenharia Civil",
+//   },
+//   {
+//     matricula: "2568574MJGHF",
+//     cpf: "123.456.789-00",
+//     nome: "Maria da Silva Costa",
+//     email: "maria.silva@live.com",
+//     curso: "Engenharia Civil",
+//   },
+// ];

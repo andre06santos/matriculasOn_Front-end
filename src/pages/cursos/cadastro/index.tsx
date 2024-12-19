@@ -54,7 +54,7 @@ const CourseRegistration = () => {
             required
             value={name}
             onChange={(e: any) =>
-              handleCourseName(e.target.value, setErrorMessages, setName)
+              handleCourseName(e.target.value, setName)
             }
             onFocus={(e: any) => e.target.select()}
             autoFocus

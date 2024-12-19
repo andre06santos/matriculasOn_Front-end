@@ -7,7 +7,6 @@ import { useAdmin } from "../../../modules/administradores/views/hooks/use-admin
 import { NotFound } from "../../../ui/not-found";
 import { Filter } from "./filter";
 import "./styles.css";
-import { handleChangeFilterCourseNome } from "../../../modules/courseFormValidation";
 
 const ListCourses = () => {
   const { courses, getCourses, searchCourse, deleteCourse } = useAdmin();
@@ -108,7 +107,6 @@ const ListCourses = () => {
             <Filter
               onSubmit={onSubmit}
               name={name}
-              handleChange={handleChangeFilterCourseNome}
               setName={setName}
               nameInput={nameInput}
               onReset={onReset}
@@ -126,7 +124,6 @@ const ListCourses = () => {
             onSubmit={onSubmit}
             name={name}
             setName={setName}
-            handleChange={handleChangeFilterCourseNome}
             nameInput={nameInput}
             onReset={onReset}
           />

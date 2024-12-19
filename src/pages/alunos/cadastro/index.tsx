@@ -31,12 +31,14 @@ const RegisterStudent = () => {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
 
+    console.log(errorMessages);
+    
+
     if (errorMessages.length > 0) {
       const firstError = Object.values(errorMessages[0])[0];
       console.log(firstError);
-    } else {
-      navigate("/usuarios");
-    }
+      return
+    } 
 
     try {
       const aluno = {

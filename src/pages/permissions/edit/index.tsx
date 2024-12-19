@@ -43,7 +43,7 @@ const EditPermission = () => {
             value={role}
             required
             onChange={(e: any) =>
-              handleChangeRole(e.target.value, setErrorMessages, setRole)
+              handleChangeRole(e.target.value, setRole)
             }
           />
           <Input
@@ -53,7 +53,6 @@ const EditPermission = () => {
             onChange={(e: any) =>
               handleChangeDescription(
                 e.target.value,
-                setErrorMessages,
                 setDescricao
               )
             }
@@ -65,7 +64,7 @@ const EditPermission = () => {
             type="reset"
             variant="bgNeutral"
             value="Limpar"
-            onCLick={onClean}
+            onClick={onClean}
           />
           <Link to="/permissoes">
             <Button label="Cancelar" />

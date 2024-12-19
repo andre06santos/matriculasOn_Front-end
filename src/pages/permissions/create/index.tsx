@@ -48,7 +48,7 @@ const CreatePermission = () => {
             value={role}
             required
             onChange={(e: any) =>
-              handleChangeRole(e.target.value, setErrorMessages, setRole)
+              handleChangeRole(e.target.value, setRole)
             }
           />
           <Input
@@ -58,7 +58,6 @@ const CreatePermission = () => {
             onChange={(e: any) =>
               handleChangeDescription(
                 e.target.value,
-                setErrorMessages,
                 setDescricao
               )
             }

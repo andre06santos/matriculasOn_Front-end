@@ -4,7 +4,7 @@ import { Input } from "../../../ui/input";
 import "./styles.css";
 import { useRef, useState } from "react";
 import { Modal } from "../../../ui/modal";
-import { handleChangeFilterDescription } from "../../../modules/permissionsFormValidation";
+import { handleChangeDescription } from "../../../modules/permissionsFormValidation";
 
 const ListPermissions = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -68,7 +68,7 @@ const ListPermissions = () => {
             placeholder="Descrição"
             value={descricao}
             onChange={(e: any) =>
-              handleChangeFilterDescription(e.target.value, setDescricao)
+              handleChangeDescription(e.target.value, setDescricao)
             }
             ref={descricaoInput}
           />

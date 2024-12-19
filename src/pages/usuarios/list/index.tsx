@@ -4,10 +4,7 @@ import { Button } from "../../../ui/button";
 import { Input } from "../../../ui/input";
 import { useRef, useEffect, useState } from "react";
 import { Modal } from "../../../ui/modal";
-import {
-  handleChangeFilterNome,
-  handleChangeFilterUsername,
-} from "../../../modules/alunosAdmFormValidation";
+import { handleChangeNome, handleChangeUsername } from "../../../modules/alunosAdmFormValidation";
 import { useAdmin } from "../../../modules/administradores/views/hooks/use-administrador";
 
 const ListUser = () => {
@@ -66,7 +63,7 @@ const ListUser = () => {
             placeholder="Username"
             value={username}
             onChange={(e: any) =>
-              handleChangeFilterUsername(e.target.value, setUsername)
+              handleChangeUsername(e.target.value, setUsername)
             }
             ref={usernameInput}
           />
@@ -75,7 +72,7 @@ const ListUser = () => {
             placeholder="Nome"
             value={nome}
             onChange={(e: any) =>
-              handleChangeFilterNome(e.target.value, setNome)
+              handleChangeNome(e.target.value, setNome)
             }
           />
           <Input
