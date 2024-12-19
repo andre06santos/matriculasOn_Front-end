@@ -146,7 +146,5 @@ export const validateEmptyString = (valor: any) => {
 
 export const handleChangeNoWhiteSpaceInput = (value: any) => {
   const hasWhiteSpace = validWhiteSpaceBeginning(value);
-  if (hasWhiteSpace) return false;
-
-  return true;
+  return !hasWhiteSpace;
 };
