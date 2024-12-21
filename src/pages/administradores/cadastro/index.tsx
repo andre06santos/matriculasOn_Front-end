@@ -14,8 +14,10 @@ import {
   handleChangeUsername,
   verificaSenhasIguais,
 } from "../../../modules/alunosAdmFormValidation";
+import { useAdmin } from "../../../modules/administradores/views/hooks/use-administrador";
 
 const AdministratorRegistration = () => {
+  const { addAdmin } = useAdmin();
   const [cpf, setCpf] = useState("");
   const [cargo, setCargo] = useState("");
   const [nome, setNome] = useState("");
@@ -27,14 +29,31 @@ const AdministratorRegistration = () => {
   const [errorMessages, setErrorMessages] = useState([]);
   const navigate = useNavigate();
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
 
     if (errorMessages.length > 0) {
       const firstError = Object.values(errorMessages[0])[0];
       console.log(firstError);
-    } else {
+    }
+
+    try {
+      const admin = {
+        cpf,
+        cargo,
+        nome,
+        username,
+        email,
+        departamento,
+      };
+
+      await addAdmin(admin);
+
+      console.log("Administrador cadastrado com sucesso !");
       navigate("/usuarios");
+    } catch (error) {
+      console.log("Ocorreu um erro ao tentar cadastrar o administrador!");
+      console.error((error as Error).message);
     }
   };
 
