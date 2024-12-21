@@ -4,7 +4,10 @@ import { Button } from "../../../ui/button";
 import { Input } from "../../../ui/input";
 import { useRef, useEffect, useState } from "react";
 import { Modal } from "../../../ui/modal";
-import { handleChangeNome, handleChangeUsername } from "../../../modules/alunosAdmFormValidation";
+import {
+  handleChangeNome,
+  handleChangeUsername,
+} from "../../../modules/alunosAdmFormValidation";
 import { useAdmin } from "../../../modules/administradores/views/hooks/use-administrador";
 
 const ListUser = () => {
@@ -41,6 +44,9 @@ const ListUser = () => {
     onClean();
     onFocus();
   };
+  useEffect(() => {
+    getUser();
+  }, []);
 
   return (
     <div className="flex-column-gap20">
@@ -71,9 +77,7 @@ const ListUser = () => {
             type="text"
             placeholder="Nome"
             value={nome}
-            onChange={(e: any) =>
-              handleChangeNome(e.target.value, setNome)
-            }
+            onChange={(e: any) => handleChangeNome(e.target.value, setNome)}
           />
           <Input
             selectOptions={statusOptions}
