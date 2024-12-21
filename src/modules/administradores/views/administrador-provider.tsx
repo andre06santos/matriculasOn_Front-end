@@ -37,6 +37,34 @@ export const AdminProvider = ({ children }: any) => {
     }
   }, []);
 
+  const searchStudent = useCallback(
+    async (name: any, cpf: any, matricula: any) => {
+      try {
+        const queryParams = new URLSearchParams();
+
+        if (name) {
+          queryParams.append("nome", name.trim());
+        }
+        if (matricula) {
+          queryParams.append("matricula", matricula.trim());
+        }
+        if (cpf) {
+          queryParams.append("cpf", cpf.trim());
+        }
+
+        const endpoint = `/alunos?${queryParams.toString()}`;
+        const userRequest = { endpoint };
+        const _students = await fetchData(userRequest);
+
+        setStudents(_students);
+      } catch (error) {
+        console.error("Erro ao buscar alunos:", error);
+        throw new Error((error as Error).message);
+      }
+    },
+    []
+  );
+
   const addCourse = useCallback(async (newCourse: any) => {
     try {
       const userRequest = {
@@ -198,6 +226,7 @@ export const AdminProvider = ({ children }: any) => {
       getUser,
       students,
       editStudent,
+      searchStudent,
       getStudent,
       addStudents,
       deleteStudent,
@@ -213,6 +242,7 @@ export const AdminProvider = ({ children }: any) => {
       getUser,
       students,
       editStudent,
+      searchStudent,
       students,
       getStudent,
       courses,
