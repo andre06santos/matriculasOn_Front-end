@@ -49,7 +49,7 @@ const AdministratorRegistration = () => {
 
       await addAdmin(admin);
 
-      console.log("Administrador cadastrado com sucesso !");
+      console.log("Administrador cadastrado com sucesso!");
       navigate("/usuarios");
     } catch (error) {
       console.log("Ocorreu um erro ao tentar cadastrar o administrador!");

@@ -4,7 +4,7 @@ import { fetchData } from "../infrastructure/fetch-data";
 export const AdminContext = createContext<any>(undefined);
 
 export const AdminProvider = ({ children }: any) => {
-  const [admin, setAdmin] = useState<any>([]);
+  const [admins, setAdmins] = useState<any>([]);
   const [courses, setCourses] = useState<any>([]);
   const [students, setStudents] = useState<any>([]);
   const [users, setUsers] = useState<any>([]);
@@ -205,7 +205,7 @@ export const AdminProvider = ({ children }: any) => {
 
       const addedAdmin = await fetchData(userRequest);
 
-      setAdmin((prevAdmin: any) => [...prevAdmin, addedAdmin]);
+      setAdmins((prevAdmin: any) => [...prevAdmin, addedAdmin]);
 
       return addAdmin;
     } catch (error) {
@@ -215,7 +215,7 @@ export const AdminProvider = ({ children }: any) => {
 
   const value = useMemo(
     () => ({
-      admin,
+      admins,
       addAdmin,
       users,
       getUser,
@@ -232,7 +232,7 @@ export const AdminProvider = ({ children }: any) => {
       deleteCourse,
     }),
     [
-      admin,
+      admins,
       addAdmin,
       users,
       getUser,
