@@ -12,7 +12,7 @@ import { useAdmin } from "../../../modules/administradores/views/hooks/use-admin
 
 const ListUser = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { users, getUser } = useAdmin();
+  const { users, getUsers } = useAdmin();
 
   const [username, setUsername] = useState("");
   const [nome, setNome] = useState("");
@@ -44,8 +44,9 @@ const ListUser = () => {
     onClean();
     onFocus();
   };
+  
   useEffect(() => {
-    getUser();
+    getUsers();
   }, []);
 
   return (

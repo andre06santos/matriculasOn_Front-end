@@ -174,7 +174,7 @@ export const AdminProvider = ({ children }: any) => {
     }
   }, []);
 
-  const getUser = useCallback(async () => {
+  const getUsers = useCallback(async () => {
     try {
       const userRequest = {
         endpoint: "/usuarios",
@@ -195,7 +195,7 @@ export const AdminProvider = ({ children }: any) => {
   const value = useMemo(
     () => ({
       users,
-      getUser,
+      getUsers,
       students,
       editStudent,
       getStudent,
@@ -210,7 +210,7 @@ export const AdminProvider = ({ children }: any) => {
     }),
     [
       users,
-      getUser,
+      getUsers,
       students,
       editStudent,
       students,
