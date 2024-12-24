@@ -4,6 +4,7 @@ import { fetchData } from "../infrastructure/fetch-data";
 export const AdminContext = createContext<any>(undefined);
 
 export const AdminProvider = ({ children }: any) => {
+  const [admins, setAdmins] = useState<any>([]);
   const [courses, setCourses] = useState<any>([]);
   const [students, setStudents] = useState<any>([]);
   const [users, setUsers] = useState<any>([]);
@@ -192,8 +193,30 @@ export const AdminProvider = ({ children }: any) => {
     }
   }, []);
 
+  const addAdmin = useCallback(async (newAdmin: any) => {
+    try {
+      const userRequest = {
+        endpoint: "/administrador",
+        config: {
+          method: "POST",
+          data: JSON.stringify(newAdmin),
+        },
+      };
+
+      const addedAdmin = await fetchData(userRequest);
+
+      setAdmins((prevAdmin: any) => [...prevAdmin, addedAdmin]);
+
+      return addAdmin;
+    } catch (error) {
+      throw new Error((error as Error).message);
+    }
+  }, []);
+
   const value = useMemo(
     () => ({
+      admins,
+      addAdmin,
       users,
       getUser,
       students,
@@ -209,6 +232,8 @@ export const AdminProvider = ({ children }: any) => {
       deleteCourse,
     }),
     [
+      admins,
+      addAdmin,
       users,
       getUser,
       students,
