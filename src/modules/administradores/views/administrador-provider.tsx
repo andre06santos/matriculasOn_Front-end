@@ -213,10 +213,30 @@ export const AdminProvider = ({ children }: any) => {
     }
   }, []);
 
+  const editAdmin = useCallback(async ({ id, newAdmin }: any) => {
+    try {
+      const userRequest = {
+        endpoint: `/admin/${id}`,
+        config: {
+          method: "PUT",
+          data: JSON.stringify(newAdmin),
+        },
+      };
+      const editedAdmin = await fetchData(userRequest);
+
+      setAdmins((prevadmin: any) => [...prevadmin, editedAdmin]);
+
+      return editedAdmin;
+    } catch (error) {
+      throw new Error((error as Error).message);
+    }
+  }, []);
+
   const value = useMemo(
     () => ({
       admins,
       addAdmin,
+      editAdmin,
       users,
       getUsers,
       students,
@@ -234,6 +254,7 @@ export const AdminProvider = ({ children }: any) => {
     [
       admins,
       addAdmin,
+      editAdmin,
       users,
       getUsers,
       students,
