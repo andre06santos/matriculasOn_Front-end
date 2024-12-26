@@ -3,19 +3,19 @@ import { MAX_CURSO_FIELD, validateOnlyLetters } from "./formValidationUtils";
 export const handleCourseName = (nome: any, setNome: any) => {
   const hasError = !validateOnlyLetters(nome) || nome.length > MAX_CURSO_FIELD;
 
-  nome = nome.trim();
+  const trimmedNome = nome.trim();
 
-  if (nome === "") {
-    setNome(nome);
+  if (trimmedNome === "") {
+    setNome(trimmedNome);
     return;
   }
 
   if (hasError) {
-    showCourseNomeError(nome);
+    showCourseNomeError(trimmedNome);
     return;
   }
 
-  setNome(nome);
+  setNome(trimmedNome);
 };
 
 const showCourseNomeError = (nome: any) => {
