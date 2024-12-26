@@ -4,10 +4,9 @@ import { Input } from "../../../ui/input";
 import "./styles.css";
 import { useEffect, useRef, useState } from "react";
 import { Modal } from "../../../ui/modal";
-import { handleChangeDescription } from "../../../modules/permissionsFormValidation";
 import { useAdmin } from "../../../modules/administradores/views/hooks/use-administrador";
 import { validateEmptyString } from "../../../modules/formValidationUtils";
-import PermissionsFilter from "./filter";
+import { PermissionsFilter } from "./filter";
 import { NotFound } from "../../../ui/not-found";
 
 const ListPermissions = () => {
