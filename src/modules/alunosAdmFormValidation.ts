@@ -108,10 +108,7 @@ const showMatriculaError = (matricula: any) => {
 
 export const handleChangeNome = (nome: any, setNome: any) => {
   const hasError = !validateOnlyLetters(nome) || nome.length > MAX_NOME_FIELD;
-
-  if (nome === " ") {
-    return;
-  }
+  nome = nome.trim();
 
   if (nome === "") {
     setNome(nome);
@@ -141,9 +138,7 @@ const showNomeError = (nome: any) => {
 };
 
 export const handleChangeUsername = (username: any, setUsername: any) => {
-  if (username === " ") {
-    return;
-  }
+  username = username.trim();
 
   if (username === "") {
     setUsername(username);
@@ -166,9 +161,7 @@ export const handleChangeEmail = (
   const fieldKey = "email";
   const hasError = !validateEmail(email);
 
-  if (email === " ") {
-    return;
-  }
+  email = email.trim();
 
   if (email === "") {
     setEmail(email);

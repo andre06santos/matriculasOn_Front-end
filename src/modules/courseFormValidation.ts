@@ -1,18 +1,9 @@
-import {
-  cleanErrorMessages,
-  handleChangeNoWhiteSpaceInput,
-  MAX_CURSO_FIELD,
-  updateErrorMessages,
-  validateCourseName,
-  validateOnlyLetters,
-} from "./formValidationUtils";
+import { MAX_CURSO_FIELD, validateOnlyLetters } from "./formValidationUtils";
 
 export const handleCourseName = (nome: any, setNome: any) => {
   const hasError = !validateOnlyLetters(nome) || nome.length > MAX_CURSO_FIELD;
 
-  if (nome === " ") {
-    return;
-  }
+  nome = nome.trim();
 
   if (nome === "") {
     setNome(nome);
