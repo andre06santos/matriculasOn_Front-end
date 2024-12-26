@@ -32,13 +32,12 @@ const RegisterStudent = () => {
     e.preventDefault();
 
     console.log(errorMessages);
-    
 
     if (errorMessages.length > 0) {
       const firstError = Object.values(errorMessages[0])[0];
       console.log(firstError);
-      return
-    } 
+      return;
+    }
 
     try {
       const aluno = {
