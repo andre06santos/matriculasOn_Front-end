@@ -44,7 +44,7 @@ const ListUser = () => {
     onClean();
     onFocus();
   };
-  
+
   useEffect(() => {
     getUsers();
   }, []);

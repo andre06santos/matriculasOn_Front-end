@@ -7,11 +7,12 @@ import {
   validateOnlyLetters,
 } from "./formValidationUtils";
 
-export const handleCourseName = (
-  nome: any,
-  setNome: any
-) => {
+export const handleCourseName = (nome: any, setNome: any) => {
   const hasError = !validateOnlyLetters(nome) || nome.length > MAX_CURSO_FIELD;
+
+  if (nome === " ") {
+    return;
+  }
 
   if (nome === "") {
     setNome(nome);

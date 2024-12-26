@@ -5,46 +5,43 @@ import {
   validateOnlyLetters,
 } from "./formValidationUtils";
 
-export const handleChangeRole = (
-  role: any,
-  setRole: any
-) => {
-  const hasPermitedCharac = validateLettersAndUnderscore(role)
-  const hasSize = role.length < MAX_ROLE_FIELD
+export const handleChangeRole = (role: any, setRole: any) => {
+  const hasPermitedCharac = validateLettersAndUnderscore(role);
+  const hasSize = role.length < MAX_ROLE_FIELD;
 
-  if (!hasPermitedCharac){
+  if (!hasPermitedCharac) {
     console.log("Apenas letras maiúsculas e underscore ( _ )");
-    return
+    return;
   }
 
-  setRole(role)
+  setRole(role);
 
-  if (!hasSize){
+  if (!hasSize) {
     console.log(`Quantidade de caracteres maximo de ${MAX_ROLE_FIELD}`);
-    return
+    return;
   }
-
-
 };
 
 export const handleChangeDescription = (
   description: any,
   setDescription: any
 ) => {
+  const hasOnlyLetters = validateOnlyLetters(description);
+  const hasSize = description.length < MAX_DESCRICAO_FIELD;
 
-  const hasOnlyLetters = validateOnlyLetters(description)
-  const hasSize = description.length < MAX_DESCRICAO_FIELD
+  if (description === " ") {
+    return;
+  }
 
-  if (!hasOnlyLetters){
+  if (!hasOnlyLetters) {
     console.log("Permitido apenas letras");
-    return
+    return;
   }
 
-  if (!hasSize){
+  if (!hasSize) {
     console.log(`Quantidade de caracteres maximo de ${MAX_DESCRICAO_FIELD}`);
-    return
+    return;
   }
 
-  setDescription(description)
+  setDescription(description);
 };
-
