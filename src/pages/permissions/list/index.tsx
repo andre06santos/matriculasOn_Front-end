@@ -130,7 +130,7 @@ const ListPermissions = () => {
 
           <p>
             {isSearching
-              ? `Totais de permissões encontradas ao filtrar por "${searchTerm}": `
+              ? `Total de permissões encontradas ao filtrar por "${searchTerm}": `
               : "Total de permissões encontradas: "}
             <span className="permissions-quantity">{permissions.length}</span>
           </p>
