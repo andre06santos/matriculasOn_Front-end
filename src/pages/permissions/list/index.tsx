@@ -116,7 +116,7 @@ const ListPermissions = () => {
             />
           </>
         ) : (
-          <NotFound message="Nenhuma permissão foi encontrado!" />
+          <NotFound message="Nenhuma permissão foi encontrada!" />
         )
       ) : (
         <>
@@ -130,8 +130,8 @@ const ListPermissions = () => {
 
           <p>
             {isSearching
-              ? `Total de permissões encontrados ao filtrar por "${searchTerm}": `
-              : "Total de permissões encontrados: "}
+              ? `Totais de permissões encontradas ao filtrar por "${searchTerm}": `
+              : "Total de permissões encontradas: "}
             <span className="permissions-quantity">{permissions.length}</span>
           </p>
 
