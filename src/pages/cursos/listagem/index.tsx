@@ -5,7 +5,7 @@ import { Modal } from "../../../ui/modal";
 import { validateEmptyString } from "../../../modules/formValidationUtils";
 import { useAdmin } from "../../../modules/administradores/views/hooks/use-administrador";
 import { NotFound } from "../../../ui/not-found";
-import { Filter } from "./filter";
+import { CoursesFilter } from "./filter";
 import "./styles.css";
 
 const ListCourses = () => {
@@ -104,7 +104,7 @@ const ListCourses = () => {
       {courses.length === 0 ? (
         isSearching ? (
           <>
-            <Filter
+            <CoursesFilter
               onSubmit={onSubmit}
               name={name}
               setName={setName}
@@ -120,7 +120,7 @@ const ListCourses = () => {
         )
       ) : (
         <>
-          <Filter
+          <CoursesFilter
             onSubmit={onSubmit}
             name={name}
             setName={setName}
