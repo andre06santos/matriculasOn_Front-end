@@ -74,5 +74,12 @@
       "status": false,
       "id": "338c"
     }
+  ],
+  "permissoes": [
+    {
+      "role": "ADD_ALUNO",
+      "descricao": "Adiciona aluno",
+      "id": "753b"
+}
   ]
 }

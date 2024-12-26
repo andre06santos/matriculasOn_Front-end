@@ -2,25 +2,38 @@ import { Link } from "react-router-dom";
 import { Button } from "../../../ui/button";
 import { Input } from "../../../ui/input";
 import "./styles.css";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Modal } from "../../../ui/modal";
-import { handleChangeDescription } from "../../../modules/permissionsFormValidation";
+import { useAdmin } from "../../../modules/administradores/views/hooks/use-administrador";
+import { validateEmptyString } from "../../../modules/formValidationUtils";
+import { PermissionsFilter } from "./filter";
+import { NotFound } from "../../../ui/not-found";
 
 const ListPermissions = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { permissions, getPermissions, searchPermission, deletePermission } =
+    useAdmin();
 
   const [descricao, setDescricao] = useState("");
+  const [isSearching, setIsSearching] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [permissionId, setPermissionId] = useState("");
   const descricaoInput = useRef<any>(null);
 
   const closeModal = () => {
     setIsModalOpen(false);
   };
 
-  const openModal = () => {
+  const openModal = (permissionId: any) => {
     setIsModalOpen(true);
+    setPermissionId(permissionId);
   };
 
-  const onClean = () => setDescricao("");
+  const onClean = () => {
+    setDescricao("");
+    setSearchTerm("");
+    setIsSearching(false);
+  };
 
   const onFocus = () => descricaoInput.current.focus();
 
@@ -29,22 +42,48 @@ const ListPermissions = () => {
 
     onClean();
     onFocus();
+    getPermissions();
   };
 
-  const permissions = [
-    {
-      role: "CADASTRAR_USUARIO",
-      description: "Cadastra usuario",
-    },
-    {
-      role: "EDITAR_CADASTRO_ALUNO",
-      description: "Edita o cadastro de um aluno",
-    },
-    {
-      role: "EDITAR_CADASTRO_ALUNO",
-      description: "Edita o cadastro de um aluno",
-    },
-  ];
+  useEffect(() => {
+    getPermissions();
+  }, []);
+
+  const onSubmit = async (e: any) => {
+    e.preventDefault();
+
+    const emptyField = validateEmptyString(descricao);
+
+    if (emptyField) {
+      console.log("Digite um nome para filtrar!");
+      onClean();
+      onFocus();
+
+      return;
+    }
+
+    try {
+      await searchPermission(descricao);
+      setIsSearching(true);
+      setSearchTerm(descricao);
+    } catch (error) {
+      console.log("Ocorreu um erro ao tentar filtrar permissões!");
+      console.error((error as Error).message);
+    }
+  };
+
+  const onDelete = async () => {
+    try {
+      await deletePermission(permissionId);
+
+      console.log("Permissão excluída com sucesso!");
+    } catch (error) {
+      console.log("Ocorreu um erro ao tentar excluir a permissão!");
+      console.error((error as Error).message);
+    } finally {
+      closeModal();
+    }
+  };
 
   return (
     <div className="flex-column-gap20">
@@ -52,6 +91,7 @@ const ListPermissions = () => {
         <Modal
           message="Tem certeza que deseja excluir esta permissão?"
           onCancel={closeModal}
+          onDelete={onDelete}
         />
       )}
       <div className="add-button">
@@ -61,58 +101,68 @@ const ListPermissions = () => {
       </div>
       <h1>Permissões</h1>
 
-      <div className="filter flex-column-gap20">
-        <span>Filtros</span>
-        <form action="" className="form-filter">
-          <Input
-            placeholder="Descrição"
-            value={descricao}
-            onChange={(e: any) =>
-              handleChangeDescription(e.target.value, setDescricao)
-            }
-            ref={descricaoInput}
+      {permissions.length === 0 ? (
+        isSearching ? (
+          <>
+            <PermissionsFilter
+              onSubmit={onSubmit}
+              descricao={descricao}
+              setDescricao={setDescricao}
+              descricaoInput={descricaoInput}
+              onReset={onReset}
+            />
+            <NotFound
+              message={`A busca por "${searchTerm}" não retornou nenhuma permissão!`}
+            />
+          </>
+        ) : (
+          <NotFound message="Nenhuma permissão foi encontrada!" />
+        )
+      ) : (
+        <>
+          <PermissionsFilter
+            onSubmit={onSubmit}
+            descricao={descricao}
+            setDescricao={setDescricao}
+            descricaoInput={descricaoInput}
+            onReset={onReset}
           />
 
-          <div className="filter-buttons">
-            <Input type="submit" variant="bgInfo" value="Buscar" />
-            <Input
-              type="reset"
-              variant="bgNeutral"
-              value="Limpar"
-              onClick={onReset}
-            />
-          </div>
-        </form>
-      </div>
+          <p>
+            {isSearching
+              ? `Total de permissões encontradas ao filtrar por "${searchTerm}": `
+              : "Total de permissões encontradas: "}
+            <span className="permissions-quantity">{permissions.length}</span>
+          </p>
 
-      <p>
-        Total de permissões encontradas:{" "}
-        <span className="permissions-quantity">{permissions.length}</span>
-      </p>
-
-      <table className="table">
-        <thead>
-          <tr>
-            <th>Role</th>
-            <th>Descrição</th>
-            <th className="table-actions action-column">Ações</th>
-          </tr>
-        </thead>
-        <tbody>
-          {permissions.map((permission, index): any => (
-            <tr key={index}>
-              <td>{permission.role}</td>
-              <td>{permission.description}</td>
-              <td className="table-actions action-column">
-                <Link to="/permissoes/editar-permissao" state={permission}>
-                  <i className="fa-solid fa-pen-to-square"></i>
-                </Link>
-                <i className="fa-solid fa-trash-can" onClick={openModal}></i>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+          <table className="table">
+            <thead className="table-header">
+              <tr>
+                <th>Role</th>
+                <th>Descrição</th>
+                <th className="table-actions action-column">Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              {permissions.map((permission: any, index: any) => (
+                <tr key={index}>
+                  <td>{permission.role}</td>
+                  <td>{permission.descricao}</td>
+                  <td className="table-actions action-column">
+                    <Link to="/permissoes/editar-permissao" state={permission}>
+                      <i className="fa-solid fa-pen-to-square"></i>
+                    </Link>
+                    <i
+                      className="fa-solid fa-trash-can"
+                      onClick={() => openModal(permission.id)}
+                    ></i>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </>
+      )}
     </div>
   );
 };
