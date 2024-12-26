@@ -47,5 +47,12 @@
       "tipo": "Administrador",
       "status": false
     }
+  ],
+  "permissoes": [
+    {
+      "role": "ADD_ALUNO",
+      "descricao": "Adiciona aluno",
+      "id": "753b"
+}
   ]
 }
