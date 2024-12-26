@@ -14,9 +14,11 @@ import {
   handleChangeUsername,
   verificaSenhasIguais,
 } from "../../../modules/alunosAdmFormValidation";
+import { useAdmin } from "../../../modules/administradores/views/hooks/use-administrador";
 
 const EditAdmin = () => {
   const { state: admin } = useLocation();
+  const { editAdmin } = useAdmin();
   const [cpf, setCpf] = useState(admin.cpf);
   const [cargo, setCargo] = useState(admin.cargo);
   const [nome, setNome] = useState(admin.nome);
@@ -28,14 +30,32 @@ const EditAdmin = () => {
   const [errorMessages, setErrorMessages] = useState([]);
   const navigate = useNavigate();
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
 
     if (errorMessages.length > 0) {
       const firstError = Object.values(errorMessages[0])[0];
       console.log(firstError);
-    } else {
+      return;
+    }
+
+    try {
+      const newAdmin = {
+        cpf,
+        nome,
+        cargo,
+        username,
+        email,
+        departamento,
+      };
+      await editAdmin({ id: admin.id, newAdmin });
+
+      console.log("Administrador editado com sucesso!");
+
       navigate("/usuarios");
+    } catch (error) {
+      console.log("Ocorreu um erro ao tentar editar o administrador!");
+      console.error((error as Error).message);
     }
   };
 
