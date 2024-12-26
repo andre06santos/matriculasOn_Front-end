@@ -7,21 +7,36 @@ import {
   handleChangeDescription,
   handleChangeRole,
 } from "../../../modules/permissionsFormValidation";
+import { useAdmin } from "../../../modules/administradores/views/hooks/use-administrador";
 
 const CreatePermission = () => {
+  const { addPermission } = useAdmin();
   const navigate = useNavigate();
   const [role, setRole] = useState("");
   const [descricao, setDescricao] = useState("");
   const [errorMessages, setErrorMessages] = useState([]);
 
-  const handleSubmit = (e: any) => {
+  const onSubmit = async (e: any) => {
     e.preventDefault();
 
     if (errorMessages.length > 0) {
       const firstError = Object.values(errorMessages[0])[0];
       console.log(firstError);
     } else {
-      navigate("/permissoes");
+      const newPermission = {
+        role,
+        descricao,
+      };
+
+      try {
+        await addPermission(newPermission);
+
+        console.log("Permissão cadastrada com sucesso!");
+        navigate("/permissoes");
+      } catch (error) {
+        console.log("Ocorreu um erro ao tentar cadastrar a permissão!");
+        console.error((error as Error).message);
+      }
     }
   };
 
@@ -40,26 +55,21 @@ const CreatePermission = () => {
       <form
         action=""
         className="form-registration flex-column-gap20"
-        onSubmit={handleSubmit}
+        onSubmit={onSubmit}
       >
         <div className="form-inputs flex-column-gap20">
           <Input
             label="Role"
             value={role}
             required
-            onChange={(e: any) =>
-              handleChangeRole(e.target.value, setRole)
-            }
+            onChange={(e: any) => handleChangeRole(e.target.value, setRole)}
           />
           <Input
             label="Descrição"
             required
             value={descricao}
             onChange={(e: any) =>
-              handleChangeDescription(
-                e.target.value,
-                setDescricao
-              )
+              handleChangeDescription(e.target.value, setDescricao)
             }
           />
         </div>
