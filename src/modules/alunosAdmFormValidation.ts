@@ -108,18 +108,19 @@ const showMatriculaError = (matricula: any) => {
 
 export const handleChangeNome = (nome: any, setNome: any) => {
   const hasError = !validateOnlyLetters(nome) || nome.length > MAX_NOME_FIELD;
+  const trimmedNome = nome.trim();
 
-  if (nome === "") {
-    setNome(nome);
+  if (trimmedNome === "") {
+    setNome(trimmedNome);
     return;
   }
 
   if (hasError) {
-    showNomeError(nome);
+    showNomeError(trimmedNome);
     return;
   }
 
-  setNome(nome);
+  setNome(trimmedNome);
 };
 
 const showNomeError = (nome: any) => {
@@ -137,17 +138,19 @@ const showNomeError = (nome: any) => {
 };
 
 export const handleChangeUsername = (username: any, setUsername: any) => {
-  if (username === "") {
-    setUsername(username);
+  const trimmedUsername = username.trim();
+
+  if (trimmedUsername === "") {
+    setUsername(trimmedUsername);
     return;
   }
 
-  if (username.length > MAX_USERNAME_FIELD) {
+  if (trimmedUsername.length > MAX_USERNAME_FIELD) {
     console.log(`Quantidade de caracteres maximo de ${MAX_USERNAME_FIELD}`);
     return;
   }
 
-  setUsername(username);
+  setUsername(trimmedUsername);
 };
 
 export const handleChangeEmail = (
@@ -158,12 +161,14 @@ export const handleChangeEmail = (
   const fieldKey = "email";
   const hasError = !validateEmail(email);
 
-  if (email === "") {
-    setEmail(email);
+  const trimmedEmail = email.trim();
+
+  if (trimmedEmail === "") {
+    setEmail(trimmedEmail);
     return;
   }
 
-  setEmail(email);
+  setEmail(trimmedEmail);
 
   if (hasError) {
     const messageObject = { email: "Digite o email corretamente" };

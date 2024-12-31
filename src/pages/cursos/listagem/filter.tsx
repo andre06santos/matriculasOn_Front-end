@@ -1,7 +1,7 @@
 import { handleCourseName } from "../../../modules/courseFormValidation";
 import { Input } from "../../../ui/input";
 
-const Filter = ({
+const CoursesFilter = ({
   onSubmit,
   name,
   setName,
@@ -35,4 +35,4 @@ const Filter = ({
   );
 };
 
-export { Filter };
+export { CoursesFilter };

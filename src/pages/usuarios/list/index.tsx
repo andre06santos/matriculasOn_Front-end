@@ -4,12 +4,15 @@ import { Button } from "../../../ui/button";
 import { Input } from "../../../ui/input";
 import { useRef, useEffect, useState } from "react";
 import { Modal } from "../../../ui/modal";
-import { handleChangeNome, handleChangeUsername } from "../../../modules/alunosAdmFormValidation";
+import {
+  handleChangeNome,
+  handleChangeUsername,
+} from "../../../modules/alunosAdmFormValidation";
 import { useAdmin } from "../../../modules/administradores/views/hooks/use-administrador";
 
 const ListUser = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { users, getUser } = useAdmin();
+  const { users, getUsers } = useAdmin();
 
   const [username, setUsername] = useState("");
   const [nome, setNome] = useState("");
@@ -42,6 +45,10 @@ const ListUser = () => {
     onFocus();
   };
 
+  useEffect(() => {
+    getUsers();
+  }, []);
+
   return (
     <div className="flex-column-gap20">
       {isModalOpen && (
@@ -71,9 +78,7 @@ const ListUser = () => {
             type="text"
             placeholder="Nome"
             value={nome}
-            onChange={(e: any) =>
-              handleChangeNome(e.target.value, setNome)
-            }
+            onChange={(e: any) => handleChangeNome(e.target.value, setNome)}
           />
           <Input
             selectOptions={statusOptions}
@@ -139,39 +144,6 @@ const ListUser = () => {
 };
 
 export { ListUser };
-
-const users = [
-  {
-    username: "marisilcs",
-    matricula: "2568574MJGHF",
-    cpf: "123.456.789-00",
-    nome: "Maria da Silva Costa",
-    email: "maria.silva@live.com",
-    curso: "Engenharia Civil",
-    tipo: "Aluno",
-    status: true,
-  },
-  {
-    username: "luanmst",
-    cpf: "123.456.789-00",
-    nome: "Luan Monteiro de Sá",
-    email: "luan@gmail.com",
-    cargo: "CHEFE",
-    departamento: "DTI",
-    tipo: "Administrador",
-    status: true,
-  },
-  {
-    username: "luanmst",
-    cpf: "123.456.789-00",
-    nome: "Luan Monteiro de Sá",
-    email: "luan@gmail.com",
-    cargo: "CHEFE",
-    departamento: "DTI",
-    tipo: "Administrador",
-    status: false,
-  },
-];
 
 const options = [
   { label: "Aluno", path: "/alunos/novo-aluno" },
