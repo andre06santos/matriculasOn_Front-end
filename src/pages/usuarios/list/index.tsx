@@ -4,10 +4,6 @@ import { Button } from "../../../ui/button";
 import { Input } from "../../../ui/input";
 import { useRef, useEffect, useState } from "react";
 import { Modal } from "../../../ui/modal";
-import {
-  handleChangeNome,
-  handleChangeUsername,
-} from "../../../modules/alunosAdmFormValidation";
 import { useAdmin } from "../../../modules/administradores/views/hooks/use-administrador";
 import { Filter } from "./filter";
 import { NotFound } from "../../../ui/not-found";
@@ -78,7 +74,7 @@ const ListUser = () => {
       setIsSearching(true);
       setSearchTerm({ username, nome, status });
     } catch (error) {
-      console.log("Ocorreu um erro ao tentar filtrar usuarios!");
+      console.log("Ocorreu um erro ao tentar filtrar usuários!");
       console.error((error as Error).message);
     }
   };
@@ -117,7 +113,7 @@ const ListUser = () => {
             />
           </>
         ) : (
-          <NotFound message="Nenhum Usuario foi encontrado!" />
+          <NotFound message="Nenhum Usuário foi encontrado!" />
         )
       ) : (
         <>
@@ -137,8 +133,8 @@ const ListUser = () => {
 
           <p>
             {isSearching
-              ? `Total de usuarios encontrados ao filtrar por "${statusMessage}"`
-              : "Total de usuarios encontrados:"}
+              ? `Total de usuários encontrados ao filtrar por "${statusMessage}": `
+              : "Total de usuários encontrados:"}
             <span className="permissions-quantity">{users.length}</span>
           </p>
 
