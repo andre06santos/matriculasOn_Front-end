@@ -154,8 +154,12 @@ const ListUser = () => {
                   <td>{user.username}</td>
                   <td>{user.nome}</td>
                   <td>{user.tipo}</td>
-                  <td className={user.status ? "td-ativo" : "td-inativo"}>
-                    {user.status ? "Ativo" : "Inativo"}
+                  <td
+                    className={
+                      user.status === "ATIVO" ? "td-ativo" : "td-inativo"
+                    }
+                  >
+                    {user.status === "ATIVO" ? "Ativo" : "Inativo"}
                   </td>
                   <td className="table-actions action-column">
                     <Link
