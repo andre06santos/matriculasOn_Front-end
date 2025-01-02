@@ -7,6 +7,7 @@ import { Modal } from "../../../ui/modal";
 import { useAdmin } from "../../../modules/administradores/views/hooks/use-administrador";
 import { Filter } from "./filter";
 import { NotFound } from "../../../ui/not-found";
+import { validateEmptyString } from "../../../modules/formValidationUtils";
 
 const ListUser = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -34,8 +35,6 @@ const ListUser = () => {
     statusMessage = searchTerm.nome;
   } else if (searchTerm.status) {
     statusMessage = "Status";
-  } else {
-    statusMessage = null;
   }
 
   const closeModal = () => {
@@ -58,6 +57,8 @@ const ListUser = () => {
   };
 
   const onReset = () => {
+    if (nome === "" && username === "" && status === "") return;
+
     onClean();
     getUsers();
   };
@@ -69,6 +70,16 @@ const ListUser = () => {
   const onSubmit = async (e: any) => {
     e.preventDefault();
 
+    const emptyFieldName = validateEmptyString(nome);
+    const emptyFieldUsername = validateEmptyString(username);
+
+    if (emptyFieldName && emptyFieldUsername && !status) {
+      console.log("Preencha um dos campos para filtrar!");
+      onClean();
+
+      return;
+    }
+
     try {
       await searchUser(username, nome, status);
       setIsSearching(true);
@@ -76,6 +87,21 @@ const ListUser = () => {
     } catch (error) {
       console.log("Ocorreu um erro ao tentar filtrar usuários!");
       console.error((error as Error).message);
+    }
+  };
+  const tdStatusClass = (status: any) => {
+    if (status === "ATIVO") {
+      return "td-ativo";
+    } else if (status === "INATIVO") {
+      return "td-inativo";
+    }
+  };
+
+  const userStatusLabel = (status: any) => {
+    if (status === "ATIVO") {
+      return "Ativo";
+    } else if (status === "INATIVO") {
+      return "Inativo";
     }
   };
 
@@ -154,12 +180,8 @@ const ListUser = () => {
                   <td>{user.username}</td>
                   <td>{user.nome}</td>
                   <td>{user.tipo}</td>
-                  <td
-                    className={
-                      user.status === "ATIVO" ? "td-ativo" : "td-inativo"
-                    }
-                  >
-                    {user.status === "ATIVO" ? "Ativo" : "Inativo"}
+                  <td className={tdStatusClass(user.status)}>
+                    {userStatusLabel(user.status)}
                   </td>
                   <td className="table-actions action-column">
                     <Link
