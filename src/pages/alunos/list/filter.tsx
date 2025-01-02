@@ -20,7 +20,7 @@ const Filter = ({
   onReset,
 }: any) => {
   const [errorMessages, setErrorMessages] = useState([]);
-  
+
   return (
     <div className="filter flex-column-gap20">
       <span>Filtro</span>
