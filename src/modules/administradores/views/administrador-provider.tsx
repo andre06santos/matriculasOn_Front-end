@@ -79,9 +79,10 @@ export const AdminProvider = ({ children }: any) => {
           queryParams.append("nome", name.trim());
         }
         if (status) {
-          queryParams.append("status", (status.value === "ATIVO").toString());
+          queryParams.append("status", status.value);
         }
         const endpoint = `/usuarios?${queryParams.toString()}`;
+        console.log(endpoint);
         const userRequest = { endpoint };
         const _users = await fetchData(userRequest);
 
