@@ -20,7 +20,7 @@ const Filter = ({
   onReset,
 }: any) => {
   const [errorMessages, setErrorMessages] = useState([]);
-
+  
   return (
     <div className="filter flex-column-gap20">
       <span>Filtro</span>
@@ -42,7 +42,8 @@ const Filter = ({
           ref={matriculaInput}
         />
         <Input
-          placeholder="Cpf"
+          placeholder="CPF"
+          type="text"
           value={cpf}
           onChange={(e: any) => {
             handleChangeCpf(e.target.value, setErrorMessages, setCpf);
