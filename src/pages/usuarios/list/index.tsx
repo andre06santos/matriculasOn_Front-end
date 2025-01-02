@@ -89,7 +89,7 @@ const ListUser = () => {
       console.error((error as Error).message);
     }
   };
-  const isStatusActive = (status: any) => {
+  const isActiveStatus = (status: any) => {
     if (status === "ATIVO") {
       return true;
     } else if (status === "INATIVO") {
@@ -182,7 +182,7 @@ const ListUser = () => {
                   <td>{user.tipo}</td>
                   <td
                     className={
-                      isStatusActive(user.status) ? "td-ativo" : "td-inativo"
+                      isActiveStatus(user.status) ? "td-ativo" : "td-inativo"
                     }
                   >
                     {userStatusLabel(user.status)}
