@@ -20,7 +20,19 @@ export const handleChangeCpf = (
   setCpf: any
 ) => {
   const fieldKey = "cpf";
-  const hasError = !validateOnlyNumbers(cpf) || cpf.length > CPF_LENGTH;
+
+  const formatCpf = (cpf: any) => {
+    const cleaned = cpf.replace(/\D/g, "");
+    return cleaned
+      .replace(/^(\d{3})(\d)/, "$1.$2")
+      .replace(/^(\d{3})\.(\d{3})(\d)/, "$1.$2.$3")
+      .replace(/^(\d{3})\.(\d{3})\.(\d{3})(\d)/, "$1.$2.$3-$4");
+  };
+
+  const cleanedCpf = cpf.replace(/\D/g, "");
+  const formattedCpf = formatCpf(cleanedCpf);
+  const hasError =
+    !validateOnlyNumbers(cleanedCpf) || cleanedCpf.length > CPF_LENGTH;
 
   if (cpf === "") {
     setCpf(cpf);
@@ -28,18 +40,18 @@ export const handleChangeCpf = (
   }
 
   if (hasError) {
-    showCpfError(cpf);
+    showCpfError(cleanedCpf);
     return;
   }
 
-  setCpf(cpf);
+  setCpf(formattedCpf);
 
-  if (cpf.length < CPF_LENGTH) {
+  if (cleanedCpf.length < CPF_LENGTH) {
     const messageObject = { cpf: "Digite o CPF corretamente" };
     updateErrorMessages(setErrorMessages, fieldKey, messageObject);
   }
 
-  if (cpf.length === CPF_LENGTH) {
+  if (cleanedCpf.length === CPF_LENGTH) {
     cleanErrorMessages(setErrorMessages, fieldKey);
   }
 };

@@ -62,7 +62,7 @@ const ListCourses = () => {
     const emptyField = validateEmptyString(name);
 
     if (emptyField) {
-      console.log("Digite um nome para filtar!");
+      console.log("Digite um nome para filtrar!");
       onClean();
       onFocus();
 
@@ -74,7 +74,7 @@ const ListCourses = () => {
       setIsSearching(true);
       setSearchTerm(name);
     } catch (error) {
-      console.log("Ocorreu um erro ao tentar filtar curso!");
+      console.log("Ocorreu um erro ao tentar filtrar curso!");
       console.error((error as Error).message);
     }
   };
@@ -129,7 +129,7 @@ const ListCourses = () => {
           />
 
           <p>
-            {isSearching
+          {isSearching
               ? `Total de cursos encontrados ao filtrar por "${searchTerm}": `
               : "Total de cursos encontrados: "}
             <span className="courses-quantity">{courses.length}</span>

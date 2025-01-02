@@ -1,26 +1,41 @@
 import { Link } from "react-router-dom";
-import { Input } from "../../../ui/input";
 import "./styles.css";
 import { useEffect, useRef, useState } from "react";
 import { Modal } from "../../../ui/modal";
-import {
-  handleChangeFilterCpf,
-  handleChangeMatricula,
-  handleChangeNome,
-} from "../../../modules/alunosAdmFormValidation";
 import { useAdmin } from "../../../modules/administradores/views/hooks/use-administrador";
+import { NotFound } from "../../../ui/not-found";
+import { Filter } from "./filter";
 
 const ListStudents = () => {
-  const { students, getStudent, deleteStudent } = useAdmin();
-  
+  const { students, getStudent, deleteStudent, searchStudent } = useAdmin();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [matricula, setMatricula] = useState("");
   const [cpf, setCpf] = useState("");
   const [nome, setNome] = useState("");
+  const [searchTerm, setSearchTerm] = useState({
+    nome: "",
+    cpf: "",
+    matricula: "",
+  });
+  const [studentId, setStudentId] = useState("");
+  const [isSearching, setIsSearching] = useState(false);
+
+  const nameInput = useRef<any>(null);
+  const cpfInput = useRef<any>(null);
   const matriculaInput = useRef<any>(null);
 
-  const [studentId, setStudentId] = useState("");
+  let statusMessage;
+
+  if (searchTerm.nome) {
+    statusMessage = searchTerm.nome;
+  } else if (searchTerm.matricula) {
+    statusMessage = searchTerm.matricula;
+  } else if (searchTerm.cpf) {
+    statusMessage = searchTerm.cpf;
+  } else {
+    statusMessage = null;
+  }
 
   const closeModal = () => {
     setIsModalOpen(false);
@@ -28,7 +43,7 @@ const ListStudents = () => {
 
   const openModal = (studentId: any) => {
     setIsModalOpen(true);
-    setStudentId(studentId)
+    setStudentId(studentId);
   };
 
   const onDelete = async () => {
@@ -52,15 +67,26 @@ const ListStudents = () => {
     setMatricula("");
     setCpf("");
     setNome("");
+    setIsSearching(false);
   };
-
-  const onFocus = () => matriculaInput.current.focus();
 
   const onReset = () => {
     onClean();
-    onFocus();
+    getStudent();
   };
 
+  const onSubmit = async (e: any) => {
+    e.preventDefault();
+
+    try {
+      await searchStudent(nome, cpf, matricula);
+      setIsSearching(true);
+      setSearchTerm({ nome, cpf, matricula });
+    } catch (error) {
+      console.log("Ocorreu um erro ao tentar filtrar aluno!");
+      console.error((error as Error).message);
+    }
+  };
   return (
     <div className="flex-column-gap20">
       {isModalOpen && (
@@ -72,103 +98,88 @@ const ListStudents = () => {
       )}
       <h1>Alunos</h1>
 
-      <div className="filter flex-column-gap20">
-        <span>Filtros</span>
-        <form action="" className="form-filter">
-          <Input
-            placeholder="Matrícula"
-            value={matricula}
-            onChange={(e: any) =>
-              handleChangeMatricula(e.target.value, setMatricula)
-            }
-            ref={matriculaInput}
-          />
-          <Input
-            placeholder="CPF"
-            value={cpf}
-            onChange={(e: any) => handleChangeFilterCpf(e.target.value, setCpf)}
-          />
-          <Input
-            placeholder="Nome"
-            value={nome}
-            onChange={(e: any) => handleChangeNome(e.target.value, setNome)}
-          />
-
-          <div className="filter__buttons">
-            <Input type="submit" variant="bgInfo" value="Buscar" />
-            <Input
-              type="reset"
-              variant="bgNeutral"
-              value="Limpar"
-              onClick={onReset}
+      {students.length === 0 ? (
+        isSearching ? (
+          <>
+            <Filter
+              onSubmit={onSubmit}
+              name={nome}
+              setName={setNome}
+              nameInput={nameInput}
+              cpf={cpf}
+              setCpf={setCpf}
+              cpfInput={cpfInput}
+              matricula={matricula}
+              setMatricula={setMatricula}
+              matriculaInput={matriculaInput}
+              onReset={onReset}
             />
-          </div>
-        </form>
-      </div>
+            <NotFound
+              message={`A busca por "${statusMessage}" não retornou nenhum aluno!`}
+            />
+          </>
+        ) : (
+          <NotFound message="Nenhum Aluno foi encontrado!" />
+        )
+      ) : (
+        <>
+          <Filter
+            onSubmit={onSubmit}
+            name={nome}
+            setName={setNome}
+            nameInput={nameInput}
+            cpf={cpf}
+            setCpf={setCpf}
+            cpfInput={cpfInput}
+            matricula={matricula}
+            setMatricula={setMatricula}
+            matriculaInput={matriculaInput}
+            onReset={onReset}
+          />
 
-      <p>
-        Total de alunos encontradas:{" "}
-        <span className="permissions-quantity">{students.length}</span>
-      </p>
+          <p>
+            {isSearching
+              ? `Total de alunos encontrados ao filtrar por "${statusMessage}": `
+              : "Total de alunos encontrados: "}
+            <span className="permissions-quantity">{students.length}</span>
+          </p>
 
-      <table className="table">
-        <thead className="table__header">
-          <tr>
-            <th>Matricula</th>
-            <th>CPF</th>
-            <th>Nome</th>
-            <th>E-mail</th>
-            <th>Curso</th>
-            <th className="table-actions action-column">Ações</th>
-          </tr>
-        </thead>
-        <tbody>
-          {students.map((student: any, index: any) => (
-            <tr key={index}>
-              <td>{student.matricula}</td>
-              <td>{student.cpf}</td>
-              <td>{student.nome}</td>
-              <td>{student.email}</td>
-              <td>{student.curso.value}</td>
-              <td className="table-actions action-column">
-                <Link to="/alunos/editar-aluno" state={student}>
-                  <i className="fa-solid fa-pen-to-square"></i>
-                </Link>
-                <i
-                  className="fa-solid fa-trash-can"
-                  onClick={() => openModal(student.id)}
-                ></i>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+          <table className="table">
+            <thead className="table__header">
+              <tr>
+                <th>Matricula</th>
+                <th>CPF</th>
+                <th>Nome</th>
+                <th>E-mail</th>
+                <th>Curso</th>
+                <th className="table-actions action-column">Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              {students.map((student: any, index: any) => (
+                <tr key={index}>
+                  <td>{student.matricula}</td>
+                  <td>{student.cpf}</td>
+                  <td>{student.nome}</td>
+                  <td>{student.email}</td>
+                  <td>{student.curso.value}</td>
+                  <td className="table-actions action-column">
+                    <Link to="/alunos/editar-aluno" state={student}>
+                      <i className="fa-solid fa-pen-to-square"></i>
+                    </Link>
+                    <i
+                      className="fa-solid fa-trash-can"
+                      onClick={() => openModal(student.id)}
+                    ></i>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </>
+      )}
     </div>
   );
 };
 
 export { ListStudents };
-
-// const students = [
-//   {
-//     matricula: "2568574MJGHF",
-//     cpf: "123.456.789-00",
-//     nome: "Maria da Silva Costa",
-//     email: "maria.silva@live.com",
-//     curso: "Engenharia Civil",
-//   },
-//   {
-//     matricula: "2568574MJGHF",
-//     cpf: "123.456.789-00",
-//     nome: "Maria da Silva Costa",
-//     email: "maria.silva@live.com",
-//     curso: "Engenharia Civil",
-//   },
-//   {
-//     matricula: "2568574MJGHF",
-//     cpf: "123.456.789-00",
-//     nome: "Maria da Silva Costa",
-//     email: "maria.silva@live.com",
-//     curso: "Engenharia Civil",
-//   },
-// ];
