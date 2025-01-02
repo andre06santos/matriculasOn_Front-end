@@ -25,11 +25,17 @@ const ListStudents = () => {
   const cpfInput = useRef<any>(null);
   const matriculaInput = useRef<any>(null);
 
-  const statusMessage = searchTerm.nome
-    ? searchTerm.nome
-    : searchTerm.matricula
-    ? searchTerm.matricula
-    : searchTerm.cpf;
+  let statusMessage;
+
+  if (searchTerm.nome) {
+    statusMessage = searchTerm.nome;
+  } else if (searchTerm.matricula) {
+    statusMessage = searchTerm.matricula;
+  } else if (searchTerm.cpf) {
+    statusMessage = searchTerm.cpf;
+  } else {
+    statusMessage = null;
+  }
 
   const closeModal = () => {
     setIsModalOpen(false);
@@ -61,13 +67,12 @@ const ListStudents = () => {
     setMatricula("");
     setCpf("");
     setNome("");
+    setIsSearching(false);
   };
-
-  const onFocus = () => matriculaInput.current.focus();
 
   const onReset = () => {
     onClean();
-    onFocus();
+    getStudent();
   };
 
   const onSubmit = async (e: any) => {
@@ -101,8 +106,10 @@ const ListStudents = () => {
               name={nome}
               setName={setNome}
               nameInput={nameInput}
+              cpf={cpf}
               setCpf={setCpf}
               cpfInput={cpfInput}
+              matricula={matricula}
               setMatricula={setMatricula}
               matriculaInput={matriculaInput}
               onReset={onReset}
@@ -121,8 +128,10 @@ const ListStudents = () => {
             name={nome}
             setName={setNome}
             nameInput={nameInput}
+            cpf={cpf}
             setCpf={setCpf}
             cpfInput={cpfInput}
+            matricula={matricula}
             setMatricula={setMatricula}
             matriculaInput={matriculaInput}
             onReset={onReset}
