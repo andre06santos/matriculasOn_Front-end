@@ -9,16 +9,38 @@ import {
   handleChangeUsername,
 } from "../../../modules/alunosAdmFormValidation";
 import { useAdmin } from "../../../modules/administradores/views/hooks/use-administrador";
+import { Filter } from "./filter";
+import { NotFound } from "../../../ui/not-found";
 
 const ListUser = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { users, getUsers } = useAdmin();
+  const { users, getUsers, searchUser } = useAdmin();
 
   const [username, setUsername] = useState("");
   const [nome, setNome] = useState("");
   const [status, setStatus] = useState("");
+  const [searchTerm, setSearchTerm] = useState({
+    username: "",
+    nome: "",
+    status: "",
+  });
+
+  const [isSearching, setIsSearching] = useState(false);
+
+  const nameInput = useRef<any>(null);
   const usernameInput = useRef<any>(null);
-  const selectInputRef = useRef<any>(null);
+
+  let statusMessage;
+
+  if (searchTerm.username) {
+    statusMessage = searchTerm.username;
+  } else if (searchTerm.nome) {
+    statusMessage = searchTerm.nome;
+  } else if (searchTerm.status) {
+    statusMessage = "Status";
+  } else {
+    statusMessage = null;
+  }
 
   const closeModal = () => {
     setIsModalOpen(false);
@@ -36,18 +58,30 @@ const ListUser = () => {
     setUsername("");
     setNome("");
     setStatus("");
+    setIsSearching(false);
   };
-
-  const onFocus = () => usernameInput.current.focus();
 
   const onReset = () => {
     onClean();
-    onFocus();
+    getUsers();
   };
 
   useEffect(() => {
     getUsers();
   }, []);
+
+  const onSubmit = async (e: any) => {
+    e.preventDefault();
+
+    try {
+      await searchUser(username, nome, status);
+      setIsSearching(true);
+      setSearchTerm({ username, nome, status });
+    } catch (error) {
+      console.log("Ocorreu um erro ao tentar filtrar usuarios!");
+      console.error((error as Error).message);
+    }
+  };
 
   return (
     <div className="flex-column-gap20">
@@ -62,83 +96,93 @@ const ListUser = () => {
       </div>
       <h1>Usuários</h1>
 
-      <div className="filter flex-column-gap20">
-        <span>Filtros</span>
-        <form className="form-filter">
-          <Input
-            type="text"
-            placeholder="Username"
-            value={username}
-            onChange={(e: any) =>
-              handleChangeUsername(e.target.value, setUsername)
-            }
-            ref={usernameInput}
-          />
-          <Input
-            type="text"
-            placeholder="Nome"
-            value={nome}
-            onChange={(e: any) => handleChangeNome(e.target.value, setNome)}
-          />
-          <Input
-            selectOptions={statusOptions}
-            ref={selectInputRef}
-            value={status}
-            onChange={setStatus}
-          />
-          <div className="form-actions">
-            <Input type="submit" variant="bgInfo" value="Buscar" />
-            <Input
-              type="reset"
-              variant="bgNeutral"
-              value="Limpar"
-              onClick={onReset}
+      {users.length === 0 ? (
+        isSearching ? (
+          <>
+            <Filter
+              onSubmit={onSubmit}
+              username={username}
+              setUsername={setUsername}
+              usernameInput={usernameInput}
+              name={nome}
+              setName={setNome}
+              nameInput={nameInput}
+              statusOptions={statusOptions}
+              status={status}
+              setStatus={setStatus}
+              onReset={onReset}
             />
-          </div>
-        </form>
-      </div>
+            <NotFound
+              message={`A busca por "${statusMessage}" não retornou nenhum usuario!`}
+            />
+          </>
+        ) : (
+          <NotFound message="Nenhum Usuario foi encontrado!" />
+        )
+      ) : (
+        <>
+          <Filter
+            onSubmit={onSubmit}
+            username={username}
+            setUsername={setUsername}
+            usernameInput={usernameInput}
+            name={nome}
+            setName={setNome}
+            nameInput={nameInput}
+            statusOptions={statusOptions}
+            status={status}
+            setStatus={setStatus}
+            onReset={onReset}
+          />
 
-      <p>
-        Total de usuários encontradas:{" "}
-        <span className="permissions-quantity">{users.length}</span>
-      </p>
+          <p>
+            {isSearching
+              ? `Total de usuarios encontrados ao filtrar por "${statusMessage}"`
+              : "Total de usuarios encontrados:"}
+            <span className="permissions-quantity">{users.length}</span>
+          </p>
 
-      <table>
-        <thead>
-          <tr>
-            <th>Username</th>
-            <th>Nome</th>
-            <th>Tipo</th>
-            <th>Status</th>
-            <th>Ações</th>
-          </tr>
-        </thead>
-        <tbody>
-          {users.map((user: any, index: any) => (
-            <tr key={index}>
-              <td>{user.username}</td>
-              <td>{user.nome}</td>
-              <td>{user.tipo}</td>
-              <td className={user.status ? "td-ativo" : "td-inativo"}>
-                {user.status ? "Ativo" : "Inativo"}
-              </td>
-              <td className="table-actions action-column">
-                <Link
-                  to={
-                    isAluno(user.tipo)
-                      ? "/alunos/editar-aluno"
-                      : "/administradores/editar-administrador"
-                  }
-                  state={users[index]}
-                >
-                  <i className="fa-solid fa-pen-to-square"></i>
-                </Link>
-                <i className="fa-solid fa-trash-can" onClick={openModal}></i>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+          <table>
+            <thead>
+              <tr>
+                <th>Username</th>
+                <th>Nome</th>
+                <th>Tipo</th>
+                <th>Status</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              {users.map((user: any, index: any) => (
+                <tr key={index}>
+                  <td>{user.username}</td>
+                  <td>{user.nome}</td>
+                  <td>{user.tipo}</td>
+                  <td className={user.status ? "td-ativo" : "td-inativo"}>
+                    {user.status ? "Ativo" : "Inativo"}
+                  </td>
+                  <td className="table-actions action-column">
+                    <Link
+                      to={
+                        isAluno(user.tipo)
+                          ? "/alunos/editar-aluno"
+                          : "/administradores/editar-administrador"
+                      }
+                      state={users[index]}
+                    >
+                      <i className="fa-solid fa-pen-to-square"></i>
+                    </Link>
+                    <i
+                      className="fa-solid fa-trash-can"
+                      onClick={openModal}
+                    ></i>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </>
+      )}
     </div>
   );
 };
