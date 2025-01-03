@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import "./styles.css";
 import { Button } from "../../../ui/button";
-import { Input } from "../../../ui/input";
 import { useRef, useEffect, useState } from "react";
 import { Modal } from "../../../ui/modal";
 import { useAdmin } from "../../../modules/administradores/views/hooks/use-administrador";
@@ -56,6 +55,13 @@ const ListUser = () => {
     setIsSearching(false);
   };
 
+  const checkFields = () => {
+    if (nome === "" && username === "" && status === "") {
+      getUsers();
+      onClean();
+    }
+  };
+
   const onReset = () => {
     if (nome === "" && username === "" && status === "") return;
 
@@ -66,6 +72,10 @@ const ListUser = () => {
   useEffect(() => {
     getUsers();
   }, []);
+
+  useEffect(() => {
+    checkFields();
+  }, [nome, username, status]);
 
   const onSubmit = async (e: any) => {
     e.preventDefault();
