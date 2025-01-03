@@ -10,7 +10,7 @@ import { validateEmptyString } from "../../../modules/formValidationUtils";
 
 const ListUser = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { users, getUsers, searchUser } = useAdmin();
+  const { users, getUsers, searchUser, deleteUser } = useAdmin();
 
   const [username, setUsername] = useState("");
   const [nome, setNome] = useState("");
@@ -21,6 +21,7 @@ const ListUser = () => {
     status: "",
   });
 
+  const [userId, setUserId] = useState("");
   const [isSearching, setIsSearching] = useState(false);
 
   const nameInput = useRef<any>(null);
@@ -40,8 +41,9 @@ const ListUser = () => {
     setIsModalOpen(false);
   };
 
-  const openModal = () => {
+  const openModal = (userId: any) => {
     setIsModalOpen(true);
+    setUserId(userId);
   };
 
   const isAluno = (tipo: any) => {
@@ -59,6 +61,18 @@ const ListUser = () => {
     if (nome === "" && username === "" && status === "") {
       getUsers();
       onClean();
+    }
+  };
+
+  const onDelete = async () => {
+    try {
+      await deleteUser(userId);
+      console.log("Usuário excluído com sucesso!");
+    } catch (error) {
+      console.log("Ocorreu um erro ao tentar excluir o cadastro do usuário!");
+      console.error((error as Error).message);
+    } finally {
+      closeModal();
     }
   };
 
@@ -121,6 +135,7 @@ const ListUser = () => {
         <Modal
           message="Tem certeza que deseja excluir o cadastro deste usuário?"
           onCancel={closeModal}
+          onDelete={onDelete}
         />
       )}
       <div className="add-button">
@@ -204,13 +219,13 @@ const ListUser = () => {
                           ? "/alunos/editar-aluno"
                           : "/administradores/editar-administrador"
                       }
-                      state={users[index]}
+                      state={users}
                     >
                       <i className="fa-solid fa-pen-to-square"></i>
                     </Link>
                     <i
                       className="fa-solid fa-trash-can"
-                      onClick={openModal}
+                      onClick={() => openModal(user.id)}
                     ></i>
                   </td>
                 </tr>
