@@ -34,8 +34,8 @@ const EditStudent = () => {
     if (errorMessages.length > 0) {
       const firstError = Object.values(errorMessages[0])[0];
       console.log(firstError);
-      return
-    } 
+      return;
+    }
 
     try {
       const newStudent = {
@@ -170,7 +170,7 @@ const EditStudent = () => {
           <Link to="/usuarios">
             <Button type="cancel" label="Cancelar" />
           </Link>
-          <Input type="submit" variant="bgSuccess" value="Cadastrar" />
+          <Input type="submit" variant="bgSuccess" value="Salvar" />
         </div>
       </form>
     </div>

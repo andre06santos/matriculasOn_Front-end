@@ -79,7 +79,7 @@ const EditPermission = () => {
           <Link to="/permissoes">
             <Button label="Cancelar" />
           </Link>
-          <Input type="submit" variant="bgSuccess" value="Editar" />
+          <Input type="submit" variant="bgSuccess" value="Salvar" />
         </div>
       </form>
     </div>

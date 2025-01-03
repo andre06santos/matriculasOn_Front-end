@@ -171,7 +171,7 @@ const EditAdmin = () => {
           <Link to="/usuarios">
             <Button type="cancel" label="Cancelar" />
           </Link>
-          <Input type="submit" variant="bgSuccess" value="Cadastrar" />
+          <Input type="submit" variant="bgSuccess" value="Salvar" />
         </div>
       </form>
     </div>
