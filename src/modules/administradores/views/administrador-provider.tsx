@@ -287,6 +287,26 @@ export const AdminProvider = ({ children }: any) => {
     }
   }, []);
 
+  const deleteUser = useCallback(async (id: any) => {
+    try {
+      const userRequest = {
+        endpoint: `/usuarios/${id}`,
+        config: {
+          method: "DELETE",
+        },
+      };
+      const userDeleted = await fetchData(userRequest);
+
+      setUsers((prevUser: any) =>
+        prevUser.filter((user: any) => user.id !== id)
+      );
+
+      return userDeleted;
+    } catch (error) {
+      throw new Error((error as Error).message);
+    }
+  }, []);
+
   const editAdmin = useCallback(async ({ id, newAdmin }: any) => {
     try {
       const userRequest = {
@@ -409,6 +429,7 @@ export const AdminProvider = ({ children }: any) => {
       deleteAdmin,
       users,
       getUsers,
+      deleteUser,
       searchUser,
       students,
       editStudent,
@@ -436,6 +457,7 @@ export const AdminProvider = ({ children }: any) => {
       deleteAdmin,
       users,
       getUsers,
+      deleteUser,
       searchUser,
       students,
       editStudent,
