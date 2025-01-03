@@ -35,26 +35,20 @@
   font-weight: bold;
 }
 
-.td-ativo,
-.td-inativo {
-  span {
-    color: white;
-    text-align: center;
-    padding: 2px 5px;
-    border-radius: 5px;
-  }
+.td-ativo span,
+.td-inativo span {
+  color: white;
+  text-align: center;
+  padding: 2px 5px;
+  border-radius: 5px;
 }
 
-.td-ativo {
-  span {
-    background-color: #008245;
-  }
+.td-ativo span {
+  background-color: #008245;
 }
 
-.td-inativo {
-  span {
-    background-color: #852221;
-  }
+.td-inativo span {
+  background-color: #852221;
 }
 
 .add-button {
