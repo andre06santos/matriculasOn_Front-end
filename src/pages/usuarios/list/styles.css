@@ -37,19 +37,24 @@
 
 .td-ativo,
 .td-inativo {
-  color: white;
-  text-align: center;
-  padding: 2px 5px;
-  border-radius: 5px;
-  width: 0;
+  span {
+    color: white;
+    text-align: center;
+    padding: 2px 5px;
+    border-radius: 5px;
+  }
 }
 
 .td-ativo {
-  background-color: #008245;
+  span {
+    background-color: #008245;
+  }
 }
 
 .td-inativo {
-  background-color: #852221;
+  span {
+    background-color: #852221;
+  }
 }
 
 .add-button {
