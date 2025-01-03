@@ -5,6 +5,9 @@ import { Modal } from "../../../ui/modal";
 import { useAdmin } from "../../../modules/administradores/views/hooks/use-administrador";
 import { NotFound } from "../../../ui/not-found";
 import { Filter } from "./filter";
+import {
+  validateEmptyString,
+} from "../../../modules/formValidationUtils";
 
 const ListStudents = () => {
   const { students, getStudent, deleteStudent, searchStudent } = useAdmin();
@@ -33,10 +36,7 @@ const ListStudents = () => {
     statusMessage = searchTerm.matricula;
   } else if (searchTerm.cpf) {
     statusMessage = searchTerm.cpf;
-  } else {
-    statusMessage = null;
   }
-
   const closeModal = () => {
     setIsModalOpen(false);
   };
@@ -44,6 +44,13 @@ const ListStudents = () => {
   const openModal = (studentId: any) => {
     setIsModalOpen(true);
     setStudentId(studentId);
+  };
+
+  const checkFields = () => {
+    if (nome === "" && matricula === "" && cpf === "") {
+      getStudent();
+      onClean();
+    }
   };
 
   const onDelete = async () => {
@@ -63,6 +70,10 @@ const ListStudents = () => {
     getStudent();
   }, []);
 
+  useEffect(() => {
+    checkFields();
+  }, [nome, matricula, cpf]);
+
   const onClean = () => {
     setMatricula("");
     setCpf("");
@@ -78,6 +89,16 @@ const ListStudents = () => {
   const onSubmit = async (e: any) => {
     e.preventDefault();
 
+    const emptyFieldName = validateEmptyString(nome);
+    const emptyFieldMatricula = validateEmptyString(matricula);
+    const emptyFieldCPF = validateEmptyString(cpf);
+
+    if (emptyFieldName && emptyFieldMatricula && emptyFieldCPF) {
+      console.log("Preencha um dos campos para filtrar!");
+      onClean();
+
+      return;
+    }
     try {
       await searchStudent(nome, cpf, matricula);
       setIsSearching(true);
