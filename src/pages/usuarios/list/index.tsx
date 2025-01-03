@@ -66,11 +66,10 @@ const ListUser = () => {
 
   const onDelete = async () => {
     try {
-      console.log(userId);
       await deleteUser(userId);
       console.log("Usuário excluído com sucesso!");
     } catch (error) {
-      console.log("Ocorreu um erro ao tentar excluir o usuário!");
+      console.log("Ocorreu um erro ao tentar excluir o cadastro do usuário!");
       console.error((error as Error).message);
     } finally {
       closeModal();
