@@ -35,20 +35,19 @@
   font-weight: bold;
 }
 
-.td-ativo,
-.td-inativo {
+.td-ativo span,
+.td-inativo span {
   color: white;
   text-align: center;
   padding: 2px 5px;
   border-radius: 5px;
-  width: 0;
 }
 
-.td-ativo {
+.td-ativo span {
   background-color: #008245;
 }
 
-.td-inativo {
+.td-inativo span {
   background-color: #852221;
 }
 
