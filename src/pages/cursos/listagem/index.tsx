@@ -43,6 +43,13 @@ const ListCourses = () => {
     getCourses();
   };
 
+  const checkFields = () => {
+    if (name === "") {
+      getCourses();
+      onClean();
+    }
+  };
+
   const onDelete = async () => {
     try {
       await deleteCourse(courseId);
@@ -82,6 +89,10 @@ const ListCourses = () => {
   useEffect(() => {
     getCourses();
   }, []);
+
+  useEffect(() => {
+    checkFields();
+  }, [name]);
 
   return (
     <div className="flex-column-gap20">
@@ -129,7 +140,7 @@ const ListCourses = () => {
           />
 
           <p>
-          {isSearching
+            {isSearching
               ? `Total de cursos encontrados ao filtrar por "${searchTerm}": `
               : "Total de cursos encontrados: "}
             <span className="courses-quantity">{courses.length}</span>
