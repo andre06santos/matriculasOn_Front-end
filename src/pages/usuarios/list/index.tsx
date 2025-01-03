@@ -210,7 +210,9 @@ const ListUser = () => {
                       isActiveStatus(user.status) ? "td-ativo" : "td-inativo"
                     }
                   >
-                    {userStatusLabel(user.status)}
+                    <span className="status-label">
+                      {userStatusLabel(user.status)}
+                    </span>
                   </td>
                   <td className="table-actions action-column">
                     <Link
