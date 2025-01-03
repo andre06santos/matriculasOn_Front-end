@@ -67,6 +67,33 @@ export const AdminProvider = ({ children }: any) => {
     []
   );
 
+  const searchUser = useCallback(
+    async (username: any, name: any, status: any) => {
+      try {
+        const queryParams = new URLSearchParams();
+
+        if (username) {
+          queryParams.append("username", username.trim());
+        }
+        if (name) {
+          queryParams.append("nome", name.trim());
+        }
+        if (status) {
+          queryParams.append("status", status.value);
+        }
+        const endpoint = `/usuarios?${queryParams.toString()}`;
+        const userRequest = { endpoint };
+        const _users = await fetchData(userRequest);
+
+        setUsers(_users);
+      } catch (error) {
+        console.error("Erro ao buscar usuarios:", error);
+        throw new Error((error as Error).message);
+      }
+    },
+    []
+  );
+
   const addCourse = useCallback(async (newCourse: any) => {
     try {
       const userRequest = {
@@ -382,6 +409,7 @@ export const AdminProvider = ({ children }: any) => {
       deleteAdmin,
       users,
       getUsers,
+      searchUser,
       students,
       editStudent,
       searchStudent,
@@ -408,6 +436,7 @@ export const AdminProvider = ({ children }: any) => {
       deleteAdmin,
       users,
       getUsers,
+      searchUser,
       students,
       editStudent,
       searchStudent,

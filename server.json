@@ -45,11 +45,11 @@
       "username": "marisilcs",
       "matricula": "2568574MJGHF",
       "cpf": "123.456.789-00",
-      "nome": "Maria da Silva Costa",
+      "nome": "Maria",
       "email": "maria.silva@live.com",
       "curso": "Engenharia Civil",
       "tipo": "Aluno",
-      "status": true,
+      "status": "ATIVO",
       "id": "fda0"
     },
     {
@@ -60,7 +60,7 @@
       "cargo": "CHEFE",
       "departamento": "DTI",
       "tipo": "Administrador",
-      "status": true,
+      "status": "ATIVO",
       "id": "46d4"
     },
     {
@@ -71,7 +71,7 @@
       "cargo": "CHEFE",
       "departamento": "DTI",
       "tipo": "Administrador",
-      "status": false,
+      "status": "INATIVO",
       "id": "338c"
     }
   ],
@@ -80,6 +80,6 @@
       "role": "ADD_ALUNO",
       "descricao": "Adiciona aluno",
       "id": "753b"
-}
+    }
   ]
 }
