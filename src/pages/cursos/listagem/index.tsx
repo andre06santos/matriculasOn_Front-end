@@ -87,10 +87,6 @@ const ListCourses = () => {
   };
 
   useEffect(() => {
-    getCourses();
-  }, []);
-
-  useEffect(() => {
     checkFields();
   }, [name]);
 
