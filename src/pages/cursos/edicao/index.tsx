@@ -32,8 +32,8 @@ const EditCourse = () => {
 
       await editCourse({ id: course.id, newCourse });
 
-      console.log("Curso editado com sucesso!");
       setIsLoading(false);
+      console.log("Curso editado com sucesso!");
       navigate("/cursos");
     } catch (error) {
       setIsLoading(false);
