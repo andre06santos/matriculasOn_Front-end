@@ -62,20 +62,6 @@ const EditAdmin = () => {
     }
   };
 
-  const onClean = (e: any) => {
-    e.preventDefault();
-
-    setCpf("");
-    setCargo("");
-    setNome("");
-    setUsername("");
-    setEmail("");
-    setDepartamento("");
-    setSenha("");
-    setConferirSenha("");
-    setErrorMessages([]);
-  };
-
   return (
     <div className="flex-column-gap20">
       {isLoading && <Spinner />}
@@ -167,12 +153,6 @@ const EditAdmin = () => {
           />
         </div>
         <div className="form-actions flex-column-gap20">
-          <Input
-            type="reset"
-            variant="bgNeutral"
-            value="Limpar"
-            onClick={onClean}
-          />
           <Link to="/usuarios">
             <Button type="cancel" label="Cancelar" />
           </Link>
