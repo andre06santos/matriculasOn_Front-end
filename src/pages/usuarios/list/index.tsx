@@ -70,8 +70,8 @@ const ListUser = () => {
     try {
       setIsLoading(true);
       await deleteUser(userId);
-      console.log("Usuário excluído com sucesso!");
       setIsLoading(false);
+      console.log("Usuário excluído com sucesso!");
     } catch (error) {
       setIsLoading(false);
       console.log("Ocorreu um erro ao tentar excluir o cadastro do usuário!");
