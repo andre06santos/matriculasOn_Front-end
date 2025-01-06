@@ -15,6 +15,7 @@ import {
   verificaSenhasIguais,
 } from "../../../modules/alunosAdmFormValidation";
 import { useAdmin } from "../../../modules/administradores/views/hooks/use-administrador";
+import { Spinner } from "../../../ui/spinner";
 
 const AdministratorRegistration = () => {
   const { addAdmin } = useAdmin();
@@ -27,6 +28,7 @@ const AdministratorRegistration = () => {
   const [senha, setSenha] = useState("");
   const [conferirSenha, setConferirSenha] = useState("");
   const [errorMessages, setErrorMessages] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e: any) => {
@@ -38,6 +40,8 @@ const AdministratorRegistration = () => {
     }
 
     try {
+      setIsLoading(true);
+
       const admin = {
         cpf,
         cargo,
@@ -50,8 +54,10 @@ const AdministratorRegistration = () => {
       await addAdmin(admin);
 
       console.log("Administrador cadastrado com sucesso!");
+      setIsLoading(false);
       navigate("/usuarios");
     } catch (error) {
+      setIsLoading(false);
       console.log("Ocorreu um erro ao tentar cadastrar o administrador!");
       console.error((error as Error).message);
     }
@@ -73,6 +79,8 @@ const AdministratorRegistration = () => {
 
   return (
     <div className="flex-column-gap20">
+      {isLoading && <Spinner />}
+
       <h1>Cadastrar administrador</h1>
       <form className="form" onSubmit={handleSubmit}>
         <div className="input-group">
