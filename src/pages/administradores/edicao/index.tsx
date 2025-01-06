@@ -52,9 +52,8 @@ const EditAdmin = () => {
         departamento,
       };
       await editAdmin({ id: admin.id, newAdmin });
-
-      console.log("Administrador editado com sucesso!");
       setIsLoading(false);
+      console.log("Administrador editado com sucesso!");
       navigate("/usuarios");
     } catch (error) {
       setIsLoading(false);
