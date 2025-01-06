@@ -52,9 +52,8 @@ const EditStudent = () => {
       };
 
       await editStudent({ id: student.id, newStudent });
-
-      console.log("Aluno editado com sucesso!");
       setIsLoading(false);
+      console.log("Aluno editado com sucesso!");
 
       navigate("/alunos");
     } catch (error) {
