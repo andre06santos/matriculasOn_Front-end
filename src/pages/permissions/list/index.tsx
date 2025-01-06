@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import { Button } from "../../../ui/button";
-import { Input } from "../../../ui/input";
 import "./styles.css";
 import { useEffect, useRef, useState } from "react";
 import { Modal } from "../../../ui/modal";
@@ -48,8 +47,10 @@ const ListPermissions = () => {
   };
 
   useEffect(() => {
-    getPermissions();
-  }, []);
+    if (descricao === "") {
+      getPermissions();
+    }
+  }, [descricao]);
 
   const onSubmit = async (e: any) => {
     e.preventDefault();

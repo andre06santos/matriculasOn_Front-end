@@ -28,8 +28,13 @@ export const handleChangeDescription = (
 ) => {
   const hasOnlyLetters = validateOnlyLetters(description);
   const hasSize = description.length < MAX_DESCRICAO_FIELD;
-
   const trimmedDescription = description.trim();
+
+  if (trimmedDescription === "") {
+    setDescription(trimmedDescription);
+
+    return;
+  }
 
   if (!hasOnlyLetters) {
     console.log("Permitido apenas letras");
