@@ -33,9 +33,8 @@ const CreatePermission = () => {
       try {
         setIsLoading(true);
         await addPermission(newPermission);
-
-        console.log("Permissão cadastrada com sucesso!");
         setIsLoading(false);
+        console.log("Permissão cadastrada com sucesso!");
         navigate("/permissoes");
       } catch (error) {
         setIsLoading(false);
