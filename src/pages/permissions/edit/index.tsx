@@ -37,8 +37,8 @@ const EditPermission = () => {
       };
 
       await editPermission({ id: permission.id, newPermission });
-      console.log("Permissão editada com sucesso!");
       setIsLoading(false);
+      console.log("Permissão editada com sucesso!");
       navigate("/permissoes");
     } catch (error) {
       setIsLoading(false);
