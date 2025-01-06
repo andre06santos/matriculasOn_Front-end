@@ -1,10 +1,10 @@
 import "./styles.css";
-import spinner from "../../../public/images/spinner.gif";
+import spinnerImage from "../../../public/spinner.gif";
 
 const Spinner = () => {
   return (
     <div className="spinner">
-      <img src={spinner} alt="loading" />
+      <img src={spinnerImage} alt="loading" />
     </div>
   );
 };
