@@ -47,12 +47,6 @@ const EditPermission = () => {
     }
   };
 
-  const onClean = () => {
-    setRole("");
-    setDescricao("");
-    setErrorMessages([]);
-  };
-
   return (
     <div className="add-page flex-column-gap20">
       {isLoading && <Spinner />}
@@ -78,12 +72,6 @@ const EditPermission = () => {
         </div>
 
         <div className="form-actions-edit flex-column-gap20">
-          <Input
-            type="reset"
-            variant="bgNeutral"
-            value="Limpar"
-            onClick={onClean}
-          />
           <Link to="/permissoes">
             <Button label="Cancelar" />
           </Link>

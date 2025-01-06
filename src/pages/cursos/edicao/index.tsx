@@ -42,11 +42,6 @@ const EditCourse = () => {
     }
   };
 
-  const onClean = () => {
-    setName("");
-    setErrorMessages([]);
-  };
-
   return (
     <div className="flex-column-gap20">
       {isLoading && <Spinner />}
@@ -64,12 +59,6 @@ const EditCourse = () => {
           />
         </div>
         <div className="form-actions-edit flex-column-gap20">
-          <Input
-            type="reset"
-            variant="bgNeutral"
-            value="Limpar"
-            onClick={onClean}
-          />
           <Link to="/cursos">
             <Button type="cancel" label="Cancelar" />
           </Link>
