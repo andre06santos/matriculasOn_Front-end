@@ -4,6 +4,7 @@ import { Input } from "../../../ui/input";
 import { Button } from "../../../ui/button";
 import { handleCourseName } from "../../../modules/courseFormValidation";
 import { useAdmin } from "../../../modules/administradores/views/hooks/use-administrador";
+import { Spinner } from "../../../ui/spinner";
 import "./styles.css";
 
 const CourseRegistration = () => {
@@ -13,6 +14,7 @@ const CourseRegistration = () => {
 
   const [name, setName] = useState("");
   const [errorMessages, setErrorMessages] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const onFocus = () => nameInput.current.focus();
 
@@ -31,12 +33,14 @@ const CourseRegistration = () => {
     }
 
     try {
+      setIsLoading(true);
       await addCourse({ nome: name });
 
       console.log("Curso cadastrado com sucesso!");
-
+      setIsLoading(false);
       navigate("/cursos");
     } catch (error) {
+      setIsLoading(false);
       console.log("Ocorreu um erro ao tentar cadastrar o curso!");
       console.error((error as Error).message);
     }
@@ -44,6 +48,8 @@ const CourseRegistration = () => {
 
   return (
     <div className="flex-column-gap20">
+      {isLoading && <Spinner />}
+
       <h1>Cadastrar curso</h1>
       <form className="form-registration flex-column-gap20" onSubmit={onSubmit}>
         <div className="flex-column-gap20">
@@ -53,9 +59,7 @@ const CourseRegistration = () => {
             id="nome"
             required
             value={name}
-            onChange={(e: any) =>
-              handleCourseName(e.target.value, setName)
-            }
+            onChange={(e: any) => handleCourseName(e.target.value, setName)}
             onFocus={(e: any) => e.target.select()}
             autoFocus
             ref={nameInput}
