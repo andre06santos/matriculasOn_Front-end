@@ -57,8 +57,8 @@ const ListStudents = () => {
     try {
       setIsLoading(true);
       await deleteStudent(studentId);
-      console.log("Aluno excluído com sucesso!");
       setIsLoading(false);
+      console.log("Aluno excluído com sucesso!");
     } catch (error) {
       setIsLoading(false);
       console.log("Ocorreu um erro ao tentar excluir o aluno!");
