@@ -81,13 +81,13 @@ const ListPermissions = () => {
     try {
       setIsLoading(true);
       await deletePermission(permissionId);
-
+      setIsLoading(false);
       console.log("Permissão excluída com sucesso!");
     } catch (error) {
+      setIsLoading(false);
       console.log("Ocorreu um erro ao tentar excluir a permissão!");
       console.error((error as Error).message);
     } finally {
-      setIsLoading(false);
       closeModal();
     }
   };
