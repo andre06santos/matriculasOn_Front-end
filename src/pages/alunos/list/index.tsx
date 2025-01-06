@@ -5,9 +5,7 @@ import { Modal } from "../../../ui/modal";
 import { useAdmin } from "../../../modules/administradores/views/hooks/use-administrador";
 import { NotFound } from "../../../ui/not-found";
 import { Filter } from "./filter";
-import {
-  validateEmptyString,
-} from "../../../modules/formValidationUtils";
+import { validateEmptyString } from "../../../modules/formValidationUtils";
 
 const ListStudents = () => {
   const { students, getStudent, deleteStudent, searchStudent } = useAdmin();
@@ -65,11 +63,6 @@ const ListStudents = () => {
       closeModal();
     }
   };
-
-  useEffect(() => {
-    getStudent();
-  }, []);
-
   useEffect(() => {
     checkFields();
   }, [nome, matricula, cpf]);

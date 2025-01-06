@@ -84,10 +84,6 @@ const ListUser = () => {
   };
 
   useEffect(() => {
-    getUsers();
-  }, []);
-
-  useEffect(() => {
     checkFields();
   }, [nome, username, status]);
 
