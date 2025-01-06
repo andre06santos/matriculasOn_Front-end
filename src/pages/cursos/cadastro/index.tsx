@@ -36,8 +36,8 @@ const CourseRegistration = () => {
       setIsLoading(true);
       await addCourse({ nome: name });
 
-      console.log("Curso cadastrado com sucesso!");
       setIsLoading(false);
+      console.log("Curso cadastrado com sucesso!");
       navigate("/cursos");
     } catch (error) {
       setIsLoading(false);
