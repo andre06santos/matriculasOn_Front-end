@@ -7,6 +7,7 @@ import {
   handleChangeDescription,
   handleChangeRole,
 } from "../../../modules/permissionsFormValidation";
+import { Spinner } from "../../../ui/spinner";
 import { useAdmin } from "../../../modules/administradores/views/hooks/use-administrador";
 
 const EditPermission = () => {
@@ -15,6 +16,7 @@ const EditPermission = () => {
   const navigate = useNavigate();
 
   const [role, setRole] = useState(permission.role);
+  const [isLoading, setIsLoading] = useState(false);
   const [descricao, setDescricao] = useState(permission.descricao);
   const [errorMessages, setErrorMessages] = useState([]);
 
@@ -27,6 +29,8 @@ const EditPermission = () => {
     }
 
     try {
+      setIsLoading(true);
+
       const newPermission = {
         role,
         descricao,
@@ -34,8 +38,10 @@ const EditPermission = () => {
 
       await editPermission({ id: permission.id, newPermission });
       console.log("Permissão editada com sucesso!");
+      setIsLoading(false);
       navigate("/permissoes");
     } catch (error) {
+      setIsLoading(false);
       console.log("Ocorreu um erro ao tentar editar a permissão!");
       console.error((error as Error).message);
     }
@@ -49,6 +55,8 @@ const EditPermission = () => {
 
   return (
     <div className="add-page flex-column-gap20">
+      {isLoading && <Spinner />}
+
       <h1>Editar permissão</h1>
 
       <form className="form-edit flex-column-gap20" onSubmit={onSubmit}>
