@@ -53,8 +53,8 @@ const AdministratorRegistration = () => {
 
       await addAdmin(admin);
 
-      console.log("Administrador cadastrado com sucesso!");
       setIsLoading(false);
+      console.log("Administrador cadastrado com sucesso!");
       navigate("/usuarios");
     } catch (error) {
       setIsLoading(false);
