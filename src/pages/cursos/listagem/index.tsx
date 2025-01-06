@@ -85,12 +85,12 @@ const ListCourses = () => {
       setIsLoading(true);
       await searchCourse(name);
       setIsSearching(true);
+      setIsLoading(false);
       setSearchTerm(name);
     } catch (error) {
+      setIsLoading(false);
       console.log("Ocorreu um erro ao tentar filtrar curso!");
       console.error((error as Error).message);
-    } finally {
-      setIsLoading(false);
     }
   };
 
