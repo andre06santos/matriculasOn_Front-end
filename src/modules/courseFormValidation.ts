@@ -11,11 +11,11 @@ export const handleCourseName = (nome: any, setNome: any) => {
   }
 
   if (hasError) {
-    showCourseNomeError(trimmedNome);
+    showCourseNomeError(nome);
     return;
   }
 
-  setNome(trimmedNome);
+  setNome(nome);
 };
 
 const showCourseNomeError = (nome: any) => {

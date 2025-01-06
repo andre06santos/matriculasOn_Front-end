@@ -57,7 +57,7 @@ export const handleChangeCpf = (
 };
 
 export const handleChangeFilterCpf = (cpf: any, setCpf: any) => {
-  const hasError = !validateOnlyNumbers(cpf) || cpf.length > CPF_LENGTH;
+  const hasError = !validateOnlyNumbers(cpf);
 
   if (cpf === "") {
     setCpf(cpf);
@@ -77,11 +77,6 @@ const showCpfError = (cpf: any) => {
 
   if (!isNumber) {
     console.log("Digite apenas números!");
-    return;
-  }
-
-  if (cpf.length > CPF_LENGTH) {
-    console.log(`Digite apenas ${CPF_LENGTH} caracteres!`);
     return;
   }
 };
@@ -128,11 +123,11 @@ export const handleChangeNome = (nome: any, setNome: any) => {
   }
 
   if (hasError) {
-    showNomeError(trimmedNome);
+    showNomeError(nome);
     return;
   }
 
-  setNome(trimmedNome);
+  setNome(nome);
 };
 
 const showNomeError = (nome: any) => {
