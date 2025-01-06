@@ -184,7 +184,7 @@ const ListStudents = () => {
                   <td>{student.cpf}</td>
                   <td>{student.nome}</td>
                   <td>{student.email}</td>
-                  <td>{student.curso.value}</td>
+                  <td>{student.curso.label}</td>
                   <td className="table-actions action-column">
                     <Link to="/alunos/editar-aluno" state={student}>
                       <i className="fa-solid fa-pen-to-square"></i>
