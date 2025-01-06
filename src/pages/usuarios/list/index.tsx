@@ -7,10 +7,12 @@ import { useAdmin } from "../../../modules/administradores/views/hooks/use-admin
 import { Filter } from "./filter";
 import { NotFound } from "../../../ui/not-found";
 import { validateEmptyString } from "../../../modules/formValidationUtils";
+import { Spinner } from "../../../ui/spinner";
 
 const ListUser = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { users, getUsers, searchUser, deleteUser } = useAdmin();
+  const [isLoading, setIsLoading] = useState(false);
 
   const [username, setUsername] = useState("");
   const [nome, setNome] = useState("");
@@ -66,9 +68,12 @@ const ListUser = () => {
 
   const onDelete = async () => {
     try {
+      setIsLoading(true);
       await deleteUser(userId);
+      setIsLoading(false);
       console.log("Usuário excluído com sucesso!");
     } catch (error) {
+      setIsLoading(false);
       console.log("Ocorreu um erro ao tentar excluir o cadastro do usuário!");
       console.error((error as Error).message);
     } finally {
@@ -101,10 +106,13 @@ const ListUser = () => {
     }
 
     try {
+      setIsLoading(true);
       await searchUser(username, nome, status);
       setIsSearching(true);
       setSearchTerm({ username, nome, status });
+      setIsLoading(false);
     } catch (error) {
+      setIsLoading(false);
       console.log("Ocorreu um erro ao tentar filtrar usuários!");
       console.error((error as Error).message);
     }
@@ -127,6 +135,8 @@ const ListUser = () => {
 
   return (
     <div className="flex-column-gap20">
+      {isLoading && <Spinner />}
+
       {isModalOpen && (
         <Modal
           message="Tem certeza que deseja excluir o cadastro deste usuário?"

@@ -8,6 +8,7 @@ import {
   handleChangeRole,
 } from "../../../modules/permissionsFormValidation";
 import { useAdmin } from "../../../modules/administradores/views/hooks/use-administrador";
+import { Spinner } from "../../../ui/spinner";
 
 const CreatePermission = () => {
   const { addPermission } = useAdmin();
@@ -15,6 +16,7 @@ const CreatePermission = () => {
   const [role, setRole] = useState("");
   const [descricao, setDescricao] = useState("");
   const [errorMessages, setErrorMessages] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const onSubmit = async (e: any) => {
     e.preventDefault();
@@ -29,11 +31,13 @@ const CreatePermission = () => {
       };
 
       try {
+        setIsLoading(true);
         await addPermission(newPermission);
-
+        setIsLoading(false);
         console.log("Permissão cadastrada com sucesso!");
         navigate("/permissoes");
       } catch (error) {
+        setIsLoading(false);
         console.log("Ocorreu um erro ao tentar cadastrar a permissão!");
         console.error((error as Error).message);
       }
@@ -50,6 +54,8 @@ const CreatePermission = () => {
 
   return (
     <div className="add-page flex-column-gap20">
+      {isLoading && <Spinner />}
+
       <h1>Cadastrar permissão</h1>
 
       <form

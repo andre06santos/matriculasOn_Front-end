@@ -15,6 +15,7 @@ import {
   verificaSenhasIguais,
 } from "../../../modules/alunosAdmFormValidation";
 import { useAdmin } from "../../../modules/administradores/views/hooks/use-administrador";
+import { Spinner } from "../../../ui/spinner";
 
 const EditAdmin = () => {
   const { state: admin } = useLocation();
@@ -28,6 +29,7 @@ const EditAdmin = () => {
   const [senha, setSenha] = useState("");
   const [conferirSenha, setConferirSenha] = useState("");
   const [errorMessages, setErrorMessages] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e: any) => {
@@ -40,6 +42,7 @@ const EditAdmin = () => {
     }
 
     try {
+      setIsLoading(true);
       const newAdmin = {
         cpf,
         nome,
@@ -49,11 +52,11 @@ const EditAdmin = () => {
         departamento,
       };
       await editAdmin({ id: admin.id, newAdmin });
-
+      setIsLoading(false);
       console.log("Administrador editado com sucesso!");
-
       navigate("/usuarios");
     } catch (error) {
+      setIsLoading(false);
       console.log("Ocorreu um erro ao tentar editar o administrador!");
       console.error((error as Error).message);
     }
@@ -75,6 +78,8 @@ const EditAdmin = () => {
 
   return (
     <div className="flex-column-gap20">
+      {isLoading && <Spinner />}
+
       <h1>Editar administrador</h1>
       <form className="form" onSubmit={handleSubmit}>
         <div className="input-group">

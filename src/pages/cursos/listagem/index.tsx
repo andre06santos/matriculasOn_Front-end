@@ -7,10 +7,12 @@ import { useAdmin } from "../../../modules/administradores/views/hooks/use-admin
 import { NotFound } from "../../../ui/not-found";
 import { CoursesFilter } from "./filter";
 import "./styles.css";
+import { Spinner } from "../../../ui/spinner";
 
 const ListCourses = () => {
   const { courses, getCourses, searchCourse, deleteCourse } = useAdmin();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const nameInput = useRef<any>(null);
 
   const [name, setName] = useState("");
@@ -52,10 +54,13 @@ const ListCourses = () => {
 
   const onDelete = async () => {
     try {
+      setIsLoading(true);
       await deleteCourse(courseId);
 
       console.log("Curso excluído com sucesso!");
+      setIsLoading(false);
     } catch (error) {
+      setIsLoading(false);
       console.log("Ocorreu um erro ao tentar excluir o curso!");
       console.error((error as Error).message);
     } finally {
@@ -77,10 +82,13 @@ const ListCourses = () => {
     }
 
     try {
+      setIsLoading(true);
       await searchCourse(name);
       setIsSearching(true);
+      setIsLoading(false);
       setSearchTerm(name);
     } catch (error) {
+      setIsLoading(false);
       console.log("Ocorreu um erro ao tentar filtrar curso!");
       console.error((error as Error).message);
     }
@@ -92,6 +100,8 @@ const ListCourses = () => {
 
   return (
     <div className="flex-column-gap20">
+      {isLoading && <Spinner />}
+
       {isModalOpen && (
         <Modal
           message="Tem certeza que deseja excluir este curso?"

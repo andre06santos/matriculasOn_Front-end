@@ -5,6 +5,7 @@ import { Button } from "../../../ui/button";
 import { handleCourseName } from "../../../modules/courseFormValidation";
 import { useAdmin } from "../../../modules/administradores/views/hooks/use-administrador";
 import "./styles.css";
+import { Spinner } from "../../../ui/spinner";
 
 const EditCourse = () => {
   const { state: course } = useLocation();
@@ -12,6 +13,7 @@ const EditCourse = () => {
   const navigate = useNavigate();
 
   const [name, setName] = useState(course.nome);
+  const [isLoading, setIsLoading] = useState(false);
   const [errorMessages, setErrorMessages] = useState([]);
 
   const onSubmit = async (e: any) => {
@@ -23,16 +25,18 @@ const EditCourse = () => {
     }
 
     try {
+      setIsLoading(true);
       const newCourse = {
         nome: name,
       };
 
       await editCourse({ id: course.id, newCourse });
 
+      setIsLoading(false);
       console.log("Curso editado com sucesso!");
-
       navigate("/cursos");
     } catch (error) {
+      setIsLoading(false);
       console.log("Ocorreu um erro ao tentar editar o curso!");
       console.error((error as Error).message);
     }
@@ -45,6 +49,8 @@ const EditCourse = () => {
 
   return (
     <div className="flex-column-gap20">
+      {isLoading && <Spinner />}
+
       <h1>Editar curso</h1>
       <form className="form-edit flex-column-gap20" onSubmit={onSubmit}>
         <div className="flex-column-gap20">
@@ -53,9 +59,7 @@ const EditCourse = () => {
             type="text"
             required
             value={name}
-            onChange={(e: any) =>
-              handleCourseName(e.target.value, setName)
-            }
+            onChange={(e: any) => handleCourseName(e.target.value, setName)}
             onFocus={(e: any) => e.target.select()}
           />
         </div>

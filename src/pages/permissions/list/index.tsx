@@ -8,6 +8,7 @@ import { useAdmin } from "../../../modules/administradores/views/hooks/use-admin
 import { validateEmptyString } from "../../../modules/formValidationUtils";
 import { PermissionsFilter } from "./filter";
 import { NotFound } from "../../../ui/not-found";
+import { Spinner } from "../../../ui/spinner";
 
 const ListPermissions = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -18,6 +19,7 @@ const ListPermissions = () => {
   const [isSearching, setIsSearching] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [permissionId, setPermissionId] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const descricaoInput = useRef<any>(null);
 
   const closeModal = () => {
@@ -63,10 +65,13 @@ const ListPermissions = () => {
     }
 
     try {
+      setIsLoading(true);
       await searchPermission(descricao);
       setIsSearching(true);
       setSearchTerm(descricao);
+      setIsLoading(false);
     } catch (error) {
+      setIsLoading(false);
       console.log("Ocorreu um erro ao tentar filtrar permissões!");
       console.error((error as Error).message);
     }
@@ -74,10 +79,12 @@ const ListPermissions = () => {
 
   const onDelete = async () => {
     try {
+      setIsLoading(true);
       await deletePermission(permissionId);
-
+      setIsLoading(false);
       console.log("Permissão excluída com sucesso!");
     } catch (error) {
+      setIsLoading(false);
       console.log("Ocorreu um erro ao tentar excluir a permissão!");
       console.error((error as Error).message);
     } finally {
@@ -87,6 +94,8 @@ const ListPermissions = () => {
 
   return (
     <div className="flex-column-gap20">
+      {isLoading && <Spinner />}
+
       {isModalOpen && (
         <Modal
           message="Tem certeza que deseja excluir esta permissão?"

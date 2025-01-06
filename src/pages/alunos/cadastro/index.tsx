@@ -14,6 +14,7 @@ import {
   verificaSenhasIguais,
 } from "../../../modules/alunosAdmFormValidation";
 import { useAdmin } from "../../../modules/administradores/views/hooks/use-administrador";
+import { Spinner } from "../../../ui/spinner";
 
 const RegisterStudent = () => {
   const [cpf, setCpf] = useState("");
@@ -25,6 +26,7 @@ const RegisterStudent = () => {
   const [senha, setSenha] = useState("");
   const [conferirSenha, setConferirSenha] = useState("");
   const [errorMessages, setErrorMessages] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const { addStudents } = useAdmin();
 
@@ -40,6 +42,7 @@ const RegisterStudent = () => {
     }
 
     try {
+      setIsLoading(true);
       const aluno = {
         cpf,
         nome,
@@ -51,10 +54,11 @@ const RegisterStudent = () => {
 
       await addStudents(aluno);
 
+      setIsLoading(false);
       console.log("Aluno cadastrado com sucesso!");
-
       navigate("/alunos");
     } catch (error) {
+      setIsLoading(false);
       console.log("Ocorreu um erro ao tentar cadastrar o aluno!");
       console.error((error as Error).message);
     }
@@ -76,6 +80,8 @@ const RegisterStudent = () => {
 
   return (
     <div className="flex-column-gap20">
+      {isLoading && <Spinner />}
+
       <h1>Cadastrar aluno</h1>
       <form className="form" onSubmit={handleSubmit}>
         <div className="input-group">
