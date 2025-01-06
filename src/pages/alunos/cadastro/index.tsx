@@ -54,8 +54,8 @@ const RegisterStudent = () => {
 
       await addStudents(aluno);
 
-      console.log("Aluno cadastrado com sucesso!");
       setIsLoading(false);
+      console.log("Aluno cadastrado com sucesso!");
       navigate("/alunos");
     } catch (error) {
       setIsLoading(false);
