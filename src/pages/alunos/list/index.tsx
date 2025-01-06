@@ -6,10 +6,12 @@ import { useAdmin } from "../../../modules/administradores/views/hooks/use-admin
 import { NotFound } from "../../../ui/not-found";
 import { Filter } from "./filter";
 import { validateEmptyString } from "../../../modules/formValidationUtils";
+import { Spinner } from "../../../ui/spinner";
 
 const ListStudents = () => {
   const { students, getStudent, deleteStudent, searchStudent } = useAdmin();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [matricula, setMatricula] = useState("");
   const [cpf, setCpf] = useState("");
@@ -53,10 +55,12 @@ const ListStudents = () => {
 
   const onDelete = async () => {
     try {
+      setIsLoading(true);
       await deleteStudent(studentId);
-
       console.log("Aluno excluído com sucesso!");
+      setIsLoading(false);
     } catch (error) {
+      setIsLoading(false);
       console.log("Ocorreu um erro ao tentar excluir o aluno!");
       console.error((error as Error).message);
     } finally {
@@ -93,16 +97,20 @@ const ListStudents = () => {
       return;
     }
     try {
+      setIsLoading(true);
       await searchStudent(nome, cpf, matricula);
       setIsSearching(true);
       setSearchTerm({ nome, cpf, matricula });
+      setIsLoading(false);
     } catch (error) {
+      setIsLoading(false);
       console.log("Ocorreu um erro ao tentar filtrar aluno!");
       console.error((error as Error).message);
     }
   };
   return (
     <div className="flex-column-gap20">
+      {isLoading && <Spinner />}
       {isModalOpen && (
         <Modal
           message="Tem certeza que deseja excluir o cadastro deste aluno?"
