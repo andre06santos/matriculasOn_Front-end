@@ -1,0 +1,67 @@
+.main-route {
+  position: relative;
+}
+
+.form-filter {
+  display: flex;
+  gap: 20px;
+
+  & input[type="text"],
+  .css-13cymwt-control,
+  .css-t3ipsp-control {
+    padding: 10px;
+    width: 189px;
+    border-radius: 5px;
+  }
+
+  & .css-13cymwt-control,
+  .css-t3ipsp-control {
+    padding: 0;
+    font-size: 13px;
+  }
+}
+
+.form-actions {
+  display: flex;
+  gap: 10px;
+  align-items: end;
+}
+
+.permissions-quantity {
+  background-color: #808aff;
+  padding: 2px 5px;
+  border-radius: 5px;
+  color: white;
+  font-weight: bold;
+}
+
+.td-ativo span,
+.td-inativo span {
+  color: white;
+  text-align: center;
+  padding: 2px 5px;
+  border-radius: 5px;
+}
+
+.td-ativo span {
+  background-color: #008245;
+}
+
+.td-inativo span {
+  background-color: #852221;
+}
+
+.add-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+
+  & a {
+    text-decoration: none;
+  }
+}
+
+.button.select {
+  width: 120px;
+  box-sizing: border-box;
+}

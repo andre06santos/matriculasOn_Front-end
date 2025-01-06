@@ -1,0 +1,85 @@
+{
+  "cursos": [
+    {
+      "id": "08d2",
+      "nome": "ADS"
+    }
+  ],
+  "alunos": [
+    {
+      "id": "4832",
+      "cpf": "000.000.000-00",
+      "nome": "André Santos",
+      "username": "andrests",
+      "matricula": "MAT0001",
+      "email": "andrests@gmail.com",
+      "curso": "ADS"
+    },
+    {
+      "id": "5785",
+      "cpf": "11111111111",
+      "nome": "sdgfad",
+      "username": "dsafs",
+      "matricula": "sdfgdgd",
+      "email": "usuario@empresa.com.br",
+      "curso": {
+        "label": "Análise e Desenvolvimento de Sistemas",
+        "value": "ADS"
+      }
+    },
+    {
+      "id": "ce8a",
+      "cpf": "11111111111",
+      "nome": "gfdgfdg ree df fgd",
+      "username": "fdage44",
+      "matricula": "dfdgsdfg34",
+      "email": "x@xxxxx.xxxx.xxx.xx",
+      "curso": {
+        "label": "Análise e Desenvolvimento de Sistemas",
+        "value": "ADS"
+      }
+    }
+  ],
+  "usuarios": [
+    {
+      "username": "marisilcs",
+      "matricula": "2568574MJGHF",
+      "cpf": "123.456.789-00",
+      "nome": "Maria",
+      "email": "maria.silva@live.com",
+      "curso": "Engenharia Civil",
+      "tipo": "Aluno",
+      "status": "ATIVO",
+      "id": "fda0"
+    },
+    {
+      "username": "luanmst",
+      "cpf": "123.456.789-00",
+      "nome": "Luan Monteiro de Sá",
+      "email": "luan@gmail.com",
+      "cargo": "CHEFE",
+      "departamento": "DTI",
+      "tipo": "Administrador",
+      "status": "ATIVO",
+      "id": "46d4"
+    },
+    {
+      "username": "luanmst",
+      "cpf": "123.456.789-00",
+      "nome": "Luan Monteiro de Sá",
+      "email": "luan@gmail.com",
+      "cargo": "CHEFE",
+      "departamento": "DTI",
+      "tipo": "Administrador",
+      "status": "INATIVO",
+      "id": "338c"
+    }
+  ],
+  "permissoes": [
+    {
+      "role": "ADD_ALUNO",
+      "descricao": "Adiciona aluno",
+      "id": "753b"
+    }
+  ]
+}

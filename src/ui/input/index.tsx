@@ -1,47 +1,59 @@
 import Select from "react-select";
 import "./styles.css";
+import React from "react";
 
-const Input = ({
-  label,
-  type = "text",
-  variant,
-  selectOptions,
-  ...rest
-}: any) => {
-  const inputClasses: any = {
-    text: "input-text",
-    password: "input-text",
-    reset: "input-button",
-    submit: "input-button",
-  };
+const Input = React.forwardRef(
+  (
+    {
+      label,
+      type = "text",
+      variant,
+      selectOptions,
+      onChange,
+      value,
+      ...rest
+    }: any,
+    ref
+  ) => {
+    const inputCollors: any = {
+      bgNeutral: "bg-neutral",
+      bgInfo: "bg-info",
+      bgSuccess: "bg-success",
+    };
 
-  const inputCollors: any = {
-    bgNeutral: "bg-neutral",
-    bgInfo: "bg-info",
-    bgSuccess: "bg-success",
-  };
+    const inputClass = `input ${
+      type === "reset" || type === "submit"
+        ? `${inputCollors[variant]} input-button`
+        : "input-text"
+    }`;
 
-  const inputClass = `input ${inputClasses[type]} ${inputCollors[variant]}`;
+    return (
+      <div className="input-component">
+        {label && <label>{label}</label>}
 
-  return (
-    <div className="input-component">
-      {label && <label>{label}</label>}
-
-      {selectOptions ? (
-        <Select
-          defaultValue={selectOptions[0]}
-          isClearable
-          isSearchable
-          options={selectOptions}
-          getOptionValue={(option: any) => `${option["id"]}`}
-          getOptionLabel={(option: any) => `${option["text"]}`}
-          className="input-select"
-        />
-      ) : (
-        <input type={type} {...rest} className={inputClass} />
-      )}
-    </div>
-  );
-};
+        {selectOptions ? (
+          <Select
+            options={selectOptions}
+            placeholder="Escolha uma opção"
+            noOptionsMessage={() => "Nenhuma opção encontrada!"}
+            className="input-select"
+            value={value}
+            onChange={onChange}
+          />
+        ) : (
+          <input
+            type={type}
+            className={inputClass}
+            onChange={onChange}
+            value={value}
+            ref={ref}
+            autoComplete="off"
+            {...rest}
+          />
+        )}
+      </div>
+    );
+  }
+);
 
 export { Input };

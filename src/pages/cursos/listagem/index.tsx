@@ -1,65 +1,185 @@
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "../../../ui/button";
-import { Input } from "../../../ui/input";
+import { Modal } from "../../../ui/modal";
+import { validateEmptyString } from "../../../modules/formValidationUtils";
+import { useAdmin } from "../../../modules/administradores/views/hooks/use-administrador";
+import { NotFound } from "../../../ui/not-found";
+import { CoursesFilter } from "./filter";
 import "./styles.css";
+import { Spinner } from "../../../ui/spinner";
 
 const ListCourses = () => {
-    const courses = [
-        {
-            name: "Engenharia Civil",
-        },
-        {
-            name: "Análise e Desenvolvimento de Sistemas",
-        },
-        {
-            name: "Arquitetura"
-        }
-    ];
+  const { courses, getCourses, searchCourse, deleteCourse } = useAdmin();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const nameInput = useRef<any>(null);
 
-    return (
-        <div className="flex-column-gap20">
-            <div className="add-button">
-                <Link to="/cursos/novo-curso">
-                    <Button type="success" label="Adicionar" />
-                </Link>
-            </div>
-            <h1>Cursos</h1>
+  const [name, setName] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [courseId, setCourseId] = useState("");
+  const [isSearching, setIsSearching] = useState(false);
 
-            <form action="" className="form-filter">
-                <Input label="Filtro" placeholder="Nome" />
+  const openModal = (courseId: any) => {
+    setIsModalOpen(true);
+    setCourseId(courseId);
+  };
 
-                <div className="filter-buttons">
-                    <Input type="submit" value="Buscar" variant="bgInfo" />
-                    <Input type="reset" value="Limpar" variant="bgNeutral" />
-                </div>
-            </form>
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
 
-            <p>
-                Total de cursos encontrados:{""}
-                <span className="courses-quantity">3</span>
-            </p>
+  const onClean = () => {
+    setName("");
+    setSearchTerm("");
+    setIsSearching(false);
+  };
 
-            <table className="table">
-                <thead className="table-header">
-                    <th>Nome</th>
-                    <th className="last-element">Ações</th>
-                </thead>
-                <tbody>
-                    {courses.map((course, index): any => (
-                        <tr key={index}>
-                            <td>{course.name}</td>
-                            <td className="table-actions last-element">
-                                <Link to="/cursos/editar-curso">
-                                    <i className="fa-solid fa-pen-to-square icons-action"></i>
-                                </Link>
-                                <i className="fa-solid fa-trash"></i>
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
-        </div>
-    );
+  const onFocus = () => nameInput.current.focus();
+
+  const onReset = () => {
+    if (name === "") return;
+
+    onClean();
+    onFocus();
+    getCourses();
+  };
+
+  const checkFields = () => {
+    if (name === "") {
+      getCourses();
+      onClean();
+    }
+  };
+
+  const onDelete = async () => {
+    try {
+      setIsLoading(true);
+      await deleteCourse(courseId);
+
+      console.log("Curso excluído com sucesso!");
+      setIsLoading(false);
+    } catch (error) {
+      setIsLoading(false);
+      console.log("Ocorreu um erro ao tentar excluir o curso!");
+      console.error((error as Error).message);
+    } finally {
+      closeModal();
+    }
+  };
+
+  const onSubmit = async (e: any) => {
+    e.preventDefault();
+
+    const emptyField = validateEmptyString(name);
+
+    if (emptyField) {
+      console.log("Digite um nome para filtrar!");
+      onClean();
+      onFocus();
+
+      return;
+    }
+
+    try {
+      setIsLoading(true);
+      await searchCourse(name);
+      setIsSearching(true);
+      setIsLoading(false);
+      setSearchTerm(name);
+    } catch (error) {
+      setIsLoading(false);
+      console.log("Ocorreu um erro ao tentar filtrar curso!");
+      console.error((error as Error).message);
+    }
+  };
+
+  useEffect(() => {
+    checkFields();
+  }, [name]);
+
+  return (
+    <div className="flex-column-gap20">
+      {isLoading && <Spinner />}
+
+      {isModalOpen && (
+        <Modal
+          message="Tem certeza que deseja excluir este curso?"
+          onCancel={closeModal}
+          onDelete={onDelete}
+        />
+      )}
+
+      <div className="add-button">
+        <Link to="/cursos/novo-curso">
+          <Button type="success" label="Adicionar" />
+        </Link>
+      </div>
+
+      <h1>Cursos</h1>
+
+      {courses.length === 0 ? (
+        isSearching ? (
+          <>
+            <CoursesFilter
+              onSubmit={onSubmit}
+              name={name}
+              setName={setName}
+              nameInput={nameInput}
+              onReset={onReset}
+            />
+            <NotFound
+              message={`A busca por "${searchTerm}" não retornou nenhum curso!`}
+            />
+          </>
+        ) : (
+          <NotFound message="Nenhum curso foi encontrado!" />
+        )
+      ) : (
+        <>
+          <CoursesFilter
+            onSubmit={onSubmit}
+            name={name}
+            setName={setName}
+            nameInput={nameInput}
+            onReset={onReset}
+          />
+
+          <p>
+            {isSearching
+              ? `Total de cursos encontrados ao filtrar por "${searchTerm}": `
+              : "Total de cursos encontrados: "}
+            <span className="courses-quantity">{courses.length}</span>
+          </p>
+
+          <table className="table">
+            <thead className="table-header">
+              <tr>
+                <th>Nome</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              {courses.map((course: any, index: any) => (
+                <tr key={index}>
+                  <td>{course.nome}</td>
+                  <td className="table-actions">
+                    <Link to="/cursos/editar-curso" state={course}>
+                      <i className="fa-solid fa-pen-to-square icons-action"></i>
+                    </Link>
+                    <i
+                      className="fa-solid fa-trash-can"
+                      onClick={() => openModal(course.id)}
+                    ></i>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </>
+      )}
+    </div>
+  );
 };
 
 export { ListCourses };

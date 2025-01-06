@@ -55,18 +55,40 @@ thead {
 
 table tbody tr:nth-child(even) {
   background-color: #eeeeee;
+
+  &:hover {
+    background-color: #e7e7e7;
+  }
+
+
 }
 
 table tbody tr:nth-child(odd) {
   background-color: #f6f6f6;
+
+  &:hover {
+    background-color: #e7e7e7;
+  }
 }
 
+table tbody td:last-child,
+thead th:last-child {
+  padding-right: 10px;
+  text-align: right;
+}
+
+table tbody td:first-child,
+thead th:first-child {
+  padding-left: 10px;
+}
+
+
 .table-actions {
-  display: flex;
-  gap: 10px;
+  display: block;
 
   & i {
     cursor: pointer;
+    margin-right: 6px;
     transition: scale 0.1s ease;
   }
 
@@ -84,7 +106,7 @@ table tbody tr:nth-child(odd) {
 }
 
 .action-column {
-  margin-right: 20px;
+  margin: 0;
   justify-content: end;
   text-align: right;
 }
