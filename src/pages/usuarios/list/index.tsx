@@ -8,6 +8,7 @@ import { Filter } from "./filter";
 import { NotFound } from "../../../ui/not-found";
 import { validateEmptyString } from "../../../modules/formValidationUtils";
 import { Spinner } from "../../../ui/spinner";
+import { toast } from "react-toastify";
 
 const ListUser = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -71,10 +72,16 @@ const ListUser = () => {
       setIsLoading(true);
       await deleteUser(userId);
       setIsLoading(false);
-      console.log("Usuário excluído com sucesso!");
+      toast("Usuário excluído com sucesso!", {
+        position: "top-center",
+        type: "success",
+      });
     } catch (error) {
       setIsLoading(false);
-      console.log("Ocorreu um erro ao tentar excluir o cadastro do usuário!");
+      toast("Ocorreu um erro ao tentar excluir o cadastro do usuário!", {
+        position: "top-center",
+        type: "error",
+      });
       console.error((error as Error).message);
     } finally {
       closeModal();
@@ -99,7 +106,10 @@ const ListUser = () => {
     const emptyFieldUsername = validateEmptyString(username);
 
     if (emptyFieldName && emptyFieldUsername && !status) {
-      console.log("Preencha um dos campos para filtrar!");
+      toast("Preencha um dos campos para filtrar!", {
+        position: "top-center",
+        type: "error",
+      });
       onClean();
 
       return;
@@ -113,7 +123,10 @@ const ListUser = () => {
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
-      console.log("Ocorreu um erro ao tentar filtrar usuários!");
+      toast("Ocorreu um erro ao tentar filtrar usuários!", {
+        position: "top-center",
+        type: "error",
+      });
       console.error((error as Error).message);
     }
   };

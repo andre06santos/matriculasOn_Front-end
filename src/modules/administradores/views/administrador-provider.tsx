@@ -1,5 +1,6 @@
 import { createContext, useCallback, useMemo, useState } from "react";
 import { fetchData } from "../infrastructure/fetch-data";
+import { toast } from "react-toastify";
 
 export const AdminContext = createContext<any>(undefined);
 
@@ -19,7 +20,10 @@ export const AdminProvider = ({ children }: any) => {
 
       setCourses(_courses);
     } catch (error) {
-      console.log("Ocorreu um erro ao tentar mostrar os cursos!");
+      toast("Ocorreu um erro ao tentar mostrar os cursos!", {
+        position: "top-center",
+        type: "error",
+      });
       console.error((error as Error).message);
     }
   }, []);
@@ -186,7 +190,10 @@ export const AdminProvider = ({ children }: any) => {
 
       setStudents(_students);
     } catch (error) {
-      console.log("Ocorreu um erro ao tentar mostrar os alunos!");
+      toast("Ocorreu um erro ao tentar mostrar os alunos!", {
+        position: "top-center",
+        type: "error",
+      });
       console.error((error as Error).message);
     }
   }, []);
@@ -243,7 +250,10 @@ export const AdminProvider = ({ children }: any) => {
 
       setUsers(_users);
     } catch (error) {
-      console.log("Ocorreu um erro ao tentar mostrar os usuarios!");
+      toast("Ocorreu um erro ao tentar mostrar os usuarios!", {
+        position: "top-center",
+        type: "error",
+      });
       console.error((error as Error).message);
     }
   }, []);
@@ -338,7 +348,10 @@ export const AdminProvider = ({ children }: any) => {
       const _permissions = await fetchData(userRequest);
       setPermissions(_permissions);
     } catch (error) {
-      console.log("Ocorreu um erro ao tentar mostrar as permissões!");
+      toast("Ocorreu um erro ao tentar mostrar as permissões!", {
+        position: "top-center",
+        type: "error",
+      });
       console.error((error as Error).message);
     }
   }, []);

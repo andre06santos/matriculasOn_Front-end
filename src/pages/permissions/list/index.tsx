@@ -8,6 +8,7 @@ import { validateEmptyString } from "../../../modules/formValidationUtils";
 import { PermissionsFilter } from "./filter";
 import { NotFound } from "../../../ui/not-found";
 import { Spinner } from "../../../ui/spinner";
+import { toast } from "react-toastify";
 
 const ListPermissions = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -58,7 +59,10 @@ const ListPermissions = () => {
     const emptyField = validateEmptyString(descricao);
 
     if (emptyField) {
-      console.log("Digite um nome para filtrar!");
+      toast("Digite um nome para filtrar!", {
+        position: "top-center",
+        type: "error",
+      });
       onClean();
       onFocus();
 
@@ -73,7 +77,10 @@ const ListPermissions = () => {
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
-      console.log("Ocorreu um erro ao tentar filtrar permissões!");
+      toast("Ocorreu um erro ao tentar filtrar permissões!", {
+        position: "top-center",
+        type: "error",
+      });
       console.error((error as Error).message);
     }
   };
@@ -83,10 +90,16 @@ const ListPermissions = () => {
       setIsLoading(true);
       await deletePermission(permissionId);
       setIsLoading(false);
-      console.log("Permissão excluída com sucesso!");
+      toast("Permissão excluída com sucesso!", {
+        position: "top-center",
+        type: "success",
+      });
     } catch (error) {
       setIsLoading(false);
-      console.log("Ocorreu um erro ao tentar excluir a permissão!");
+      toast("Ocorreu um erro ao tentar excluir a permissão!", {
+        position: "top-center",
+        type: "error",
+      });
       console.error((error as Error).message);
     } finally {
       closeModal();

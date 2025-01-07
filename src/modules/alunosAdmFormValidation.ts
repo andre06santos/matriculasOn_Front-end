@@ -1,3 +1,4 @@
+import { toast } from "react-toastify";
 import {
   MAX_MATRICULA_FIELD,
   MAX_USERNAME_FIELD,
@@ -76,7 +77,10 @@ const showCpfError = (cpf: any) => {
   const isNumber = validateOnlyNumbers(cpf);
 
   if (!isNumber) {
-    console.log("Digite apenas números!");
+    toast("Digite apenas números!", {
+      position: "top-center",
+      type: "error",
+    });
     return;
   }
 };
@@ -103,12 +107,18 @@ const showMatriculaError = (matricula: any) => {
   const hasLettersAndNumbers = validateLettersAndNumbers(matricula);
 
   if (!hasLettersAndNumbers) {
-    console.log("Caractere nao permitido");
+    toast("Caractere nao permitido!", {
+      position: "top-center",
+      type: "error",
+    });
     return;
   }
 
   if (matricula.length > MAX_MATRICULA_FIELD) {
-    console.log(`Quantidade de caracteres maximo de ${MAX_MATRICULA_FIELD}`);
+    toast(`Quantidade de caracteres maximo de ${MAX_MATRICULA_FIELD}`, {
+      position: "top-center",
+      type: "error",
+    });
     return;
   }
 };
@@ -134,12 +144,18 @@ const showNomeError = (nome: any) => {
   const hasOnlyLetters = validateOnlyLetters(nome);
 
   if (!hasOnlyLetters) {
-    console.log("Caractere nao permitido");
+    toast("Caractere nao permitido!", {
+      position: "top-center",
+      type: "error",
+    });
     return;
   }
 
   if (nome.length > MAX_NOME_FIELD) {
-    console.log(`Quantidade de caracteres maximo de ${MAX_NOME_FIELD}`);
+    toast(`Quantidade de caracteres maximo de ${MAX_NOME_FIELD}`, {
+      position: "top-center",
+      type: "error",
+    });
     return;
   }
 };
@@ -153,7 +169,10 @@ export const handleChangeUsername = (username: any, setUsername: any) => {
   }
 
   if (trimmedUsername.length > MAX_USERNAME_FIELD) {
-    console.log(`Quantidade de caracteres maximo de ${MAX_USERNAME_FIELD}`);
+    toast(`Quantidade de caracteres maximo de ${MAX_USERNAME_FIELD}`, {
+      position: "top-center",
+      type: "error",
+    });
     return;
   }
 
@@ -260,12 +279,18 @@ export const handleChangeCargo = (cargo: any, setCargo: any) => {
   }
 
   if (!hasOnlyLetters) {
-    console.log("Digite apenas letras");
+    toast("Digite apenas letras", {
+      position: "top-center",
+      type: "error",
+    });
     return;
   }
 
   if (cargo.length > MAX_CARGO_FIELD) {
-    console.log(`Quantidade de caracteres maximo de ${MAX_CARGO_FIELD}`);
+    toast(`Quantidade de caracteres maximo de ${MAX_CARGO_FIELD}`, {
+      position: "top-center",
+      type: "error",
+    });
     return;
   }
 
@@ -284,12 +309,18 @@ export const handleChangeDepartamento = (
   }
 
   if (!hasOnlyLetters) {
-    console.log("Digite apenas letras");
+    toast("Digite apenas letras!", {
+      position: "top-center",
+      type: "error",
+    });
     return;
   }
 
   if (departamento.length > MAX_DEPARTAMENTO_FIELD) {
-    console.log(`Quantidade de caracteres maximo de ${MAX_DEPARTAMENTO_FIELD}`);
+    toast(`Quantidade de caracteres maximo de ${MAX_DEPARTAMENTO_FIELD}`, {
+      position: "top-center",
+      type: "error",
+    });
     return;
   }
 

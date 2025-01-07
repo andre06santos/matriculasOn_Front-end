@@ -8,6 +8,7 @@ import { NotFound } from "../../../ui/not-found";
 import { CoursesFilter } from "./filter";
 import "./styles.css";
 import { Spinner } from "../../../ui/spinner";
+import { toast } from "react-toastify";
 
 const ListCourses = () => {
   const { courses, getCourses, searchCourse, deleteCourse } = useAdmin();
@@ -56,12 +57,17 @@ const ListCourses = () => {
     try {
       setIsLoading(true);
       await deleteCourse(courseId);
-
-      console.log("Curso excluído com sucesso!");
+      toast("Curso excluído com sucesso!", {
+        position: "top-center",
+        type: "success",
+      });
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
-      console.log("Ocorreu um erro ao tentar excluir o curso!");
+      toast("Ocorreu um erro ao tentar excluir o curso!", {
+        position: "top-center",
+        type: "error",
+      });
       console.error((error as Error).message);
     } finally {
       closeModal();
@@ -74,7 +80,10 @@ const ListCourses = () => {
     const emptyField = validateEmptyString(name);
 
     if (emptyField) {
-      console.log("Digite um nome para filtrar!");
+      toast("Digite um nome para filtrar!", {
+        position: "top-center",
+        type: "error",
+      });
       onClean();
       onFocus();
 
@@ -89,7 +98,10 @@ const ListCourses = () => {
       setSearchTerm(name);
     } catch (error) {
       setIsLoading(false);
-      console.log("Ocorreu um erro ao tentar filtrar curso!");
+      toast("Ocorreu um erro ao tentar filtrar curso!", {
+        position: "top-center",
+        type: "error",
+      });
       console.error((error as Error).message);
     }
   };
