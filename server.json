@@ -9,35 +9,11 @@
     {
       "id": "4832",
       "cpf": "000.000.000-00",
-      "nome": "André Santos",
+      "nome": "Bia Nobre",
       "username": "andrests",
-      "matricula": "MAT0001",
-      "email": "andrests@gmail.com",
+      "matricula": "LM",
+      "email": "bia@gmail.com",
       "curso": "ADS"
-    },
-    {
-      "id": "5785",
-      "cpf": "11111111111",
-      "nome": "sdgfad",
-      "username": "dsafs",
-      "matricula": "sdfgdgd",
-      "email": "usuario@empresa.com.br",
-      "curso": {
-        "label": "Análise e Desenvolvimento de Sistemas",
-        "value": "ADS"
-      }
-    },
-    {
-      "id": "ce8a",
-      "cpf": "11111111111",
-      "nome": "gfdgfdg ree df fgd",
-      "username": "fdage44",
-      "matricula": "dfdgsdfg34",
-      "email": "x@xxxxx.xxxx.xxx.xx",
-      "curso": {
-        "label": "Análise e Desenvolvimento de Sistemas",
-        "value": "ADS"
-      }
     }
   ],
   "usuarios": [
