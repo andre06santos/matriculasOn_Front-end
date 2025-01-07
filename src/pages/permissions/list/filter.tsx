@@ -10,7 +10,7 @@ const PermissionsFilter = ({
 }: any) => {
   return (
     <div className="filter flex-column-gap20">
-      <span>Filtros</span>
+      <span>Filtro</span>
       <form action="" className="form-filter" onSubmit={onSubmit}>
         <Input
           placeholder="Descrição"
