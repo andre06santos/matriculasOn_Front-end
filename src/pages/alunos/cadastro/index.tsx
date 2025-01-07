@@ -22,7 +22,7 @@ const RegisterStudent = () => {
   const [nome, setNome] = useState("");
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
-  const [curso, setCurso] = useState("");
+  const [curso, setCurso] = useState<any>(null);
   const [senha, setSenha] = useState("");
   const [conferirSenha, setConferirSenha] = useState("");
   const [errorMessages, setErrorMessages] = useState([]);
@@ -49,7 +49,7 @@ const RegisterStudent = () => {
         username,
         matricula,
         email,
-        curso,
+        curso: curso.value,
       };
 
       await addStudents(aluno);
@@ -72,7 +72,7 @@ const RegisterStudent = () => {
     setNome("");
     setUsername("");
     setEmail("");
-    setCurso("");
+    setCurso(null);
     setSenha("");
     setConferirSenha("");
     setErrorMessages([]);
