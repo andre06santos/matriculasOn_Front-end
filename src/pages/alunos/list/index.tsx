@@ -8,6 +8,7 @@ import { Filter } from "./filter";
 import { validateEmptyString } from "../../../modules/formValidationUtils";
 import { Spinner } from "../../../ui/spinner";
 import { cursoOptions } from "../../../constants";
+import { cpfMask } from "../../../modules/alunosAdmFormValidation";
 
 const ListStudents = () => {
   const { students, getStudent, deleteStudent, searchStudent } = useAdmin();
