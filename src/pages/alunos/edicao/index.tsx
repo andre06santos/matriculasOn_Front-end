@@ -77,6 +77,7 @@ const EditStudent = () => {
             value={cpf}
             readOnly
             required
+            style={{ opacity: 0.3 }}
             onChange={(e: any) =>
               handleChangeCpf(e.target.value, setErrorMessages, setCpf)
             }

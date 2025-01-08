@@ -74,6 +74,8 @@ const EditAdmin = () => {
             type="text"
             required
             value={cpf}
+            readOnly
+            style={{ opacity: 0.3 }}
             onChange={(e: any) =>
               handleChangeCpf(e.target.value, setErrorMessages, setCpf)
             }
