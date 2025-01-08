@@ -11,7 +11,6 @@ import {
   handleChangeEmail,
   handleChangeNome,
   handleChangeSenha,
-  handleChangeUsername,
   verificaSenhasIguais,
 } from "../../../modules/alunosAdmFormValidation";
 import { useAdmin } from "../../../modules/administradores/views/hooks/use-administrador";
@@ -109,15 +108,6 @@ const AdministratorRegistration = () => {
           />
         </div>
         <div className="input-group">
-          <Input
-            label="Username"
-            type="text"
-            required
-            value={username}
-            onChange={(e: any) =>
-              handleChangeUsername(e.target.value, setUsername)
-            }
-          />
           <Input
             label="Email"
             type="text"

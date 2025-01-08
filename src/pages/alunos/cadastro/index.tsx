@@ -10,7 +10,6 @@ import {
   handleChangeMatricula,
   handleChangeNome,
   handleChangeSenha,
-  handleChangeUsername,
   verificaSenhasIguais,
 } from "../../../modules/alunosAdmFormValidation";
 import { useAdmin } from "../../../modules/administradores/views/hooks/use-administrador";
@@ -115,15 +114,6 @@ const RegisterStudent = () => {
           />
         </div>
         <div className="input-group">
-          <Input
-            label="Username"
-            type="text"
-            value={username}
-            required
-            onChange={(e: any) =>
-              handleChangeUsername(e.target.value, setUsername)
-            }
-          />
           <Input
             label="Email"
             type="text"

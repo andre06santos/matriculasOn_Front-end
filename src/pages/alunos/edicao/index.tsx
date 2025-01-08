@@ -10,7 +10,6 @@ import {
   handleChangeMatricula,
   handleChangeNome,
   handleChangeSenha,
-  handleChangeUsername,
   verificaSenhasIguais,
 } from "../../../modules/alunosAdmFormValidation";
 import { useAdmin } from "../../../modules/administradores/views/hooks/use-administrador";
@@ -21,7 +20,6 @@ const EditStudent = () => {
   const [cpf, setCpf] = useState(student.cpf);
   const [matricula, setMatricula] = useState(student.matricula);
   const [nome, setNome] = useState(student.nome);
-  const [username, setUsername] = useState(student.username);
   const [email, setEmail] = useState(student.email);
   const [curso, setCurso] = useState(student.curso);
   const [senha, setSenha] = useState("");
@@ -45,7 +43,6 @@ const EditStudent = () => {
       const newStudent = {
         cpf,
         nome,
-        username,
         matricula,
         email,
         curso,
@@ -100,15 +97,6 @@ const EditStudent = () => {
           />
         </div>
         <div className="input-group">
-          <Input
-            label="Username"
-            type="text"
-            value={username}
-            required
-            onChange={(e: any) =>
-              handleChangeUsername(e.target.value, setUsername)
-            }
-          />
           <Input
             label="Email"
             type="text"
