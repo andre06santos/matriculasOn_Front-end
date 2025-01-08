@@ -15,6 +15,7 @@ import {
 } from "../../../modules/alunosAdmFormValidation";
 import { useAdmin } from "../../../modules/administradores/views/hooks/use-administrador";
 import { Spinner } from "../../../ui/spinner";
+import { cursoOptions } from "../../../constants";
 
 const RegisterStudent = () => {
   const [cpf, setCpf] = useState("");
@@ -188,10 +189,3 @@ const RegisterStudent = () => {
 };
 
 export { RegisterStudent };
-
-const cursoOptions = [
-  { label: "Análise e Desenvolvimento de Sistemas", value: "ADS" },
-  { label: "Engenharia de Software", value: "ENG_SOF" },
-  { label: "Redes de Computadores", value: "RED" },
-  { label: "Tecnologia da Informação", value: "TEC_INF" },
-];
