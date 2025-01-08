@@ -7,6 +7,7 @@ import { NotFound } from "../../../ui/not-found";
 import { Filter } from "./filter";
 import { validateEmptyString } from "../../../modules/formValidationUtils";
 import { Spinner } from "../../../ui/spinner";
+import { cpfMask } from "../../../modules/alunosAdmFormValidation";
 
 const ListStudents = () => {
   const { students, getStudent, deleteStudent, searchStudent } = useAdmin();
@@ -181,7 +182,7 @@ const ListStudents = () => {
               {students.map((student: any, index: any) => (
                 <tr key={index}>
                   <td>{student.matricula}</td>
-                  <td>{student.cpf}</td>
+                  <td>{cpfMask(student.cpf)}</td>
                   <td>{student.nome}</td>
                   <td>{student.email}</td>
                   <td>{student.curso}</td>

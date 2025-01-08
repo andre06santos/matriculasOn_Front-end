@@ -43,8 +43,10 @@ const RegisterStudent = () => {
 
     try {
       setIsLoading(true);
+      const cpfNumber = cpf.replace(/\D/g, "");
+
       const aluno = {
-        cpf,
+        cpf: cpfNumber,
         nome,
         username,
         matricula,
