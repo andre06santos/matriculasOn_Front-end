@@ -10,10 +10,10 @@ export const AdminProvider = ({ children }: any) => {
   const [users, setUsers] = useState<any>([]);
   const [permissions, setPermissions] = useState<any>([]);
 
-  const getCourses = useCallback(async () => {
+  const getCourses = useCallback(async (page: number) => {
     try {
       const userRequest = {
-        endpoint: "/cursos",
+        endpoint: `/cursos?page=${page}`,
       };
       const _courses = await fetchData(userRequest);
 
@@ -24,15 +24,14 @@ export const AdminProvider = ({ children }: any) => {
     }
   }, []);
 
-  const searchCourse = useCallback(async (name: any) => {
+  const searchCourse = useCallback(async (name: any, page: number) => {
     try {
       const userRequest = {
-        endpoint: `/cursos?nome=${name}`,
+        endpoint: `/cursos?nome=${name}&page=${page}`,
       };
       const _courses = await fetchData(userRequest);
 
       setCourses(_courses);
-
       return _courses;
     } catch (error) {
       throw new Error((error as Error).message);
