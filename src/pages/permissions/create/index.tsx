@@ -9,6 +9,7 @@ import {
 } from "../../../modules/permissionsFormValidation";
 import { useAdmin } from "../../../modules/administradores/views/hooks/use-administrador";
 import { Spinner } from "../../../ui/spinner";
+import { toast } from "react-toastify";
 
 const CreatePermission = () => {
   const { addPermission } = useAdmin();
@@ -23,7 +24,10 @@ const CreatePermission = () => {
 
     if (errorMessages.length > 0) {
       const firstError = Object.values(errorMessages[0])[0];
-      console.log(firstError);
+      toast(`${firstError}`, {
+        position: "top-center",
+        type: "error",
+      });
     } else {
       const newPermission = {
         role,
@@ -34,11 +38,17 @@ const CreatePermission = () => {
         setIsLoading(true);
         await addPermission(newPermission);
         setIsLoading(false);
-        console.log("Permissão cadastrada com sucesso!");
+        toast("Permissão cadastrada com sucesso!", {
+          position: "top-center",
+          type: "success",
+        });
         navigate("/permissoes");
       } catch (error) {
         setIsLoading(false);
-        console.log("Ocorreu um erro ao tentar cadastrar a permissão!");
+        toast("Ocorreu um erro ao tentar cadastrar o curso!", {
+          position: "top-center",
+          type: "error",
+        });
         console.error((error as Error).message);
       }
     }

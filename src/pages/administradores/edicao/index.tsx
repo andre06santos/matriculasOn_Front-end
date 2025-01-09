@@ -16,6 +16,7 @@ import {
 } from "../../../modules/alunosAdmFormValidation";
 import { useAdmin } from "../../../modules/administradores/views/hooks/use-administrador";
 import { Spinner } from "../../../ui/spinner";
+import { toast } from "react-toastify";
 
 const EditAdmin = () => {
   const { state: admin } = useLocation();
@@ -37,7 +38,10 @@ const EditAdmin = () => {
 
     if (errorMessages.length > 0) {
       const firstError = Object.values(errorMessages[0])[0];
-      console.log(firstError);
+      toast(`${firstError}`, {
+        position: "top-center",
+        type: "error",
+      });
       return;
     }
 
@@ -53,11 +57,17 @@ const EditAdmin = () => {
       };
       await editAdmin({ id: admin.id, newAdmin });
       setIsLoading(false);
-      console.log("Administrador editado com sucesso!");
+      toast("Administrador editado com sucesso!", {
+        position: "top-center",
+        type: "success",
+      });
       navigate("/usuarios");
     } catch (error) {
       setIsLoading(false);
-      console.log("Ocorreu um erro ao tentar editar o administrador!");
+      toast("Ocorreu um erro ao tentar editar o administrador!", {
+        position: "top-center",
+        type: "error",
+      });
       console.error((error as Error).message);
     }
   };

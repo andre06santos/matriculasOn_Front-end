@@ -6,6 +6,7 @@ import { handleCourseName } from "../../../modules/courseFormValidation";
 import { useAdmin } from "../../../modules/administradores/views/hooks/use-administrador";
 import "./styles.css";
 import { Spinner } from "../../../ui/spinner";
+import { toast } from "react-toastify";
 
 const EditCourse = () => {
   const { state: course } = useLocation();
@@ -21,7 +22,10 @@ const EditCourse = () => {
 
     if (errorMessages.length > 0) {
       const firstError = Object.values(errorMessages[0])[0];
-      console.log(firstError);
+      toast(`${firstError}`, {
+        position: "top-center",
+        type: "error",
+      });
     }
 
     try {
@@ -33,11 +37,17 @@ const EditCourse = () => {
       await editCourse({ id: course.id, newCourse });
 
       setIsLoading(false);
-      console.log("Curso editado com sucesso!");
+      toast("Curso editado com sucesso!", {
+        position: "top-center",
+        type: "success",
+      });
       navigate("/cursos");
     } catch (error) {
       setIsLoading(false);
-      console.log("Ocorreu um erro ao tentar editar o curso!");
+      toast("Ocorreu um erro ao tentar editar o curso!", {
+        position: "top-center",
+        type: "error",
+      });
       console.error((error as Error).message);
     }
   };
