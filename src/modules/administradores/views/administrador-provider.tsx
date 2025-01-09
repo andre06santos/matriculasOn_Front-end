@@ -10,10 +10,10 @@ export const AdminProvider = ({ children }: any) => {
   const [users, setUsers] = useState<any>([]);
   const [permissions, setPermissions] = useState<any>([]);
 
-  const getCourses = useCallback(async (page: number) => {
+  const getCourses = useCallback(async () => {
     try {
       const userRequest = {
-        endpoint: `/cursos?page=${page}`,
+        endpoint: `/cursos`,
       };
       const _courses = await fetchData(userRequest);
 
@@ -105,7 +105,7 @@ export const AdminProvider = ({ children }: any) => {
 
       const addedCourse = await fetchData(userRequest);
 
-      setCourses((prevCourses: any) => [...prevCourses, addedCourse]);
+      getCourses();
 
       return addedCourse;
     } catch (error) {
@@ -144,9 +144,7 @@ export const AdminProvider = ({ children }: any) => {
 
       const courseDeleted = await fetchData(userRequest);
 
-      setCourses((prevCourses: any) =>
-        prevCourses.filter((course: any) => course.id !== id)
-      );
+      getCourses();
 
       return courseDeleted;
     } catch (error) {
