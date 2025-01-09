@@ -62,7 +62,11 @@ const Pagination = ({
             key={index}
             onClick={() => goPage(element - 1)}
           >
-            {element}
+            {element !== DOT3 ? (
+              element
+            ) : (
+              <i className="fa-solid fa-ellipsis"></i>
+            )}
           </div>
         ))}
         <div
