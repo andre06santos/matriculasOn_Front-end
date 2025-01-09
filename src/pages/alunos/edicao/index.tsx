@@ -14,6 +14,8 @@ import {
 } from "../../../modules/alunosAdmFormValidation";
 import { useAdmin } from "../../../modules/administradores/views/hooks/use-administrador";
 import { Spinner } from "../../../ui/spinner";
+import { cursoOptions } from "../../../constants";
+
 const EditStudent = () => {
   const { state: student } = useLocation();
   const { editStudent } = useAdmin();
@@ -21,7 +23,7 @@ const EditStudent = () => {
   const [matricula, setMatricula] = useState(student.matricula);
   const [nome, setNome] = useState(student.nome);
   const [email, setEmail] = useState(student.email);
-  const [curso, setCurso] = useState(student.curso);
+  const [curso, setCurso] = useState(findCourse(student.curso));
   const [senha, setSenha] = useState("");
   const [conferirSenha, setConferirSenha] = useState("");
   const [errorMessages, setErrorMessages] = useState([]);
@@ -154,11 +156,10 @@ const EditStudent = () => {
   );
 };
 
-export { EditStudent };
+const findCourse = (value: any) => {
+  const course = cursoOptions.find((course) => course.value === value);
 
-const cursoOptions = [
-  { label: "Análise e Desenvolvimento de Sistemas", value: "ADS" },
-  { label: "Engenharia de Software", value: "ENG_SOF" },
-  { label: "Redes de Computadores", value: "RED_COMP" },
-  { label: "Tecnologia da Informação", value: "TEC_INFO" },
-];
+  return course;
+};
+
+export { EditStudent };
