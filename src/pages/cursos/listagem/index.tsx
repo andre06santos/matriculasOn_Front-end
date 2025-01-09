@@ -47,13 +47,13 @@ const ListCourses = () => {
     onClean();
     onFocus();
     setPage(0);
-    getCourses(page);
+    getCourses();
     actualCourses = courses;
   };
 
   const checkFields = () => {
     if (name === "") {
-      getCourses(page);
+      getCourses();
       onClean();
     }
   };
@@ -64,6 +64,7 @@ const ListCourses = () => {
       await deleteCourse(courseId);
 
       console.log("Curso excluído com sucesso!");
+      setPage(0);
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
