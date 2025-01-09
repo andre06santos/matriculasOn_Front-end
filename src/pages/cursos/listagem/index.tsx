@@ -14,7 +14,6 @@ const ListCourses = () => {
   const { courses, getCourses, searchCourse, deleteCourse } = useAdmin();
   const [page, setPage] = useState(0);
   let actualCourses = courses;
-  console.log(actualCourses);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -47,7 +46,9 @@ const ListCourses = () => {
 
     onClean();
     onFocus();
+    setPage(0);
     getCourses(page);
+    actualCourses = courses;
   };
 
   const checkFields = () => {
@@ -88,6 +89,7 @@ const ListCourses = () => {
 
     try {
       setIsLoading(true);
+      setPage(0);
       const filteredCourses = await searchCourse(name, page);
       actualCourses = filteredCourses;
 
@@ -103,19 +105,16 @@ const ListCourses = () => {
 
   useEffect(() => {
     checkFields();
-  }, [name, page]);
+  }, [name]);
 
   useEffect(() => {
     const changePageFiltered = async () => {
-      actualCourses = await searchCourse(name, page);
+      const newPageFiltered = await searchCourse(name, page);
+      actualCourses = newPageFiltered;
     };
 
     changePageFiltered();
   }, [page]);
-
-  useEffect(() => {
-    getCourses(page);
-  }, []);
 
   return (
     <div className="flex-column-gap20">
@@ -199,18 +198,18 @@ const ListCourses = () => {
                 ))}
             </tbody>
           </table>
+          {actualCourses.pageable !== undefined && (
+            <Pagination
+              pageNumber={actualCourses.pageable.pageNumber}
+              pageSize={actualCourses.size}
+              totalPages={actualCourses.totalPages}
+              last={actualCourses.last}
+              first={actualCourses.first}
+              setPage={setPage}
+              buttonsQnt={2}
+            />
+          )}
         </>
-      )}
-      {actualCourses.pageable !== undefined && (
-        <Pagination
-          pageNumber={actualCourses.pageable.pageNumber}
-          pageSize={actualCourses.size}
-          totalPages={actualCourses.totalPages}
-          last={actualCourses.last}
-          first={actualCourses.first}
-          setPage={setPage}
-          buttonsQnt={2}
-        />
       )}
     </div>
   );
