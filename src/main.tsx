@@ -9,7 +9,7 @@ createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <AdminProvider>
       <App />
-      <ToastContainer position="top-right" autoClose={5000} />
+      <ToastContainer position="top-center" autoClose={5000} />
     </AdminProvider>
   </StrictMode>
 );
