@@ -32,7 +32,7 @@ const Pagination = ({
 
   useEffect(() => {
     setElementosExibidos(add3Dot(numbers));
-  }, [pageNumber]);
+  }, [pageNumber, totalPages]);
 
   const nextPage = () => {
     pageNumber < totalPages - 1 && setPage((prevPage): any => prevPage + 1);
