@@ -23,7 +23,7 @@
   gap: 30px;
   flex-direction: column;
   border-radius: 10px;
-  animation: animacao 1.5s;
+  animation: animacao 0.6s;
 
   & p {
     margin: 0px;
