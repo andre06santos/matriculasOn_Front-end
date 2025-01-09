@@ -21,7 +21,7 @@ const Filter = ({
 }: any) => {
   return (
     <div className="filter flex-column-gap20">
-      <span>Filtro</span>
+      <span>Filtros</span>
       <form className="form-filter" onSubmit={onSubmit}>
         <Input
           placeholder="Username"

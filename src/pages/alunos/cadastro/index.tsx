@@ -15,6 +15,7 @@ import {
 } from "../../../modules/alunosAdmFormValidation";
 import { useAdmin } from "../../../modules/administradores/views/hooks/use-administrador";
 import { Spinner } from "../../../ui/spinner";
+import { cursoOptions } from "../../../constants";
 import { toast } from "react-toastify";
 
 const RegisterStudent = () => {
@@ -23,7 +24,7 @@ const RegisterStudent = () => {
   const [nome, setNome] = useState("");
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
-  const [curso, setCurso] = useState("");
+  const [curso, setCurso] = useState<any>(null);
   const [senha, setSenha] = useState("");
   const [conferirSenha, setConferirSenha] = useState("");
   const [errorMessages, setErrorMessages] = useState([]);
@@ -45,13 +46,15 @@ const RegisterStudent = () => {
 
     try {
       setIsLoading(true);
+      const cpfNumber = cpf.replace(/\D/g, "");
+
       const aluno = {
-        cpf,
+        cpf: cpfNumber,
         nome,
         username,
         matricula,
         email,
-        curso,
+        curso: curso.value,
       };
 
       await addStudents(aluno);
@@ -80,7 +83,7 @@ const RegisterStudent = () => {
     setNome("");
     setUsername("");
     setEmail("");
-    setCurso("");
+    setCurso(null);
     setSenha("");
     setConferirSenha("");
     setErrorMessages([]);
@@ -194,10 +197,3 @@ const RegisterStudent = () => {
 };
 
 export { RegisterStudent };
-
-const cursoOptions = [
-  { label: "Análise e Desenvolvimento de Sistemas", value: "ADS" },
-  { label: "Engenharia de Software", value: "ENG_SOF" },
-  { label: "Redes de Computadores", value: "RED" },
-  { label: "Tecnologia da Informação", value: "TEC_INF" },
-];

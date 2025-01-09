@@ -15,23 +15,24 @@ import {
   updateErrorMessages,
 } from "./formValidationUtils";
 
+export const cpfMask = (cpf: any) => {
+  const cpfNumber = cpf.replace(/\D/g, "");
+  const cpfWithMask = cpfNumber
+    .replace(/^(\d{3})(\d)/, "$1.$2")
+    .replace(/^(\d{3})\.(\d{3})(\d)/, "$1.$2.$3")
+    .replace(/^(\d{3})\.(\d{3})\.(\d{3})(\d)/, "$1.$2.$3-$4");
+
+  return cpfWithMask;
+};
+
 export const handleChangeCpf = (
   cpf: any,
   setErrorMessages: any,
   setCpf: any
 ) => {
   const fieldKey = "cpf";
-
-  const formatCpf = (cpf: any) => {
-    const cleaned = cpf.replace(/\D/g, "");
-    return cleaned
-      .replace(/^(\d{3})(\d)/, "$1.$2")
-      .replace(/^(\d{3})\.(\d{3})(\d)/, "$1.$2.$3")
-      .replace(/^(\d{3})\.(\d{3})\.(\d{3})(\d)/, "$1.$2.$3-$4");
-  };
-
+  const formattedCpf = cpfMask(cpf);
   const cleanedCpf = cpf.replace(/\D/g, "");
-  const formattedCpf = formatCpf(cleanedCpf);
   const hasError =
     !validateOnlyNumbers(cleanedCpf) || cleanedCpf.length > CPF_LENGTH;
 

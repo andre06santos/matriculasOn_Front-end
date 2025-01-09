@@ -49,6 +49,7 @@ const ListPermissions = () => {
 
   useEffect(() => {
     if (descricao === "") {
+      setIsSearching(false);
       getPermissions();
     }
   }, [descricao]);

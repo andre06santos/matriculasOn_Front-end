@@ -17,7 +17,7 @@ const ListUser = () => {
 
   const [username, setUsername] = useState("");
   const [nome, setNome] = useState("");
-  const [status, setStatus] = useState("");
+  const [status, setStatus] = useState<any>(null);
   const [searchTerm, setSearchTerm] = useState({
     username: "",
     nome: "",
@@ -33,11 +33,11 @@ const ListUser = () => {
   let statusMessage;
 
   if (searchTerm.username) {
-    statusMessage = searchTerm.username;
+    statusMessage = `por "${searchTerm.username}"`;
   } else if (searchTerm.nome) {
-    statusMessage = searchTerm.nome;
+    statusMessage = `por "${searchTerm.nome}"`;
   } else if (searchTerm.status) {
-    statusMessage = "Status";
+    statusMessage = "pelo status";
   }
 
   const closeModal = () => {
@@ -56,12 +56,12 @@ const ListUser = () => {
   const onClean = () => {
     setUsername("");
     setNome("");
-    setStatus("");
+    setStatus(null);
     setIsSearching(false);
   };
 
   const checkFields = () => {
-    if (nome === "" && username === "" && status === "") {
+    if (nome === "" && username === "" && !status) {
       getUsers();
       onClean();
     }
@@ -89,7 +89,7 @@ const ListUser = () => {
   };
 
   const onReset = () => {
-    if (nome === "" && username === "" && status === "") return;
+    if (nome === "" && username === "" && !status) return;
 
     onClean();
     getUsers();
@@ -117,7 +117,7 @@ const ListUser = () => {
 
     try {
       setIsLoading(true);
-      await searchUser(username, nome, status);
+      await searchUser(username, nome, status?.value);
       setIsSearching(true);
       setSearchTerm({ username, nome, status });
       setIsLoading(false);
@@ -179,11 +179,11 @@ const ListUser = () => {
               onReset={onReset}
             />
             <NotFound
-              message={`A busca por "${statusMessage}" não retornou nenhum usuario!`}
+              message={`A busca ${statusMessage} não retornou nenhum usuario!`}
             />
           </>
         ) : (
-          <NotFound message="Nenhum Usuário foi encontrado!" />
+          <NotFound message="Nenhum usuário foi encontrado!" />
         )
       ) : (
         <>
@@ -203,7 +203,7 @@ const ListUser = () => {
 
           <p>
             {isSearching
-              ? `Total de usuários encontrados ao filtrar por "${statusMessage}": `
+              ? `Total de usuários encontrados ao filtrar ${statusMessage}: `
               : "Total de usuários encontrados:"}
             <span className="permissions-quantity">{users.length}</span>
           </p>
