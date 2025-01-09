@@ -6,6 +6,7 @@ import { handleCourseName } from "../../../modules/courseFormValidation";
 import { useAdmin } from "../../../modules/administradores/views/hooks/use-administrador";
 import { Spinner } from "../../../ui/spinner";
 import "./styles.css";
+import { toast } from "react-toastify";
 
 const CourseRegistration = () => {
   const navigate = useNavigate();
@@ -29,7 +30,10 @@ const CourseRegistration = () => {
 
     if (errorMessages.length > 0) {
       const firstError = Object.values(errorMessages[0])[0];
-      console.log(firstError);
+      toast(`${firstError}`, {
+        position: "top-center",
+        type: "error",
+      });
     }
 
     try {
@@ -37,11 +41,17 @@ const CourseRegistration = () => {
       await addCourse({ nome: name });
 
       setIsLoading(false);
-      console.log("Curso cadastrado com sucesso!");
+      toast("Curso criado com sucesso!", {
+        position: "top-center",
+        type: "success",
+      });
       navigate("/cursos");
     } catch (error) {
       setIsLoading(false);
-      console.log("Ocorreu um erro ao tentar cadastrar o curso!");
+      toast("Ocorreu um erro ao criar o curso!", {
+        position: "top-center",
+        type: "error",
+      });
       console.error((error as Error).message);
     }
   };

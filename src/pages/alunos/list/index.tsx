@@ -9,6 +9,7 @@ import { validateEmptyString } from "../../../modules/formValidationUtils";
 import { Spinner } from "../../../ui/spinner";
 import { cursoOptions } from "../../../constants";
 import { cpfMask } from "../../../modules/alunosAdmFormValidation";
+import { toast } from "react-toastify";
 
 const ListStudents = () => {
   const { students, getStudent, deleteStudent, searchStudent } = useAdmin();
@@ -60,10 +61,16 @@ const ListStudents = () => {
       setIsLoading(true);
       await deleteStudent(studentId);
       setIsLoading(false);
-      console.log("Aluno excluído com sucesso!");
+      toast("Aluno excluído com sucesso!", {
+        position: "top-center",
+        type: "success",
+      });
     } catch (error) {
       setIsLoading(false);
-      console.log("Ocorreu um erro ao tentar excluir o aluno!");
+      toast("Ocorreu um erro ao tentar excluir o cadastro do aluno!", {
+        position: "top-center",
+        type: "error",
+      });
       console.error((error as Error).message);
     } finally {
       closeModal();
@@ -93,7 +100,10 @@ const ListStudents = () => {
     const emptyFieldCPF = validateEmptyString(cpf);
 
     if (emptyFieldName && emptyFieldMatricula && emptyFieldCPF) {
-      console.log("Preencha um dos campos para filtrar!");
+      toast("Preencha um dos campos para filtrar!", {
+        position: "top-center",
+        type: "error",
+      });
       onClean();
 
       return;
@@ -106,7 +116,10 @@ const ListStudents = () => {
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
-      console.log("Ocorreu um erro ao tentar filtrar aluno!");
+      toast("Ocorreu um erro ao tentar filtrar alunos!", {
+        position: "top-center",
+        type: "error",
+      });
       console.error((error as Error).message);
     }
   };

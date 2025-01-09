@@ -15,6 +15,7 @@ import {
 } from "../../../modules/alunosAdmFormValidation";
 import { useAdmin } from "../../../modules/administradores/views/hooks/use-administrador";
 import { Spinner } from "../../../ui/spinner";
+import { toast } from "react-toastify";
 
 const AdministratorRegistration = () => {
   const { addAdmin } = useAdmin();
@@ -35,7 +36,10 @@ const AdministratorRegistration = () => {
 
     if (errorMessages.length > 0) {
       const firstError = Object.values(errorMessages[0])[0];
-      console.log(firstError);
+      toast(`${firstError}`, {
+        position: "top-center",
+        type: "error",
+      });
     }
 
     try {
@@ -53,11 +57,17 @@ const AdministratorRegistration = () => {
       await addAdmin(admin);
 
       setIsLoading(false);
-      console.log("Administrador cadastrado com sucesso!");
+      toast("Administrador cadastrado com sucesso!", {
+        position: "top-center",
+        type: "success",
+      });
       navigate("/usuarios");
     } catch (error) {
       setIsLoading(false);
-      console.log("Ocorreu um erro ao tentar cadastrar o administrador!");
+      toast("Ocorreu um erro ao tentar cadastrar o administrador!", {
+        position: "top-center",
+        type: "error",
+      });
       console.error((error as Error).message);
     }
   };
