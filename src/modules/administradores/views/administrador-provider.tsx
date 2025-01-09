@@ -19,8 +19,8 @@ export const AdminProvider = ({ children }: any) => {
 
       setCourses(_courses);
     } catch (error) {
-      console.log("Ocorreu um erro ao tentar mostrar os cursos!");
       console.error((error as Error).message);
+      throw new Error((error as Error).message);
     }
   }, []);
 
@@ -35,6 +35,7 @@ export const AdminProvider = ({ children }: any) => {
 
       return _courses;
     } catch (error) {
+      console.error((error as Error).message);
       throw new Error((error as Error).message);
     }
   }, []);
@@ -60,7 +61,7 @@ export const AdminProvider = ({ children }: any) => {
 
         setStudents(_students);
       } catch (error) {
-        console.error("Erro ao buscar alunos:", error);
+        console.error((error as Error).message);
         throw new Error((error as Error).message);
       }
     },
@@ -87,7 +88,7 @@ export const AdminProvider = ({ children }: any) => {
 
         setUsers(_users);
       } catch (error) {
-        console.error("Erro ao buscar usuarios:", error);
+        console.error((error as Error).message);
         throw new Error((error as Error).message);
       }
     },
@@ -110,6 +111,7 @@ export const AdminProvider = ({ children }: any) => {
 
       return addedCourse;
     } catch (error) {
+      console.error((error as Error).message);
       throw new Error((error as Error).message);
     }
   }, []);
@@ -130,6 +132,7 @@ export const AdminProvider = ({ children }: any) => {
 
       return editedCourse;
     } catch (error) {
+      console.error((error as Error).message);
       throw new Error((error as Error).message);
     }
   }, []);
@@ -151,6 +154,7 @@ export const AdminProvider = ({ children }: any) => {
 
       return courseDeleted;
     } catch (error) {
+      console.error((error as Error).message);
       throw new Error((error as Error).message);
     }
   }, []);
@@ -170,6 +174,7 @@ export const AdminProvider = ({ children }: any) => {
 
       return editedStudent;
     } catch (error) {
+      console.error((error as Error).message);
       throw new Error((error as Error).message);
     }
   }, []);
@@ -186,8 +191,8 @@ export const AdminProvider = ({ children }: any) => {
 
       setStudents(_students);
     } catch (error) {
-      console.log("Ocorreu um erro ao tentar mostrar os alunos!");
       console.error((error as Error).message);
+      throw new Error((error as Error).message);
     }
   }, []);
 
@@ -206,6 +211,7 @@ export const AdminProvider = ({ children }: any) => {
       setStudents((prevStudent: any) => [...prevStudent, addedStudent]);
       return addedStudent;
     } catch (error) {
+      console.error((error as Error).message);
       throw new Error((error as Error).message);
     }
   }, []);
@@ -226,6 +232,7 @@ export const AdminProvider = ({ children }: any) => {
 
       return studentDeleted;
     } catch (error) {
+      console.error((error as Error).message);
       throw new Error((error as Error).message);
     }
   }, []);
@@ -243,8 +250,8 @@ export const AdminProvider = ({ children }: any) => {
 
       setUsers(_users);
     } catch (error) {
-      console.log("Ocorreu um erro ao tentar mostrar os usuarios!");
       console.error((error as Error).message);
+      throw new Error((error as Error).message);
     }
   }, []);
 
@@ -264,6 +271,7 @@ export const AdminProvider = ({ children }: any) => {
 
       return addAdmin;
     } catch (error) {
+      console.error((error as Error).message);
       throw new Error((error as Error).message);
     }
   }, []);
@@ -283,6 +291,7 @@ export const AdminProvider = ({ children }: any) => {
       );
       return adminDeleted;
     } catch (error) {
+      console.error((error as Error).message);
       throw new Error((error as Error).message);
     }
   }, []);
@@ -303,6 +312,7 @@ export const AdminProvider = ({ children }: any) => {
 
       return userDeleted;
     } catch (error) {
+      console.error((error as Error).message);
       throw new Error((error as Error).message);
     }
   }, []);
@@ -322,6 +332,7 @@ export const AdminProvider = ({ children }: any) => {
 
       return editedAdmin;
     } catch (error) {
+      console.error((error as Error).message);
       throw new Error((error as Error).message);
     }
   }, []);
@@ -338,8 +349,8 @@ export const AdminProvider = ({ children }: any) => {
       const _permissions = await fetchData(userRequest);
       setPermissions(_permissions);
     } catch (error) {
-      console.log("Ocorreu um erro ao tentar mostrar as permissões!");
       console.error((error as Error).message);
+      throw new Error((error as Error).message);
     }
   }, []);
 
@@ -361,6 +372,7 @@ export const AdminProvider = ({ children }: any) => {
       ]);
       return addedPermission;
     } catch (error) {
+      console.error((error as Error).message);
       throw new Error((error as Error).message);
     }
   }, []);
@@ -375,6 +387,7 @@ export const AdminProvider = ({ children }: any) => {
 
       setPermissions(_permissions);
     } catch (error) {
+      console.error((error as Error).message);
       throw new Error((error as Error).message);
     }
   }, []);
@@ -398,6 +411,7 @@ export const AdminProvider = ({ children }: any) => {
 
       return editedPermission;
     } catch (error) {
+      console.error((error as Error).message);
       throw new Error((error as Error).message);
     }
   }, []);
@@ -417,6 +431,7 @@ export const AdminProvider = ({ children }: any) => {
       );
       return deletedPermission;
     } catch (error) {
+      console.error((error as Error).message);
       throw new Error((error as Error).message);
     }
   }, []);

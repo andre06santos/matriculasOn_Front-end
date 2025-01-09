@@ -16,6 +16,7 @@ import {
 import { useAdmin } from "../../../modules/administradores/views/hooks/use-administrador";
 import { Spinner } from "../../../ui/spinner";
 import { cursoOptions } from "../../../constants";
+import { toast } from "react-toastify";
 
 const RegisterStudent = () => {
   const [cpf, setCpf] = useState("");
@@ -34,11 +35,12 @@ const RegisterStudent = () => {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
 
-    console.log(errorMessages);
-
     if (errorMessages.length > 0) {
       const firstError = Object.values(errorMessages[0])[0];
-      console.log(firstError);
+      toast(`${firstError}`, {
+        position: "top-center",
+        type: "error",
+      });
       return;
     }
 
@@ -58,11 +60,17 @@ const RegisterStudent = () => {
       await addStudents(aluno);
 
       setIsLoading(false);
-      console.log("Aluno cadastrado com sucesso!");
+      toast("Aluno cadastrado com sucesso!", {
+        position: "top-center",
+        type: "success",
+      });
       navigate("/alunos");
     } catch (error) {
       setIsLoading(false);
-      console.log("Ocorreu um erro ao tentar cadastrar o aluno!");
+      toast("Ocorreu um erro ao tentar cadastrar o aluno!", {
+        position: "top-center",
+        type: "error",
+      });
       console.error((error as Error).message);
     }
   };

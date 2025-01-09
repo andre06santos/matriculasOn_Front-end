@@ -9,6 +9,7 @@ import {
 } from "../../../modules/permissionsFormValidation";
 import { Spinner } from "../../../ui/spinner";
 import { useAdmin } from "../../../modules/administradores/views/hooks/use-administrador";
+import { toast } from "react-toastify";
 
 const EditPermission = () => {
   const { state: permission } = useLocation();
@@ -25,7 +26,10 @@ const EditPermission = () => {
 
     if (errorMessages.length > 0) {
       const firstError = Object.values(errorMessages[0])[0];
-      console.log(firstError);
+      toast(`${firstError}`, {
+        position: "top-center",
+        type: "error",
+      });
     }
 
     try {
@@ -38,11 +42,17 @@ const EditPermission = () => {
 
       await editPermission({ id: permission.id, newPermission });
       setIsLoading(false);
-      console.log("Permissão editada com sucesso!");
+      toast("Permissão editada com sucesso!", {
+        position: "top-center",
+        type: "success",
+      });
       navigate("/permissoes");
     } catch (error) {
       setIsLoading(false);
-      console.log("Ocorreu um erro ao tentar editar a permissão!");
+      toast("Ocorreu um erro ao tentar editar a permissão!", {
+        position: "top-center",
+        type: "error",
+      });
       console.error((error as Error).message);
     }
   };
