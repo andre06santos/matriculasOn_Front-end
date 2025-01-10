@@ -240,7 +240,7 @@ const ListUser = () => {
                           ? "/alunos/editar-aluno"
                           : "/administradores/editar-administrador"
                       }
-                      state={users}
+                      state={user}
                     >
                       <i className="fa-solid fa-pen-to-square"></i>
                     </Link>
