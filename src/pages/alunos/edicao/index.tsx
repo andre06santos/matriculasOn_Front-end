@@ -122,6 +122,7 @@ const EditStudent = () => {
             selectOptions={cursoOptions}
             value={curso}
             onChange={setCurso}
+            required
           />
         </div>
         <div className="input-group">
