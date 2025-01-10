@@ -39,6 +39,7 @@ const Input = React.forwardRef(
             className="input-select"
             value={value}
             onChange={onChange}
+            {...rest}
           />
         ) : (
           <input
