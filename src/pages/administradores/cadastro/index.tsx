@@ -22,7 +22,6 @@ const AdministratorRegistration = () => {
   const [cpf, setCpf] = useState("");
   const [cargo, setCargo] = useState("");
   const [nome, setNome] = useState("");
-  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [departamento, setDepartamento] = useState("");
   const [senha, setSenha] = useState("");
@@ -49,7 +48,6 @@ const AdministratorRegistration = () => {
         cpf,
         cargo,
         nome,
-        username,
         email,
         departamento,
       };
@@ -78,7 +76,6 @@ const AdministratorRegistration = () => {
     setCpf("");
     setCargo("");
     setNome("");
-    setUsername("");
     setEmail("");
     setDepartamento("");
     setSenha("");
