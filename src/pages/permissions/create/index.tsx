@@ -78,6 +78,7 @@ const CreatePermission = () => {
             label="Role"
             value={role}
             required
+            autoFocus
             onChange={(e: any) => handleChangeRole(e.target.value, setRole)}
           />
           <Input

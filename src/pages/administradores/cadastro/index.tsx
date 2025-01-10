@@ -94,6 +94,7 @@ const AdministratorRegistration = () => {
             label="CPF"
             type="text"
             required
+            autoFocus
             value={cpf}
             onChange={(e: any) =>
               handleChangeCpf(e.target.value, setErrorMessages, setCpf)

@@ -100,6 +100,7 @@ const RegisterStudent = () => {
             type="text"
             value={cpf}
             required
+            autoFocus
             onChange={(e: any) =>
               handleChangeCpf(e.target.value, setErrorMessages, setCpf)
             }
