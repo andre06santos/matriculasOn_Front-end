@@ -7,48 +7,35 @@
   ],
   "alunos": [
     {
-      "id": "03eb",
-      "cpf": "44444444444",
-      "nome": "s",
-      "username": "s",
-      "matricula": "s",
-      "email": "s@d.com",
-      "curso": "ENG_SOF"
+      "id": "ffb5",
+      "cpf": "33333333333",
+      "nome": "n",
+      "username": "",
+      "matricula": "n",
+      "email": "n@n.co",
+      "curso": "RED"
+    },
+    {
+      "id": "88e1",
+      "cpf": "11111111111",
+      "nome": "q",
+      "username": "",
+      "matricula": "q",
+      "email": "q@q.com",
+      "curso": "ADS"
     }
   ],
   "usuarios": [
     {
-      "username": "marisilcs",
-      "matricula": "2568574MJGHF",
-      "cpf": "123.456.789-00",
-      "nome": "Maria",
-      "email": "maria.silva@live.com",
-      "curso": "Engenharia Civil",
+      "id": "abf2",
+      "cpf": "12345678900",
+      "cargo": "d",
+      "nome": "d",
+      "email": "d@g.com",
+      "departamento": "j",
+      "username": "A",
       "tipo": "Aluno",
-      "status": "ATIVO",
-      "id": "fda0"
-    },
-    {
-      "username": "luanmst",
-      "cpf": "123.456.789-00",
-      "nome": "Luan Monteiro de Sá",
-      "email": "luan@gmail.com",
-      "cargo": "CHEFE",
-      "departamento": "DTI",
-      "tipo": "Administrador",
-      "status": "ATIVO",
-      "id": "46d4"
-    },
-    {
-      "username": "luanmst",
-      "cpf": "123.456.789-00",
-      "nome": "Luan Monteiro de Sá",
-      "email": "luan@gmail.com",
-      "cargo": "CHEFE",
-      "departamento": "DTI",
-      "tipo": "Administrador",
-      "status": "INATIVO",
-      "id": "338c"
+      "status": "ATIVO"
     }
   ],
   "permissoes": [
