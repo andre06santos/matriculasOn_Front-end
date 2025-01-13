@@ -10,7 +10,6 @@ import {
   handleChangeMatricula,
   handleChangeNome,
   handleChangeSenha,
-  handleChangeUsername,
   verificaSenhasIguais,
 } from "../../../modules/alunosAdmFormValidation";
 import { useAdmin } from "../../../modules/administradores/views/hooks/use-administrador";
@@ -101,6 +100,7 @@ const RegisterStudent = () => {
             type="text"
             value={cpf}
             required
+            autoFocus
             onChange={(e: any) =>
               handleChangeCpf(e.target.value, setErrorMessages, setCpf)
             }
@@ -124,15 +124,6 @@ const RegisterStudent = () => {
         </div>
         <div className="input-group">
           <Input
-            label="Username"
-            type="text"
-            value={username}
-            required
-            onChange={(e: any) =>
-              handleChangeUsername(e.target.value, setUsername)
-            }
-          />
-          <Input
             label="Email"
             type="text"
             value={email}
@@ -155,6 +146,7 @@ const RegisterStudent = () => {
             type="password"
             required
             value={senha}
+            isPassword
             onChange={(e: any) => {
               handleChangeSenha(e.target.value, setErrorMessages, setSenha);
               verificaSenhasIguais(
@@ -169,6 +161,7 @@ const RegisterStudent = () => {
             type="password"
             required
             value={conferirSenha}
+            isPassword
             onChange={(e: any) => {
               handleChangeConfSenha(
                 e.target.value,

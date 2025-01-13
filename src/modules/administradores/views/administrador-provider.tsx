@@ -255,7 +255,7 @@ export const AdminProvider = ({ children }: any) => {
   const addAdmin = useCallback(async (newAdmin: any) => {
     try {
       const userRequest = {
-        endpoint: "/administrador",
+        endpoint: "/usuarios",
         config: {
           method: "POST",
           data: JSON.stringify(newAdmin),
@@ -276,7 +276,7 @@ export const AdminProvider = ({ children }: any) => {
   const deleteAdmin = useCallback(async (id: any) => {
     try {
       const userRequest = {
-        endpoint: `/administrador/${id}`,
+        endpoint: `/usuarios/${id}`,
         config: {
           method: "DELETE",
         },
@@ -317,7 +317,7 @@ export const AdminProvider = ({ children }: any) => {
   const editAdmin = useCallback(async ({ id, newAdmin }: any) => {
     try {
       const userRequest = {
-        endpoint: `/admin/${id}`,
+        endpoint: `/usuarios/${id}`,
         config: {
           method: "PUT",
           data: JSON.stringify(newAdmin),

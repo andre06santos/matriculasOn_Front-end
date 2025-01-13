@@ -10,21 +10,21 @@ import {
   handleChangeMatricula,
   handleChangeNome,
   handleChangeSenha,
-  handleChangeUsername,
   verificaSenhasIguais,
 } from "../../../modules/alunosAdmFormValidation";
 import { useAdmin } from "../../../modules/administradores/views/hooks/use-administrador";
 import { Spinner } from "../../../ui/spinner";
 import { toast } from "react-toastify";
+import { cursoOptions } from "../../../constants";
+
 const EditStudent = () => {
   const { state: student } = useLocation();
   const { editStudent } = useAdmin();
   const [cpf, setCpf] = useState(student.cpf);
   const [matricula, setMatricula] = useState(student.matricula);
   const [nome, setNome] = useState(student.nome);
-  const [username, setUsername] = useState(student.username);
   const [email, setEmail] = useState(student.email);
-  const [curso, setCurso] = useState(student.curso);
+  const [curso, setCurso] = useState(findCourse(student.curso));
   const [senha, setSenha] = useState("");
   const [conferirSenha, setConferirSenha] = useState("");
   const [errorMessages, setErrorMessages] = useState([]);
@@ -49,7 +49,6 @@ const EditStudent = () => {
       const newStudent = {
         cpf,
         nome,
-        username,
         matricula,
         email,
         curso,
@@ -86,6 +85,7 @@ const EditStudent = () => {
             value={cpf}
             readOnly
             required
+            style={{ opacity: 0.3 }}
             onChange={(e: any) =>
               handleChangeCpf(e.target.value, setErrorMessages, setCpf)
             }
@@ -109,15 +109,6 @@ const EditStudent = () => {
         </div>
         <div className="input-group">
           <Input
-            label="Username"
-            type="text"
-            value={username}
-            required
-            onChange={(e: any) =>
-              handleChangeUsername(e.target.value, setUsername)
-            }
-          />
-          <Input
             label="Email"
             type="text"
             value={email}
@@ -131,6 +122,7 @@ const EditStudent = () => {
             selectOptions={cursoOptions}
             value={curso}
             onChange={setCurso}
+            required
           />
         </div>
         <div className="input-group">
@@ -174,11 +166,10 @@ const EditStudent = () => {
   );
 };
 
-export { EditStudent };
+const findCourse = (value: any) => {
+  const course = cursoOptions.find((course) => course.value === value);
 
-const cursoOptions = [
-  { label: "Análise e Desenvolvimento de Sistemas", value: "ADS" },
-  { label: "Engenharia de Software", value: "ENG_SOF" },
-  { label: "Redes de Computadores", value: "RED_COMP" },
-  { label: "Tecnologia da Informação", value: "TEC_INFO" },
-];
+  return course;
+};
+
+export { EditStudent };

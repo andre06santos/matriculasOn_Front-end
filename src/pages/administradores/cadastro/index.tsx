@@ -11,7 +11,6 @@ import {
   handleChangeEmail,
   handleChangeNome,
   handleChangeSenha,
-  handleChangeUsername,
   verificaSenhasIguais,
 } from "../../../modules/alunosAdmFormValidation";
 import { useAdmin } from "../../../modules/administradores/views/hooks/use-administrador";
@@ -23,7 +22,6 @@ const AdministratorRegistration = () => {
   const [cpf, setCpf] = useState("");
   const [cargo, setCargo] = useState("");
   const [nome, setNome] = useState("");
-  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [departamento, setDepartamento] = useState("");
   const [senha, setSenha] = useState("");
@@ -50,7 +48,6 @@ const AdministratorRegistration = () => {
         cpf,
         cargo,
         nome,
-        username,
         email,
         departamento,
       };
@@ -79,7 +76,6 @@ const AdministratorRegistration = () => {
     setCpf("");
     setCargo("");
     setNome("");
-    setUsername("");
     setEmail("");
     setDepartamento("");
     setSenha("");
@@ -98,6 +94,7 @@ const AdministratorRegistration = () => {
             label="CPF"
             type="text"
             required
+            autoFocus
             value={cpf}
             onChange={(e: any) =>
               handleChangeCpf(e.target.value, setErrorMessages, setCpf)
@@ -119,15 +116,6 @@ const AdministratorRegistration = () => {
           />
         </div>
         <div className="input-group">
-          <Input
-            label="Username"
-            type="text"
-            required
-            value={username}
-            onChange={(e: any) =>
-              handleChangeUsername(e.target.value, setUsername)
-            }
-          />
           <Input
             label="Email"
             type="text"
@@ -153,6 +141,7 @@ const AdministratorRegistration = () => {
             type="password"
             required
             value={senha}
+            isPassword
             onChange={(e: any) => {
               handleChangeSenha(e.target.value, setErrorMessages, setSenha);
               verificaSenhasIguais(
@@ -167,6 +156,7 @@ const AdministratorRegistration = () => {
             type="password"
             required
             value={conferirSenha}
+            isPassword
             onChange={(e: any) => {
               handleChangeConfSenha(
                 e.target.value,
