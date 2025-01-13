@@ -97,8 +97,6 @@ const EditAdmin = () => {
             value={nome}
             onChange={(e: any) => handleChangeNome(e.target.value, setNome)}
           />
-        </div>
-        <div className="input-group">
           <Input
             label="Email"
             type="text"

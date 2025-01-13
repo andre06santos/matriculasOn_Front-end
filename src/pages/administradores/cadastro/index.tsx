@@ -114,8 +114,6 @@ const AdministratorRegistration = () => {
             value={nome}
             onChange={(e: any) => handleChangeNome(e.target.value, setNome)}
           />
-        </div>
-        <div className="input-group">
           <Input
             label="Email"
             type="text"
@@ -134,8 +132,6 @@ const AdministratorRegistration = () => {
               handleChangeDepartamento(e.target.value, setDepartamento)
             }
           />
-        </div>
-        <div className="input-group ">
           <Input
             label="Senha"
             type="password"

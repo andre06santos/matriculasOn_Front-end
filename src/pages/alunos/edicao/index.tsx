@@ -112,8 +112,6 @@ const EditStudent = () => {
               handleChangeNome(e.target.value, setNome)
             }
           />
-        </div>
-        <div className="input-group">
           <Input
             label="Email"
             type="text"

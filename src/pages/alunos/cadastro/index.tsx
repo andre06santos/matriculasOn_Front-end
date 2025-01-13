@@ -130,8 +130,6 @@ const RegisterStudent = () => {
               handleChangeNome(e.target.value, setNome)
             }
           />
-        </div>
-        <div className="input-group">
           <Input
             label="Email"
             type="text"
@@ -148,8 +146,6 @@ const RegisterStudent = () => {
             value={curso}
             onChange={setCurso}
           />
-        </div>
-        <div className="input-group">
           <Input
             label="Senha"
             type="password"
