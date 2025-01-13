@@ -58,3 +58,30 @@
 .input-select {
   outline: none;
 }
+
+.input-container > img {
+  width: 20px;
+  margin: 0 4px 0 3px;
+  scale: 0.9;
+
+  &:hover {
+    scale: 1;
+  }
+}
+
+.input-container {
+  display: flex;
+  border-radius: 5px;
+  border: 2px solid lightgray;
+}
+
+.input-container:focus-within {
+  border: 2px solid #2684ff;
+}
+
+#input.password-input {
+  padding: 10px 15px;
+  outline: none;
+  border: 0;
+  width: 290px;
+}

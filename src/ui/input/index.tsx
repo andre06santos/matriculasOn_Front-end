@@ -1,6 +1,6 @@
 import Select from "react-select";
 import "./styles.css";
-import React from "react";
+import React, { useState } from "react";
 
 const Input = React.forwardRef(
   (
@@ -10,11 +10,13 @@ const Input = React.forwardRef(
       variant,
       selectOptions,
       onChange,
+      isPassword,
       value,
       ...rest
     }: any,
     ref
   ) => {
+    const [inputType, setInputType] = useState(type);
     const inputCollors: any = {
       bgNeutral: "bg-neutral",
       bgInfo: "bg-info",
@@ -22,7 +24,7 @@ const Input = React.forwardRef(
     };
 
     const inputClass = `input ${
-      type === "reset" || type === "submit"
+      inputType === "reset" || inputType === "submit"
         ? `${inputCollors[variant]} input-button`
         : "input-text"
     }`;
@@ -42,15 +44,35 @@ const Input = React.forwardRef(
             {...rest}
           />
         ) : (
-          <input
-            type={type}
-            className={inputClass}
-            onChange={onChange}
-            value={value}
-            ref={ref}
-            autoComplete="off"
-            {...rest}
-          />
+          <>
+            <div className={isPassword ? "input-container" : ""}>
+              <input
+                id="input"
+                type={inputType}
+                className={isPassword ? "password-input" : inputClass}
+                onChange={onChange}
+                value={value}
+                ref={ref}
+                autoComplete="off"
+                {...rest}
+              />
+
+              {isPassword ? (
+                <img
+                  src="/visibility_off.svg"
+                  onClick={(e: any) => {
+                    if (inputType === "password") {
+                      setInputType("text");
+                      e.target.src = "/visibility.svg";
+                    } else {
+                      setInputType("password");
+                      e.target.src = "/visibility_off.svg";
+                    }
+                  }}
+                />
+              ) : null}
+            </div>
+          </>
         )}
       </div>
     );
