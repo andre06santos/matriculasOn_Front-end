@@ -141,6 +141,7 @@ const AdministratorRegistration = () => {
             type="password"
             required
             value={senha}
+            isPassword
             onChange={(e: any) => {
               handleChangeSenha(e.target.value, setErrorMessages, setSenha);
               verificaSenhasIguais(
@@ -155,6 +156,7 @@ const AdministratorRegistration = () => {
             type="password"
             required
             value={conferirSenha}
+            isPassword
             onChange={(e: any) => {
               handleChangeConfSenha(
                 e.target.value,
