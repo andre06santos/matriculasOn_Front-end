@@ -14,8 +14,10 @@ import {
   cleanErrorMessages,
   updateErrorMessages,
 } from "./formValidationUtils";
+import { errorMessagesType } from "./administradores/infrastructure/types";
+import { SetStateAction } from "react";
 
-export const cpfMask = (cpf: any) => {
+export const cpfMask = (cpf: string) => {
   const cpfNumber = cpf.replace(/\D/g, "");
   const cpfWithMask = cpfNumber
     .replace(/^(\d{3})(\d)/, "$1.$2")
@@ -26,9 +28,9 @@ export const cpfMask = (cpf: any) => {
 };
 
 export const handleChangeCpf = (
-  cpf: any,
-  setErrorMessages: any,
-  setCpf: any
+  cpf: string,
+  setErrorMessages: React.Dispatch<SetStateAction<errorMessagesType>>,
+  setCpf: React.Dispatch<SetStateAction<string>>
 ) => {
   const fieldKey = "cpf";
   const formattedCpf = cpfMask(cpf);
@@ -58,7 +60,10 @@ export const handleChangeCpf = (
   }
 };
 
-export const handleChangeFilterCpf = (cpf: any, setCpf: any) => {
+export const handleChangeFilterCpf = (
+  cpf: string,
+  setCpf: React.Dispatch<SetStateAction<string>>
+) => {
   const hasError = !validateOnlyNumbers(cpf);
 
   if (cpf === "") {
@@ -74,7 +79,7 @@ export const handleChangeFilterCpf = (cpf: any, setCpf: any) => {
   setCpf(cpf);
 };
 
-const showCpfError = (cpf: any) => {
+const showCpfError = (cpf: string) => {
   const isNumber = validateOnlyNumbers(cpf);
 
   if (!isNumber) {
@@ -86,7 +91,10 @@ const showCpfError = (cpf: any) => {
   }
 };
 
-export const handleChangeMatricula = (matricula: any, setMatricula: any) => {
+export const handleChangeMatricula = (
+  matricula: string,
+  setMatricula: React.Dispatch<SetStateAction<string>>
+) => {
   const hasError =
     !validateLettersAndNumbers(matricula) ||
     matricula.length > MAX_MATRICULA_FIELD;
@@ -104,7 +112,7 @@ export const handleChangeMatricula = (matricula: any, setMatricula: any) => {
   setMatricula(matricula);
 };
 
-const showMatriculaError = (matricula: any) => {
+const showMatriculaError = (matricula: string) => {
   const hasLettersAndNumbers = validateLettersAndNumbers(matricula);
 
   if (!hasLettersAndNumbers) {
@@ -124,7 +132,10 @@ const showMatriculaError = (matricula: any) => {
   }
 };
 
-export const handleChangeNome = (nome: any, setNome: any) => {
+export const handleChangeNome = (
+  nome: string,
+  setNome: React.Dispatch<SetStateAction<string>>
+) => {
   const hasError = !validateOnlyLetters(nome) || nome.length > MAX_NOME_FIELD;
   const trimmedNome = nome.trim();
 
@@ -141,7 +152,7 @@ export const handleChangeNome = (nome: any, setNome: any) => {
   setNome(nome);
 };
 
-const showNomeError = (nome: any) => {
+const showNomeError = (nome: string) => {
   const hasOnlyLetters = validateOnlyLetters(nome);
 
   if (!hasOnlyLetters) {
@@ -161,7 +172,10 @@ const showNomeError = (nome: any) => {
   }
 };
 
-export const handleChangeUsername = (username: any, setUsername: any) => {
+export const handleChangeUsername = (
+  username: string,
+  setUsername: React.Dispatch<SetStateAction<string>>
+) => {
   const trimmedUsername = username.trim();
 
   if (trimmedUsername === "") {
@@ -181,9 +195,9 @@ export const handleChangeUsername = (username: any, setUsername: any) => {
 };
 
 export const handleChangeEmail = (
-  email: any,
-  setErrorMessages: any,
-  setEmail: any
+  email: string,
+  setErrorMessages: React.Dispatch<SetStateAction<errorMessagesType>>,
+  setEmail: React.Dispatch<SetStateAction<string>>
 ) => {
   const fieldKey = "email";
   const hasError = !validateEmail(email);
@@ -207,9 +221,9 @@ export const handleChangeEmail = (
 };
 
 export const handleChangeSenha = (
-  senha: any,
-  setErrorMessages: any,
-  setSenha: any
+  senha: string,
+  setErrorMessages: React.Dispatch<SetStateAction<errorMessagesType>>,
+  setSenha: React.Dispatch<SetStateAction<string>>
 ) => {
   const fieldKey = "senha";
 
@@ -232,9 +246,9 @@ export const handleChangeSenha = (
 };
 
 export const handleChangeConfSenha = (
-  confSenha: any,
-  setErrorMessages: any,
-  setConfSenha: any
+  confSenha: string,
+  setErrorMessages: React.Dispatch<SetStateAction<errorMessagesType>>,
+  setConfSenha: React.Dispatch<SetStateAction<string>>
 ) => {
   const fieldKey = "confSenha";
 
@@ -257,9 +271,9 @@ export const handleChangeConfSenha = (
 };
 
 export const verificaSenhasIguais = (
-  senha: any,
-  confSenha: any,
-  setErrorMessages: any
+  senha: string,
+  confSenha: string,
+  setErrorMessages: React.Dispatch<SetStateAction<errorMessagesType>>
 ) => {
   const fieldKey = "conferirSenha";
 
@@ -271,7 +285,10 @@ export const verificaSenhasIguais = (
   }
 };
 
-export const handleChangeCargo = (cargo: any, setCargo: any) => {
+export const handleChangeCargo = (
+  cargo: string,
+  setCargo: React.Dispatch<SetStateAction<string>>
+) => {
   const hasOnlyLetters = validateOnlyLetters(cargo);
 
   if (cargo === "") {
@@ -299,8 +316,8 @@ export const handleChangeCargo = (cargo: any, setCargo: any) => {
 };
 
 export const handleChangeDepartamento = (
-  departamento: any,
-  setDepartamento: any
+  departamento: string,
+  setDepartamento: React.Dispatch<SetStateAction<string>>
 ) => {
   const hasOnlyLetters = validateOnlyLetters(departamento);
 

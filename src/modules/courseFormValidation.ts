@@ -1,7 +1,11 @@
 import { toast } from "react-toastify";
 import { MAX_CURSO_FIELD, validateOnlyLetters } from "./formValidationUtils";
+import { SetStateAction } from "react";
 
-export const handleCourseName = (nome: any, setNome: any) => {
+export const handleCourseName = (
+  nome: string,
+  setNome: React.Dispatch<SetStateAction<string>>
+) => {
   const hasError = !validateOnlyLetters(nome) || nome.length > MAX_CURSO_FIELD;
 
   const trimmedNome = nome.trim();
@@ -19,7 +23,7 @@ export const handleCourseName = (nome: any, setNome: any) => {
   setNome(nome);
 };
 
-const showCourseNomeError = (nome: any) => {
+const showCourseNomeError = (nome: string) => {
   const hasOnlyLetters = validateOnlyLetters(nome);
 
   if (!hasOnlyLetters) {
