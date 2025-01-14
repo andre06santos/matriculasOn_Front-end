@@ -4,13 +4,10 @@ import { Button } from "../../../ui/button";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import {
-  handleChangeConfSenha,
   handleChangeCpf,
   handleChangeEmail,
   handleChangeMatricula,
   handleChangeNome,
-  handleChangeSenha,
-  verificaSenhasIguais,
 } from "../../../modules/alunosAdmFormValidation";
 import { useAdmin } from "../../../modules/administradores/views/hooks/use-administrador";
 import { Spinner } from "../../../ui/spinner";
@@ -34,8 +31,6 @@ const EditStudent = () => {
   const [curso, setCurso] = useState<ObjectCursoType | undefined>(
     findCourse(student.curso)
   );
-  const [senha, setSenha] = useState<string>("");
-  const [conferirSenha, setConferirSenha] = useState<string>("");
   const [errorMessages, setErrorMessages] = useState<ErrorMessagesType>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const navigate = useNavigate();
@@ -117,8 +112,6 @@ const EditStudent = () => {
               handleChangeNome(e.target.value, setNome)
             }
           />
-        </div>
-        <div className="input-group">
           <Input
             label="Email"
             type="text"
@@ -134,36 +127,6 @@ const EditStudent = () => {
             value={curso}
             onChange={setCurso}
             required
-          />
-        </div>
-        <div className="input-group">
-          <Input
-            label="Senha"
-            type="password"
-            required
-            value={senha}
-            onChange={(e: ChangeEventType) => {
-              handleChangeSenha(e.target.value, setErrorMessages, setSenha);
-              verificaSenhasIguais(
-                e.target.value,
-                conferirSenha,
-                setErrorMessages
-              );
-            }}
-          />
-          <Input
-            label="Confirmar senha"
-            type="password"
-            required
-            value={conferirSenha}
-            onChange={(e: ChangeEventType) => {
-              handleChangeConfSenha(
-                e.target.value,
-                setErrorMessages,
-                setConferirSenha
-              );
-              verificaSenhasIguais(e.target.value, senha, setErrorMessages);
-            }}
           />
         </div>
         <div className="form-actions flex-column-gap20">
