@@ -125,7 +125,7 @@ export const cleanErrorMessages = (
 export const updateErrorMessages = (
   setErrorMessages: React.Dispatch<SetStateAction<errorMessagesType>>,
   fieldKey: string,
-  messageObject: string
+  messageObject: {[key:string]: string}
 ) => {
   setErrorMessages((prevErrors: any) => {
     const soughtObject = prevErrors.find((error: any) =>
