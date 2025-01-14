@@ -17,11 +17,11 @@ import { Spinner } from "../../../ui/spinner";
 import { cursoOptions } from "../../../constants";
 import { toast } from "react-toastify";
 import {
-  alunoType,
+  AlunoType,
   ChangeEventType,
-  errorMessagesType,
+  ErrorMessagesType,
   FormEventType,
-  objectCursoType,
+  ObjectCursoType,
 } from "../../../modules/administradores/infrastructure/types";
 
 const RegisterStudent = () => {
@@ -30,10 +30,10 @@ const RegisterStudent = () => {
   const [nome, setNome] = useState<string>("");
   const [username, setUsername] = useState<string>("");
   const [email, setEmail] = useState<string>("");
-  const [curso, setCurso] = useState<objectCursoType | null>(null);
+  const [curso, setCurso] = useState<ObjectCursoType | null>(null);
   const [senha, setSenha] = useState<string>("");
   const [conferirSenha, setConferirSenha] = useState<string>("");
-  const [errorMessages, setErrorMessages] = useState<errorMessagesType>([]);
+  const [errorMessages, setErrorMessages] = useState<ErrorMessagesType>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const navigate = useNavigate();
   const { addStudents } = useAdmin();
@@ -54,7 +54,7 @@ const RegisterStudent = () => {
       setIsLoading(true);
       const cpfNumber = cpf.replace(/\D/g, "");
 
-      const aluno: alunoType = {
+      const aluno: AlunoType = {
         cpf: cpfNumber,
         nome,
         username,

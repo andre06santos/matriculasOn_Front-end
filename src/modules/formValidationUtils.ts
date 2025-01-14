@@ -1,5 +1,5 @@
 import { SetStateAction } from "react";
-import { errorMessagesType } from "./administradores/infrastructure/types";
+import { ErrorMessagesType } from "./administradores/infrastructure/types";
 
 export const TEN_CARAC = 10;
 export const MAX_MATRICULA_FIELD = 10;
@@ -114,7 +114,7 @@ export const validateDepartamento = (valor: string) => {
 };
 
 export const cleanErrorMessages = (
-  setErrorMessages: React.Dispatch<SetStateAction<errorMessagesType>>,
+  setErrorMessages: React.Dispatch<SetStateAction<ErrorMessagesType>>,
   fieldKey: string
 ) => {
   setErrorMessages((prevErrors: any) =>
@@ -123,7 +123,7 @@ export const cleanErrorMessages = (
 };
 
 export const updateErrorMessages = (
-  setErrorMessages: React.Dispatch<SetStateAction<errorMessagesType>>,
+  setErrorMessages: React.Dispatch<SetStateAction<ErrorMessagesType>>,
   fieldKey: string,
   messageObject: {[key:string]: string}
 ) => {

@@ -6,9 +6,9 @@ import {
 } from "../../../modules/alunosAdmFormValidation";
 import { Input } from "../../../ui/input";
 import {
-  alunosFilterType,
+  AlunosFilterType,
   ChangeEventType,
-  errorMessagesType,
+  ErrorMessagesType,
 } from "../../../modules/administradores/infrastructure/types";
 
 const Filter = ({
@@ -23,8 +23,8 @@ const Filter = ({
   matriculaInput,
   cpfInput,
   onReset,
-}: alunosFilterType) => {
-  const [errorMessages, setErrorMessages] = useState<errorMessagesType>([]);
+}: AlunosFilterType) => {
+  const [errorMessages, setErrorMessages] = useState<ErrorMessagesType>([]);
 
   return (
     <div className="filter flex-column-gap20">

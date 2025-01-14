@@ -5,14 +5,14 @@ export type ChangeEventType = React.ChangeEvent<HTMLInputElement>;
 
 /* Tipos de objetos */
 
-export type cursoType = {
+export type CursoType = {
   id?: string;
   nome: string;
 };
 
-export type errorMessagesType = Record<string, string>[];
+export type ErrorMessagesType = Record<string, string>[];
 
-export type alunoType = {
+export type AlunoType = {
   id?: string;
   cpf: string;
   nome: string;
@@ -22,19 +22,19 @@ export type alunoType = {
   curso: string;
 };
 
-export type objectCursoType = {
+export type ObjectCursoType = {
   label: string;
   value: string;
 };
 
-export type alunosSearchTermType = {
+export type AlunosSearchTermType = {
   nome: string;
   cpf: string;
   matricula: string;
 };
 
 /* Tipagem de components de filtragem */
-export type alunosFilterType = {
+export type AlunosFilterType = {
   onSubmit: (e: FormEventType) => Promise<void>;
   name: string;
   setName: React.Dispatch<React.SetStateAction<string>>;
@@ -48,7 +48,7 @@ export type alunosFilterType = {
   onReset: () => void;
 };
 
-export type cursosFilterType = {
+export type CursosFilterType = {
   onSubmit: (e: FormEventType) => Promise<void>;
   name: string;
   setName: React.Dispatch<React.SetStateAction<string>>;

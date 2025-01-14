@@ -11,10 +11,10 @@ import { cursoOptions } from "../../../constants";
 import { cpfMask } from "../../../modules/alunosAdmFormValidation";
 import { toast } from "react-toastify";
 import {
-  alunosSearchTermType,
-  alunoType,
+  AlunosSearchTermType,
+  AlunoType,
   FormEventType,
-  objectCursoType,
+  ObjectCursoType,
 } from "../../../modules/administradores/infrastructure/types";
 
 const ListStudents = () => {
@@ -25,7 +25,7 @@ const ListStudents = () => {
   const [matricula, setMatricula] = useState<string>("");
   const [cpf, setCpf] = useState<string>("");
   const [nome, setNome] = useState<string>("");
-  const [searchTerm, setSearchTerm] = useState<alunosSearchTermType>({
+  const [searchTerm, setSearchTerm] = useState<AlunosSearchTermType>({
     nome: "",
     cpf: "",
     matricula: "",
@@ -207,7 +207,7 @@ const ListStudents = () => {
               </tr>
             </thead>
             <tbody>
-              {students.map((student: alunoType, index: string) => (
+              {students.map((student: AlunoType, index: string) => (
                 <tr key={index}>
                   <td>{student.matricula}</td>
                   <td>{cpfMask(student.cpf)}</td>

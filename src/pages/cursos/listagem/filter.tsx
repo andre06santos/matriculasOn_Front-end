@@ -1,6 +1,6 @@
 import {
   ChangeEventType,
-  cursosFilterType,
+  CursosFilterType,
 } from "../../../modules/administradores/infrastructure/types";
 import { handleCourseName } from "../../../modules/courseFormValidation";
 import { Input } from "../../../ui/input";
@@ -11,7 +11,7 @@ const CoursesFilter = ({
   setName,
   nameInput,
   onReset,
-}: cursosFilterType) => {
+}: CursosFilterType) => {
   return (
     <div className="filter flex-column-gap20">
       <span>Filtro</span>

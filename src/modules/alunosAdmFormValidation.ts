@@ -14,7 +14,7 @@ import {
   cleanErrorMessages,
   updateErrorMessages,
 } from "./formValidationUtils";
-import { errorMessagesType } from "./administradores/infrastructure/types";
+import { ErrorMessagesType } from "./administradores/infrastructure/types";
 import { SetStateAction } from "react";
 
 export const cpfMask = (cpf: string) => {
@@ -29,7 +29,7 @@ export const cpfMask = (cpf: string) => {
 
 export const handleChangeCpf = (
   cpf: string,
-  setErrorMessages: React.Dispatch<SetStateAction<errorMessagesType>>,
+  setErrorMessages: React.Dispatch<SetStateAction<ErrorMessagesType>>,
   setCpf: React.Dispatch<SetStateAction<string>>
 ) => {
   const fieldKey = "cpf";
@@ -196,7 +196,7 @@ export const handleChangeUsername = (
 
 export const handleChangeEmail = (
   email: string,
-  setErrorMessages: React.Dispatch<SetStateAction<errorMessagesType>>,
+  setErrorMessages: React.Dispatch<SetStateAction<ErrorMessagesType>>,
   setEmail: React.Dispatch<SetStateAction<string>>
 ) => {
   const fieldKey = "email";
@@ -222,7 +222,7 @@ export const handleChangeEmail = (
 
 export const handleChangeSenha = (
   senha: string,
-  setErrorMessages: React.Dispatch<SetStateAction<errorMessagesType>>,
+  setErrorMessages: React.Dispatch<SetStateAction<ErrorMessagesType>>,
   setSenha: React.Dispatch<SetStateAction<string>>
 ) => {
   const fieldKey = "senha";
@@ -247,7 +247,7 @@ export const handleChangeSenha = (
 
 export const handleChangeConfSenha = (
   confSenha: string,
-  setErrorMessages: React.Dispatch<SetStateAction<errorMessagesType>>,
+  setErrorMessages: React.Dispatch<SetStateAction<ErrorMessagesType>>,
   setConfSenha: React.Dispatch<SetStateAction<string>>
 ) => {
   const fieldKey = "confSenha";
@@ -273,7 +273,7 @@ export const handleChangeConfSenha = (
 export const verificaSenhasIguais = (
   senha: string,
   confSenha: string,
-  setErrorMessages: React.Dispatch<SetStateAction<errorMessagesType>>
+  setErrorMessages: React.Dispatch<SetStateAction<ErrorMessagesType>>
 ) => {
   const fieldKey = "conferirSenha";
 

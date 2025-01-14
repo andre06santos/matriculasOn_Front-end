@@ -17,11 +17,11 @@ import { Spinner } from "../../../ui/spinner";
 import { toast } from "react-toastify";
 import { cursoOptions } from "../../../constants";
 import {
-  alunoType,
+  AlunoType,
   ChangeEventType,
-  errorMessagesType,
+  ErrorMessagesType,
   FormEventType,
-  objectCursoType,
+  ObjectCursoType,
 } from "../../../modules/administradores/infrastructure/types";
 
 const EditStudent = () => {
@@ -31,12 +31,12 @@ const EditStudent = () => {
   const [matricula, setMatricula] = useState<string>(student.matricula);
   const [nome, setNome] = useState<string>(student.nome);
   const [email, setEmail] = useState<string>(student.email);
-  const [curso, setCurso] = useState<objectCursoType | undefined>(
+  const [curso, setCurso] = useState<ObjectCursoType | undefined>(
     findCourse(student.curso)
   );
   const [senha, setSenha] = useState<string>("");
   const [conferirSenha, setConferirSenha] = useState<string>("");
-  const [errorMessages, setErrorMessages] = useState<errorMessagesType>([]);
+  const [errorMessages, setErrorMessages] = useState<ErrorMessagesType>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const navigate = useNavigate();
 
@@ -55,7 +55,7 @@ const EditStudent = () => {
     try {
       setIsLoading(true);
 
-      const newStudent: alunoType = {
+      const newStudent: AlunoType = {
         cpf,
         nome,
         matricula,
@@ -177,7 +177,7 @@ const EditStudent = () => {
   );
 };
 
-const findCourse = (value: string): objectCursoType | undefined => {
+const findCourse = (value: string): ObjectCursoType | undefined => {
   const course = cursoOptions.find((course) => course.value === value);
 
   return course;
