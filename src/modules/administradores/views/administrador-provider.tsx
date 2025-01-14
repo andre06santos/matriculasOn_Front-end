@@ -10,35 +10,41 @@ export const AdminProvider = ({ children }: any) => {
   const [users, setUsers] = useState<any>([]);
   const [permissions, setPermissions] = useState<any>([]);
 
-  const getCourses = useCallback(async () => {
-    try {
-      const userRequest = {
-        endpoint: "/cursos",
-      };
-      const _courses = await fetchData(userRequest);
+  const getCourses = useCallback(
+    async (page: number = 0, size: number = 10) => {
+      try {
+        const userRequest = {
+          endpoint: `/cursos?page=${page}&size=${size}`,
+        };
+        const _courses = await fetchData(userRequest);
 
-      setCourses(_courses);
-    } catch (error) {
-      console.error((error as Error).message);
-      throw new Error((error as Error).message);
-    }
-  }, []);
+        setCourses(_courses);
+      } catch (error) {
+        console.error((error as Error).message);
+        throw new Error((error as Error).message);
+      }
+    },
+    []
+  );
 
-  const searchCourse = useCallback(async (name: any) => {
-    try {
-      const userRequest = {
-        endpoint: `/cursos?nome=${name}`,
-      };
-      const _courses = await fetchData(userRequest);
+  const searchCourse = useCallback(
+    async (name: any, page: number = 0, size: number = 10) => {
+      try {
+        const userRequest = {
+          endpoint: `/cursos?nome=${name}&page=${page}&size=${size}`,
+        };
+        const _courses = await fetchData(userRequest);
 
-      setCourses(_courses);
+        setCourses(_courses);
 
-      return _courses;
-    } catch (error) {
-      console.error((error as Error).message);
-      throw new Error((error as Error).message);
-    }
-  }, []);
+        return _courses;
+      } catch (error) {
+        console.error((error as Error).message);
+        throw new Error((error as Error).message);
+      }
+    },
+    []
+  );
 
   const searchStudent = useCallback(
     async (name: any, cpf: any, matricula: any) => {
