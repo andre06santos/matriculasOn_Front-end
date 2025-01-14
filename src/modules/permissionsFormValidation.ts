@@ -5,8 +5,12 @@ import {
   validateLettersAndUnderscore,
   validateOnlyLetters,
 } from "./formValidationUtils";
+import { SetStateAction } from "react";
 
-export const handleChangeRole = (role: any, setRole: any) => {
+export const handleChangeRole = (
+  role: string,
+  setRole: React.Dispatch<SetStateAction<string>>
+) => {
   const hasPermitedCharac = validateLettersAndUnderscore(role);
   const hasSize = role.length < MAX_ROLE_FIELD;
 
@@ -30,8 +34,8 @@ export const handleChangeRole = (role: any, setRole: any) => {
 };
 
 export const handleChangeDescription = (
-  description: any,
-  setDescription: any
+  description: string,
+  setDescription: React.Dispatch<SetStateAction<string>>
 ) => {
   const hasOnlyLetters = validateOnlyLetters(description);
   const hasSize = description.length < MAX_DESCRICAO_FIELD;

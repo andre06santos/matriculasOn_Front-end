@@ -9,19 +9,23 @@ import { CoursesFilter } from "./filter";
 import "./styles.css";
 import { Spinner } from "../../../ui/spinner";
 import { toast } from "react-toastify";
+import {
+  cursoType,
+  FormEventType,
+} from "../../../modules/administradores/infrastructure/types";
 
 const ListCourses = () => {
   const { courses, getCourses, searchCourse, deleteCourse } = useAdmin();
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const nameInput = useRef<any>(null);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const nameInput = useRef<HTMLInputElement | null>(null);
 
-  const [name, setName] = useState("");
-  const [searchTerm, setSearchTerm] = useState("");
-  const [courseId, setCourseId] = useState("");
-  const [isSearching, setIsSearching] = useState(false);
+  const [name, setName] = useState<string>("");
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [courseId, setCourseId] = useState<string>("");
+  const [isSearching, setIsSearching] = useState<boolean>(false);
 
-  const openModal = (courseId: any) => {
+  const openModal = (courseId: string) => {
     setIsModalOpen(true);
     setCourseId(courseId);
   };
@@ -36,7 +40,7 @@ const ListCourses = () => {
     setIsSearching(false);
   };
 
-  const onFocus = () => nameInput.current.focus();
+  const onFocus = () => nameInput.current?.focus();
 
   const onReset = () => {
     if (name === "") return;
@@ -74,7 +78,7 @@ const ListCourses = () => {
     }
   };
 
-  const onSubmit = async (e: any) => {
+  const onSubmit = async (e: FormEventType) => {
     e.preventDefault();
 
     const emptyField = validateEmptyString(name);
@@ -172,7 +176,7 @@ const ListCourses = () => {
               </tr>
             </thead>
             <tbody>
-              {courses.map((course: any, index: any) => (
+              {courses.map((course: cursoType, index: number) => (
                 <tr key={index}>
                   <td>{course.nome}</td>
                   <td className="table-actions">
@@ -181,7 +185,7 @@ const ListCourses = () => {
                     </Link>
                     <i
                       className="fa-solid fa-trash-can"
-                      onClick={() => openModal(course.id)}
+                      onClick={() => openModal(course.id!)}
                     ></i>
                   </td>
                 </tr>

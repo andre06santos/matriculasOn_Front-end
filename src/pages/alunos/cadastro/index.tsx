@@ -16,22 +16,29 @@ import { useAdmin } from "../../../modules/administradores/views/hooks/use-admin
 import { Spinner } from "../../../ui/spinner";
 import { cursoOptions } from "../../../constants";
 import { toast } from "react-toastify";
+import {
+  AlunoType,
+  ChangeEventType,
+  ErrorMessagesType,
+  FormEventType,
+  ObjectCursoType,
+} from "../../../modules/administradores/infrastructure/types";
 
 const RegisterStudent = () => {
-  const [cpf, setCpf] = useState("");
-  const [matricula, setMatricula] = useState("");
-  const [nome, setNome] = useState("");
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [curso, setCurso] = useState<any>(null);
-  const [senha, setSenha] = useState("");
-  const [conferirSenha, setConferirSenha] = useState("");
-  const [errorMessages, setErrorMessages] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [cpf, setCpf] = useState<string>("");
+  const [matricula, setMatricula] = useState<string>("");
+  const [nome, setNome] = useState<string>("");
+  const [username, setUsername] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [curso, setCurso] = useState<ObjectCursoType | null>(null);
+  const [senha, setSenha] = useState<string>("");
+  const [conferirSenha, setConferirSenha] = useState<string>("");
+  const [errorMessages, setErrorMessages] = useState<ErrorMessagesType>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const navigate = useNavigate();
   const { addStudents } = useAdmin();
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: FormEventType) => {
     e.preventDefault();
 
     if (errorMessages.length > 0) {
@@ -47,13 +54,13 @@ const RegisterStudent = () => {
       setIsLoading(true);
       const cpfNumber = cpf.replace(/\D/g, "");
 
-      const aluno = {
+      const aluno: AlunoType = {
         cpf: cpfNumber,
         nome,
         username,
         matricula,
         email,
-        curso: curso.value,
+        curso: curso!.value,
       };
 
       await addStudents(aluno);
@@ -74,7 +81,7 @@ const RegisterStudent = () => {
     }
   };
 
-  const onClean = (e: any) => {
+  const onClean = (e: ChangeEventType) => {
     e.preventDefault();
 
     setCpf("");
@@ -101,7 +108,7 @@ const RegisterStudent = () => {
             value={cpf}
             required
             autoFocus
-            onChange={(e: any) =>
+            onChange={(e: ChangeEventType) =>
               handleChangeCpf(e.target.value, setErrorMessages, setCpf)
             }
           />
@@ -110,7 +117,7 @@ const RegisterStudent = () => {
             type="text"
             required
             value={matricula}
-            onChange={(e: any) =>
+            onChange={(e: ChangeEventType) =>
               handleChangeMatricula(e.target.value, setMatricula)
             }
           />
@@ -119,7 +126,9 @@ const RegisterStudent = () => {
             type="text"
             required
             value={nome}
-            onChange={(e: any) => handleChangeNome(e.target.value, setNome)}
+            onChange={(e: ChangeEventType) =>
+              handleChangeNome(e.target.value, setNome)
+            }
           />
         </div>
         <div className="input-group">
@@ -128,7 +137,7 @@ const RegisterStudent = () => {
             type="text"
             value={email}
             required
-            onChange={(e: any) =>
+            onChange={(e: ChangeEventType) =>
               handleChangeEmail(e.target.value, setErrorMessages, setEmail)
             }
           />
@@ -147,7 +156,7 @@ const RegisterStudent = () => {
             required
             value={senha}
             isPassword
-            onChange={(e: any) => {
+            onChange={(e: ChangeEventType) => {
               handleChangeSenha(e.target.value, setErrorMessages, setSenha);
               verificaSenhasIguais(
                 e.target.value,
@@ -162,7 +171,7 @@ const RegisterStudent = () => {
             required
             value={conferirSenha}
             isPassword
-            onChange={(e: any) => {
+            onChange={(e: ChangeEventType) => {
               handleChangeConfSenha(
                 e.target.value,
                 setErrorMessages,

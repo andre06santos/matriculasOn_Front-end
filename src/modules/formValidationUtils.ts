@@ -1,3 +1,6 @@
+import { SetStateAction } from "react";
+import { ErrorMessagesType } from "./administradores/infrastructure/types";
+
 export const TEN_CARAC = 10;
 export const MAX_MATRICULA_FIELD = 10;
 export const MAX_USERNAME_FIELD = 10;
@@ -20,22 +23,22 @@ const regexLettersAndNumbers = new RegExp("^[a-zA-Z0-9]+$");
 const regexUpperLettersAndUnderscore = new RegExp("^[A-Z_]+$");
 const regexWhitespaceBeginning = new RegExp(/^\s{1,}/);
 
-export const validateOnlyLetters = (valor: any) => {
+export const validateOnlyLetters = (valor: string) => {
   const apenasLetras = regexOnlyLetters.test(valor);
   return apenasLetras;
 };
 
-export const validateOnlyNumbers = (valor: any) => {
+export const validateOnlyNumbers = (valor: string) => {
   const apenasNumeros = regexOnlyNumbers.test(valor);
   return apenasNumeros;
 };
 
-export const validateLettersAndNumbers = (valor: any) => {
+export const validateLettersAndNumbers = (valor: string) => {
   const letrasENumberos = regexLettersAndNumbers.test(valor);
   return letrasENumberos;
 };
 
-export const validateEmailFormat = (valor: any) => {
+export const validateEmailFormat = (valor: string) => {
   const emailValido = regexValidEmail.test(valor);
   return emailValido;
 };
@@ -110,16 +113,19 @@ export const validateDepartamento = (valor: string) => {
   return onlyLetters && maxLength;
 };
 
-export const cleanErrorMessages = (setErrorMessages: any, fieldKey: any) => {
+export const cleanErrorMessages = (
+  setErrorMessages: React.Dispatch<SetStateAction<ErrorMessagesType>>,
+  fieldKey: string
+) => {
   setErrorMessages((prevErrors: any) =>
     prevErrors.filter((error: any) => Object.keys(error)[0] !== fieldKey)
   );
 };
 
 export const updateErrorMessages = (
-  setErrorMessages: any,
-  fieldKey: any,
-  messageObject: any
+  setErrorMessages: React.Dispatch<SetStateAction<ErrorMessagesType>>,
+  fieldKey: string,
+  messageObject: { [key: string]: string }
 ) => {
   setErrorMessages((prevErrors: any) => {
     const soughtObject = prevErrors.find((error: any) =>
@@ -134,17 +140,17 @@ export const updateErrorMessages = (
   });
 };
 
-export const validWhiteSpaceBeginning = (valor: any) => {
+export const validWhiteSpaceBeginning = (valor: string) => {
   const hasWhiteSpace = valor.match(regexWhitespaceBeginning);
   return hasWhiteSpace;
 };
 
-export const validateEmptyString = (valor: any) => {
+export const validateEmptyString = (valor: string) => {
   const isEmptyString = valor.trim() === "";
   return isEmptyString;
 };
 
-export const handleChangeNoWhiteSpaceInput = (value: any) => {
+export const handleChangeNoWhiteSpaceInput = (value: string) => {
   const hasWhiteSpace = validWhiteSpaceBeginning(value);
   return !hasWhiteSpace;
 };

@@ -7,30 +7,26 @@ import { useAdmin } from "../../../modules/administradores/views/hooks/use-admin
 import "./styles.css";
 import { Spinner } from "../../../ui/spinner";
 import { toast } from "react-toastify";
+import {
+  ChangeEventType,
+  FormEventType,
+  cursoType,
+} from "../../../modules/administradores/infrastructure/types";
 
 const EditCourse = () => {
   const { state: course } = useLocation();
   const { editCourse } = useAdmin();
   const navigate = useNavigate();
 
-  const [name, setName] = useState(course.nome);
-  const [isLoading, setIsLoading] = useState(false);
-  const [errorMessages, setErrorMessages] = useState([]);
+  const [name, setName] = useState<string>(course.nome);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const onSubmit = async (e: any) => {
+  const onSubmit = async (e: FormEventType) => {
     e.preventDefault();
-
-    if (errorMessages.length > 0) {
-      const firstError = Object.values(errorMessages[0])[0];
-      toast(`${firstError}`, {
-        position: "top-center",
-        type: "error",
-      });
-    }
 
     try {
       setIsLoading(true);
-      const newCourse = {
+      const newCourse: cursoType = {
         nome: name,
       };
 
@@ -64,8 +60,10 @@ const EditCourse = () => {
             type="text"
             required
             value={name}
-            onChange={(e: any) => handleCourseName(e.target.value, setName)}
-            onFocus={(e: any) => e.target.select()}
+            onChange={(e: ChangeEventType) =>
+              handleCourseName(e.target.value, setName)
+            }
+            onFocus={(e: ChangeEventType) => e.target.select()}
           />
         </div>
         <div className="form-actions-edit flex-column-gap20">
