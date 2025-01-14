@@ -5,6 +5,11 @@ import {
   handleChangeNome,
 } from "../../../modules/alunosAdmFormValidation";
 import { Input } from "../../../ui/input";
+import {
+  alunosFilterType,
+  ChangeEventType,
+  errorMessagesType,
+} from "../../../modules/administradores/infrastructure/types";
 
 const Filter = ({
   onSubmit,
@@ -18,8 +23,8 @@ const Filter = ({
   matriculaInput,
   cpfInput,
   onReset,
-}: any) => {
-  const [errorMessages, setErrorMessages] = useState([]);
+}: alunosFilterType) => {
+  const [errorMessages, setErrorMessages] = useState<errorMessagesType>([]);
 
   return (
     <div className="filter flex-column-gap20">
@@ -28,7 +33,7 @@ const Filter = ({
         <Input
           placeholder="Nome"
           value={name}
-          onChange={(e: any) => {
+          onChange={(e: ChangeEventType) => {
             handleChangeNome(e.target.value, setName);
           }}
           ref={nameInput}
@@ -36,7 +41,7 @@ const Filter = ({
         <Input
           placeholder="Matricula"
           value={matricula}
-          onChange={(e: any) => {
+          onChange={(e: ChangeEventType) => {
             handleChangeMatricula(e.target.value, setMatricula);
           }}
           ref={matriculaInput}
@@ -45,7 +50,7 @@ const Filter = ({
           placeholder="CPF"
           type="text"
           value={cpf}
-          onChange={(e: any) => {
+          onChange={(e: ChangeEventType) => {
             handleChangeCpf(e.target.value, setErrorMessages, setCpf);
           }}
           ref={cpfInput}

@@ -10,26 +10,32 @@ import { Spinner } from "../../../ui/spinner";
 import { cursoOptions } from "../../../constants";
 import { cpfMask } from "../../../modules/alunosAdmFormValidation";
 import { toast } from "react-toastify";
+import {
+  alunosSearchTermType,
+  alunoType,
+  FormEventType,
+  objectCursoType,
+} from "../../../modules/administradores/infrastructure/types";
 
 const ListStudents = () => {
   const { students, getStudent, deleteStudent, searchStudent } = useAdmin();
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const [matricula, setMatricula] = useState("");
-  const [cpf, setCpf] = useState("");
-  const [nome, setNome] = useState("");
-  const [searchTerm, setSearchTerm] = useState({
+  const [matricula, setMatricula] = useState<string>("");
+  const [cpf, setCpf] = useState<string>("");
+  const [nome, setNome] = useState<string>("");
+  const [searchTerm, setSearchTerm] = useState<alunosSearchTermType>({
     nome: "",
     cpf: "",
     matricula: "",
   });
-  const [studentId, setStudentId] = useState("");
-  const [isSearching, setIsSearching] = useState(false);
+  const [studentId, setStudentId] = useState<string>("");
+  const [isSearching, setIsSearching] = useState<boolean>(false);
 
-  const nameInput = useRef<any>(null);
-  const cpfInput = useRef<any>(null);
-  const matriculaInput = useRef<any>(null);
+  const nameInput = useRef<HTMLInputElement | null>(null);
+  const cpfInput = useRef<HTMLInputElement | null>(null);
+  const matriculaInput = useRef<HTMLInputElement | null>(null);
 
   let statusMessage;
 
@@ -44,7 +50,7 @@ const ListStudents = () => {
     setIsModalOpen(false);
   };
 
-  const openModal = (studentId: any) => {
+  const openModal = (studentId: string) => {
     setIsModalOpen(true);
     setStudentId(studentId);
   };
@@ -92,7 +98,7 @@ const ListStudents = () => {
     getStudent();
   };
 
-  const onSubmit = async (e: any) => {
+  const onSubmit = async (e: FormEventType) => {
     e.preventDefault();
 
     const emptyFieldName = validateEmptyString(nome);
@@ -124,7 +130,7 @@ const ListStudents = () => {
     }
   };
 
-  const findCourseLabel = (value: any) => {
+  const findCourseLabel = (value: string): string | undefined => {
     const course = cursoOptions.find((option) => option.value === value);
     const courseLabel = course?.label;
 
@@ -201,7 +207,7 @@ const ListStudents = () => {
               </tr>
             </thead>
             <tbody>
-              {students.map((student: any, index: any) => (
+              {students.map((student: alunoType, index: string) => (
                 <tr key={index}>
                   <td>{student.matricula}</td>
                   <td>{cpfMask(student.cpf)}</td>
@@ -214,7 +220,7 @@ const ListStudents = () => {
                     </Link>
                     <i
                       className="fa-solid fa-trash-can"
-                      onClick={() => openModal(student.id)}
+                      onClick={() => openModal(student.id!)}
                     ></i>
                   </td>
                 </tr>
