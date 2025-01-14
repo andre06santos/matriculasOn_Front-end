@@ -16,6 +16,7 @@ import {
 import { useAdmin } from "../../../modules/administradores/views/hooks/use-administrador";
 import { Spinner } from "../../../ui/spinner";
 import { toast } from "react-toastify";
+import { ErrorMessagesType } from "../../../modules/administradores/infrastructure/types";
 
 const EditAdmin = () => {
   const { state: admin } = useLocation();
@@ -27,7 +28,7 @@ const EditAdmin = () => {
   const [departamento, setDepartamento] = useState(admin.departamento);
   const [senha, setSenha] = useState("");
   const [conferirSenha, setConferirSenha] = useState("");
-  const [errorMessages, setErrorMessages] = useState([]);
+  const [errorMessages, setErrorMessages] = useState<ErrorMessagesType>([]);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
