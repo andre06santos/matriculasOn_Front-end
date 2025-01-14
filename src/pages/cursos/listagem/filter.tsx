@@ -1,3 +1,7 @@
+import {
+  ChangeEventType,
+  cursosFilterType,
+} from "../../../modules/administradores/infrastructure/types";
 import { handleCourseName } from "../../../modules/courseFormValidation";
 import { Input } from "../../../ui/input";
 
@@ -7,7 +11,7 @@ const CoursesFilter = ({
   setName,
   nameInput,
   onReset,
-}: any) => {
+}: cursosFilterType) => {
   return (
     <div className="filter flex-column-gap20">
       <span>Filtro</span>
@@ -15,7 +19,7 @@ const CoursesFilter = ({
         <Input
           placeholder="Nome"
           value={name}
-          onChange={(e: any) => {
+          onChange={(e: ChangeEventType) => {
             handleCourseName(e.target.value, setName);
           }}
           ref={nameInput}
