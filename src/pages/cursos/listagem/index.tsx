@@ -6,16 +6,19 @@ import { validateEmptyString } from "../../../modules/formValidationUtils";
 import { useAdmin } from "../../../modules/administradores/views/hooks/use-administrador";
 import { NotFound } from "../../../ui/not-found";
 import { CoursesFilter } from "./filter";
-import "./styles.css";
 import { Spinner } from "../../../ui/spinner";
 import { toast } from "react-toastify";
 import {
-  cursoType,
+  CursoType,
   FormEventType,
 } from "../../../modules/administradores/infrastructure/types";
+import { Pagination } from "../../../ui/pagination/pagination";
+import "./styles.css";
 
 const ListCourses = () => {
   const { courses, getCourses, searchCourse, deleteCourse } = useAdmin();
+  const [page, setPage] = useState(0);
+
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const nameInput = useRef<HTMLInputElement | null>(null);
@@ -47,6 +50,7 @@ const ListCourses = () => {
 
     onClean();
     onFocus();
+    setPage(0);
     getCourses();
   };
 
@@ -65,6 +69,7 @@ const ListCourses = () => {
         position: "top-center",
         type: "success",
       });
+      setPage(0);
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
@@ -96,7 +101,9 @@ const ListCourses = () => {
 
     try {
       setIsLoading(true);
-      await searchCourse(name);
+      setPage(0);
+      await searchCourse(name, page);
+
       setIsSearching(true);
       setIsLoading(false);
       setSearchTerm(name);
@@ -113,6 +120,14 @@ const ListCourses = () => {
   useEffect(() => {
     checkFields();
   }, [name]);
+
+  useEffect(() => {
+    const changePageFiltered = async () => {
+      await searchCourse(name, page);
+    };
+
+    changePageFiltered();
+  }, [page]);
 
   return (
     <div className="flex-column-gap20">
@@ -134,7 +149,7 @@ const ListCourses = () => {
 
       <h1>Cursos</h1>
 
-      {courses.length === 0 ? (
+      {courses.content && courses.content.length === 0 ? (
         isSearching ? (
           <>
             <CoursesFilter
@@ -165,7 +180,7 @@ const ListCourses = () => {
             {isSearching
               ? `Total de cursos encontrados ao filtrar por "${searchTerm}": `
               : "Total de cursos encontrados: "}
-            <span className="courses-quantity">{courses.length}</span>
+            <span className="courses-quantity">{courses.totalElements}</span>
           </p>
 
           <table className="table">
@@ -176,22 +191,34 @@ const ListCourses = () => {
               </tr>
             </thead>
             <tbody>
-              {courses.map((course: cursoType, index: number) => (
-                <tr key={index}>
-                  <td>{course.nome}</td>
-                  <td className="table-actions">
-                    <Link to="/cursos/editar-curso" state={course}>
-                      <i className="fa-solid fa-pen-to-square icons-action"></i>
-                    </Link>
-                    <i
-                      className="fa-solid fa-trash-can"
-                      onClick={() => openModal(course.id!)}
-                    ></i>
-                  </td>
-                </tr>
-              ))}
+              {courses.content &&
+                courses.content.map((course: CursoType, index: number) => (
+                  <tr key={index}>
+                    <td>{course.nome}</td>
+                    <td className="table-actions">
+                      <Link to="/cursos/editar-curso" state={course}>
+                        <i className="fa-solid fa-pen-to-square icons-action"></i>
+                      </Link>
+                      <i
+                        className="fa-solid fa-trash-can"
+                        onClick={() => openModal(course.id!)}
+                      ></i>
+                    </td>
+                  </tr>
+                ))}
             </tbody>
           </table>
+          {courses.pageable && (
+            <Pagination
+              pageNumber={courses.pageable.pageNumber}
+              pageSize={courses.size}
+              totalPages={courses.totalPages}
+              last={courses.last}
+              first={courses.first}
+              setPage={setPage}
+              buttonsQnt={2}
+            />
+          )}
         </>
       )}
     </div>
