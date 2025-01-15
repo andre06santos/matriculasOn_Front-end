@@ -5,17 +5,15 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import {
   handleChangeCargo,
-  handleChangeConfSenha,
   handleChangeCpf,
   handleChangeDepartamento,
   handleChangeEmail,
   handleChangeNome,
-  handleChangeSenha,
-  verificaSenhasIguais,
 } from "../../../modules/alunosAdmFormValidation";
 import { useAdmin } from "../../../modules/administradores/views/hooks/use-administrador";
 import { Spinner } from "../../../ui/spinner";
 import { toast } from "react-toastify";
+import { ErrorMessagesType } from "../../../modules/administradores/infrastructure/types";
 
 const EditAdmin = () => {
   const { state: admin } = useLocation();
@@ -25,9 +23,7 @@ const EditAdmin = () => {
   const [nome, setNome] = useState(admin.nome);
   const [email, setEmail] = useState(admin.email);
   const [departamento, setDepartamento] = useState(admin.departamento);
-  const [senha, setSenha] = useState("");
-  const [conferirSenha, setConferirSenha] = useState("");
-  const [errorMessages, setErrorMessages] = useState([]);
+  const [errorMessages, setErrorMessages] = useState<ErrorMessagesType>([]);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -101,8 +97,6 @@ const EditAdmin = () => {
             value={nome}
             onChange={(e: any) => handleChangeNome(e.target.value, setNome)}
           />
-        </div>
-        <div className="input-group">
           <Input
             label="Email"
             type="text"
@@ -120,36 +114,6 @@ const EditAdmin = () => {
             onChange={(e: any) =>
               handleChangeDepartamento(e.target.value, setDepartamento)
             }
-          />
-        </div>
-        <div className="input-group ">
-          <Input
-            label="Senha"
-            type="password"
-            required
-            value={senha}
-            onChange={(e: any) => {
-              handleChangeSenha(e.target.value, setErrorMessages, setSenha);
-              verificaSenhasIguais(
-                e.target.event,
-                conferirSenha,
-                setErrorMessages
-              );
-            }}
-          />
-          <Input
-            label="Confirmar senha"
-            type="password"
-            required
-            value={conferirSenha}
-            onChange={(e: any) => {
-              handleChangeConfSenha(
-                e.target.value,
-                setErrorMessages,
-                setConferirSenha
-              );
-              verificaSenhasIguais(senha, e.target.value, setErrorMessages);
-            }}
           />
         </div>
         <div className="form-actions flex-column-gap20">

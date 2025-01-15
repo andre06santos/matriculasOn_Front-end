@@ -7,38 +7,34 @@ import { useAdmin } from "../../../modules/administradores/views/hooks/use-admin
 import { Spinner } from "../../../ui/spinner";
 import "./styles.css";
 import { toast } from "react-toastify";
+import {
+  cursoType,
+  ChangeEventType,
+  FormEventType,
+} from "../../../modules/administradores/infrastructure/types";
 
 const CourseRegistration = () => {
   const navigate = useNavigate();
   const { addCourse } = useAdmin();
-  const nameInput = useRef<any>(null);
+  const nameInput = useRef<HTMLInputElement | null>(null);
 
-  const [name, setName] = useState("");
-  const [errorMessages, setErrorMessages] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [name, setName] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const onFocus = () => nameInput.current.focus();
+  const onFocus = () => nameInput.current?.focus();
 
   const onClean = () => {
     setName("");
-    setErrorMessages([]);
     onFocus();
   };
 
-  const onSubmit = async (e: any) => {
+  const onSubmit = async (e: FormEventType) => {
     e.preventDefault();
-
-    if (errorMessages.length > 0) {
-      const firstError = Object.values(errorMessages[0])[0];
-      toast(`${firstError}`, {
-        position: "top-center",
-        type: "error",
-      });
-    }
 
     try {
       setIsLoading(true);
-      await addCourse({ nome: name });
+      const newCourse: cursoType = { nome: name };
+      await addCourse(newCourse);
 
       setIsLoading(false);
       toast("Curso criado com sucesso!", {
@@ -69,8 +65,10 @@ const CourseRegistration = () => {
             id="nome"
             required
             value={name}
-            onChange={(e: any) => handleCourseName(e.target.value, setName)}
-            onFocus={(e: any) => e.target.select()}
+            onChange={(e: ChangeEventType) =>
+              handleCourseName(e.target.value, setName)
+            }
+            onFocus={(e: ChangeEventType) => e.target.select()}
             autoFocus
             ref={nameInput}
           />

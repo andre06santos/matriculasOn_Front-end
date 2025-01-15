@@ -4,34 +4,38 @@ import { Button } from "../../../ui/button";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import {
-  handleChangeConfSenha,
   handleChangeCpf,
   handleChangeEmail,
   handleChangeMatricula,
   handleChangeNome,
-  handleChangeSenha,
-  verificaSenhasIguais,
 } from "../../../modules/alunosAdmFormValidation";
 import { useAdmin } from "../../../modules/administradores/views/hooks/use-administrador";
 import { Spinner } from "../../../ui/spinner";
 import { toast } from "react-toastify";
 import { cursoOptions } from "../../../constants";
+import {
+  AlunoType,
+  ChangeEventType,
+  ErrorMessagesType,
+  FormEventType,
+  ObjectCursoType,
+} from "../../../modules/administradores/infrastructure/types";
 
 const EditStudent = () => {
   const { state: student } = useLocation();
   const { editStudent } = useAdmin();
-  const [cpf, setCpf] = useState(student.cpf);
-  const [matricula, setMatricula] = useState(student.matricula);
-  const [nome, setNome] = useState(student.nome);
-  const [email, setEmail] = useState(student.email);
-  const [curso, setCurso] = useState(findCourse(student.curso));
-  const [senha, setSenha] = useState("");
-  const [conferirSenha, setConferirSenha] = useState("");
-  const [errorMessages, setErrorMessages] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [cpf, setCpf] = useState<string>(student.cpf);
+  const [matricula, setMatricula] = useState<string>(student.matricula);
+  const [nome, setNome] = useState<string>(student.nome);
+  const [email, setEmail] = useState<string>(student.email);
+  const [curso, setCurso] = useState<ObjectCursoType | undefined>(
+    findCourse(student.curso)
+  );
+  const [errorMessages, setErrorMessages] = useState<ErrorMessagesType>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const navigate = useNavigate();
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: FormEventType) => {
     e.preventDefault();
 
     if (errorMessages.length > 0) {
@@ -46,12 +50,12 @@ const EditStudent = () => {
     try {
       setIsLoading(true);
 
-      const newStudent = {
+      const newStudent: AlunoType = {
         cpf,
         nome,
         matricula,
         email,
-        curso,
+        curso: curso?.value || "",
       };
 
       await editStudent({ id: student.id, newStudent });
@@ -86,7 +90,7 @@ const EditStudent = () => {
             readOnly
             required
             style={{ opacity: 0.3 }}
-            onChange={(e: any) =>
+            onChange={(e: ChangeEventType) =>
               handleChangeCpf(e.target.value, setErrorMessages, setCpf)
             }
           />
@@ -95,7 +99,7 @@ const EditStudent = () => {
             type="text"
             required
             value={matricula}
-            onChange={(e: any) =>
+            onChange={(e: ChangeEventType) =>
               handleChangeMatricula(e.target.value, setMatricula)
             }
           />
@@ -104,16 +108,16 @@ const EditStudent = () => {
             type="text"
             required
             value={nome}
-            onChange={(e: any) => handleChangeNome(e.target.value, setNome)}
+            onChange={(e: ChangeEventType) =>
+              handleChangeNome(e.target.value, setNome)
+            }
           />
-        </div>
-        <div className="input-group">
           <Input
             label="Email"
             type="text"
             value={email}
             required
-            onChange={(e: any) =>
+            onChange={(e: ChangeEventType) =>
               handleChangeEmail(e.target.value, setErrorMessages, setEmail)
             }
           />
@@ -123,36 +127,6 @@ const EditStudent = () => {
             value={curso}
             onChange={setCurso}
             required
-          />
-        </div>
-        <div className="input-group">
-          <Input
-            label="Senha"
-            type="password"
-            required
-            value={senha}
-            onChange={(e: any) => {
-              handleChangeSenha(e.target.value, setErrorMessages, setSenha);
-              verificaSenhasIguais(
-                e.target.value,
-                conferirSenha,
-                setErrorMessages
-              );
-            }}
-          />
-          <Input
-            label="Confirmar senha"
-            type="password"
-            required
-            value={conferirSenha}
-            onChange={(e: any) => {
-              handleChangeConfSenha(
-                e.target.value,
-                setErrorMessages,
-                setConferirSenha
-              );
-              verificaSenhasIguais(e.target.value, senha, setErrorMessages);
-            }}
           />
         </div>
         <div className="form-actions flex-column-gap20">
@@ -166,7 +140,7 @@ const EditStudent = () => {
   );
 };
 
-const findCourse = (value: any) => {
+const findCourse = (value: string): ObjectCursoType | undefined => {
   const course = cursoOptions.find((course) => course.value === value);
 
   return course;

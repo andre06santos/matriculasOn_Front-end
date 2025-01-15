@@ -1,9 +1,8 @@
 header {
   display: flex;
-  padding: 0px 30px;
+  padding: 0px 15px;
   justify-content: right;
   background-color: #0f0050;
-  font-family: sans-serif;
 }
 
 .nav-links {
@@ -11,16 +10,19 @@ header {
   list-style: none;
 }
 
-.nav-links li {
-  padding: 20px 30px;
+.tab-link {
   text-decoration: none;
+  color: white;
+  display: flex;
+  padding: 20px;
+}
 
-  &:hover {
-    color: #e3dede;
-  }
+.nav-links a:hover {
+  color: #000000;
+  background-color: white;
+}
 
-  & a {
-    text-decoration: none;
-    color: #ffffff;
-  }
+.page-tab-highlight {
+  color: #000000;
+  background-color: rgb(255, 255, 255);
 }
