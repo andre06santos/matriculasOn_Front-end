@@ -11,10 +11,10 @@ export const AdminProvider = ({ children }: any) => {
   const [permissions, setPermissions] = useState<any>([]);
 
   const getCourses = useCallback(
-    async (page: number = 0, size: number = 10) => {
+    async () => {
       try {
         const userRequest = {
-          endpoint: `/cursos?page=${page}&size=${size}`,
+          endpoint: `/cursos`,
         };
         const _courses = await fetchData(userRequest);
 
