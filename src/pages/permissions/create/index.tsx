@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Button } from "../../../ui/button";
 import { Input } from "../../../ui/input";
 import "./styles.css";
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import {
   handleChangeDescription,
   handleChangeRole,
@@ -10,16 +10,21 @@ import {
 import { useAdmin } from "../../../modules/administradores/views/hooks/use-administrador";
 import { Spinner } from "../../../ui/spinner";
 import { toast } from "react-toastify";
+import {
+  ChangeEventType,
+  FormEventType,
+  PermissionsType,
+} from "../../../modules/administradores/infrastructure/types";
 
 const CreatePermission = () => {
   const { addPermission } = useAdmin();
   const navigate = useNavigate();
-  const [role, setRole] = useState("");
-  const [descricao, setDescricao] = useState("");
+  const [role, setRole] = useState<string>("");
+  const [descricao, setDescricao] = useState<string>("");
   const [errorMessages, setErrorMessages] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const onSubmit = async (e: any) => {
+  const onSubmit = async (e: FormEventType) => {
     e.preventDefault();
 
     if (errorMessages.length > 0) {
@@ -29,7 +34,7 @@ const CreatePermission = () => {
         type: "error",
       });
     } else {
-      const newPermission = {
+      const newPermission: PermissionsType = {
         role,
         descricao,
       };
@@ -79,13 +84,15 @@ const CreatePermission = () => {
             value={role}
             required
             autoFocus
-            onChange={(e: any) => handleChangeRole(e.target.value, setRole)}
+            onChange={(e: ChangeEventType) =>
+              handleChangeRole(e.target.value, setRole)
+            }
           />
           <Input
             label="Descrição"
             required
             value={descricao}
-            onChange={(e: any) =>
+            onChange={(e: ChangeEventType) =>
               handleChangeDescription(e.target.value, setDescricao)
             }
           />
