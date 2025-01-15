@@ -18,7 +18,6 @@ import "./styles.css";
 const ListCourses = () => {
   const { courses, getCourses, searchCourse, deleteCourse } = useAdmin();
   const [page, setPage] = useState(0);
-  let actualCourses = courses;
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -53,7 +52,6 @@ const ListCourses = () => {
     onFocus();
     setPage(0);
     getCourses();
-    actualCourses = courses;
   };
 
   const checkFields = () => {
@@ -104,8 +102,7 @@ const ListCourses = () => {
     try {
       setIsLoading(true);
       setPage(0);
-      const filteredCourses = await searchCourse(name, page);
-      actualCourses = filteredCourses;
+      await searchCourse(name, page);
 
       setIsSearching(true);
       setIsLoading(false);
@@ -126,8 +123,7 @@ const ListCourses = () => {
 
   useEffect(() => {
     const changePageFiltered = async () => {
-      const newPageFiltered = await searchCourse(name, page);
-      actualCourses = newPageFiltered;
+      await searchCourse(name, page);
     };
 
     changePageFiltered();
@@ -153,8 +149,7 @@ const ListCourses = () => {
 
       <h1>Cursos</h1>
 
-      {actualCourses.content !== undefined &&
-      actualCourses.content.length === 0 ? (
+      {courses.content && courses.content.length === 0 ? (
         isSearching ? (
           <>
             <CoursesFilter
@@ -185,9 +180,7 @@ const ListCourses = () => {
             {isSearching
               ? `Total de cursos encontrados ao filtrar por "${searchTerm}": `
               : "Total de cursos encontrados: "}
-            <span className="courses-quantity">
-              {actualCourses.totalElements}
-            </span>
+            <span className="courses-quantity">{courses.totalElements}</span>
           </p>
 
           <table className="table">
@@ -198,32 +191,30 @@ const ListCourses = () => {
               </tr>
             </thead>
             <tbody>
-              {actualCourses.content !== undefined &&
-                actualCourses.content.map(
-                  (course: cursoType, index: number) => (
-                    <tr key={index}>
-                      <td>{course.nome}</td>
-                      <td className="table-actions">
-                        <Link to="/cursos/editar-curso" state={course}>
-                          <i className="fa-solid fa-pen-to-square icons-action"></i>
-                        </Link>
-                        <i
-                          className="fa-solid fa-trash-can"
-                          onClick={() => openModal(course.id!)}
-                        ></i>
-                      </td>
-                    </tr>
-                  )
-                )}
+              {courses.content &&
+                courses.content.map((course: CursoType, index: number) => (
+                  <tr key={index}>
+                    <td>{course.nome}</td>
+                    <td className="table-actions">
+                      <Link to="/cursos/editar-curso" state={course}>
+                        <i className="fa-solid fa-pen-to-square icons-action"></i>
+                      </Link>
+                      <i
+                        className="fa-solid fa-trash-can"
+                        onClick={() => openModal(course.id!)}
+                      ></i>
+                    </td>
+                  </tr>
+                ))}
             </tbody>
           </table>
-          {actualCourses.pageable !== undefined && (
+          {courses.pageable && (
             <Pagination
-              pageNumber={actualCourses.pageable.pageNumber}
-              pageSize={actualCourses.size}
-              totalPages={actualCourses.totalPages}
-              last={actualCourses.last}
-              first={actualCourses.first}
+              pageNumber={courses.pageable.pageNumber}
+              pageSize={courses.size}
+              totalPages={courses.totalPages}
+              last={courses.last}
+              first={courses.first}
               setPage={setPage}
               buttonsQnt={2}
             />
