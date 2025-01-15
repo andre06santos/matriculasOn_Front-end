@@ -28,10 +28,10 @@ const Pagination = ({
     pageNumber,
     buttonsQnt,
   });
-  const [elementosExibidos, setElementosExibidos] = useState<any[]>([]);
+  const [paginatedItems, setPaginatedItems] = useState<any[]>([]);
 
   useEffect(() => {
-    setElementosExibidos(add3Dot(numbers));
+    setPaginatedItems(add3Dot(numbers));
   }, [pageNumber, totalPages]);
 
   const nextPage = () => {
@@ -54,16 +54,16 @@ const Pagination = ({
         >
           <i className="fa-solid fa-arrow-left"></i>
         </div>
-        {elementosExibidos.map((element, index): any => (
+        {paginatedItems.map((paginatedItem, index): any => (
           <div
             className={`${
-              element === DOT3 ? "pagination-dot3" : "pagination-item"
-            }  ${element - 1 === pageNumber ? "active" : ""}`}
+              paginatedItem === DOT3 ? "pagination-dot3" : "pagination-item"
+            }  ${paginatedItem - 1 === pageNumber ? "active" : ""}`}
             key={index}
-            onClick={() => goPage(element - 1)}
+            onClick={() => goPage(paginatedItem - 1)}
           >
-            {element !== DOT3 ? (
-              element
+            {paginatedItem !== DOT3 ? (
+              paginatedItem
             ) : (
               <i className="fa-solid fa-ellipsis"></i>
             )}
