@@ -1,4 +1,4 @@
-import { act, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "../../../ui/button";
 import { Modal } from "../../../ui/modal";
@@ -9,7 +9,7 @@ import { CoursesFilter } from "./filter";
 import { Spinner } from "../../../ui/spinner";
 import { toast } from "react-toastify";
 import {
-  cursoType,
+  CursoType,
   FormEventType,
 } from "../../../modules/administradores/infrastructure/types";
 import { Pagination } from "../../../ui/pagination/pagination";
