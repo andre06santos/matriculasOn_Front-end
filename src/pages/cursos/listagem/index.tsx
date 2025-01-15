@@ -10,9 +10,10 @@ import "./styles.css";
 import { Spinner } from "../../../ui/spinner";
 import { toast } from "react-toastify";
 import {
-  cursoType,
+  CursoType,
   FormEventType,
 } from "../../../modules/administradores/infrastructure/types";
+import { Pagination } from "../../../ui/paginacao";
 
 const ListCourses = () => {
   const { courses, getCourses, searchCourse, deleteCourse } = useAdmin();
@@ -24,6 +25,8 @@ const ListCourses = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [courseId, setCourseId] = useState<string>("");
   const [isSearching, setIsSearching] = useState<boolean>(false);
+  const [currentPage, setCurrentPage] = useState<number>(0);
+  const [pageSize, setPageSize] = useState<number>(10);
 
   const openModal = (courseId: string) => {
     setIsModalOpen(true);
@@ -38,6 +41,7 @@ const ListCourses = () => {
     setName("");
     setSearchTerm("");
     setIsSearching(false);
+    setCurrentPage(0);
   };
 
   const onFocus = () => nameInput.current?.focus();
@@ -98,8 +102,9 @@ const ListCourses = () => {
       setIsLoading(true);
       await searchCourse(name);
       setIsSearching(true);
-      setIsLoading(false);
       setSearchTerm(name);
+      setCurrentPage(0);
+      setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
       toast("Ocorreu um erro ao tentar filtrar curso!", {
@@ -113,6 +118,28 @@ const ListCourses = () => {
   useEffect(() => {
     checkFields();
   }, [name]);
+
+  const totalPages = Math.ceil(courses.length / pageSize);
+  const currentCourses = courses.slice(
+    currentPage * pageSize,
+    (currentPage + 1) * pageSize
+  );
+
+  const onPageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
+  const onNext = () => {
+    if (currentPage < totalPages - 1) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const onPrev = () => {
+    if (currentPage > 0) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
 
   return (
     <div className="flex-column-gap20">
@@ -134,33 +161,24 @@ const ListCourses = () => {
 
       <h1>Cursos</h1>
 
+      <CoursesFilter
+        onSubmit={onSubmit}
+        name={name}
+        setName={setName}
+        nameInput={nameInput}
+        onReset={onReset}
+      />
+
       {courses.length === 0 ? (
         isSearching ? (
-          <>
-            <CoursesFilter
-              onSubmit={onSubmit}
-              name={name}
-              setName={setName}
-              nameInput={nameInput}
-              onReset={onReset}
-            />
-            <NotFound
-              message={`A busca por "${searchTerm}" não retornou nenhum curso!`}
-            />
-          </>
+          <NotFound
+            message={`A busca por "${searchTerm}" não retornou nenhum curso!`}
+          />
         ) : (
           <NotFound message="Nenhum curso foi encontrado!" />
         )
       ) : (
         <>
-          <CoursesFilter
-            onSubmit={onSubmit}
-            name={name}
-            setName={setName}
-            nameInput={nameInput}
-            onReset={onReset}
-          />
-
           <p>
             {isSearching
               ? `Total de cursos encontrados ao filtrar por "${searchTerm}": `
@@ -176,7 +194,7 @@ const ListCourses = () => {
               </tr>
             </thead>
             <tbody>
-              {courses.map((course: cursoType, index: number) => (
+              {currentCourses.map((course: CursoType, index: number) => (
                 <tr key={index}>
                   <td>{course.nome}</td>
                   <td className="table-actions">
@@ -192,6 +210,14 @@ const ListCourses = () => {
               ))}
             </tbody>
           </table>
+
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={onPageChange}
+            onNext={onNext}
+            onPrev={onPrev}
+          />
         </>
       )}
     </div>

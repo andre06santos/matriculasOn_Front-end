@@ -1,0 +1,39 @@
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.button-page,
+.button-next,
+.button-prev {
+  border: 1px solid #c0c0c0;
+}
+
+.button-page {
+  padding: 5px 10px;
+  cursor: pointer;
+  width: 50px;
+}
+
+.button-page:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.button-next,
+.button-prev {
+  padding: 5px 10px;
+}
+
+.button-page.active {
+  font-weight: bold;
+  background-color: #007bff;
+  color: white;
+}
+
+.button:hover {
+  background-color: #0056b3;
+  color: white;
+}
