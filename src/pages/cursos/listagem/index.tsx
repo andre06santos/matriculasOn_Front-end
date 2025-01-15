@@ -13,7 +13,7 @@ import {
   CursoType,
   FormEventType,
 } from "../../../modules/administradores/infrastructure/types";
-import Pagination from "../../../ui/paginacao";
+import { Pagination } from "../../../ui/paginacao";
 
 const ListCourses = () => {
   const { courses, getCourses, searchCourse, deleteCourse } = useAdmin();
@@ -217,7 +217,6 @@ const ListCourses = () => {
             onPageChange={onPageChange}
             onNext={onNext}
             onPrev={onPrev}
-            visibleButtons={5}
           />
         </>
       )}
