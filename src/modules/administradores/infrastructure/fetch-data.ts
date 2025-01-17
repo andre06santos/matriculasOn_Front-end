@@ -1,6 +1,7 @@
 import { httpClient } from "../../../services/api/api-client";
+import { AxiosRequestConfig } from "axios";
 
-const fetchData = async (requestConfig: any) => {
+const fetchData = async (requestConfig: AxiosRequestConfig) => {
   try {
     const response = await httpClient(requestConfig);
 
