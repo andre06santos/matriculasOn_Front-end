@@ -4,11 +4,11 @@ import { fetchData } from "../infrastructure/fetch-data";
 export const AdminContext = createContext<any>(undefined);
 
 export const AdminProvider = ({ children }: any) => {
-  const [admins, setAdmins] = useState<any>([]);
-  const [courses, setCourses] = useState<any>([]);
-  const [students, setStudents] = useState<any>([]);
+  const [admins, setAdmins] = useState<AdminType[]>([]);
+  const [courses, setCourses] = useState<CursoType[]>([]);
+  const [students, setStudents] = useState<AlunoType[]>([]);
   const [users, setUsers] = useState<any>([]);
-  const [permissions, setPermissions] = useState<any>([]);
+  const [permissions, setPermissions] = useState<PermissionsType[]>([]);
 
   const getCourses = useCallback(
     async () => {
