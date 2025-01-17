@@ -7,6 +7,15 @@ export type ChangeEventType = React.ChangeEvent<HTMLInputElement>;
 
 /* Tipos de objetos */
 
+export type AdminType = {
+  id?: string;
+  cpf: string;
+  cargo: string;
+  nome: string;
+  email: string;
+  departamento: string;
+};
+
 export type CursoType = {
   id?: string;
   nome: string;
