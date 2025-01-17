@@ -1,5 +1,11 @@
 import { createContext, useCallback, useMemo, useState } from "react";
 import { fetchData } from "../infrastructure/fetch-data";
+import {
+  AdminType,
+  AlunoType,
+  CursoType,
+  PermissionsType,
+} from "../infrastructure/types";
 
 export const AdminContext = createContext<any>(undefined);
 
