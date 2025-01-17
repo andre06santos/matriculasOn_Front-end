@@ -28,7 +28,7 @@ export const AdminProvider = ({ children }: any) => {
   );
 
   const searchCourse = useCallback(
-    async (name: any, page: number = 0, size: number = 10) => {
+    async (name: string, page: number = 0, size: number = 10) => {
       try {
         const userRequest = {
           endpoint: `/cursos?nome=${name}&page=${page}&size=${size}`,
@@ -47,7 +47,7 @@ export const AdminProvider = ({ children }: any) => {
   );
 
   const searchStudent = useCallback(
-    async (name: any, cpf: any, matricula: any) => {
+    async (name: string, cpf: string, matricula: string) => {
       try {
         const queryParams = new URLSearchParams();
 
@@ -75,7 +75,7 @@ export const AdminProvider = ({ children }: any) => {
   );
 
   const searchUser = useCallback(
-    async (username: any, name: any, status: any) => {
+    async (username: string, name: string, status: string) => {
       try {
         const queryParams = new URLSearchParams();
 
@@ -101,7 +101,7 @@ export const AdminProvider = ({ children }: any) => {
     []
   );
 
-  const addCourse = useCallback(async (newCourse: any) => {
+  const addCourse = useCallback(async (newCourse: CursoType) => {
     try {
       const userRequest = {
         endpoint: "/cursos",
@@ -122,7 +122,7 @@ export const AdminProvider = ({ children }: any) => {
     }
   }, []);
 
-  const editCourse = useCallback(async ({ id, newCourse }: any) => {
+  const editCourse = useCallback(async (id: string, newCourse: CursoType) => {
     try {
       const userRequest = {
         endpoint: `/cursos/${id}`,
@@ -143,7 +143,7 @@ export const AdminProvider = ({ children }: any) => {
     }
   }, []);
 
-  const deleteCourse = useCallback(async (id: any) => {
+  const deleteCourse = useCallback(async (id: string) => {
     try {
       const userRequest = {
         endpoint: `/cursos/${id}`,
@@ -165,7 +165,7 @@ export const AdminProvider = ({ children }: any) => {
     }
   }, []);
 
-  const editStudent = useCallback(async ({ id, newStudent }: any) => {
+  const editStudent = useCallback(async (id: string, newStudent: AlunoType) => {
     try {
       const userRequest = {
         endpoint: `/alunos/${id}`,
@@ -202,7 +202,7 @@ export const AdminProvider = ({ children }: any) => {
     }
   }, []);
 
-  const addStudents = useCallback(async (newStudent: any) => {
+  const addStudents = useCallback(async (newStudent: AlunoType) => {
     try {
       const userRequest = {
         endpoint: "/alunos",
@@ -221,7 +221,7 @@ export const AdminProvider = ({ children }: any) => {
       throw new Error((error as Error).message);
     }
   }, []);
-  const deleteStudent = useCallback(async (id: any) => {
+  const deleteStudent = useCallback(async (id: string) => {
     try {
       const userRequest = {
         endpoint: `/alunos/${id}`,
@@ -261,7 +261,7 @@ export const AdminProvider = ({ children }: any) => {
     }
   }, []);
 
-  const addAdmin = useCallback(async (newAdmin: any) => {
+  const addAdmin = useCallback(async (newAdmin: AdminType) => {
     try {
       const userRequest = {
         endpoint: "/usuarios",
@@ -383,7 +383,7 @@ export const AdminProvider = ({ children }: any) => {
     }
   }, []);
 
-  const searchPermission = useCallback(async (descricao: any) => {
+  const searchPermission = useCallback(async (descricao: string) => {
     try {
       const userRequest = {
         endpoint: `/permissoes?descricao=${descricao}`,
@@ -398,7 +398,8 @@ export const AdminProvider = ({ children }: any) => {
     }
   }, []);
 
-  const editPermission = useCallback(async ({ id, newPermission }: any) => {
+  const editPermission = useCallback(
+    async (id: string, newPermission: PermissionsType) => {
     try {
       const userRequest = {
         endpoint: `/permissoes/${id}`,
@@ -422,7 +423,7 @@ export const AdminProvider = ({ children }: any) => {
     }
   }, []);
 
-  const deletePermission = useCallback(async (id: any) => {
+  const deletePermission = useCallback(async (id: string) => {
     try {
       const userRequest = {
         endpoint: `permissoes/${id}`,
