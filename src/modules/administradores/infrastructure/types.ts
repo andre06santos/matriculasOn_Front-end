@@ -27,6 +27,11 @@ export type PermissionsType = {
   descricao: string;
 };
 
+export type StatusOption = {
+  label: string;
+  value: "ATIVO" | "INATIVO";
+};
+
 export type ErrorMessagesType = Record<string, string>[];
 
 export type AlunoType = {
@@ -48,6 +53,13 @@ export type AlunosSearchTermType = {
   nome: string;
   cpf: string;
   matricula: string;
+};
+export type UserType = {
+  id: string;
+  username: string;
+  nome: string;
+  tipo: string;
+  status: string;
 };
 
 /* Tipagem de components de filtragem */
@@ -78,5 +90,20 @@ export type PermissionsFilterType = {
   descricao: string;
   setDescricao: React.Dispatch<React.SetStateAction<string>>;
   descricaoInput: React.MutableRefObject<HTMLInputElement | null>;
+  onReset: () => void;
+};
+
+export type UserFilterType = {
+  onSubmit: (e: FormEventType) => Promise<void>;
+  username: string;
+  setUsername: React.Dispatch<React.SetStateAction<string>>;
+  name: string;
+  setName: React.Dispatch<React.SetStateAction<string>>;
+  status: string;
+  setStatus: React.Dispatch<React.SetStateAction<string>>;
+  statusOptions: { label: string; value: string }[];
+  usernameInput: React.MutableRefObject<HTMLInputElement | null>;
+  nameInput: React.MutableRefObject<HTMLInputElement | null>;
+  statusInput: React.MutableRefObject<HTMLSelectElement | null>;
   onReset: () => void;
 };
