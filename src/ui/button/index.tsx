@@ -1,27 +1,26 @@
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./styles.css";
 import { Link } from "react-router-dom";
 
-type Option = {
+type SelectOption = {
   label: string;
   path: string;
 };
 
 type ButtonProps = {
   label: string;
-  onClick: () => void;
+  onClick?: () => void;
   type?: "success" | "cancel" | "danger";
-  selectOptions?: Option[];
+  selectOptions?: SelectOption[];
 };
-
 const Button = ({
   label,
   onClick,
   type = "cancel",
   selectOptions,
 }: ButtonProps) => {
-  const [isExpanded, setIsExpanded] = useState(false);
-  const buttonRef = useRef<HTMLDivElement | null>(null);
+  const [isExpanded, setIsExpanded] = useState<boolean>(false);
+  const buttonRef = useRef<HTMLDivElement>(null);
 
   const buttonClasses: Record<string, string> = {
     success: "btn-success",
@@ -66,8 +65,8 @@ const Button = ({
 
       {isExpanded && selectOptions && (
         <ul className="button-select">
-          {selectOptions.map((option) => (
-            <Link to={option.path} key={option.path}>
+          {selectOptions.map((option, index) => (
+            <Link to={option.path} key={index}>
               <li>{option.label}</li>
             </Link>
           ))}
