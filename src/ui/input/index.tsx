@@ -2,7 +2,26 @@ import Select from "react-select";
 import "./styles.css";
 import React, { useState } from "react";
 
-const Input = React.forwardRef(
+type inputTypeProps =
+  | "text"
+  | "password"
+  | "email"
+  | "number"
+  | "reset"
+  | "submit"; // Tipos de input permitidos
+
+type InputProps = {
+  label?: string;
+  type?: inputTypeProps;
+  variant?: "bgNeutral" | "bgInfo" | "bgSuccess";
+  selectOptions?: { value: string; label: string }[];
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  isPassword?: boolean;
+  value?: string;
+  [key: string]: any;
+};
+
+const Input = React.forwardRef<HTMLInputElement, InputProps>(
   (
     {
       label,
@@ -13,11 +32,12 @@ const Input = React.forwardRef(
       isPassword,
       value,
       ...rest
-    }: any,
+    },
     ref
   ) => {
-    const [inputType, setInputType] = useState(type);
-    const inputCollors: any = {
+    const [inputType, setInputType] = useState<inputTypeProps>(type);
+
+    const inputCollors: Record<string, string> = {
       bgNeutral: "bg-neutral",
       bgInfo: "bg-info",
       bgSuccess: "bg-success",
