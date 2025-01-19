@@ -14,6 +14,7 @@ export type AdminType = {
   nome: string;
   email: string;
   departamento: string;
+  tipo: string;
 };
 
 export type CursoType = {
@@ -42,6 +43,7 @@ export type AlunoType = {
   matricula: string;
   email: string;
   curso: string;
+  tipo: string;
 };
 
 export type ObjectCursoType = {
@@ -58,7 +60,7 @@ export type UserType = {
   id: string;
   username: string;
   nome: string;
-  tipo: string;
+  tipo: "Aluno" | "Administrador";
   status: string;
 };
 
