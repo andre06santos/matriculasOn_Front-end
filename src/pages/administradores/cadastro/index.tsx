@@ -27,6 +27,7 @@ const AdministratorRegistration = () => {
   const { addAdmin } = useAdmin();
   const navigate = useNavigate();
 
+  const [tipo] = useState<string>("Administrador");
   const [cpf, setCpf] = useState<string>("");
   const [cargo, setCargo] = useState<string>("");
   const [nome, setNome] = useState<string>("");
@@ -58,6 +59,7 @@ const AdministratorRegistration = () => {
         nome,
         email,
         departamento,
+        tipo,
       };
 
       await addAdmin(admin);
