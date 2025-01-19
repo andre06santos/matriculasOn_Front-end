@@ -9,24 +9,27 @@ import { PermissionsFilter } from "./filter";
 import { NotFound } from "../../../ui/not-found";
 import { Spinner } from "../../../ui/spinner";
 import { toast } from "react-toastify";
+import {
+  FormEventType,
+  PermissionsType,
+} from "../../../modules/administradores/infrastructure/types";
 
 const ListPermissions = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { permissions, getPermissions, searchPermission, deletePermission } =
     useAdmin();
-
   const [descricao, setDescricao] = useState("");
-  const [isSearching, setIsSearching] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [permissionId, setPermissionId] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const descricaoInput = useRef<any>(null);
+  const [isSearching, setIsSearching] = useState<boolean>(false);
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [permissionId, setPermissionId] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const descricaoInput = useRef<HTMLInputElement | null>(null);
 
   const closeModal = () => {
     setIsModalOpen(false);
   };
 
-  const openModal = (permissionId: any) => {
+  const openModal = (permissionId: string) => {
     setIsModalOpen(true);
     setPermissionId(permissionId);
   };
@@ -37,7 +40,7 @@ const ListPermissions = () => {
     setIsSearching(false);
   };
 
-  const onFocus = () => descricaoInput.current.focus();
+  const onFocus = () => descricaoInput.current?.focus();
 
   const onReset = () => {
     if (descricao === "") return;
@@ -54,7 +57,7 @@ const ListPermissions = () => {
     }
   }, [descricao]);
 
-  const onSubmit = async (e: any) => {
+  const onSubmit = async (e: FormEventType) => {
     e.preventDefault();
 
     const emptyField = validateEmptyString(descricao);
@@ -168,7 +171,7 @@ const ListPermissions = () => {
               </tr>
             </thead>
             <tbody>
-              {permissions.map((permission: any, index: any) => (
+              {permissions.map((permission: PermissionsType, index: number) => (
                 <tr key={index}>
                   <td>{permission.role}</td>
                   <td>{permission.descricao}</td>
@@ -178,7 +181,7 @@ const ListPermissions = () => {
                     </Link>
                     <i
                       className="fa-solid fa-trash-can"
-                      onClick={() => openModal(permission.id)}
+                      onClick={() => openModal(permission.id!)}
                     ></i>
                   </td>
                 </tr>

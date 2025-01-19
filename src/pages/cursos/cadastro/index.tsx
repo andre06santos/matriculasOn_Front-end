@@ -8,7 +8,7 @@ import { Spinner } from "../../../ui/spinner";
 import "./styles.css";
 import { toast } from "react-toastify";
 import {
-  cursoType,
+  CursoType,
   ChangeEventType,
   FormEventType,
 } from "../../../modules/administradores/infrastructure/types";
@@ -33,7 +33,7 @@ const CourseRegistration = () => {
 
     try {
       setIsLoading(true);
-      const newCourse: cursoType = { nome: name };
+      const newCourse: CursoType = { nome: name };
       await addCourse(newCourse);
 
       setIsLoading(false);

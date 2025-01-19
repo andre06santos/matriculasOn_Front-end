@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosRequestConfig } from "axios";
 
 const axiosInstance = axios.create({
   baseURL: "http://localhost:3000",
@@ -8,7 +8,12 @@ const axiosInstance = axios.create({
   },
 });
 
-const httpClient = ({ endpoint, config }: any) => {
+type HttpClientParams = {
+  endpoint: string;
+  config?: AxiosRequestConfig;
+};
+
+const httpClient = ({ endpoint, config }: HttpClientParams) => {
   return axiosInstance(endpoint, config);
 };
 

@@ -25,6 +25,7 @@ import {
 } from "../../../modules/administradores/infrastructure/types";
 
 const RegisterStudent = () => {
+  const [tipo] = useState<string>("Aluno");
   const [cpf, setCpf] = useState<string>("");
   const [matricula, setMatricula] = useState<string>("");
   const [nome, setNome] = useState<string>("");
@@ -60,6 +61,7 @@ const RegisterStudent = () => {
         username,
         matricula,
         email,
+        tipo,
         curso: curso!.value,
       };
 

@@ -10,6 +10,11 @@ import {
 import { Spinner } from "../../../ui/spinner";
 import { useAdmin } from "../../../modules/administradores/views/hooks/use-administrador";
 import { toast } from "react-toastify";
+import {
+  ChangeEventType,
+  FormEventType,
+  PermissionsType,
+} from "../../../modules/administradores/infrastructure/types";
 
 const EditPermission = () => {
   const { state: permission } = useLocation();
@@ -17,11 +22,11 @@ const EditPermission = () => {
   const navigate = useNavigate();
 
   const [role, setRole] = useState(permission.role);
-  const [isLoading, setIsLoading] = useState(false);
-  const [descricao, setDescricao] = useState(permission.descricao);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [descricao, setDescricao] = useState<string>(permission.descricao);
   const [errorMessages, setErrorMessages] = useState([]);
 
-  const onSubmit = async (e: any) => {
+  const onSubmit = async (e: FormEventType) => {
     e.preventDefault();
 
     if (errorMessages.length > 0) {
@@ -35,7 +40,7 @@ const EditPermission = () => {
     try {
       setIsLoading(true);
 
-      const newPermission = {
+      const newPermission: PermissionsType = {
         role,
         descricao,
       };
@@ -69,13 +74,15 @@ const EditPermission = () => {
             label="Role"
             value={role}
             required
-            onChange={(e: any) => handleChangeRole(e.target.value, setRole)}
+            onChange={(e: ChangeEventType) =>
+              handleChangeRole(e.target.value, setRole)
+            }
           />
           <Input
             label="Descrição"
             required
             value={descricao}
-            onChange={(e: any) =>
+            onChange={(e: ChangeEventType) =>
               handleChangeDescription(e.target.value, setDescricao)
             }
           />

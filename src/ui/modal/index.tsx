@@ -1,7 +1,13 @@
 import { Button } from "../button";
 import "./styles.css";
 
-const Modal = ({ message, onCancel, onDelete }: any) => {
+type ModalProps = {
+  message: string;
+  onCancel: () => void;
+  onDelete: () => void;
+};
+
+const Modal = ({ message, onCancel, onDelete }: ModalProps) => {
   return (
     <div className="modal-bg">
       <div className="modal">

@@ -10,7 +10,7 @@ import { toast } from "react-toastify";
 import {
   ChangeEventType,
   FormEventType,
-  cursoType,
+  CursoType,
 } from "../../../modules/administradores/infrastructure/types";
 
 const EditCourse = () => {
@@ -26,7 +26,7 @@ const EditCourse = () => {
 
     try {
       setIsLoading(true);
-      const newCourse: cursoType = {
+      const newCourse: CursoType = {
         nome: name,
       };
 

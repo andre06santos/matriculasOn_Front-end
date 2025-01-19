@@ -13,21 +13,26 @@ import {
 import { useAdmin } from "../../../modules/administradores/views/hooks/use-administrador";
 import { Spinner } from "../../../ui/spinner";
 import { toast } from "react-toastify";
-import { ErrorMessagesType } from "../../../modules/administradores/infrastructure/types";
+import {
+  AdminType,
+  ChangeEventType,
+  ErrorMessagesType,
+  FormEventType,
+} from "../../../modules/administradores/infrastructure/types";
 
 const EditAdmin = () => {
   const { state: admin } = useLocation();
   const { editAdmin } = useAdmin();
-  const [cpf, setCpf] = useState(admin.cpf);
-  const [cargo, setCargo] = useState(admin.cargo);
-  const [nome, setNome] = useState(admin.nome);
-  const [email, setEmail] = useState(admin.email);
-  const [departamento, setDepartamento] = useState(admin.departamento);
-  const [errorMessages, setErrorMessages] = useState<ErrorMessagesType>([]);
-  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const [cpf, setCpf] = useState<string>(admin.cpf);
+  const [cargo, setCargo] = useState<string>(admin.cargo);
+  const [nome, setNome] = useState(admin.nome);
+  const [email, setEmail] = useState<string>(admin.email);
+  const [departamento, setDepartamento] = useState<string>(admin.departamento);
+  const [errorMessages, setErrorMessages] = useState<ErrorMessagesType>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: FormEventType) => {
     e.preventDefault();
 
     if (errorMessages.length > 0) {
@@ -41,7 +46,7 @@ const EditAdmin = () => {
 
     try {
       setIsLoading(true);
-      const newAdmin = {
+      const newAdmin: AdminType = {
         cpf,
         nome,
         cargo,
@@ -79,7 +84,7 @@ const EditAdmin = () => {
             value={cpf}
             readOnly
             style={{ opacity: 0.3 }}
-            onChange={(e: any) =>
+            onChange={(e: ChangeEventType) =>
               handleChangeCpf(e.target.value, setErrorMessages, setCpf)
             }
           />
@@ -88,21 +93,25 @@ const EditAdmin = () => {
             type="text"
             required
             value={cargo}
-            onChange={(e: any) => handleChangeCargo(e.target.value, setCargo)}
+            onChange={(e: ChangeEventType) =>
+              handleChangeCargo(e.target.value, setCargo)
+            }
           />
           <Input
             label="Nome"
             type="text"
             required
             value={nome}
-            onChange={(e: any) => handleChangeNome(e.target.value, setNome)}
+            onChange={(e: ChangeEventType) =>
+              handleChangeNome(e.target.value, setNome)
+            }
           />
           <Input
             label="Email"
             type="text"
             required
             value={email}
-            onChange={(e: any) =>
+            onChange={(e: ChangeEventType) =>
               handleChangeEmail(e.target.value, setErrorMessages, setEmail)
             }
           />
@@ -111,7 +120,7 @@ const EditAdmin = () => {
             type="text"
             required
             value={departamento}
-            onChange={(e: any) =>
+            onChange={(e: ChangeEventType) =>
               handleChangeDepartamento(e.target.value, setDepartamento)
             }
           />
