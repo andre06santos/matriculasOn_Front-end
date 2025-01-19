@@ -8,7 +8,7 @@ type inputTypeProps =
   | "email"
   | "number"
   | "reset"
-  | "submit"; // Tipos de input permitidos
+  | "submit";
 
 type InputProps = {
   label?: string;
@@ -21,7 +21,10 @@ type InputProps = {
   [key: string]: any;
 };
 
-const Input = React.forwardRef<HTMLInputElement, InputProps>(
+const Input = React.forwardRef<
+  HTMLInputElement | HTMLSelectElement,
+  InputProps
+>(
   (
     {
       label,
@@ -72,23 +75,23 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
                 className={isPassword ? "password-input" : inputClass}
                 onChange={onChange}
                 value={value}
-                ref={ref}
+                ref={ref as React.RefObject<HTMLInputElement>}
                 autoComplete="off"
                 {...rest}
               />
-
               {isPassword ? (
                 <img
                   src="/visibility_off.svg"
-                  onClick={(e: any) => {
+                  onClick={(e: React.MouseEvent<HTMLImageElement>) => {
                     if (inputType === "password") {
                       setInputType("text");
-                      e.target.src = "/visibility.svg";
+                      e.currentTarget.src = "/visibility.svg";
                     } else {
                       setInputType("password");
-                      e.target.src = "/visibility_off.svg";
+                      e.currentTarget.src = "/visibility_off.svg";
                     }
                   }}
+                  alt="toggle visibility"
                 />
               ) : null}
             </div>
