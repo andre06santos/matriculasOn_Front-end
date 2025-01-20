@@ -22,6 +22,7 @@ import {
 
 const EditAdmin = () => {
   const { state: admin } = useLocation();
+  const [tipo] = useState<string>("ADMIN");
   const { editAdmin } = useAdmin();
   const navigate = useNavigate();
   const [cpf, setCpf] = useState<string>(admin.cpf);
@@ -47,6 +48,7 @@ const EditAdmin = () => {
     try {
       setIsLoading(true);
       const newAdmin: AdminType = {
+        tipo,
         cpf,
         nome,
         cargo,
