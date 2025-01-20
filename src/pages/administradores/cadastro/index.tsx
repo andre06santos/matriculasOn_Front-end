@@ -27,7 +27,7 @@ const AdministratorRegistration = () => {
   const { addAdmin } = useAdmin();
   const navigate = useNavigate();
 
-  const [tipo] = useState<string>("Administrador");
+  const [tipo] = useState<string>("ADMIN");
   const [cpf, setCpf] = useState<string>("");
   const [cargo, setCargo] = useState<string>("");
   const [nome, setNome] = useState<string>("");
@@ -154,11 +154,7 @@ const AdministratorRegistration = () => {
             isPassword
             onChange={(e: ChangeEventType) => {
               handleChangeSenha(e.target.value, setErrorMessages, setSenha);
-              verificaSenhasIguais(
-                e.target.event,
-                conferirSenha,
-                setErrorMessages
-              );
+              verificaSenhasIguais(senha, conferirSenha, setErrorMessages);
             }}
           />
           <Input
