@@ -7,8 +7,6 @@ import { NotFound } from "../../../ui/not-found";
 import { Filter } from "./filter";
 import { validateEmptyString } from "../../../modules/formValidationUtils";
 import { Spinner } from "../../../ui/spinner";
-import { cursoOptions } from "../../../constants";
-import { cpfMask } from "../../../modules/alunosAdmFormValidation";
 import { toast } from "react-toastify";
 import {
   AlunosSearchTermType,
@@ -53,7 +51,6 @@ const ListStudents = () => {
     setIsModalOpen(true);
     setStudentId(studentId);
   };
-  
 
   const checkFields = () => {
     if (nome === "" && matricula === "" && cpf === "") {
