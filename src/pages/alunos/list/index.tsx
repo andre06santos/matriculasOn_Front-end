@@ -14,7 +14,6 @@ import {
   AlunosSearchTermType,
   AlunoType,
   FormEventType,
-  ObjectCursoType,
 } from "../../../modules/administradores/infrastructure/types";
 
 const ListStudents = () => {
@@ -54,6 +53,7 @@ const ListStudents = () => {
     setIsModalOpen(true);
     setStudentId(studentId);
   };
+  
 
   const checkFields = () => {
     if (nome === "" && matricula === "" && cpf === "") {
@@ -130,13 +130,6 @@ const ListStudents = () => {
     }
   };
 
-  const findCourseLabel = (value: string): string | undefined => {
-    const course = cursoOptions.find((option) => option.value === value);
-    const courseLabel = course?.label;
-
-    return courseLabel;
-  };
-
   return (
     <div className="flex-column-gap20">
       {isLoading && <Spinner />}
@@ -207,13 +200,13 @@ const ListStudents = () => {
               </tr>
             </thead>
             <tbody>
-              {students.map((student: AlunoType, index: string) => (
+              {students.map((student: AlunoType, index: number) => (
                 <tr key={index}>
                   <td>{student.matricula}</td>
-                  <td>{cpfMask(student.cpf)}</td>
+                  <td>{student.cpf}</td>
                   <td>{student.nome}</td>
                   <td>{student.email}</td>
-                  <td>{findCourseLabel(student.curso)}</td>
+                  <td>{student.curso}</td>
                   <td className="table-actions action-column">
                     <Link to="/alunos/editar-aluno" state={student}>
                       <i className="fa-solid fa-pen-to-square"></i>
