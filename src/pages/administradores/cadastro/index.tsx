@@ -27,7 +27,7 @@ const AdministratorRegistration = () => {
   const { addAdmin } = useAdmin();
   const navigate = useNavigate();
 
-  const [tipo] = useState<string>("ADMIN");
+  const tipo = "ADMIN";
   const [cpf, setCpf] = useState<string>("");
   const [cargo, setCargo] = useState<string>("");
   const [nome, setNome] = useState<string>("");

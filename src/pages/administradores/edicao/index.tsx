@@ -22,7 +22,7 @@ import {
 
 const EditAdmin = () => {
   const { state: admin } = useLocation();
-  const [tipo] = useState<string>("ADMIN");
+  const tipo = "ADMIN";
   const { editAdmin } = useAdmin();
   const navigate = useNavigate();
   const [cpf, setCpf] = useState<string>(admin.cpf);
