@@ -2,11 +2,27 @@ import { useEffect, useRef, useState } from "react";
 import "./styles.css";
 import { Link } from "react-router-dom";
 
-const Button = ({ label, onClick, type = "cancel", selectOptions }: any) => {
-  const [isExpanded, setIsExpanded] = useState(false);
-  const buttonRef = useRef<any>(null);
+type SelectOption = {
+  label: string;
+  path: string;
+};
 
-  const buttonClasses: any = {
+type ButtonProps = {
+  label: string;
+  onClick?: () => void;
+  type?: "success" | "cancel" | "danger";
+  selectOptions?: SelectOption[];
+};
+const Button = ({
+  label,
+  onClick,
+  type = "cancel",
+  selectOptions,
+}: ButtonProps) => {
+  const [isExpanded, setIsExpanded] = useState<boolean>(false);
+  const buttonRef = useRef<HTMLDivElement>(null);
+
+  const buttonClasses: Record<string, string> = {
     success: "btn-success",
     cancel: "btn-cancel",
     danger: "btn-danger",
@@ -21,8 +37,8 @@ const Button = ({ label, onClick, type = "cancel", selectOptions }: any) => {
   };
 
   useEffect(() => {
-    const handleClickOutside = (e: any) => {
-      if (buttonRef.current && !buttonRef.current.contains(e.target)) {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (buttonRef.current && !buttonRef.current.contains(e.target as Node)) {
         setIsExpanded(false);
       }
     };
@@ -47,9 +63,9 @@ const Button = ({ label, onClick, type = "cancel", selectOptions }: any) => {
         )}
       </button>
 
-      {isExpanded && (
+      {isExpanded && selectOptions && (
         <ul className="button-select">
-          {selectOptions.map((option: any, index: any) => (
+          {selectOptions.map((option, index) => (
             <Link to={option.path} key={index}>
               <li>{option.label}</li>
             </Link>

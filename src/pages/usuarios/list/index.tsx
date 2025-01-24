@@ -1,7 +1,7 @@
+import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import "./styles.css";
 import { Button } from "../../../ui/button";
-import { useRef, useEffect, useState } from "react";
 import { Modal } from "../../../ui/modal";
 import { useAdmin } from "../../../modules/administradores/views/hooks/use-administrador";
 import { Filter } from "./filter";
@@ -9,26 +9,36 @@ import { NotFound } from "../../../ui/not-found";
 import { validateEmptyString } from "../../../modules/formValidationUtils";
 import { Spinner } from "../../../ui/spinner";
 import { toast } from "react-toastify";
+import {
+  UserType,
+  StatusOption,
+  FormEventType,
+} from "../../../modules/administradores/infrastructure/types";
 
 const ListUser = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const { users, getUsers, searchUser, deleteUser } = useAdmin();
-  const [isLoading, setIsLoading] = useState(false);
 
-  const [username, setUsername] = useState("");
-  const [nome, setNome] = useState("");
-  const [status, setStatus] = useState<any>(null);
-  const [searchTerm, setSearchTerm] = useState({
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [username, setUsername] = useState<string>("");
+  const [nome, setNome] = useState<string>("");
+  const [status, setStatus] = useState<string>("");
+
+  const [searchTerm, setSearchTerm] = useState<{
+    username: string;
+    nome: string;
+    status: string;
+  }>({
     username: "",
     nome: "",
     status: "",
   });
+  const [userId, setUserId] = useState<string>("");
+  const [isSearching, setIsSearching] = useState<boolean>(false);
 
-  const [userId, setUserId] = useState("");
-  const [isSearching, setIsSearching] = useState(false);
-
-  const nameInput = useRef<any>(null);
-  const usernameInput = useRef<any>(null);
+  const nameInput = useRef<HTMLInputElement | null>(null);
+  const usernameInput = useRef<HTMLInputElement | null>(null);
+  const statusInput = useRef<HTMLSelectElement | null>(null);
 
   let statusMessage;
 
@@ -44,19 +54,15 @@ const ListUser = () => {
     setIsModalOpen(false);
   };
 
-  const openModal = (userId: any) => {
+  const openModal = (userId: string) => {
     setIsModalOpen(true);
     setUserId(userId);
-  };
-
-  const isAluno = (tipo: any) => {
-    return tipo === "Aluno";
   };
 
   const onClean = () => {
     setUsername("");
     setNome("");
-    setStatus(null);
+    setStatus("");
     setIsSearching(false);
   };
 
@@ -99,7 +105,7 @@ const ListUser = () => {
     checkFields();
   }, [nome, username, status]);
 
-  const onSubmit = async (e: any) => {
+  const onSubmit = async (e: FormEventType) => {
     e.preventDefault();
 
     const emptyFieldName = validateEmptyString(nome);
@@ -111,13 +117,12 @@ const ListUser = () => {
         type: "error",
       });
       onClean();
-
       return;
     }
 
     try {
       setIsLoading(true);
-      await searchUser(username, nome, status?.value);
+      await searchUser(username, nome, status);
       setIsSearching(true);
       setSearchTerm({ username, nome, status });
       setIsLoading(false);
@@ -130,15 +135,10 @@ const ListUser = () => {
       console.error((error as Error).message);
     }
   };
-  const isActiveStatus = (status: any) => {
-    if (status === "ATIVO") {
-      return true;
-    } else if (status === "INATIVO") {
-      return false;
-    }
-  };
 
-  const userStatusLabel = (status: any) => {
+  const isActiveStatus = (status: string) => status === "ATIVO";
+
+  const userStatusLabel = (status: string) => {
     if (status === "ATIVO") {
       return "Ativo";
     } else if (status === "INATIVO") {
@@ -175,6 +175,7 @@ const ListUser = () => {
               nameInput={nameInput}
               statusOptions={statusOptions}
               status={status}
+              statusInput={statusInput}
               setStatus={setStatus}
               onReset={onReset}
             />
@@ -197,6 +198,7 @@ const ListUser = () => {
             nameInput={nameInput}
             statusOptions={statusOptions}
             status={status}
+            statusInput={statusInput}
             setStatus={setStatus}
             onReset={onReset}
           />
@@ -219,7 +221,7 @@ const ListUser = () => {
               </tr>
             </thead>
             <tbody>
-              {users.map((user: any, index: any) => (
+              {users.map((user: UserType, index: number) => (
                 <tr key={index}>
                   <td>{user.username}</td>
                   <td>{user.nome}</td>
@@ -236,7 +238,7 @@ const ListUser = () => {
                   <td className="table-actions action-column">
                     <Link
                       to={
-                        isAluno(user.tipo)
+                        user.tipo === "Aluno"
                           ? "/alunos/editar-aluno"
                           : "/administradores/editar-administrador"
                       }
@@ -266,7 +268,7 @@ const options = [
   { label: "Administrador", path: "/administradores/novo-administrador" },
 ];
 
-const statusOptions = [
+const statusOptions: StatusOption[] = [
   { label: "Ativo", value: "ATIVO" },
   { label: "Inativo", value: "INATIVO" },
 ];

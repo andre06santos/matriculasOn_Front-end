@@ -24,6 +24,7 @@ import {
 const EditStudent = () => {
   const { state: student } = useLocation();
   const { editStudent } = useAdmin();
+  const tipo = "ALUNO";
   const [cpf, setCpf] = useState<string>(student.cpf);
   const [matricula, setMatricula] = useState<string>(student.matricula);
   const [nome, setNome] = useState<string>(student.nome);
@@ -51,6 +52,7 @@ const EditStudent = () => {
       setIsLoading(true);
 
       const newStudent: AlunoType = {
+        tipo,
         cpf,
         nome,
         matricula,

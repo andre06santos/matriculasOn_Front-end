@@ -2,7 +2,29 @@ import Select from "react-select";
 import "./styles.css";
 import React, { useState } from "react";
 
-const Input = React.forwardRef(
+type inputTypeProps =
+  | "text"
+  | "password"
+  | "email"
+  | "number"
+  | "reset"
+  | "submit";
+
+type InputProps = {
+  label?: string;
+  type?: inputTypeProps;
+  variant?: "bgNeutral" | "bgInfo" | "bgSuccess";
+  selectOptions?: { value: string; label: string }[];
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  isPassword?: boolean;
+  value?: string;
+  [key: string]: any;
+};
+
+const Input = React.forwardRef<
+  HTMLInputElement | HTMLSelectElement,
+  InputProps
+>(
   (
     {
       label,
@@ -13,11 +35,12 @@ const Input = React.forwardRef(
       isPassword,
       value,
       ...rest
-    }: any,
+    },
     ref
   ) => {
-    const [inputType, setInputType] = useState(type);
-    const inputCollors: any = {
+    const [inputType, setInputType] = useState<inputTypeProps>(type);
+
+    const inputCollors: Record<string, string> = {
       bgNeutral: "bg-neutral",
       bgInfo: "bg-info",
       bgSuccess: "bg-success",
@@ -52,23 +75,23 @@ const Input = React.forwardRef(
                 className={isPassword ? "password-input" : inputClass}
                 onChange={onChange}
                 value={value}
-                ref={ref}
+                ref={ref as React.RefObject<HTMLInputElement>}
                 autoComplete="off"
                 {...rest}
               />
-
               {isPassword ? (
                 <img
                   src="/visibility_off.svg"
-                  onClick={(e: any) => {
+                  onClick={(e: React.MouseEvent<HTMLImageElement>) => {
                     if (inputType === "password") {
                       setInputType("text");
-                      e.target.src = "/visibility.svg";
+                      e.currentTarget.src = "/visibility.svg";
                     } else {
                       setInputType("password");
-                      e.target.src = "/visibility_off.svg";
+                      e.currentTarget.src = "/visibility_off.svg";
                     }
                   }}
+                  alt="toggle visibility"
                 />
               ) : null}
             </div>

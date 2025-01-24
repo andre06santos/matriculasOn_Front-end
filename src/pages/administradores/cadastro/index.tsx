@@ -4,6 +4,12 @@ import { Button } from "../../../ui/button";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import {
+  AdminType,
+  ChangeEventType,
+  FormEventType,
+  ErrorMessagesType,
+} from "../../../modules/administradores/infrastructure/types";
+import {
   handleChangeCargo,
   handleChangeConfSenha,
   handleChangeCpf,
@@ -19,18 +25,21 @@ import { toast } from "react-toastify";
 
 const AdministratorRegistration = () => {
   const { addAdmin } = useAdmin();
-  const [cpf, setCpf] = useState("");
-  const [cargo, setCargo] = useState("");
-  const [nome, setNome] = useState("");
-  const [email, setEmail] = useState("");
-  const [departamento, setDepartamento] = useState("");
-  const [senha, setSenha] = useState("");
-  const [conferirSenha, setConferirSenha] = useState("");
-  const [errorMessages, setErrorMessages] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleSubmit = async (e: any) => {
+  const tipo = "ADMIN";
+  const [cpf, setCpf] = useState<string>("");
+  const [cargo, setCargo] = useState<string>("");
+  const [nome, setNome] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [departamento, setDepartamento] = useState<string>("");
+  const [senha, setSenha] = useState<string>("");
+  const [conferirSenha, setConferirSenha] = useState<string>("");
+
+  const [errorMessages, setErrorMessages] = useState<ErrorMessagesType>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const handleSubmit = async (e: FormEventType) => {
     e.preventDefault();
 
     if (errorMessages.length > 0) {
@@ -44,12 +53,13 @@ const AdministratorRegistration = () => {
     try {
       setIsLoading(true);
 
-      const admin = {
+      const admin: AdminType = {
         cpf,
         cargo,
         nome,
         email,
         departamento,
+        tipo,
       };
 
       await addAdmin(admin);
@@ -70,7 +80,7 @@ const AdministratorRegistration = () => {
     }
   };
 
-  const onClean = (e: any) => {
+  const onClean = (e: ChangeEventType) => {
     e.preventDefault();
 
     setCpf("");
@@ -96,7 +106,7 @@ const AdministratorRegistration = () => {
             required
             autoFocus
             value={cpf}
-            onChange={(e: any) =>
+            onChange={(e: ChangeEventType) =>
               handleChangeCpf(e.target.value, setErrorMessages, setCpf)
             }
           />
@@ -105,21 +115,25 @@ const AdministratorRegistration = () => {
             type="text"
             required
             value={cargo}
-            onChange={(e: any) => handleChangeCargo(e.target.value, setCargo)}
+            onChange={(e: ChangeEventType) =>
+              handleChangeCargo(e.target.value, setCargo)
+            }
           />
           <Input
             label="Nome"
             type="text"
             required
             value={nome}
-            onChange={(e: any) => handleChangeNome(e.target.value, setNome)}
+            onChange={(e: ChangeEventType) =>
+              handleChangeNome(e.target.value, setNome)
+            }
           />
           <Input
             label="Email"
             type="text"
             required
             value={email}
-            onChange={(e: any) =>
+            onChange={(e: ChangeEventType) =>
               handleChangeEmail(e.target.value, setErrorMessages, setEmail)
             }
           />
@@ -128,7 +142,7 @@ const AdministratorRegistration = () => {
             type="text"
             required
             value={departamento}
-            onChange={(e: any) =>
+            onChange={(e: ChangeEventType) =>
               handleChangeDepartamento(e.target.value, setDepartamento)
             }
           />
@@ -138,13 +152,9 @@ const AdministratorRegistration = () => {
             required
             value={senha}
             isPassword
-            onChange={(e: any) => {
+            onChange={(e: ChangeEventType) => {
               handleChangeSenha(e.target.value, setErrorMessages, setSenha);
-              verificaSenhasIguais(
-                e.target.event,
-                conferirSenha,
-                setErrorMessages
-              );
+              verificaSenhasIguais(senha, conferirSenha, setErrorMessages);
             }}
           />
           <Input
@@ -153,7 +163,7 @@ const AdministratorRegistration = () => {
             required
             value={conferirSenha}
             isPassword
-            onChange={(e: any) => {
+            onChange={(e: ChangeEventType) => {
               handleChangeConfSenha(
                 e.target.value,
                 setErrorMessages,
