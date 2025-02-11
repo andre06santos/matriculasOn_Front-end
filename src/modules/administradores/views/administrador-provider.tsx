@@ -10,8 +10,8 @@ import {
   AdminType,
   CursoType,
   PermissionsType,
-  AlunoType,
   UserType,
+  AlunoType,
 } from "../infrastructure/types";
 
 export type AdminContextType = {
@@ -32,7 +32,6 @@ export type AdminContextType = {
   ) => Promise<UserType[]>;
   students: AlunoType[];
   editStudent: (params: {
-    id: string;
     newStudent: AlunoType;
   }) => Promise<AlunoType>;
   searchStudent: (
@@ -86,8 +85,12 @@ export const AdminProvider = ({ children }: AdminProviderProps) => {
     try {
       const userRequest = {
         endpoint: `/cursos`,
+        method: "GET"
       };
-      const _courses = await fetchData(userRequest);
+
+      const response = await fetchData(userRequest);
+
+      const _courses = response.content;
       setCourses(_courses);
     } catch (error) {
       console.error((error as Error).message);
@@ -101,8 +104,13 @@ export const AdminProvider = ({ children }: AdminProviderProps) => {
         const userRequest = {
           endpoint: `/cursos?nome=${name}&page=${page}&size=${size}`,
         };
-        const _courses = await fetchData(userRequest);
+
+        const response = await fetchData(userRequest);
+
+        const _courses = response.content;
+
         setCourses(_courses);
+
         return _courses;
       } catch (error) {
         console.error((error as Error).message);
@@ -122,7 +130,11 @@ export const AdminProvider = ({ children }: AdminProviderProps) => {
 
         const endpoint = `/alunos?${queryParams.toString()}`;
         const userRequest = { endpoint };
-        const _students = await fetchData(userRequest);
+
+        const response = await fetchData(userRequest);
+
+
+        const _students = response.content;
 
         setStudents(_students);
       } catch (error) {
@@ -147,7 +159,10 @@ export const AdminProvider = ({ children }: AdminProviderProps) => {
 
         const endpoint = `/usuarios?${queryParams.toString()}`;
         const userRequest = { endpoint };
-        const _users: UserType[] = await fetchData(userRequest);
+
+        const response = await fetchData(userRequest);
+
+        const _users = response.content;
 
         setUsers(_users);
         return _users;
@@ -170,6 +185,7 @@ export const AdminProvider = ({ children }: AdminProviderProps) => {
       };
 
       const addedCourse = await fetchData(userRequest);
+
       setCourses((prevCourses: CursoType[]) => [...prevCourses, addedCourse]);
 
       return addedCourse;
@@ -191,6 +207,7 @@ export const AdminProvider = ({ children }: AdminProviderProps) => {
         };
 
         const editedCourse = await fetchData(userRequest);
+
         setCourses((prevCourses: CursoType[]) => [
           ...prevCourses,
           editedCourse,
@@ -214,7 +231,10 @@ export const AdminProvider = ({ children }: AdminProviderProps) => {
         },
       };
 
-      const courseDeleted = await fetchData(userRequest);
+      const response = await fetchData(userRequest);
+
+      const courseDeleted = response.content;
+
       setCourses((prevCourses: CursoType[]) =>
         prevCourses.filter((course: CursoType) => course.id !== id)
       );
@@ -227,16 +247,19 @@ export const AdminProvider = ({ children }: AdminProviderProps) => {
   }, []);
 
   const editStudent = useCallback(
-    async ({ id, newStudent }: { id: string; newStudent: AlunoType }) => {
+    async ({ newStudent }: { newStudent: AlunoType }) => {
       try {
         const userRequest = {
-          endpoint: `/alunos/${id}`,
+          endpoint: `/alunos/${newStudent.pessoa.id}`,
           config: {
             method: "PUT",
-            data: JSON.stringify(newStudent),
+            data: JSON.stringify(newStudent.pessoa),
           },
         };
+
+
         const editedStudent = await fetchData(userRequest);
+
         setStudents((prevStudent: AlunoType[]) => [
           ...prevStudent,
           editedStudent,
@@ -255,11 +278,13 @@ export const AdminProvider = ({ children }: AdminProviderProps) => {
     try {
       const userRequest = {
         endpoint: "/alunos",
-        config: {
-          method: "GET",
-        },
+        method: "GET",
+
       };
-      const _students = await fetchData(userRequest);
+
+      const response = await fetchData(userRequest);
+
+      const _students = response.content;
       setStudents(_students);
     } catch (error) {
       console.error((error as Error).message);
@@ -270,14 +295,16 @@ export const AdminProvider = ({ children }: AdminProviderProps) => {
   const addStudents = useCallback(async (newStudent: AlunoType) => {
     try {
       const userRequest = {
-        endpoint: "/alunos",
+        endpoint: "/usuarios/alunos/novo-aluno",
         config: {
           method: "POST",
           data: JSON.stringify(newStudent),
         },
       };
 
+
       const addedStudent = await fetchData(userRequest);
+
       setStudents((prevStudent: AlunoType[]) => [...prevStudent, addedStudent]);
       return addedStudent;
     } catch (error) {
@@ -295,12 +322,14 @@ export const AdminProvider = ({ children }: AdminProviderProps) => {
         },
       };
 
-      const studentDeleted = await fetchData(userRequest);
+      const response = await fetchData(userRequest);
+
+      const studentDeleted = response.content;
       setStudents((prevStudent: AlunoType[]) =>
         prevStudent.filter((student: AlunoType) => student.id !== id)
       );
 
-      return studentDeleted;
+      return studentDeleted.content;
     } catch (error) {
       console.error((error as Error).message);
       throw new Error((error as Error).message);
@@ -315,7 +344,11 @@ export const AdminProvider = ({ children }: AdminProviderProps) => {
           method: "GET",
         },
       };
-      const _users = await fetchData(userRequest);
+
+      const response = await fetchData(userRequest);
+
+      const _users = response.content;
+
       setUsers(_users);
     } catch (error) {
       console.error((error as Error).message);
@@ -326,15 +359,18 @@ export const AdminProvider = ({ children }: AdminProviderProps) => {
   const addAdmin = useCallback(async (newAdmin: AdminType) => {
     try {
       const userRequest = {
-        endpoint: "/usuarios",
+        endpoint: "/usuarios/administradores/novo-administrador",
         config: {
           method: "POST",
           data: JSON.stringify(newAdmin),
         },
       };
 
+
       const addedAdmin = await fetchData(userRequest);
+
       setAdmins((prevAdmin: AdminType[]) => [...prevAdmin, addedAdmin]);
+
 
       return addedAdmin;
     } catch (error) {
@@ -351,7 +387,11 @@ export const AdminProvider = ({ children }: AdminProviderProps) => {
           method: "DELETE",
         },
       };
-      const adminDeleted = await fetchData(userRequest);
+
+      const response = await fetchData(userRequest);
+
+      const adminDeleted = response.content;
+
       setAdmins((prevAdmin: AdminType[]) =>
         prevAdmin.filter((admin: AdminType) => admin.id !== id)
       );
@@ -370,7 +410,11 @@ export const AdminProvider = ({ children }: AdminProviderProps) => {
           method: "DELETE",
         },
       };
-      const userDeleted = await fetchData(userRequest);
+
+      const response = await fetchData(userRequest);
+
+
+      const userDeleted = response.content;
       setUsers((prevUser: UserType[]) =>
         prevUser.filter((user: UserType) => user.id !== id)
       );
@@ -392,7 +436,9 @@ export const AdminProvider = ({ children }: AdminProviderProps) => {
             data: JSON.stringify(newAdmin),
           },
         };
+
         const editedAdmin = await fetchData(userRequest);
+
         setAdmins((prevadmin: AdminType[]) => [...prevadmin, editedAdmin]);
 
         return editedAdmin;
@@ -413,7 +459,10 @@ export const AdminProvider = ({ children }: AdminProviderProps) => {
         },
       };
 
-      const _permissions = await fetchData(userRequest);
+      const response = await fetchData(userRequest);
+
+      const _permissions = response.content;
+
       setPermissions(_permissions);
     } catch (error) {
       console.error((error as Error).message);
@@ -431,7 +480,9 @@ export const AdminProvider = ({ children }: AdminProviderProps) => {
         },
       };
 
+
       const addedPermission = await fetchData(userRequest);
+
       setPermissions((prevPermissions: PermissionsType[]) => [
         ...prevPermissions,
         addedPermission,
@@ -449,7 +500,10 @@ export const AdminProvider = ({ children }: AdminProviderProps) => {
         endpoint: `/permissoes?descricao=${descricao}`,
       };
 
-      const _permissions = await fetchData(userRequest);
+      const response = await fetchData(userRequest);
+
+      const _permissions = response.content;
+
       setPermissions(_permissions);
     } catch (error) {
       console.error((error as Error).message);
@@ -475,6 +529,7 @@ export const AdminProvider = ({ children }: AdminProviderProps) => {
         };
 
         const editedPermission = await fetchData(userRequest);
+
         setPermissions((prevPermissions: PermissionsType[]) => [
           ...prevPermissions,
           editedPermission,
@@ -498,7 +553,10 @@ export const AdminProvider = ({ children }: AdminProviderProps) => {
         },
       };
 
-      const deletedPermission = await fetchData(userRequest);
+      const response = await fetchData(userRequest);
+
+      const deletedPermission = response.content;
+
       setPermissions((prevPermissions: PermissionsType[]) =>
         prevPermissions.filter(
           (permission: PermissionsType) => permission.id !== id

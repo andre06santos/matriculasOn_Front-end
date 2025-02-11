@@ -2,7 +2,7 @@ import "./styles.css";
 import { Input } from "../../../ui/input";
 import { Button } from "../../../ui/button";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   handleChangeCpf,
   handleChangeEmail,
@@ -12,10 +12,10 @@ import {
 import { useAdmin } from "../../../modules/administradores/views/hooks/use-administrador";
 import { Spinner } from "../../../ui/spinner";
 import { toast } from "react-toastify";
-import { cursoOptions } from "../../../constants";
 import {
   AlunoType,
   ChangeEventType,
+  CursoOption,
   ErrorMessagesType,
   FormEventType,
   ObjectCursoType,
@@ -23,18 +23,20 @@ import {
 
 const EditStudent = () => {
   const { state: student } = useLocation();
-  const { editStudent } = useAdmin();
-  const tipo = "ALUNO";
-  const [cpf, setCpf] = useState<string>(student.cpf);
-  const [matricula, setMatricula] = useState<string>(student.matricula);
-  const [nome, setNome] = useState<string>(student.nome);
-  const [email, setEmail] = useState<string>(student.email);
-  const [curso, setCurso] = useState<ObjectCursoType | undefined>(
-    findCourse(student.curso)
-  );
+  const { editStudent, courses, getCourses } = useAdmin();
+  const [cursoOptions, setCursoOptions] = useState<CursoOption[]>([]);
+  const id = student.pessoa.id;
+  const [cpf, setCpf] = useState<string>(student.pessoa.cpf);
+  const [matricula, setMatricula] = useState<string>(student.pessoa.matricula);
+  const [nome, setNome] = useState<string>(student.pessoa.nome);
+  const [email, setEmail] = useState<string>(student.pessoa.email);
+  const [curso, setCurso] = useState<ObjectCursoType | undefined>(undefined);
   const [errorMessages, setErrorMessages] = useState<ErrorMessagesType>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const navigate = useNavigate();
+
+  console.log(getCourses);
+
 
   const handleSubmit = async (e: FormEventType) => {
     e.preventDefault();
@@ -52,15 +54,19 @@ const EditStudent = () => {
       setIsLoading(true);
 
       const newStudent: AlunoType = {
-        tipo,
-        cpf,
-        nome,
-        matricula,
-        email,
-        curso: curso?.value || "",
+        pessoa: {
+          id,
+          cpf,
+          nome,
+          matricula,
+          email,
+          curso: {
+            id: curso?.value,
+          }
+        }
       };
 
-      await editStudent({ id: student.id, newStudent });
+      await editStudent({ newStudent });
       setIsLoading(false);
       toast("Aluno editado com sucesso!", {
         position: "top-center",
@@ -76,7 +82,19 @@ const EditStudent = () => {
       });
       console.error((error as Error).message);
     }
+
   };
+
+  const updatedOptions = courses.map(course => ({
+    label: course.nome,
+    value: course.id,
+  }))
+
+  useEffect(() => {
+    getCourses();
+    setCursoOptions(updatedOptions);
+  }, [courses]);
+
 
   return (
     <div className="flex-column-gap20">
@@ -140,12 +158,6 @@ const EditStudent = () => {
       </form>
     </div>
   );
-};
-
-const findCourse = (value: string): ObjectCursoType | undefined => {
-  const course = cursoOptions.find((course) => course.value === value);
-
-  return course;
 };
 
 export { EditStudent };

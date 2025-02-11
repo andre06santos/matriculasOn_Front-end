@@ -46,11 +46,10 @@ const Input = React.forwardRef<
       bgSuccess: "bg-success",
     };
 
-    const inputClass = `input ${
-      inputType === "reset" || inputType === "submit"
-        ? `${inputCollors[variant]} input-button`
-        : "input-text"
-    }`;
+    const inputClass = `input ${inputType === "reset" || inputType === "submit"
+      ? `${inputCollors[variant]} input-button`
+      : "input-text"
+      }`;
 
     return (
       <div className="input-component">

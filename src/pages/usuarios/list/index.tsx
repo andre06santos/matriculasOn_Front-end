@@ -24,6 +24,8 @@ const ListUser = () => {
   const [nome, setNome] = useState<string>("");
   const [status, setStatus] = useState<string>("");
 
+
+
   const [searchTerm, setSearchTerm] = useState<{
     username: string;
     nome: string;
@@ -136,14 +138,12 @@ const ListUser = () => {
     }
   };
 
-  const isActiveStatus = (status: string) => status === "ATIVO";
 
-  const userStatusLabel = (status: string) => {
-    if (status === "ATIVO") {
+  const userStatusLabel = (status: boolean) => {
+    if (status) {
       return "Ativo";
-    } else if (status === "INATIVO") {
-      return "Inativo";
     }
+    return "Inativo";
   };
 
   return (
@@ -224,11 +224,11 @@ const ListUser = () => {
               {users.map((user: UserType, index: number) => (
                 <tr key={index}>
                   <td>{user.username}</td>
-                  <td>{user.nome}</td>
-                  <td>{user.tipo}</td>
+                  <td>{user.pessoa.nome}</td>
+                  <td>{upperCaseToCapitalCase(user.pessoa.tipo)}</td>
                   <td
                     className={
-                      isActiveStatus(user.status) ? "td-ativo" : "td-inativo"
+                      user.status ? "td-ativo" : "td-inativo"
                     }
                   >
                     <span className="status-label">
@@ -238,7 +238,7 @@ const ListUser = () => {
                   <td className="table-actions action-column">
                     <Link
                       to={
-                        user.tipo === "Aluno"
+                        user.pessoa.tipo === "ALUNO"
                           ? "/alunos/editar-aluno"
                           : "/administradores/editar-administrador"
                       }
@@ -264,9 +264,17 @@ const ListUser = () => {
 export { ListUser };
 
 const options = [
-  { label: "Aluno", path: "/alunos/novo-aluno" },
-  { label: "Administrador", path: "/administradores/novo-administrador" },
+  { label: "Aluno", path: "/usuarios/alunos/novo-aluno" },
+  { label: "Administrador", path: "/usuarios/administradores/novo-administrador" }
 ];
+
+const upperCaseToCapitalCase = (userType: string): string => {
+  const tipoArray = userType.toLowerCase().split('');
+  tipoArray[0] = tipoArray[0].toUpperCase();
+
+  return tipoArray.join('');
+};
+
 
 const statusOptions: StatusOption[] = [
   { label: "Ativo", value: "ATIVO" },

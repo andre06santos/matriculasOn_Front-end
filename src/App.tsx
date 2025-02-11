@@ -34,11 +34,11 @@ const App = () => {
           <Route path="/cursos/editar-curso" element={<EditCourse />} />
 
           <Route path="/alunos" element={<ListStudents />} />
-          <Route path="/alunos/novo-aluno" element={<RegisterStudent />} />
+          <Route path="/usuarios/alunos/novo-aluno" element={<RegisterStudent />} />
           <Route path="/alunos/editar-aluno" element={<EditStudent />} />
 
           <Route
-            path="/administradores/novo-administrador"
+            path="/usuarios/administradores/novo-administrador"
             element={<AdministratorRegistration />}
           />
           <Route
