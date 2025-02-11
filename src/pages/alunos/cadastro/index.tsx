@@ -2,7 +2,7 @@ import "./styles.css";
 import { Input } from "../../../ui/input";
 import { Button } from "../../../ui/button";
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   handleChangeConfSenha,
   handleChangeCpf,
@@ -14,22 +14,21 @@ import {
 } from "../../../modules/alunosAdmFormValidation";
 import { useAdmin } from "../../../modules/administradores/views/hooks/use-administrador";
 import { Spinner } from "../../../ui/spinner";
-import { cursoOptions } from "../../../constants";
 import { toast } from "react-toastify";
 import {
   AlunoType,
   ChangeEventType,
+  CursoOption,
   ErrorMessagesType,
   FormEventType,
   ObjectCursoType,
 } from "../../../modules/administradores/infrastructure/types";
 
 const RegisterStudent = () => {
-  const tipo = "ALUNO";
   const [cpf, setCpf] = useState<string>("");
   const [matricula, setMatricula] = useState<string>("");
   const [nome, setNome] = useState<string>("");
-  const [username, setUsername] = useState<string>("");
+  const [cursoOptions, setCursoOptions] = useState<CursoOption[]>([]);
   const [email, setEmail] = useState<string>("");
   const [curso, setCurso] = useState<ObjectCursoType | null>(null);
   const [senha, setSenha] = useState<string>("");
@@ -37,7 +36,7 @@ const RegisterStudent = () => {
   const [errorMessages, setErrorMessages] = useState<ErrorMessagesType>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const navigate = useNavigate();
-  const { addStudents } = useAdmin();
+  const { addStudents, courses, getCourses } = useAdmin();
 
   const handleSubmit = async (e: FormEventType) => {
     e.preventDefault();
@@ -53,16 +52,17 @@ const RegisterStudent = () => {
 
     try {
       setIsLoading(true);
-      const cpfNumber = cpf.replace(/\D/g, "");
-
       const aluno: AlunoType = {
-        cpf: cpfNumber,
-        nome,
-        username,
-        matricula,
-        email,
-        tipo,
-        curso: curso!.value,
+        senha,
+        pessoa: {
+          cpf,
+          nome,
+          matricula,
+          email,
+          curso: {
+            id: curso?.value,
+          }
+        }
       };
 
       await addStudents(aluno);
@@ -89,13 +89,21 @@ const RegisterStudent = () => {
     setCpf("");
     setMatricula("");
     setNome("");
-    setUsername("");
     setEmail("");
     setCurso(null);
     setSenha("");
     setConferirSenha("");
     setErrorMessages([]);
   };
+
+  useEffect(() => {
+    const updatedOptions = courses.map(course => ({
+      label: course.nome,
+      value: course.id,
+    }))
+    getCourses();
+    setCursoOptions(updatedOptions);
+  }, [courses]);
 
   return (
     <div className="flex-column-gap20">

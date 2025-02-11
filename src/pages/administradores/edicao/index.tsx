@@ -22,14 +22,13 @@ import {
 
 const EditAdmin = () => {
   const { state: admin } = useLocation();
-  const tipo = "ADMIN";
   const { editAdmin } = useAdmin();
   const navigate = useNavigate();
-  const [cpf, setCpf] = useState<string>(admin.cpf);
-  const [cargo, setCargo] = useState<string>(admin.cargo);
-  const [nome, setNome] = useState(admin.nome);
-  const [email, setEmail] = useState<string>(admin.email);
-  const [departamento, setDepartamento] = useState<string>(admin.departamento);
+  const [cpf, setCpf] = useState<string>(admin.pessoa.cpf);
+  const [cargo, setCargo] = useState<string>(admin.pessoa.cargo);
+  const [nome, setNome] = useState(admin.pessoa.nome);
+  const [email, setEmail] = useState<string>(admin.pessoa.email);
+  const [departamento, setDepartamento] = useState<string>(admin.pessoa.departamento);
   const [errorMessages, setErrorMessages] = useState<ErrorMessagesType>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -48,12 +47,13 @@ const EditAdmin = () => {
     try {
       setIsLoading(true);
       const newAdmin: AdminType = {
-        tipo,
-        cpf,
-        nome,
-        cargo,
-        email,
-        departamento,
+        pessoa: {
+          cpf,
+          cargo,
+          nome,
+          email,
+          departamento,
+        }
       };
       await editAdmin({ id: admin.id, newAdmin });
       setIsLoading(false);

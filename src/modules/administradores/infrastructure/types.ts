@@ -9,12 +9,16 @@ export type ChangeEventType = React.ChangeEvent<HTMLInputElement>;
 
 export type AdminType = {
   id?: string;
-  cpf: string;
-  cargo: string;
-  nome: string;
-  email: string;
-  departamento: string;
-  tipo: string;
+  pessoa: {
+    id?: string;
+    cpf: string;
+    cargo: string;
+    nome: string;
+    email: string;
+    departamento: string;
+    tipo?: "ADMIN";
+  }
+  senha?: string;
 };
 
 export type CursoType = {
@@ -22,6 +26,10 @@ export type CursoType = {
   nome: string;
 };
 
+export type CursoOption = {
+  label: string;
+  value?: string;
+}
 export type PermissionsType = {
   id?: string;
   role: string;
@@ -37,18 +45,21 @@ export type ErrorMessagesType = Record<string, string>[];
 
 export type AlunoType = {
   id?: string;
-  cpf: string;
-  nome: string;
-  username?: string;
-  matricula: string;
-  email: string;
-  curso: string;
-  tipo: string;
+  pessoa: {
+    id?: string;
+    tipo?: "ALUNO";
+    cpf: string;
+    nome: string;
+    matricula: string;
+    email: string;
+    curso: { id?: number, nome?: string } | null;
+  }
+  senha?: string;
 };
 
 export type ObjectCursoType = {
   label: string;
-  value: string;
+  value: number;
 };
 
 export type AlunosSearchTermType = {
@@ -59,9 +70,11 @@ export type AlunosSearchTermType = {
 export type UserType = {
   id: string;
   username: string;
-  nome: string;
-  tipo: "Aluno" | "Administrador";
-  status: string;
+  pessoa: {
+    nome: string;
+    tipo: "ALUNO" | "ADMINISTRADOR";
+  }
+  status: boolean;
 };
 
 /* Tipagem de components de filtragem */

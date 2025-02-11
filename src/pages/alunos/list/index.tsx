@@ -12,10 +12,11 @@ import {
   AlunosSearchTermType,
   AlunoType,
   FormEventType,
+  UserType,
 } from "../../../modules/administradores/infrastructure/types";
 
 const ListStudents = () => {
-  const { students, getStudent, deleteStudent, searchStudent } = useAdmin();
+  const { users, getUsers, students, getStudent, deleteStudent, searchStudent } = useAdmin();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -55,6 +56,7 @@ const ListStudents = () => {
   const checkFields = () => {
     if (nome === "" && matricula === "" && cpf === "") {
       getStudent();
+      getUsers();
       onClean();
     }
   };
@@ -197,13 +199,13 @@ const ListStudents = () => {
               </tr>
             </thead>
             <tbody>
-              {students.map((student: AlunoType, index: number) => (
+              {users.map((student: UserType, index: number) => (
                 <tr key={index}>
-                  <td>{student.matricula}</td>
-                  <td>{student.cpf}</td>
-                  <td>{student.nome}</td>
-                  <td>{student.email}</td>
-                  <td>{student.curso}</td>
+                  <td>{student?.pessoa?.matricula}</td>
+                  <td>{student?.pessoa?.cpf}</td>
+                  <td>{student?.pessoa?.nome}</td>
+                  <td>{student?.pessoa?.email}</td>
+                  <td>{student?.pessoa?.curso?.nome}</td>
                   <td className="table-actions action-column">
                     <Link to="/alunos/editar-aluno" state={student}>
                       <i className="fa-solid fa-pen-to-square"></i>
