@@ -25,6 +25,7 @@ import {
 } from "../../../modules/administradores/infrastructure/types";
 
 const RegisterStudent = () => {
+  const tipo = "ALUNO";
   const [cpf, setCpf] = useState<string>("");
   const [matricula, setMatricula] = useState<string>("");
   const [nome, setNome] = useState<string>("");
@@ -35,6 +36,8 @@ const RegisterStudent = () => {
   const [conferirSenha, setConferirSenha] = useState<string>("");
   const [errorMessages, setErrorMessages] = useState<ErrorMessagesType>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoadingCourses, setIsLoadingCourses] = useState<boolean>(true);
+  const [coursesLoaded, setCoursesLoaded] = useState<boolean>(false);
   const navigate = useNavigate();
   const { addStudents, courses, getCourses } = useAdmin();
 
@@ -55,14 +58,15 @@ const RegisterStudent = () => {
       const aluno: AlunoType = {
         senha,
         pessoa: {
+          tipo,
           cpf,
           nome,
           matricula,
           email,
           curso: {
             id: curso?.value,
-          }
-        }
+          },
+        },
       };
 
       await addStudents(aluno);
@@ -97,109 +101,126 @@ const RegisterStudent = () => {
   };
 
   useEffect(() => {
-    const updatedOptions = courses.map(course => ({
-      label: course.nome,
-      value: course.id,
-    }))
-    getCourses();
-    setCursoOptions(updatedOptions);
-  }, [courses]);
+    const loadCourses = async () => {
+      try {
+        if (!coursesLoaded) {
+          await getCourses();
+          setCoursesLoaded(true);
+        }
+        const updatedOptions = courses.map((course) => ({
+          label: course.nome,
+          value: course.id,
+        }));
+        setCursoOptions(updatedOptions);
+        setIsLoadingCourses(false);
+      } catch (error) {
+        console.error("Erro ao carregar cursos:", error);
+        setIsLoadingCourses(false);
+      }
+    };
+
+    loadCourses();
+  }, [courses, getCourses, coursesLoaded]);
 
   return (
     <div className="flex-column-gap20">
-      {isLoading && <Spinner />}
-
-      <h1>Cadastrar aluno</h1>
-      <form className="form" onSubmit={handleSubmit}>
-        <div className="input-group">
-          <Input
-            label="CPF"
-            type="text"
-            value={cpf}
-            required
-            autoFocus
-            onChange={(e: ChangeEventType) =>
-              handleChangeCpf(e.target.value, setErrorMessages, setCpf)
-            }
-          />
-          <Input
-            label="Matrícula"
-            type="text"
-            required
-            value={matricula}
-            onChange={(e: ChangeEventType) =>
-              handleChangeMatricula(e.target.value, setMatricula)
-            }
-          />
-          <Input
-            label="Nome"
-            type="text"
-            required
-            value={nome}
-            onChange={(e: ChangeEventType) =>
-              handleChangeNome(e.target.value, setNome)
-            }
-          />
-          <Input
-            label="Email"
-            type="text"
-            value={email}
-            required
-            onChange={(e: ChangeEventType) =>
-              handleChangeEmail(e.target.value, setErrorMessages, setEmail)
-            }
-          />
-          <Input
-            label="Curso"
-            selectOptions={cursoOptions}
-            required
-            value={curso}
-            onChange={setCurso}
-          />
-          <Input
-            label="Senha"
-            type="password"
-            required
-            value={senha}
-            isPassword
-            onChange={(e: ChangeEventType) => {
-              handleChangeSenha(e.target.value, setErrorMessages, setSenha);
-              verificaSenhasIguais(
-                e.target.value,
-                conferirSenha,
-                setErrorMessages
-              );
-            }}
-          />
-          <Input
-            label="Confirmar senha"
-            type="password"
-            required
-            value={conferirSenha}
-            isPassword
-            onChange={(e: ChangeEventType) => {
-              handleChangeConfSenha(
-                e.target.value,
-                setErrorMessages,
-                setConferirSenha
-              );
-              verificaSenhasIguais(e.target.value, senha, setErrorMessages);
-            }}
-          />
-        </div>
-        <div className="form-actions flex-column-gap20">
-          <Input
-            type="reset"
-            variant="bgNeutral"
-            value="Limpar"
-            onClick={onClean}
-          />
-          <Link to="/usuarios">
-            <Button type="cancel" label="Cancelar" />
-          </Link>
-          <Input type="submit" variant="bgSuccess" value="Cadastrar" />
-        </div>
-      </form>
+      {isLoading || isLoadingCourses ? (
+        <Spinner />
+      ) : (
+        <>
+          <h1>Cadastrar aluno</h1>
+          <form className="form" onSubmit={handleSubmit}>
+            <div className="input-group">
+              <Input
+                label="CPF"
+                type="text"
+                value={cpf}
+                required
+                autoFocus
+                onChange={(e: ChangeEventType) =>
+                  handleChangeCpf(e.target.value, setErrorMessages, setCpf)
+                }
+              />
+              <Input
+                label="Matrícula"
+                type="text"
+                required
+                value={matricula}
+                onChange={(e: ChangeEventType) =>
+                  handleChangeMatricula(e.target.value, setMatricula)
+                }
+              />
+              <Input
+                label="Nome"
+                type="text"
+                required
+                value={nome}
+                onChange={(e: ChangeEventType) =>
+                  handleChangeNome(e.target.value, setNome)
+                }
+              />
+              <Input
+                label="Email"
+                type="text"
+                value={email}
+                required
+                onChange={(e: ChangeEventType) =>
+                  handleChangeEmail(e.target.value, setErrorMessages, setEmail)
+                }
+              />
+              <Input
+                label="Curso"
+                selectOptions={cursoOptions}
+                required
+                value={curso}
+                onChange={setCurso}
+              />
+              <Input
+                label="Senha"
+                type="password"
+                required
+                value={senha}
+                isPassword
+                onChange={(e: ChangeEventType) => {
+                  handleChangeSenha(e.target.value, setErrorMessages, setSenha);
+                  verificaSenhasIguais(
+                    e.target.value,
+                    conferirSenha,
+                    setErrorMessages
+                  );
+                }}
+              />
+              <Input
+                label="Confirmar senha"
+                type="password"
+                required
+                value={conferirSenha}
+                isPassword
+                onChange={(e: ChangeEventType) => {
+                  handleChangeConfSenha(
+                    e.target.value,
+                    setErrorMessages,
+                    setConferirSenha
+                  );
+                  verificaSenhasIguais(e.target.value, senha, setErrorMessages);
+                }}
+              />
+            </div>
+            <div className="form-actions flex-column-gap20">
+              <Input
+                type="reset"
+                variant="bgNeutral"
+                value="Limpar"
+                onClick={onClean}
+              />
+              <Link to="/usuarios">
+                <Button type="cancel" label="Cancelar" />
+              </Link>
+              <Input type="submit" variant="bgSuccess" value="Cadastrar" />
+            </div>
+          </form>
+        </>
+      )}
     </div>
   );
 };

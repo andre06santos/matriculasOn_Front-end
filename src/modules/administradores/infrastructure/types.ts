@@ -16,8 +16,8 @@ export type AdminType = {
     nome: string;
     email: string;
     departamento: string;
-    tipo?: "ADMIN";
-  }
+    tipo: string;
+  };
   senha?: string;
 };
 
@@ -29,7 +29,7 @@ export type CursoType = {
 export type CursoOption = {
   label: string;
   value?: string;
-}
+};
 export type PermissionsType = {
   id?: string;
   role: string;
@@ -47,13 +47,13 @@ export type AlunoType = {
   id?: string;
   pessoa: {
     id?: string;
-    tipo?: "ALUNO";
+    tipo: string;
     cpf: string;
     nome: string;
-    matricula: string;
+    matricula: string | null;
     email: string;
-    curso: { id?: number, nome?: string } | null;
-  }
+    curso: { id?: number; nome?: string } | null;
+  };
   senha?: string;
 };
 
@@ -70,11 +70,18 @@ export type AlunosSearchTermType = {
 export type UserType = {
   id: string;
   username: string;
-  pessoa: {
-    nome: string;
-    tipo: "ALUNO" | "ADMINISTRADOR";
-  }
   status: boolean;
+  pessoa: {
+    id?: string;
+    tipo: "ALUNO" | "ADMINISTRADOR";
+    nome: string;
+    email: string;
+    cpf: string;
+    matricula?: string;
+    curso?: { id?: number; nome?: string } | null;
+    cargo?: string;
+    departamento?: string;
+  };
 };
 
 /* Tipagem de components de filtragem */

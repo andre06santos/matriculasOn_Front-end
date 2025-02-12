@@ -16,7 +16,14 @@ import {
 import { Pagination } from "../../../ui/paginacao";
 
 const ListCourses = () => {
-  const { courses, getCourses, searchCourse, deleteCourse } = useAdmin();
+  const {
+    courses,
+    getCourses,
+    searchCourse,
+    deleteCourse,
+    totalCourses,
+    totalPage,
+  } = useAdmin();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const nameInput = useRef<HTMLInputElement | null>(null);
@@ -24,9 +31,15 @@ const ListCourses = () => {
   const [name, setName] = useState<string>("");
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [courseId, setCourseId] = useState<string>("");
+  const [currentPage, setcurrentPage] = useState<number>(0);
   const [isSearching, setIsSearching] = useState<boolean>(false);
-  const [currentPage, setCurrentPage] = useState<number>(0);
   const [pageSize, setPageSize] = useState<number>(10);
+
+  console.log(`
+    ${currentPage}
+    ${totalCourses}
+    ${totalPage}
+    `);
 
   const openModal = (courseId: string) => {
     setIsModalOpen(true);
@@ -41,7 +54,7 @@ const ListCourses = () => {
     setName("");
     setSearchTerm("");
     setIsSearching(false);
-    setCurrentPage(0);
+    setcurrentPage(0);
   };
 
   const onFocus = () => nameInput.current?.focus();
@@ -103,7 +116,7 @@ const ListCourses = () => {
       await searchCourse(name);
       setIsSearching(true);
       setSearchTerm(name);
-      setCurrentPage(0);
+      setcurrentPage(0);
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
@@ -119,25 +132,24 @@ const ListCourses = () => {
     checkFields();
   }, [name]);
 
-  const totalPages = Math.ceil(courses.length / pageSize);
   const currentCourses = courses.slice(
     currentPage * pageSize,
     (currentPage + 1) * pageSize
   );
 
   const onPageChange = (page: number) => {
-    setCurrentPage(page);
+    setcurrentPage(page);
   };
 
   const onNext = () => {
-    if (currentPage < totalPages - 1) {
-      setCurrentPage(currentPage + 1);
+    if (currentPage < totalPage - 1) {
+      setcurrentPage(currentPage + 1);
     }
   };
 
   const onPrev = () => {
     if (currentPage > 0) {
-      setCurrentPage(currentPage - 1);
+      setcurrentPage(currentPage - 1);
     }
   };
 
@@ -213,7 +225,7 @@ const ListCourses = () => {
 
           <Pagination
             currentPage={currentPage}
-            totalPages={totalPages}
+            totalPages={totalPage}
             onPageChange={onPageChange}
             onNext={onNext}
             onPrev={onPrev}
