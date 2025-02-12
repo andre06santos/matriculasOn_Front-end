@@ -15,6 +15,8 @@ import {
 } from "../infrastructure/types";
 
 export type AdminContextType = {
+  totalCourses: number;
+  totalPage: number;
   admins: AdminType[];
   addAdmin: (newAdmin: AdminType) => Promise<AdminType>;
   editAdmin: (params: {
@@ -31,9 +33,7 @@ export type AdminContextType = {
     status: string
   ) => Promise<UserType[]>;
   students: AlunoType[];
-  editStudent: (params: {
-    newStudent: AlunoType;
-  }) => Promise<AlunoType>;
+  editStudent: (params: { newStudent: AlunoType }) => Promise<AlunoType>;
   searchStudent: (
     name: string,
     cpf: string,
@@ -75,8 +75,11 @@ export const AdminContext = createContext<AdminContextType | undefined>(
 );
 
 export const AdminProvider = ({ children }: AdminProviderProps) => {
-  const [admins, setAdmins] = useState<AdminType[]>([]);
   const [courses, setCourses] = useState<CursoType[]>([]);
+  const [totalCourses, setTotalCourses] = useState<number>(0);
+  const [totalPage, setTotalPages] = useState<number>(0);
+
+  const [admins, setAdmins] = useState<AdminType[]>([]);
   const [students, setStudents] = useState<AlunoType[]>([]);
   const [users, setUsers] = useState<UserType[]>([]);
   const [permissions, setPermissions] = useState<PermissionsType[]>([]);
@@ -85,13 +88,15 @@ export const AdminProvider = ({ children }: AdminProviderProps) => {
     try {
       const userRequest = {
         endpoint: `/cursos`,
-        method: "GET"
+        method: "GET",
       };
 
       const response = await fetchData(userRequest);
 
       const _courses = response.content;
       setCourses(_courses);
+      setTotalPages(response.totalPages);
+      setTotalCourses(response.totalElements);
     } catch (error) {
       console.error((error as Error).message);
       throw new Error((error as Error).message);
@@ -109,7 +114,13 @@ export const AdminProvider = ({ children }: AdminProviderProps) => {
 
         const _courses = response.content;
 
-        setCourses(_courses);
+        setCourses((prevCourses: CursoType[]) => {
+          if (page > 0) {
+            return [...prevCourses, ..._courses];
+          } else {
+            return _courses;
+          }
+        });
 
         return _courses;
       } catch (error) {
@@ -132,7 +143,6 @@ export const AdminProvider = ({ children }: AdminProviderProps) => {
         const userRequest = { endpoint };
 
         const response = await fetchData(userRequest);
-
 
         const _students = response.content;
 
@@ -186,7 +196,9 @@ export const AdminProvider = ({ children }: AdminProviderProps) => {
 
       const addedCourse = await fetchData(userRequest);
 
-      setCourses((prevCourses: CursoType[]) => [...prevCourses, addedCourse]);
+      setCourses((prevCourses: CursoType[]) => {
+        return [...prevCourses, addedCourse];
+      });
 
       return addedCourse;
     } catch (error) {
@@ -257,7 +269,6 @@ export const AdminProvider = ({ children }: AdminProviderProps) => {
           },
         };
 
-
         const editedStudent = await fetchData(userRequest);
 
         setStudents((prevStudent: AlunoType[]) => [
@@ -279,7 +290,6 @@ export const AdminProvider = ({ children }: AdminProviderProps) => {
       const userRequest = {
         endpoint: "/alunos",
         method: "GET",
-
       };
 
       const response = await fetchData(userRequest);
@@ -301,7 +311,6 @@ export const AdminProvider = ({ children }: AdminProviderProps) => {
           data: JSON.stringify(newStudent),
         },
       };
-
 
       const addedStudent = await fetchData(userRequest);
 
@@ -366,11 +375,9 @@ export const AdminProvider = ({ children }: AdminProviderProps) => {
         },
       };
 
-
       const addedAdmin = await fetchData(userRequest);
 
       setAdmins((prevAdmin: AdminType[]) => [...prevAdmin, addedAdmin]);
-
 
       return addedAdmin;
     } catch (error) {
@@ -412,7 +419,6 @@ export const AdminProvider = ({ children }: AdminProviderProps) => {
       };
 
       const response = await fetchData(userRequest);
-
 
       const userDeleted = response.content;
       setUsers((prevUser: UserType[]) =>
@@ -479,7 +485,6 @@ export const AdminProvider = ({ children }: AdminProviderProps) => {
           data: JSON.stringify(newPermission),
         },
       };
-
 
       const addedPermission = await fetchData(userRequest);
 
@@ -572,6 +577,8 @@ export const AdminProvider = ({ children }: AdminProviderProps) => {
   const value = useMemo(
     () => ({
       admins,
+      totalPage,
+      totalCourses,
       addAdmin,
       editAdmin,
       deleteAdmin,
@@ -600,6 +607,8 @@ export const AdminProvider = ({ children }: AdminProviderProps) => {
     }),
     [
       admins,
+      totalPage,
+      totalCourses,
       addAdmin,
       editAdmin,
       deleteAdmin,
