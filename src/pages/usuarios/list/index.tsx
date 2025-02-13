@@ -221,6 +221,13 @@ const ListUser = () => {
                   <td>{user.pessoa.nome}</td>
                   <td>{upperCaseToCapitalCase(user.pessoa.tipo)}</td>
                   <td className={user.status ? "td-ativo" : "td-inativo"}>
+                  <td>{user.pessoa.nome}</td>
+                  <td>{upperCaseToCapitalCase(user.pessoa.tipo)}</td>
+                  <td
+                    className={
+                      user.status ? "td-ativo" : "td-inativo"
+                    }
+                  >
                     <span className="status-label">
                       {userStatusLabel(user.status)}
                     </span>
@@ -228,6 +235,7 @@ const ListUser = () => {
                   <td className="table-actions action-column">
                     <Link
                       to={
+                        user.pessoa.tipo === "ALUNO"
                         user.pessoa.tipo === "ALUNO"
                           ? "/alunos/editar-aluno"
                           : "/administradores/editar-administrador"
