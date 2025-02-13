@@ -16,14 +16,9 @@ import {
 import { Pagination } from "../../../ui/paginacao";
 
 const ListCourses = () => {
-  const {
-    courses,
-    getCourses,
-    searchCourse,
-    deleteCourse,
-    totalCourses,
-    totalPage,
-  } = useAdmin();
+  const { courses, getCourses, searchCourse, deleteCourse, totalPage } =
+    useAdmin();
+
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [name, setName] = useState<string>("");
@@ -31,6 +26,7 @@ const ListCourses = () => {
   const [courseId, setCourseId] = useState<string>("");
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [isSearching, setIsSearching] = useState<boolean>(false);
+
   const nameInput = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
@@ -41,6 +37,13 @@ const ListCourses = () => {
       getCourses(currentPage).finally(() => setIsLoading(false));
     }
   }, [currentPage, getCourses, searchCourse, isSearching, searchTerm]);
+
+  useEffect(() => {
+    if (name == "") {
+      setIsSearching(false);
+      getCourses(0);
+    }
+  }, [name, getCourses]);
 
   const openModal = (courseId: string) => {
     setIsModalOpen(true);
@@ -58,7 +61,6 @@ const ListCourses = () => {
 
   const onReset = () => {
     if (name === "") return;
-
     onClean();
     getCourses(0);
   };
@@ -67,19 +69,13 @@ const ListCourses = () => {
     try {
       setIsLoading(true);
       await deleteCourse(courseId);
-      toast("Curso excluído com sucesso!", {
-        position: "top-center",
-        type: "success",
-      });
+      toast.success("Curso excluído com sucesso!");
       const newPage =
         currentPage > 0 && courses.length === 1 ? currentPage - 1 : currentPage;
       setCurrentPage(newPage);
       getCourses(newPage);
     } catch (error) {
-      toast("Ocorreu um erro ao tentar excluir o curso!", {
-        position: "top-center",
-        type: "error",
-      });
+      toast.error("Ocorreu um erro ao tentar excluir o curso!");
       console.error(error);
     } finally {
       setIsLoading(false);
@@ -92,7 +88,6 @@ const ListCourses = () => {
     if (validateEmptyString(name)) {
       toast.error("Digite um nome para filtrar!");
       onClean();
-      nameInput.current;
       return;
     }
 
