@@ -236,7 +236,6 @@ const ListUser = () => {
                     <Link
                       to={
                         user.pessoa.tipo === "ALUNO"
-                        user.pessoa.tipo === "ALUNO"
                           ? "/alunos/editar-aluno"
                           : "/administradores/editar-administrador"
                       }
@@ -277,6 +276,6 @@ const upperCaseToCapitalCase = (userType: string): string => {
 };
 
 const statusOptions: StatusOption[] = [
-  { label: "Ativo", value: "true "},
+  { label: "Ativo", value: "true " },
   { label: "Inativo", value: "false" },
 ];
