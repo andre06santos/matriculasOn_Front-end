@@ -221,13 +221,6 @@ const ListUser = () => {
                   <td>{user.pessoa.nome}</td>
                   <td>{upperCaseToCapitalCase(user.pessoa.tipo)}</td>
                   <td className={user.status ? "td-ativo" : "td-inativo"}>
-                  <td>{user.pessoa.nome}</td>
-                  <td>{upperCaseToCapitalCase(user.pessoa.tipo)}</td>
-                  <td
-                    className={
-                      user.status ? "td-ativo" : "td-inativo"
-                    }
-                  >
                     <span className="status-label">
                       {userStatusLabel(user.status)}
                     </span>
@@ -276,6 +269,6 @@ const upperCaseToCapitalCase = (userType: string): string => {
 };
 
 const statusOptions: StatusOption[] = [
-  { label: "Ativo", value: "true " },
+  { label: "Ativo", value: "true "},
   { label: "Inativo", value: "false" },
 ];
