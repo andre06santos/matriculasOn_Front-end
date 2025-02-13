@@ -38,7 +38,7 @@ export type PermissionsType = {
 
 export type StatusOption = {
   label: string;
-  value: "ATIVO" | "INATIVO";
+  value: string;
 };
 
 export type ErrorMessagesType = Record<string, string>[];
@@ -121,8 +121,13 @@ export type UserFilterType = {
   setUsername: React.Dispatch<React.SetStateAction<string>>;
   name: string;
   setName: React.Dispatch<React.SetStateAction<string>>;
-  status: string;
-  setStatus: React.Dispatch<React.SetStateAction<string>>;
+  status:
+    | {
+        label: string;
+        value: string;
+      }
+    | undefined;
+  setStatus: React.Dispatch<React.SetStateAction<StatusOption | undefined>>;
   statusOptions: { label: string; value: string }[];
   usernameInput: React.MutableRefObject<HTMLInputElement | null>;
   nameInput: React.MutableRefObject<HTMLInputElement | null>;
