@@ -1,7 +1,7 @@
 import axios, { AxiosRequestConfig } from "axios";
 
 const axiosInstance = axios.create({
-  baseURL: "http://localhost:8081/matriculason",
+  baseURL: "http://10.30.2.203:8085/matriculason",
   headers: {
     "Content-Type": "application/json",
   },
