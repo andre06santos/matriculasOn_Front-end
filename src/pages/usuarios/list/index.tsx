@@ -22,9 +22,7 @@ const ListUser = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [username, setUsername] = useState<string>("");
   const [nome, setNome] = useState<string>("");
-  const [status, setStatus] = useState<string>("");
-
-
+  const [status, setStatus] = useState<StatusOption | undefined>(undefined);
 
   const [searchTerm, setSearchTerm] = useState<{
     username: string;
@@ -64,12 +62,12 @@ const ListUser = () => {
   const onClean = () => {
     setUsername("");
     setNome("");
-    setStatus("");
+    setStatus(undefined);
     setIsSearching(false);
   };
 
   const checkFields = () => {
-    if (nome === "" && username === "" && !status) {
+    if (nome === "" && username === "" && !status?.value) {
       getUsers();
       onClean();
     }
@@ -97,7 +95,7 @@ const ListUser = () => {
   };
 
   const onReset = () => {
-    if (nome === "" && username === "" && !status) return;
+    if (nome === "" && username === "" && !status?.value) return;
 
     onClean();
     getUsers();
@@ -113,7 +111,7 @@ const ListUser = () => {
     const emptyFieldName = validateEmptyString(nome);
     const emptyFieldUsername = validateEmptyString(username);
 
-    if (emptyFieldName && emptyFieldUsername && !status) {
+    if (emptyFieldName && emptyFieldUsername && !status?.value) {
       toast("Preencha um dos campos para filtrar!", {
         position: "top-center",
         type: "error",
@@ -126,7 +124,7 @@ const ListUser = () => {
       setIsLoading(true);
       await searchUser(username, nome, status);
       setIsSearching(true);
-      setSearchTerm({ username, nome, status });
+      setSearchTerm({ username, nome, status: status?.label || "" });
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
@@ -138,12 +136,8 @@ const ListUser = () => {
     }
   };
 
-
   const userStatusLabel = (status: boolean) => {
-    if (status) {
-      return "Ativo";
-    }
-    return "Inativo";
+    return status ? "Ativo" : "Inativo";
   };
 
   return (
@@ -226,11 +220,7 @@ const ListUser = () => {
                   <td>{user.username}</td>
                   <td>{user.pessoa.nome}</td>
                   <td>{upperCaseToCapitalCase(user.pessoa.tipo)}</td>
-                  <td
-                    className={
-                      user.status ? "td-ativo" : "td-inativo"
-                    }
-                  >
+                  <td className={user.status ? "td-ativo" : "td-inativo"}>
                     <span className="status-label">
                       {userStatusLabel(user.status)}
                     </span>
@@ -265,18 +255,20 @@ export { ListUser };
 
 const options = [
   { label: "Aluno", path: "/usuarios/alunos/novo-aluno" },
-  { label: "Administrador", path: "/usuarios/administradores/novo-administrador" }
+  {
+    label: "Administrador",
+    path: "/usuarios/administradores/novo-administrador",
+  },
 ];
 
 const upperCaseToCapitalCase = (userType: string): string => {
-  const tipoArray = userType.toLowerCase().split('');
+  const tipoArray = userType.toLowerCase().split("");
   tipoArray[0] = tipoArray[0].toUpperCase();
 
-  return tipoArray.join('');
+  return tipoArray.join("");
 };
 
-
 const statusOptions: StatusOption[] = [
-  { label: "Ativo", value: "ATIVO" },
-  { label: "Inativo", value: "INATIVO" },
+  { label: "Ativo", value: "true "},
+  { label: "Inativo", value: "false" },
 ];
