@@ -26,52 +26,41 @@ const ListCourses = () => {
   } = useAdmin();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const nameInput = useRef<HTMLInputElement | null>(null);
-
   const [name, setName] = useState<string>("");
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [courseId, setCourseId] = useState<string>("");
-  const [currentPage, setcurrentPage] = useState<number>(0);
+  const [currentPage, setCurrentPage] = useState<number>(0);
   const [isSearching, setIsSearching] = useState<boolean>(false);
-  const [pageSize, setPageSize] = useState<number>(10);
+  const nameInput = useRef<HTMLInputElement | null>(null);
 
-  console.log(`
-    ${currentPage}
-    ${totalCourses}
-    ${totalPage}
-    `);
+  useEffect(() => {
+    setIsLoading(true);
+    if (isSearching) {
+      searchCourse(searchTerm).finally(() => setIsLoading(false));
+    } else {
+      getCourses(currentPage).finally(() => setIsLoading(false));
+    }
+  }, [currentPage, getCourses, searchCourse, isSearching, searchTerm]);
 
   const openModal = (courseId: string) => {
     setIsModalOpen(true);
     setCourseId(courseId);
   };
 
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
+  const closeModal = () => setIsModalOpen(false);
 
   const onClean = () => {
     setName("");
     setSearchTerm("");
     setIsSearching(false);
-    setcurrentPage(0);
+    setCurrentPage(0);
   };
-
-  const onFocus = () => nameInput.current?.focus();
 
   const onReset = () => {
     if (name === "") return;
 
     onClean();
-    onFocus();
-    getCourses();
-  };
-
-  const checkFields = () => {
-    if (name === "") {
-      getCourses();
-      onClean();
-    }
+    getCourses(0);
   };
 
   const onDelete = async () => {
@@ -82,32 +71,28 @@ const ListCourses = () => {
         position: "top-center",
         type: "success",
       });
-      setIsLoading(false);
+      const newPage =
+        currentPage > 0 && courses.length === 1 ? currentPage - 1 : currentPage;
+      setCurrentPage(newPage);
+      getCourses(newPage);
     } catch (error) {
-      setIsLoading(false);
       toast("Ocorreu um erro ao tentar excluir o curso!", {
         position: "top-center",
         type: "error",
       });
-      console.error((error as Error).message);
+      console.error(error);
     } finally {
+      setIsLoading(false);
       closeModal();
     }
   };
 
   const onSubmit = async (e: FormEventType) => {
     e.preventDefault();
-
-    const emptyField = validateEmptyString(name);
-
-    if (emptyField) {
-      toast("Digite um nome para filtrar!", {
-        position: "top-center",
-        type: "error",
-      });
+    if (validateEmptyString(name)) {
+      toast.error("Digite um nome para filtrar!");
       onClean();
-      onFocus();
-
+      nameInput.current;
       return;
     }
 
@@ -116,41 +101,23 @@ const ListCourses = () => {
       await searchCourse(name);
       setIsSearching(true);
       setSearchTerm(name);
-      setcurrentPage(0);
-      setIsLoading(false);
+      setCurrentPage(0);
     } catch (error) {
+      toast.error("Erro ao buscar curso!");
+      console.error(error);
+    } finally {
       setIsLoading(false);
-      toast("Ocorreu um erro ao tentar filtrar curso!", {
-        position: "top-center",
-        type: "error",
-      });
-      console.error((error as Error).message);
     }
   };
 
-  useEffect(() => {
-    checkFields();
-  }, [name]);
-
-  const currentCourses = courses.slice(
-    currentPage * pageSize,
-    (currentPage + 1) * pageSize
-  );
-
-  const onPageChange = (page: number) => {
-    setcurrentPage(page);
-  };
+  const onPageChange = (page: number) => setCurrentPage(page);
 
   const onNext = () => {
-    if (currentPage < totalPage - 1) {
-      setcurrentPage(currentPage + 1);
-    }
+    if (currentPage < totalPage - 1) setCurrentPage((prev) => prev + 1);
   };
 
   const onPrev = () => {
-    if (currentPage > 0) {
-      setcurrentPage(currentPage - 1);
-    }
+    if (currentPage > 0) setCurrentPage((prev) => prev - 1);
   };
 
   return (
@@ -182,13 +149,13 @@ const ListCourses = () => {
       />
 
       {courses.length === 0 ? (
-        isSearching ? (
-          <NotFound
-            message={`A busca por "${searchTerm}" não retornou nenhum curso!`}
-          />
-        ) : (
-          <NotFound message="Nenhum curso foi encontrado!" />
-        )
+        <NotFound
+          message={
+            isSearching
+              ? `Nenhum curso encontrado para "${searchTerm}"!`
+              : "Nenhum curso foi encontrado!"
+          }
+        />
       ) : (
         <>
           <p>
@@ -206,7 +173,7 @@ const ListCourses = () => {
               </tr>
             </thead>
             <tbody>
-              {currentCourses.map((course: CursoType, index: number) => (
+              {courses.map((course: CursoType, index: number) => (
                 <tr key={index}>
                   <td>{course.nome}</td>
                   <td className="table-actions">
