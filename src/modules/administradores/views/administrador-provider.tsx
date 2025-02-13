@@ -30,7 +30,12 @@ export type AdminContextType = {
   searchUser: (
     username: string,
     name: string,
-    status: string
+    status:
+      | {
+          label: string;
+          value: string;
+        }
+      | undefined
   ) => Promise<UserType[]>;
   students: AlunoType[];
   editStudent: (params: { newStudent: AlunoType }) => Promise<AlunoType>;
@@ -163,13 +168,18 @@ export const AdminProvider = ({ children }: AdminProviderProps) => {
     async (
       username: string,
       name: string,
-      status: string
+      status:
+        | {
+            label: string;
+            value: string;
+          }
+        | undefined
     ): Promise<UserType[]> => {
       try {
         const queryParams = new URLSearchParams();
         if (username) queryParams.append("username", username.trim());
         if (name) queryParams.append("nome", name.trim());
-        if (status) queryParams.append("status", status);
+        if (status) queryParams.append("status", status.value);
 
         const endpoint = `/usuarios?${queryParams.toString()}`;
         const userRequest = { endpoint };
