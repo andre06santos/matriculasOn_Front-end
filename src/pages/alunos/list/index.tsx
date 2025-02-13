@@ -141,7 +141,7 @@ const ListStudents = () => {
     return {
       id: user.id,
       pessoa: {
-        id: user.id,
+        id: user.pessoa.id,
         tipo: user.pessoa.tipo,
         cpf: user.pessoa.cpf,
         matricula: user.pessoa.matricula || null,
