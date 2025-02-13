@@ -96,7 +96,7 @@ const EditStudent = () => {
     const loadCourses = async () => {
       try {
         if (!coursesLoaded) {
-          await getCourses();
+          await getCourses(0);
           setCoursesLoaded(true);
         }
 
