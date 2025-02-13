@@ -104,7 +104,7 @@ const RegisterStudent = () => {
     const loadCourses = async () => {
       try {
         if (!coursesLoaded) {
-          await getCourses();
+          await getCourses(0);
           setCoursesLoaded(true);
         }
         const updatedOptions = courses.map((course) => ({
