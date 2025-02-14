@@ -1,3 +1,4 @@
+import { toast } from "react-toastify";
 import {
   MAX_MATRICULA_FIELD,
   MAX_USERNAME_FIELD,
@@ -13,24 +14,27 @@ import {
   cleanErrorMessages,
   updateErrorMessages,
 } from "./formValidationUtils";
+import { ErrorMessagesType } from "./administradores/infrastructure/types";
+import { SetStateAction } from "react";
+
+export const cpfMask = (cpf: string) => {
+  const cpfNumber = cpf.replace(/\D/g, "");
+  const cpfWithMask = cpfNumber
+    .replace(/^(\d{3})(\d)/, "$1.$2")
+    .replace(/^(\d{3})\.(\d{3})(\d)/, "$1.$2.$3")
+    .replace(/^(\d{3})\.(\d{3})\.(\d{3})(\d)/, "$1.$2.$3-$4");
+
+  return cpfWithMask;
+};
 
 export const handleChangeCpf = (
-  cpf: any,
-  setErrorMessages: any,
-  setCpf: any
+  cpf: string,
+  setErrorMessages: React.Dispatch<SetStateAction<ErrorMessagesType>>,
+  setCpf: React.Dispatch<SetStateAction<string>>
 ) => {
   const fieldKey = "cpf";
-
-  const formatCpf = (cpf: any) => {
-    const cleaned = cpf.replace(/\D/g, "");
-    return cleaned
-      .replace(/^(\d{3})(\d)/, "$1.$2")
-      .replace(/^(\d{3})\.(\d{3})(\d)/, "$1.$2.$3")
-      .replace(/^(\d{3})\.(\d{3})\.(\d{3})(\d)/, "$1.$2.$3-$4");
-  };
-
+  const formattedCpf = cpfMask(cpf);
   const cleanedCpf = cpf.replace(/\D/g, "");
-  const formattedCpf = formatCpf(cleanedCpf);
   const hasError =
     !validateOnlyNumbers(cleanedCpf) || cleanedCpf.length > CPF_LENGTH;
 
@@ -56,7 +60,10 @@ export const handleChangeCpf = (
   }
 };
 
-export const handleChangeFilterCpf = (cpf: any, setCpf: any) => {
+export const handleChangeFilterCpf = (
+  cpf: string,
+  setCpf: React.Dispatch<SetStateAction<string>>
+) => {
   const hasError = !validateOnlyNumbers(cpf);
 
   if (cpf === "") {
@@ -72,16 +79,22 @@ export const handleChangeFilterCpf = (cpf: any, setCpf: any) => {
   setCpf(cpf);
 };
 
-const showCpfError = (cpf: any) => {
+const showCpfError = (cpf: string) => {
   const isNumber = validateOnlyNumbers(cpf);
 
   if (!isNumber) {
-    console.log("Digite apenas números!");
+    toast("Digite apenas números!", {
+      position: "top-center",
+      type: "error",
+    });
     return;
   }
 };
 
-export const handleChangeMatricula = (matricula: any, setMatricula: any) => {
+export const handleChangeMatricula = (
+  matricula: string,
+  setMatricula: React.Dispatch<SetStateAction<string>>
+) => {
   const hasError =
     !validateLettersAndNumbers(matricula) ||
     matricula.length > MAX_MATRICULA_FIELD;
@@ -99,21 +112,30 @@ export const handleChangeMatricula = (matricula: any, setMatricula: any) => {
   setMatricula(matricula);
 };
 
-const showMatriculaError = (matricula: any) => {
+const showMatriculaError = (matricula: string) => {
   const hasLettersAndNumbers = validateLettersAndNumbers(matricula);
 
   if (!hasLettersAndNumbers) {
-    console.log("Caractere nao permitido");
+    toast("Caractere nao permitido!", {
+      position: "top-center",
+      type: "error",
+    });
     return;
   }
 
   if (matricula.length > MAX_MATRICULA_FIELD) {
-    console.log(`Quantidade de caracteres maximo de ${MAX_MATRICULA_FIELD}`);
+    toast(`Quantidade de caracteres maximo de ${MAX_MATRICULA_FIELD}`, {
+      position: "top-center",
+      type: "error",
+    });
     return;
   }
 };
 
-export const handleChangeNome = (nome: any, setNome: any) => {
+export const handleChangeNome = (
+  nome: string,
+  setNome: React.Dispatch<SetStateAction<string>>
+) => {
   const hasError = !validateOnlyLetters(nome) || nome.length > MAX_NOME_FIELD;
   const trimmedNome = nome.trim();
 
@@ -130,21 +152,30 @@ export const handleChangeNome = (nome: any, setNome: any) => {
   setNome(nome);
 };
 
-const showNomeError = (nome: any) => {
+const showNomeError = (nome: string) => {
   const hasOnlyLetters = validateOnlyLetters(nome);
 
   if (!hasOnlyLetters) {
-    console.log("Caractere nao permitido");
+    toast("Caractere nao permitido!", {
+      position: "top-center",
+      type: "error",
+    });
     return;
   }
 
   if (nome.length > MAX_NOME_FIELD) {
-    console.log(`Quantidade de caracteres maximo de ${MAX_NOME_FIELD}`);
+    toast(`Quantidade de caracteres maximo de ${MAX_NOME_FIELD}`, {
+      position: "top-center",
+      type: "error",
+    });
     return;
   }
 };
 
-export const handleChangeUsername = (username: any, setUsername: any) => {
+export const handleChangeUsername = (
+  username: string,
+  setUsername: React.Dispatch<SetStateAction<string>>
+) => {
   const trimmedUsername = username.trim();
 
   if (trimmedUsername === "") {
@@ -153,7 +184,10 @@ export const handleChangeUsername = (username: any, setUsername: any) => {
   }
 
   if (trimmedUsername.length > MAX_USERNAME_FIELD) {
-    console.log(`Quantidade de caracteres maximo de ${MAX_USERNAME_FIELD}`);
+    toast(`Quantidade de caracteres maximo de ${MAX_USERNAME_FIELD}`, {
+      position: "top-center",
+      type: "error",
+    });
     return;
   }
 
@@ -161,9 +195,9 @@ export const handleChangeUsername = (username: any, setUsername: any) => {
 };
 
 export const handleChangeEmail = (
-  email: any,
-  setErrorMessages: any,
-  setEmail: any
+  email: string,
+  setErrorMessages: React.Dispatch<SetStateAction<ErrorMessagesType>>,
+  setEmail: React.Dispatch<SetStateAction<string>>
 ) => {
   const fieldKey = "email";
   const hasError = !validateEmail(email);
@@ -187,9 +221,9 @@ export const handleChangeEmail = (
 };
 
 export const handleChangeSenha = (
-  senha: any,
-  setErrorMessages: any,
-  setSenha: any
+  senha: string,
+  setErrorMessages: React.Dispatch<SetStateAction<ErrorMessagesType>>,
+  setSenha: React.Dispatch<SetStateAction<string>>
 ) => {
   const fieldKey = "senha";
 
@@ -212,9 +246,9 @@ export const handleChangeSenha = (
 };
 
 export const handleChangeConfSenha = (
-  confSenha: any,
-  setErrorMessages: any,
-  setConfSenha: any
+  confSenha: string,
+  setErrorMessages: React.Dispatch<SetStateAction<ErrorMessagesType>>,
+  setConfSenha: React.Dispatch<SetStateAction<string>>
 ) => {
   const fieldKey = "confSenha";
 
@@ -237,9 +271,9 @@ export const handleChangeConfSenha = (
 };
 
 export const verificaSenhasIguais = (
-  senha: any,
-  confSenha: any,
-  setErrorMessages: any
+  senha: string,
+  confSenha: string,
+  setErrorMessages: React.Dispatch<SetStateAction<ErrorMessagesType>>
 ) => {
   const fieldKey = "conferirSenha";
 
@@ -251,7 +285,10 @@ export const verificaSenhasIguais = (
   }
 };
 
-export const handleChangeCargo = (cargo: any, setCargo: any) => {
+export const handleChangeCargo = (
+  cargo: string,
+  setCargo: React.Dispatch<SetStateAction<string>>
+) => {
   const hasOnlyLetters = validateOnlyLetters(cargo);
 
   if (cargo === "") {
@@ -260,12 +297,18 @@ export const handleChangeCargo = (cargo: any, setCargo: any) => {
   }
 
   if (!hasOnlyLetters) {
-    console.log("Digite apenas letras");
+    toast("Digite apenas letras", {
+      position: "top-center",
+      type: "error",
+    });
     return;
   }
 
   if (cargo.length > MAX_CARGO_FIELD) {
-    console.log(`Quantidade de caracteres maximo de ${MAX_CARGO_FIELD}`);
+    toast(`Quantidade de caracteres maximo de ${MAX_CARGO_FIELD}`, {
+      position: "top-center",
+      type: "error",
+    });
     return;
   }
 
@@ -273,8 +316,8 @@ export const handleChangeCargo = (cargo: any, setCargo: any) => {
 };
 
 export const handleChangeDepartamento = (
-  departamento: any,
-  setDepartamento: any
+  departamento: string,
+  setDepartamento: React.Dispatch<SetStateAction<string>>
 ) => {
   const hasOnlyLetters = validateOnlyLetters(departamento);
 
@@ -284,12 +327,18 @@ export const handleChangeDepartamento = (
   }
 
   if (!hasOnlyLetters) {
-    console.log("Digite apenas letras");
+    toast("Digite apenas letras!", {
+      position: "top-center",
+      type: "error",
+    });
     return;
   }
 
   if (departamento.length > MAX_DEPARTAMENTO_FIELD) {
-    console.log(`Quantidade de caracteres maximo de ${MAX_DEPARTAMENTO_FIELD}`);
+    toast(`Quantidade de caracteres maximo de ${MAX_DEPARTAMENTO_FIELD}`, {
+      position: "top-center",
+      type: "error",
+    });
     return;
   }
 

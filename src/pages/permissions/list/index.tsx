@@ -8,24 +8,28 @@ import { validateEmptyString } from "../../../modules/formValidationUtils";
 import { PermissionsFilter } from "./filter";
 import { NotFound } from "../../../ui/not-found";
 import { Spinner } from "../../../ui/spinner";
+import { toast } from "react-toastify";
+import {
+  FormEventType,
+  PermissionsType,
+} from "../../../modules/administradores/infrastructure/types";
 
 const ListPermissions = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { permissions, getPermissions, searchPermission, deletePermission } =
     useAdmin();
-
   const [descricao, setDescricao] = useState("");
-  const [isSearching, setIsSearching] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [permissionId, setPermissionId] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const descricaoInput = useRef<any>(null);
+  const [isSearching, setIsSearching] = useState<boolean>(false);
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [permissionId, setPermissionId] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const descricaoInput = useRef<HTMLInputElement | null>(null);
 
   const closeModal = () => {
     setIsModalOpen(false);
   };
 
-  const openModal = (permissionId: any) => {
+  const openModal = (permissionId: string) => {
     setIsModalOpen(true);
     setPermissionId(permissionId);
   };
@@ -36,7 +40,7 @@ const ListPermissions = () => {
     setIsSearching(false);
   };
 
-  const onFocus = () => descricaoInput.current.focus();
+  const onFocus = () => descricaoInput.current?.focus();
 
   const onReset = () => {
     if (descricao === "") return;
@@ -48,17 +52,21 @@ const ListPermissions = () => {
 
   useEffect(() => {
     if (descricao === "") {
+      setIsSearching(false);
       getPermissions();
     }
   }, [descricao]);
 
-  const onSubmit = async (e: any) => {
+  const onSubmit = async (e: FormEventType) => {
     e.preventDefault();
 
     const emptyField = validateEmptyString(descricao);
 
     if (emptyField) {
-      console.log("Digite um nome para filtrar!");
+      toast("Digite um nome para filtrar!", {
+        position: "top-center",
+        type: "error",
+      });
       onClean();
       onFocus();
 
@@ -73,7 +81,10 @@ const ListPermissions = () => {
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
-      console.log("Ocorreu um erro ao tentar filtrar permissões!");
+      toast("Ocorreu um erro ao tentar filtrar permissões!", {
+        position: "top-center",
+        type: "error",
+      });
       console.error((error as Error).message);
     }
   };
@@ -83,10 +94,16 @@ const ListPermissions = () => {
       setIsLoading(true);
       await deletePermission(permissionId);
       setIsLoading(false);
-      console.log("Permissão excluída com sucesso!");
+      toast("Permissão excluída com sucesso!", {
+        position: "top-center",
+        type: "success",
+      });
     } catch (error) {
       setIsLoading(false);
-      console.log("Ocorreu um erro ao tentar excluir a permissão!");
+      toast("Ocorreu um erro ao tentar excluir a permissão!", {
+        position: "top-center",
+        type: "error",
+      });
       console.error((error as Error).message);
     } finally {
       closeModal();
@@ -154,7 +171,7 @@ const ListPermissions = () => {
               </tr>
             </thead>
             <tbody>
-              {permissions.map((permission: any, index: any) => (
+              {permissions.map((permission: PermissionsType, index: number) => (
                 <tr key={index}>
                   <td>{permission.role}</td>
                   <td>{permission.descricao}</td>
@@ -164,7 +181,7 @@ const ListPermissions = () => {
                     </Link>
                     <i
                       className="fa-solid fa-trash-can"
-                      onClick={() => openModal(permission.id)}
+                      onClick={() => openModal(permission.id!)}
                     ></i>
                   </td>
                 </tr>

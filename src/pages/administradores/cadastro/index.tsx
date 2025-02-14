@@ -4,6 +4,12 @@ import { Button } from "../../../ui/button";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import {
+  AdminType,
+  ChangeEventType,
+  FormEventType,
+  ErrorMessagesType,
+} from "../../../modules/administradores/infrastructure/types";
+import {
   handleChangeCargo,
   handleChangeConfSenha,
   handleChangeCpf,
@@ -11,65 +17,77 @@ import {
   handleChangeEmail,
   handleChangeNome,
   handleChangeSenha,
-  handleChangeUsername,
   verificaSenhasIguais,
 } from "../../../modules/alunosAdmFormValidation";
 import { useAdmin } from "../../../modules/administradores/views/hooks/use-administrador";
 import { Spinner } from "../../../ui/spinner";
+import { toast } from "react-toastify";
 
 const AdministratorRegistration = () => {
   const { addAdmin } = useAdmin();
-  const [cpf, setCpf] = useState("");
-  const [cargo, setCargo] = useState("");
-  const [nome, setNome] = useState("");
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [departamento, setDepartamento] = useState("");
-  const [senha, setSenha] = useState("");
-  const [conferirSenha, setConferirSenha] = useState("");
-  const [errorMessages, setErrorMessages] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const tipo = "ADMIN";
+  const [cpf, setCpf] = useState<string>("");
+  const [cargo, setCargo] = useState<string>("");
+  const [nome, setNome] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [departamento, setDepartamento] = useState<string>("");
+  const [senha, setSenha] = useState<string>("");
+  const [conferirSenha, setConferirSenha] = useState<string>("");
 
-  const handleSubmit = async (e: any) => {
+  const [errorMessages, setErrorMessages] = useState<ErrorMessagesType>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const handleSubmit = async (e: FormEventType) => {
     e.preventDefault();
 
     if (errorMessages.length > 0) {
       const firstError = Object.values(errorMessages[0])[0];
-      console.log(firstError);
+      toast(`${firstError}`, {
+        position: "top-center",
+        type: "error",
+      });
     }
 
     try {
       setIsLoading(true);
 
-      const admin = {
-        cpf,
-        cargo,
-        nome,
-        username,
-        email,
-        departamento,
+      const admin: AdminType = {
+        pessoa: {
+          tipo,
+          cpf,
+          cargo,
+          nome,
+          email,
+          departamento,
+        },
+        senha,
       };
 
       await addAdmin(admin);
 
       setIsLoading(false);
-      console.log("Administrador cadastrado com sucesso!");
+      toast("Administrador cadastrado com sucesso!", {
+        position: "top-center",
+        type: "success",
+      });
       navigate("/usuarios");
     } catch (error) {
       setIsLoading(false);
-      console.log("Ocorreu um erro ao tentar cadastrar o administrador!");
+      toast("Ocorreu um erro ao tentar cadastrar o administrador!", {
+        position: "top-center",
+        type: "error",
+      });
       console.error((error as Error).message);
     }
   };
 
-  const onClean = (e: any) => {
+  const onClean = (e: ChangeEventType) => {
     e.preventDefault();
 
     setCpf("");
     setCargo("");
     setNome("");
-    setUsername("");
     setEmail("");
     setDepartamento("");
     setSenha("");
@@ -88,8 +106,9 @@ const AdministratorRegistration = () => {
             label="CPF"
             type="text"
             required
+            autoFocus
             value={cpf}
-            onChange={(e: any) =>
+            onChange={(e: ChangeEventType) =>
               handleChangeCpf(e.target.value, setErrorMessages, setCpf)
             }
           />
@@ -98,24 +117,17 @@ const AdministratorRegistration = () => {
             type="text"
             required
             value={cargo}
-            onChange={(e: any) => handleChangeCargo(e.target.value, setCargo)}
+            onChange={(e: ChangeEventType) =>
+              handleChangeCargo(e.target.value, setCargo)
+            }
           />
           <Input
             label="Nome"
             type="text"
             required
             value={nome}
-            onChange={(e: any) => handleChangeNome(e.target.value, setNome)}
-          />
-        </div>
-        <div className="input-group">
-          <Input
-            label="Username"
-            type="text"
-            required
-            value={username}
-            onChange={(e: any) =>
-              handleChangeUsername(e.target.value, setUsername)
+            onChange={(e: ChangeEventType) =>
+              handleChangeNome(e.target.value, setNome)
             }
           />
           <Input
@@ -123,7 +135,7 @@ const AdministratorRegistration = () => {
             type="text"
             required
             value={email}
-            onChange={(e: any) =>
+            onChange={(e: ChangeEventType) =>
               handleChangeEmail(e.target.value, setErrorMessages, setEmail)
             }
           />
@@ -132,24 +144,19 @@ const AdministratorRegistration = () => {
             type="text"
             required
             value={departamento}
-            onChange={(e: any) =>
+            onChange={(e: ChangeEventType) =>
               handleChangeDepartamento(e.target.value, setDepartamento)
             }
           />
-        </div>
-        <div className="input-group ">
           <Input
             label="Senha"
             type="password"
             required
             value={senha}
-            onChange={(e: any) => {
+            isPassword
+            onChange={(e: ChangeEventType) => {
               handleChangeSenha(e.target.value, setErrorMessages, setSenha);
-              verificaSenhasIguais(
-                e.target.event,
-                conferirSenha,
-                setErrorMessages
-              );
+              verificaSenhasIguais(senha, conferirSenha, setErrorMessages);
             }}
           />
           <Input
@@ -157,7 +164,8 @@ const AdministratorRegistration = () => {
             type="password"
             required
             value={conferirSenha}
-            onChange={(e: any) => {
+            isPassword
+            onChange={(e: ChangeEventType) => {
               handleChangeConfSenha(
                 e.target.value,
                 setErrorMessages,

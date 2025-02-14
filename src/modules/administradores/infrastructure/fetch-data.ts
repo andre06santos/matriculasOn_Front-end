@@ -1,8 +1,25 @@
 import { httpClient } from "../../../services/api/api-client";
+import { AxiosRequestConfig } from "axios";
 
-const fetchData = async (requestConfig: any) => {
+type FetchDataConfig = {
+  endpoint: string;
+  method?: string;
+  config?: AxiosRequestConfig;
+};
+
+const fetchData = async (requestConfig: FetchDataConfig) => {
   try {
-    const response = await httpClient(requestConfig);
+    const { endpoint, method = "GET", config } = requestConfig;
+
+    if (!endpoint) {
+      throw new Error("Endpoint (URL) não foi especificado.");
+    }
+
+    const response = await httpClient({
+      endpoint,
+      method,
+      config,
+    });
 
     return response.data;
   } catch (error) {

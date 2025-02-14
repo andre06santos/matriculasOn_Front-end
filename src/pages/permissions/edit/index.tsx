@@ -9,6 +9,12 @@ import {
 } from "../../../modules/permissionsFormValidation";
 import { Spinner } from "../../../ui/spinner";
 import { useAdmin } from "../../../modules/administradores/views/hooks/use-administrador";
+import { toast } from "react-toastify";
+import {
+  ChangeEventType,
+  FormEventType,
+  PermissionsType,
+} from "../../../modules/administradores/infrastructure/types";
 
 const EditPermission = () => {
   const { state: permission } = useLocation();
@@ -16,41 +22,44 @@ const EditPermission = () => {
   const navigate = useNavigate();
 
   const [role, setRole] = useState(permission.role);
-  const [isLoading, setIsLoading] = useState(false);
-  const [descricao, setDescricao] = useState(permission.descricao);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [descricao, setDescricao] = useState<string>(permission.descricao);
   const [errorMessages, setErrorMessages] = useState([]);
 
-  const onSubmit = async (e: any) => {
+  const onSubmit = async (e: FormEventType) => {
     e.preventDefault();
 
     if (errorMessages.length > 0) {
       const firstError = Object.values(errorMessages[0])[0];
-      console.log(firstError);
+      toast(`${firstError}`, {
+        position: "top-center",
+        type: "error",
+      });
     }
 
     try {
       setIsLoading(true);
 
-      const newPermission = {
+      const newPermission: PermissionsType = {
         role,
         descricao,
       };
 
       await editPermission({ id: permission.id, newPermission });
       setIsLoading(false);
-      console.log("Permissão editada com sucesso!");
+      toast("Permissão editada com sucesso!", {
+        position: "top-center",
+        type: "success",
+      });
       navigate("/permissoes");
     } catch (error) {
       setIsLoading(false);
-      console.log("Ocorreu um erro ao tentar editar a permissão!");
+      toast("Ocorreu um erro ao tentar editar a permissão!", {
+        position: "top-center",
+        type: "error",
+      });
       console.error((error as Error).message);
     }
-  };
-
-  const onClean = () => {
-    setRole("");
-    setDescricao("");
-    setErrorMessages([]);
   };
 
   return (
@@ -65,25 +74,21 @@ const EditPermission = () => {
             label="Role"
             value={role}
             required
-            onChange={(e: any) => handleChangeRole(e.target.value, setRole)}
+            onChange={(e: ChangeEventType) =>
+              handleChangeRole(e.target.value, setRole)
+            }
           />
           <Input
             label="Descrição"
             required
             value={descricao}
-            onChange={(e: any) =>
+            onChange={(e: ChangeEventType) =>
               handleChangeDescription(e.target.value, setDescricao)
             }
           />
         </div>
 
         <div className="form-actions-edit flex-column-gap20">
-          <Input
-            type="reset"
-            variant="bgNeutral"
-            value="Limpar"
-            onClick={onClean}
-          />
           <Link to="/permissoes">
             <Button label="Cancelar" />
           </Link>

@@ -5,75 +5,75 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import {
   handleChangeCargo,
-  handleChangeConfSenha,
   handleChangeCpf,
   handleChangeDepartamento,
   handleChangeEmail,
   handleChangeNome,
-  handleChangeSenha,
-  handleChangeUsername,
-  verificaSenhasIguais,
 } from "../../../modules/alunosAdmFormValidation";
 import { useAdmin } from "../../../modules/administradores/views/hooks/use-administrador";
 import { Spinner } from "../../../ui/spinner";
+import { toast } from "react-toastify";
+import {
+  AdminType,
+  ChangeEventType,
+  ErrorMessagesType,
+  FormEventType,
+} from "../../../modules/administradores/infrastructure/types";
 
 const EditAdmin = () => {
   const { state: admin } = useLocation();
   const { editAdmin } = useAdmin();
-  const [cpf, setCpf] = useState(admin.cpf);
-  const [cargo, setCargo] = useState(admin.cargo);
-  const [nome, setNome] = useState(admin.nome);
-  const [username, setUsername] = useState(admin.username);
-  const [email, setEmail] = useState(admin.email);
-  const [departamento, setDepartamento] = useState(admin.departamento);
-  const [senha, setSenha] = useState("");
-  const [conferirSenha, setConferirSenha] = useState("");
-  const [errorMessages, setErrorMessages] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const tipo = "ADMIN";
+  const [cpf, setCpf] = useState<string>(admin.pessoa.cpf);
+  const [cargo, setCargo] = useState<string>(admin.pessoa.cargo);
+  const [nome, setNome] = useState(admin.pessoa.nome);
+  const [email, setEmail] = useState<string>(admin.pessoa.email);
+  const [departamento, setDepartamento] = useState<string>(
+    admin.pessoa.departamento
+  );
+  const [errorMessages, setErrorMessages] = useState<ErrorMessagesType>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: FormEventType) => {
     e.preventDefault();
 
     if (errorMessages.length > 0) {
       const firstError = Object.values(errorMessages[0])[0];
-      console.log(firstError);
+      toast(`${firstError}`, {
+        position: "top-center",
+        type: "error",
+      });
       return;
     }
 
     try {
       setIsLoading(true);
-      const newAdmin = {
-        cpf,
-        nome,
-        cargo,
-        username,
-        email,
-        departamento,
+      const newAdmin: AdminType = {
+        pessoa: {
+          tipo,
+          cpf,
+          cargo,
+          nome,
+          email,
+          departamento,
+        },
       };
       await editAdmin({ id: admin.id, newAdmin });
       setIsLoading(false);
-      console.log("Administrador editado com sucesso!");
+      toast("Administrador editado com sucesso!", {
+        position: "top-center",
+        type: "success",
+      });
       navigate("/usuarios");
     } catch (error) {
       setIsLoading(false);
-      console.log("Ocorreu um erro ao tentar editar o administrador!");
+      toast("Ocorreu um erro ao tentar editar o administrador!", {
+        position: "top-center",
+        type: "error",
+      });
       console.error((error as Error).message);
     }
-  };
-
-  const onClean = (e: any) => {
-    e.preventDefault();
-
-    setCpf("");
-    setCargo("");
-    setNome("");
-    setUsername("");
-    setEmail("");
-    setDepartamento("");
-    setSenha("");
-    setConferirSenha("");
-    setErrorMessages([]);
   };
 
   return (
@@ -88,7 +88,9 @@ const EditAdmin = () => {
             type="text"
             required
             value={cpf}
-            onChange={(e: any) =>
+            readOnly
+            style={{ opacity: 0.3 }}
+            onChange={(e: ChangeEventType) =>
               handleChangeCpf(e.target.value, setErrorMessages, setCpf)
             }
           />
@@ -97,24 +99,17 @@ const EditAdmin = () => {
             type="text"
             required
             value={cargo}
-            onChange={(e: any) => handleChangeCargo(e.target.value, setCargo)}
+            onChange={(e: ChangeEventType) =>
+              handleChangeCargo(e.target.value, setCargo)
+            }
           />
           <Input
             label="Nome"
             type="text"
             required
             value={nome}
-            onChange={(e: any) => handleChangeNome(e.target.value, setNome)}
-          />
-        </div>
-        <div className="input-group">
-          <Input
-            label="Username"
-            type="text"
-            required
-            value={username}
-            onChange={(e: any) =>
-              handleChangeUsername(e.target.value, setUsername)
+            onChange={(e: ChangeEventType) =>
+              handleChangeNome(e.target.value, setNome)
             }
           />
           <Input
@@ -122,7 +117,7 @@ const EditAdmin = () => {
             type="text"
             required
             value={email}
-            onChange={(e: any) =>
+            onChange={(e: ChangeEventType) =>
               handleChangeEmail(e.target.value, setErrorMessages, setEmail)
             }
           />
@@ -131,48 +126,12 @@ const EditAdmin = () => {
             type="text"
             required
             value={departamento}
-            onChange={(e: any) =>
+            onChange={(e: ChangeEventType) =>
               handleChangeDepartamento(e.target.value, setDepartamento)
             }
           />
         </div>
-        <div className="input-group ">
-          <Input
-            label="Senha"
-            type="password"
-            required
-            value={senha}
-            onChange={(e: any) => {
-              handleChangeSenha(e.target.value, setErrorMessages, setSenha);
-              verificaSenhasIguais(
-                e.target.event,
-                conferirSenha,
-                setErrorMessages
-              );
-            }}
-          />
-          <Input
-            label="Confirmar senha"
-            type="password"
-            required
-            value={conferirSenha}
-            onChange={(e: any) => {
-              handleChangeConfSenha(
-                e.target.value,
-                setErrorMessages,
-                setConferirSenha
-              );
-              verificaSenhasIguais(senha, e.target.value, setErrorMessages);
-            }}
-          />
-        </div>
         <div className="form-actions flex-column-gap20">
-          <Input
-            type="reset"
-            variant="bgNeutral"
-            value="Limpar"
-            onClick={onClean}
-          />
           <Link to="/usuarios">
             <Button type="cancel" label="Cancelar" />
           </Link>

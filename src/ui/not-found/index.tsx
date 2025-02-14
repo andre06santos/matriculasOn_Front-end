@@ -1,6 +1,10 @@
 import "./styles.css";
 
-const NotFound = ({ message }: any) => {
+type NotFoundProps = {
+  message: string;
+};
+
+const NotFound = ({ message }: NotFoundProps) => {
   return (
     <div className="notfound-container">
       <img src="./not_found.jpg" />

@@ -7,26 +7,39 @@ import { NotFound } from "../../../ui/not-found";
 import { Filter } from "./filter";
 import { validateEmptyString } from "../../../modules/formValidationUtils";
 import { Spinner } from "../../../ui/spinner";
-
+import { toast } from "react-toastify";
+import {
+  AlunosSearchTermType,
+  AlunoType,
+  FormEventType,
+  UserType,
+} from "../../../modules/administradores/infrastructure/types";
 const ListStudents = () => {
-  const { students, getStudent, deleteStudent, searchStudent } = useAdmin();
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const {
+    users,
+    getUsers,
+    students,
+    getStudent,
+    deleteStudent,
+    searchStudent,
+  } = useAdmin();
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const [matricula, setMatricula] = useState("");
-  const [cpf, setCpf] = useState("");
-  const [nome, setNome] = useState("");
-  const [searchTerm, setSearchTerm] = useState({
+  const [matricula, setMatricula] = useState<string>("");
+  const [cpf, setCpf] = useState<string>("");
+  const [nome, setNome] = useState<string>("");
+  const [searchTerm, setSearchTerm] = useState<AlunosSearchTermType>({
     nome: "",
     cpf: "",
     matricula: "",
   });
-  const [studentId, setStudentId] = useState("");
-  const [isSearching, setIsSearching] = useState(false);
+  const [studentId, setStudentId] = useState<string>("");
+  const [isSearching, setIsSearching] = useState<boolean>(false);
 
-  const nameInput = useRef<any>(null);
-  const cpfInput = useRef<any>(null);
-  const matriculaInput = useRef<any>(null);
+  const nameInput = useRef<HTMLInputElement | null>(null);
+  const cpfInput = useRef<HTMLInputElement | null>(null);
+  const matriculaInput = useRef<HTMLInputElement | null>(null);
 
   let statusMessage;
 
@@ -37,11 +50,12 @@ const ListStudents = () => {
   } else if (searchTerm.cpf) {
     statusMessage = searchTerm.cpf;
   }
+
   const closeModal = () => {
     setIsModalOpen(false);
   };
 
-  const openModal = (studentId: any) => {
+  const openModal = (studentId: string) => {
     setIsModalOpen(true);
     setStudentId(studentId);
   };
@@ -49,6 +63,7 @@ const ListStudents = () => {
   const checkFields = () => {
     if (nome === "" && matricula === "" && cpf === "") {
       getStudent();
+      getUsers();
       onClean();
     }
   };
@@ -58,15 +73,22 @@ const ListStudents = () => {
       setIsLoading(true);
       await deleteStudent(studentId);
       setIsLoading(false);
-      console.log("Aluno excluído com sucesso!");
+      toast("Aluno excluído com sucesso!", {
+        position: "top-center",
+        type: "success",
+      });
     } catch (error) {
       setIsLoading(false);
-      console.log("Ocorreu um erro ao tentar excluir o aluno!");
+      toast("Ocorreu um erro ao tentar excluir o cadastro do aluno!", {
+        position: "top-center",
+        type: "error",
+      });
       console.error((error as Error).message);
     } finally {
       closeModal();
     }
   };
+
   useEffect(() => {
     checkFields();
   }, [nome, matricula, cpf]);
@@ -83,7 +105,7 @@ const ListStudents = () => {
     getStudent();
   };
 
-  const onSubmit = async (e: any) => {
+  const onSubmit = async (e: FormEventType) => {
     e.preventDefault();
 
     const emptyFieldName = validateEmptyString(nome);
@@ -91,7 +113,10 @@ const ListStudents = () => {
     const emptyFieldCPF = validateEmptyString(cpf);
 
     if (emptyFieldName && emptyFieldMatricula && emptyFieldCPF) {
-      console.log("Preencha um dos campos para filtrar!");
+      toast("Preencha um dos campos para filtrar!", {
+        position: "top-center",
+        type: "error",
+      });
       onClean();
 
       return;
@@ -104,10 +129,33 @@ const ListStudents = () => {
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
-      console.log("Ocorreu um erro ao tentar filtrar aluno!");
+      toast("Ocorreu um erro ao tentar filtrar alunos!", {
+        position: "top-center",
+        type: "error",
+      });
       console.error((error as Error).message);
     }
   };
+
+  const mapUserToAluno = (user: UserType): AlunoType => {
+    return {
+      id: user.id,
+      pessoa: {
+        id: user.pessoa.id,
+        tipo: user.pessoa.tipo,
+        cpf: user.pessoa.cpf,
+        matricula: user.pessoa.matricula || null,
+        nome: user.pessoa.nome,
+        email: user.pessoa.email,
+        curso: user.pessoa.curso || null,
+      },
+    };
+  };
+
+  const studentsOnly = users
+    .filter((user: UserType) => user.pessoa.tipo === "ALUNO")
+    .map(mapUserToAluno);
+
   return (
     <div className="flex-column-gap20">
       {isLoading && <Spinner />}
@@ -163,7 +211,7 @@ const ListStudents = () => {
             {isSearching
               ? `Total de alunos encontrados ao filtrar por "${statusMessage}": `
               : "Total de alunos encontrados: "}
-            <span className="permissions-quantity">{students.length}</span>
+            <span className="permissions-quantity">{studentsOnly.length}</span>
           </p>
 
           <table className="table">
@@ -178,20 +226,20 @@ const ListStudents = () => {
               </tr>
             </thead>
             <tbody>
-              {students.map((student: any, index: any) => (
+              {studentsOnly.map((student: AlunoType, index: number) => (
                 <tr key={index}>
-                  <td>{student.matricula}</td>
-                  <td>{student.cpf}</td>
-                  <td>{student.nome}</td>
-                  <td>{student.email}</td>
-                  <td>{student.curso.value}</td>
+                  <td>{student?.pessoa?.matricula}</td>
+                  <td>{student?.pessoa?.cpf}</td>
+                  <td>{student?.pessoa?.nome}</td>
+                  <td>{student?.pessoa?.email}</td>
+                  <td>{student?.pessoa?.curso?.nome} </td>
                   <td className="table-actions action-column">
                     <Link to="/alunos/editar-aluno" state={student}>
                       <i className="fa-solid fa-pen-to-square"></i>
                     </Link>
                     <i
                       className="fa-solid fa-trash-can"
-                      onClick={() => openModal(student.id)}
+                      onClick={() => openModal(student.id!)}
                     ></i>
                   </td>
                 </tr>

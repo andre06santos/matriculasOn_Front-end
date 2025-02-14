@@ -1,5 +1,9 @@
 import { Input } from "../../../ui/input/index";
 import { handleChangeDescription } from "../../../modules/permissionsFormValidation";
+import {
+  ChangeEventType,
+  PermissionsFilterType,
+} from "../../../modules/administradores/infrastructure/types";
 
 const PermissionsFilter = ({
   onSubmit,
@@ -7,15 +11,15 @@ const PermissionsFilter = ({
   setDescricao,
   descricaoInput,
   onReset,
-}: any) => {
+}: PermissionsFilterType) => {
   return (
     <div className="filter flex-column-gap20">
-      <span>Filtros</span>
+      <span>Filtro</span>
       <form action="" className="form-filter" onSubmit={onSubmit}>
         <Input
           placeholder="Descrição"
           value={descricao}
-          onChange={(e: any) =>
+          onChange={(e: ChangeEventType) =>
             handleChangeDescription(e.target.value, setDescricao)
           }
           ref={descricaoInput}

@@ -6,42 +6,48 @@ import { handleCourseName } from "../../../modules/courseFormValidation";
 import { useAdmin } from "../../../modules/administradores/views/hooks/use-administrador";
 import { Spinner } from "../../../ui/spinner";
 import "./styles.css";
+import { toast } from "react-toastify";
+import {
+  CursoType,
+  ChangeEventType,
+  FormEventType,
+} from "../../../modules/administradores/infrastructure/types";
 
 const CourseRegistration = () => {
   const navigate = useNavigate();
   const { addCourse } = useAdmin();
-  const nameInput = useRef<any>(null);
+  const nameInput = useRef<HTMLInputElement | null>(null);
 
-  const [name, setName] = useState("");
-  const [errorMessages, setErrorMessages] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [name, setName] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const onFocus = () => nameInput.current.focus();
+  const onFocus = () => nameInput.current?.focus();
 
   const onClean = () => {
     setName("");
-    setErrorMessages([]);
     onFocus();
   };
 
-  const onSubmit = async (e: any) => {
+  const onSubmit = async (e: FormEventType) => {
     e.preventDefault();
-
-    if (errorMessages.length > 0) {
-      const firstError = Object.values(errorMessages[0])[0];
-      console.log(firstError);
-    }
 
     try {
       setIsLoading(true);
-      await addCourse({ nome: name });
+      const newCourse: CursoType = { nome: name };
+      await addCourse(newCourse);
 
       setIsLoading(false);
-      console.log("Curso cadastrado com sucesso!");
+      toast("Curso criado com sucesso!", {
+        position: "top-center",
+        type: "success",
+      });
       navigate("/cursos");
     } catch (error) {
       setIsLoading(false);
-      console.log("Ocorreu um erro ao tentar cadastrar o curso!");
+      toast("Ocorreu um erro ao criar o curso!", {
+        position: "top-center",
+        type: "error",
+      });
       console.error((error as Error).message);
     }
   };
@@ -59,8 +65,10 @@ const CourseRegistration = () => {
             id="nome"
             required
             value={name}
-            onChange={(e: any) => handleCourseName(e.target.value, setName)}
-            onFocus={(e: any) => e.target.select()}
+            onChange={(e: ChangeEventType) =>
+              handleCourseName(e.target.value, setName)
+            }
+            onFocus={(e: ChangeEventType) => e.target.select()}
             autoFocus
             ref={nameInput}
           />

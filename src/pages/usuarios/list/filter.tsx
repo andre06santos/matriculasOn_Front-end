@@ -1,9 +1,13 @@
+import React from "react";
+import { Input } from "../../../ui/input";
 import {
   handleChangeNome,
   handleChangeUsername,
 } from "../../../modules/alunosAdmFormValidation";
-
-import { Input } from "../../../ui/input";
+import {
+  ChangeEventType,
+  UserFilterType,
+} from "../../../modules/administradores/infrastructure/types";
 
 const Filter = ({
   onSubmit,
@@ -18,15 +22,15 @@ const Filter = ({
   statusOptions,
   statusInput,
   onReset,
-}: any) => {
+}: UserFilterType) => {
   return (
     <div className="filter flex-column-gap20">
-      <span>Filtro</span>
+      <span>Filtros</span>
       <form className="form-filter" onSubmit={onSubmit}>
         <Input
           placeholder="Username"
           value={username}
-          onChange={(e: any) => {
+          onChange={(e: ChangeEventType) => {
             handleChangeUsername(e.target.value, setUsername);
           }}
           ref={usernameInput}
@@ -34,7 +38,7 @@ const Filter = ({
         <Input
           placeholder="Nome"
           value={name}
-          onChange={(e: any) => {
+          onChange={(e: ChangeEventType) => {
             handleChangeNome(e.target.value, setName);
           }}
           ref={nameInput}
@@ -45,7 +49,6 @@ const Filter = ({
           value={status}
           onChange={setStatus}
         />
-
         <div className="filter-buttons">
           <Input type="submit" value="Buscar" variant="bgInfo" />
           <Input
