@@ -9,12 +9,16 @@ export type ChangeEventType = React.ChangeEvent<HTMLInputElement>;
 
 export type AdminType = {
   id?: string;
-  cpf: string;
-  cargo: string;
-  nome: string;
-  email: string;
-  departamento: string;
-  tipo: string;
+  pessoa: {
+    id?: string;
+    cpf: string;
+    cargo: string;
+    nome: string;
+    email: string;
+    departamento: string;
+    tipo: string;
+  };
+  senha?: string;
 };
 
 export type CursoType = {
@@ -22,6 +26,10 @@ export type CursoType = {
   nome: string;
 };
 
+export type CursoOption = {
+  label: string;
+  value?: string;
+};
 export type PermissionsType = {
   id?: string;
   role: string;
@@ -30,25 +38,28 @@ export type PermissionsType = {
 
 export type StatusOption = {
   label: string;
-  value: "ATIVO" | "INATIVO";
+  value: string;
 };
 
 export type ErrorMessagesType = Record<string, string>[];
 
 export type AlunoType = {
   id?: string;
-  cpf: string;
-  nome: string;
-  username?: string;
-  matricula: string;
-  email: string;
-  curso: string;
-  tipo: string;
+  pessoa: {
+    id?: string;
+    tipo: string;
+    cpf: string;
+    nome: string;
+    matricula: string | null;
+    email: string;
+    curso: { id?: number; nome?: string } | null;
+  };
+  senha?: string;
 };
 
 export type ObjectCursoType = {
   label: string;
-  value: string;
+  value: number;
 };
 
 export type AlunosSearchTermType = {
@@ -59,9 +70,18 @@ export type AlunosSearchTermType = {
 export type UserType = {
   id: string;
   username: string;
-  nome: string;
-  tipo: "Aluno" | "Administrador";
-  status: string;
+  status: boolean;
+  pessoa: {
+    id?: string;
+    tipo: "ALUNO" | "ADMINISTRADOR";
+    nome: string;
+    email: string;
+    cpf: string;
+    matricula?: string;
+    curso?: { id?: number; nome?: string } | null;
+    cargo?: string;
+    departamento?: string;
+  };
 };
 
 /* Tipagem de components de filtragem */
@@ -101,8 +121,13 @@ export type UserFilterType = {
   setUsername: React.Dispatch<React.SetStateAction<string>>;
   name: string;
   setName: React.Dispatch<React.SetStateAction<string>>;
-  status: string;
-  setStatus: React.Dispatch<React.SetStateAction<string>>;
+  status:
+    | {
+        label: string;
+        value: string;
+      }
+    | undefined;
+  setStatus: React.Dispatch<React.SetStateAction<StatusOption | undefined>>;
   statusOptions: { label: string; value: string }[];
   usernameInput: React.MutableRefObject<HTMLInputElement | null>;
   nameInput: React.MutableRefObject<HTMLInputElement | null>;

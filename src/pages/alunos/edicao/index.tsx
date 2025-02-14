@@ -2,7 +2,7 @@ import "./styles.css";
 import { Input } from "../../../ui/input";
 import { Button } from "../../../ui/button";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   handleChangeCpf,
   handleChangeEmail,
@@ -12,10 +12,10 @@ import {
 import { useAdmin } from "../../../modules/administradores/views/hooks/use-administrador";
 import { Spinner } from "../../../ui/spinner";
 import { toast } from "react-toastify";
-import { cursoOptions } from "../../../constants";
 import {
   AlunoType,
   ChangeEventType,
+  CursoOption,
   ErrorMessagesType,
   FormEventType,
   ObjectCursoType,
@@ -23,18 +23,28 @@ import {
 
 const EditStudent = () => {
   const { state: student } = useLocation();
-  const { editStudent } = useAdmin();
+  const { editStudent, courses, getCourses } = useAdmin();
+  const [cursoOptions, setCursoOptions] = useState<CursoOption[]>([]);
+  const id = student.pessoa.id;
+
   const tipo = "ALUNO";
-  const [cpf, setCpf] = useState<string>(student.cpf);
-  const [matricula, setMatricula] = useState<string>(student.matricula);
-  const [nome, setNome] = useState<string>(student.nome);
-  const [email, setEmail] = useState<string>(student.email);
-  const [curso, setCurso] = useState<ObjectCursoType | undefined>(
-    findCourse(student.curso)
+  const [cpf, setCpf] = useState<string>(student.pessoa.cpf);
+  const [matricula, setMatricula] = useState<string>(student.pessoa.matricula);
+  const [nome, setNome] = useState<string>(student.pessoa.nome);
+  const [email, setEmail] = useState<string>(student.pessoa.email);
+  const [curso, setCurso] = useState<CursoOption | undefined>(
+    student.pessoa.curso
+      ? { label: student.pessoa.curso.nome, value: student.pessoa.curso.id }
+      : undefined
   );
+
   const [errorMessages, setErrorMessages] = useState<ErrorMessagesType>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoadingCourses, setIsLoadingCourses] = useState<boolean>(true);
+  const [coursesLoaded, setCoursesLoaded] = useState<boolean>(false);
   const navigate = useNavigate();
+
+  console.log(student.pessoa);
 
   const handleSubmit = async (e: FormEventType) => {
     e.preventDefault();
@@ -50,17 +60,21 @@ const EditStudent = () => {
 
     try {
       setIsLoading(true);
-
       const newStudent: AlunoType = {
-        tipo,
-        cpf,
-        nome,
-        matricula,
-        email,
-        curso: curso?.value || "",
+        pessoa: {
+          tipo,
+          id,
+          cpf,
+          nome,
+          matricula,
+          email,
+          curso: {
+            id: curso?.value ? Number(curso.value) : undefined,
+          },
+        },
       };
 
-      await editStudent({ id: student.id, newStudent });
+      await editStudent({ newStudent });
       setIsLoading(false);
       toast("Aluno editado com sucesso!", {
         position: "top-center",
@@ -78,74 +92,96 @@ const EditStudent = () => {
     }
   };
 
+  useEffect(() => {
+    const loadCourses = async () => {
+      try {
+        if (!coursesLoaded) {
+          await getCourses(0);
+          setCoursesLoaded(true);
+        }
+
+        const updatedOptions = courses.map((course) => ({
+          label: course.nome,
+          value: course.id,
+        }));
+
+        setCursoOptions(updatedOptions);
+        setIsLoadingCourses(false);
+      } catch (error) {
+        console.error("Erro ao carregar cursos:", error);
+        setIsLoadingCourses(false);
+      }
+    };
+
+    loadCourses();
+  }, [courses, getCourses, coursesLoaded]);
+
   return (
     <div className="flex-column-gap20">
-      {isLoading && <Spinner />}
-
-      <h1>Editar aluno</h1>
-      <form className="form" onSubmit={handleSubmit}>
-        <div className="input-group">
-          <Input
-            label="CPF"
-            type="text"
-            value={cpf}
-            readOnly
-            required
-            style={{ opacity: 0.3 }}
-            onChange={(e: ChangeEventType) =>
-              handleChangeCpf(e.target.value, setErrorMessages, setCpf)
-            }
-          />
-          <Input
-            label="Matrícula"
-            type="text"
-            required
-            value={matricula}
-            onChange={(e: ChangeEventType) =>
-              handleChangeMatricula(e.target.value, setMatricula)
-            }
-          />
-          <Input
-            label="Nome"
-            type="text"
-            required
-            value={nome}
-            onChange={(e: ChangeEventType) =>
-              handleChangeNome(e.target.value, setNome)
-            }
-          />
-          <Input
-            label="Email"
-            type="text"
-            value={email}
-            required
-            onChange={(e: ChangeEventType) =>
-              handleChangeEmail(e.target.value, setErrorMessages, setEmail)
-            }
-          />
-          <Input
-            label="Curso"
-            selectOptions={cursoOptions}
-            value={curso}
-            onChange={setCurso}
-            required
-          />
-        </div>
-        <div className="form-actions flex-column-gap20">
-          <Link to="/usuarios">
-            <Button type="cancel" label="Cancelar" />
-          </Link>
-          <Input type="submit" variant="bgSuccess" value="Salvar" />
-        </div>
-      </form>
+      {isLoading || isLoadingCourses ? (
+        <Spinner />
+      ) : (
+        <>
+          <h1>Editar aluno</h1>
+          <form className="form" onSubmit={handleSubmit}>
+            <div className="input-group">
+              <Input
+                label="CPF"
+                type="text"
+                value={cpf}
+                readOnly
+                required
+                style={{ opacity: 0.3 }}
+                onChange={(e: ChangeEventType) =>
+                  handleChangeCpf(e.target.value, setErrorMessages, setCpf)
+                }
+              />
+              <Input
+                label="Matrícula"
+                type="text"
+                required
+                value={matricula}
+                onChange={(e: ChangeEventType) =>
+                  handleChangeMatricula(e.target.value, setMatricula)
+                }
+              />
+              <Input
+                label="Nome"
+                type="text"
+                required
+                value={nome}
+                onChange={(e: ChangeEventType) =>
+                  handleChangeNome(e.target.value, setNome)
+                }
+              />
+              <Input
+                label="Email"
+                type="text"
+                value={email}
+                required
+                onChange={(e: ChangeEventType) =>
+                  handleChangeEmail(e.target.value, setErrorMessages, setEmail)
+                }
+              />
+              <Input
+                label="Curso"
+                selectOptions={cursoOptions}
+                value={curso}
+                onChange={setCurso}
+                required
+              />
+            </div>
+            <div className="form-actions flex-column-gap20">
+              <Link to="/usuarios">
+                <Button type="cancel" label="Cancelar" />
+              </Link>
+              <Input type="submit" variant="bgSuccess" value="Salvar" />
+            </div>
+          </form>
+        </>
+      )}
     </div>
   );
-};
-
-const findCourse = (value: string): ObjectCursoType | undefined => {
-  const course = cursoOptions.find((course) => course.value === value);
-
-  return course;
 };
 
 export { EditStudent };

@@ -26,7 +26,6 @@ import { toast } from "react-toastify";
 const AdministratorRegistration = () => {
   const { addAdmin } = useAdmin();
   const navigate = useNavigate();
-
   const tipo = "ADMIN";
   const [cpf, setCpf] = useState<string>("");
   const [cargo, setCargo] = useState<string>("");
@@ -54,12 +53,15 @@ const AdministratorRegistration = () => {
       setIsLoading(true);
 
       const admin: AdminType = {
-        cpf,
-        cargo,
-        nome,
-        email,
-        departamento,
-        tipo,
+        pessoa: {
+          tipo,
+          cpf,
+          cargo,
+          nome,
+          email,
+          departamento,
+        },
+        senha,
       };
 
       await addAdmin(admin);

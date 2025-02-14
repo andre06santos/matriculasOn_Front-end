@@ -1,6 +1,7 @@
 import "./styles.css";
 
 const VISIBLE_BUTTONS = 5;
+
 interface PaginationProps {
   currentPage: number;
   totalPages: number;
@@ -17,6 +18,7 @@ const Pagination = ({
   onPageChange,
 }: PaginationProps) => {
   const buttons = [];
+
   const start = Math.max(0, currentPage - Math.floor(VISIBLE_BUTTONS / 2));
   const end = Math.min(totalPages, start + VISIBLE_BUTTONS);
 
@@ -33,6 +35,7 @@ const Pagination = ({
       >
         Voltar
       </button>
+
       {buttons.map((page) => (
         <button
           key={page}
@@ -44,6 +47,7 @@ const Pagination = ({
           {page + 1}
         </button>
       ))}
+
       <button
         className="button-next"
         onClick={onNext}
