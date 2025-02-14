@@ -50,7 +50,7 @@ const CreatePermission = () => {
         navigate("/permissoes");
       } catch (error) {
         setIsLoading(false);
-        toast("Ocorreu um erro ao tentar editar a permissão!", {
+        toast("Ocorreu um erro ao tentar cadastrar a permissão!", {
           position: "top-center",
           type: "error",
         });
