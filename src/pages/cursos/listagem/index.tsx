@@ -31,15 +31,16 @@ const ListCourses = () => {
 
   useEffect(() => {
     setIsLoading(true);
+
     if (isSearching) {
-      searchCourse(searchTerm).finally(() => setIsLoading(false));
+      searchCourse(searchTerm, currentPage).finally(() => setIsLoading(false));
     } else {
       getCourses(currentPage).finally(() => setIsLoading(false));
     }
-  }, [currentPage, getCourses, searchCourse, isSearching, searchTerm]);
+  }, [currentPage, isSearching, searchTerm, getCourses, searchCourse]);
 
   useEffect(() => {
-    if (name == "") {
+    if (name === "") {
       setIsSearching(false);
       getCourses(0);
     }
@@ -93,7 +94,7 @@ const ListCourses = () => {
 
     try {
       setIsLoading(true);
-      await searchCourse(name);
+      await searchCourse(name, 0);
       setIsSearching(true);
       setSearchTerm(name);
       setCurrentPage(0);
@@ -105,14 +106,40 @@ const ListCourses = () => {
     }
   };
 
-  const onPageChange = (page: number) => setCurrentPage(page);
+  const onPageChange = (page: number) => {
+    setCurrentPage(page);
+    setIsLoading(true);
+    if (isSearching) {
+      searchCourse(searchTerm, page).finally(() => setIsLoading(false));
+    } else {
+      getCourses(page).finally(() => setIsLoading(false));
+    }
+  };
 
   const onNext = () => {
-    if (currentPage < totalPage - 1) setCurrentPage((prev) => prev + 1);
+    if (currentPage < totalPage - 1) {
+      const newPage = currentPage + 1;
+      setCurrentPage(newPage);
+      setIsLoading(true);
+      if (isSearching) {
+        searchCourse(searchTerm, newPage).finally(() => setIsLoading(false));
+      } else {
+        getCourses(newPage).finally(() => setIsLoading(false));
+      }
+    }
   };
 
   const onPrev = () => {
-    if (currentPage > 0) setCurrentPage((prev) => prev - 1);
+    if (currentPage > 0) {
+      const newPage = currentPage - 1;
+      setCurrentPage(newPage);
+      setIsLoading(true);
+      if (isSearching) {
+        searchCourse(searchTerm, newPage).finally(() => setIsLoading(false));
+      } else {
+        getCourses(newPage).finally(() => setIsLoading(false));
+      }
+    }
   };
 
   return (
