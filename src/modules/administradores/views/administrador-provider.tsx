@@ -15,7 +15,6 @@ import {
 } from "../infrastructure/types";
 
 export type AdminContextType = {
-  totalCourses: number;
   totalPage: number;
   admins: AdminType[];
   addAdmin: (newAdmin: AdminType) => Promise<AdminType>;
@@ -81,7 +80,6 @@ export const AdminContext = createContext<AdminContextType | undefined>(
 
 export const AdminProvider = ({ children }: AdminProviderProps) => {
   const [courses, setCourses] = useState<CursoType[]>([]);
-  const [totalCourses, setTotalCourses] = useState<number>(0);
   const [totalPage, setTotalPages] = useState<number>(0);
 
   const [admins, setAdmins] = useState<AdminType[]>([]);
@@ -101,44 +99,33 @@ export const AdminProvider = ({ children }: AdminProviderProps) => {
 
         setCourses(response.content);
         setTotalPages(response.totalPages);
-        setTotalCourses(response.totalElements);
       } catch (error) {
         console.error("Erro ao buscar cursos:", (error as Error).message);
         setCourses([]);
         setTotalPages(0);
-        setTotalCourses(0);
       }
     },
-    [fetchData, setCourses, setTotalPages, setTotalCourses]
+    [fetchData, setCourses, setTotalPages]
   );
 
-  const searchCourse = useCallback(
-    async (name: string, page: number = 0, size: number = 10) => {
-      try {
-        const userRequest = {
-          endpoint: `/cursos?nome=${name}&page=${page}&size=${size}`,
-        };
+  const searchCourse = useCallback(async (name: string, page: number = 0) => {
+    try {
+      const userRequest = {
+        endpoint: `/cursos?nome=${name}&page=${page}`,
+      };
 
-        const response = await fetchData(userRequest);
+      const response = await fetchData(userRequest);
 
-        const _courses = response.content;
+      const _courses = response.content;
 
-        setCourses((prevCourses: CursoType[]) => {
-          if (page > 0) {
-            return [...prevCourses, ..._courses];
-          } else {
-            return _courses;
-          }
-        });
-
-        return _courses;
-      } catch (error) {
-        console.error((error as Error).message);
-        throw new Error((error as Error).message);
-      }
-    },
-    []
-  );
+      setTotalPages(response.totalPages);
+      setCourses(_courses);
+      return _courses;
+    } catch (error) {
+      console.error((error as Error).message);
+      throw new Error((error as Error).message);
+    }
+  }, []);
 
   const searchStudent = useCallback(
     async (name: string, cpf: string, matricula: string) => {
@@ -592,7 +579,6 @@ export const AdminProvider = ({ children }: AdminProviderProps) => {
     () => ({
       admins,
       totalPage,
-      totalCourses,
       addAdmin,
       editAdmin,
       deleteAdmin,
@@ -622,7 +608,6 @@ export const AdminProvider = ({ children }: AdminProviderProps) => {
     [
       admins,
       totalPage,
-      totalCourses,
       addAdmin,
       editAdmin,
       deleteAdmin,
