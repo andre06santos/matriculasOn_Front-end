@@ -54,7 +54,7 @@ const ListPermissions = () => {
 
     onClean();
     onFocus();
-    getPermissions(0);
+    getPermissions();
   };
 
   useEffect(() => {
@@ -64,14 +64,14 @@ const ListPermissions = () => {
         setIsLoading(false)
       );
     } else {
-      getPermissions(currentPage).finally(() => setIsLoading(false));
+      searchPermission(searchTerm,currentPage).finally(() => setIsLoading(false));
     }
   }, [currentPage, isSearching, searchTerm, getPermissions, searchPermission]);
 
   useEffect(() => {
     if (descricao === "") {
       setIsSearching(false);
-      getPermissions(0);
+      getPermissions();
     }
   }, [descricao, getPermissions]);
 
@@ -135,7 +135,7 @@ const ListPermissions = () => {
     if (isSearching) {
       searchPermission(searchTerm, page).finally(() => setIsLoading(false));
     } else {
-      getPermissions(page).finally(() => setIsLoading(false));
+      searchPermission(searchTerm, page).finally(() => setIsLoading(false));
     }
   };
 
@@ -149,7 +149,7 @@ const ListPermissions = () => {
           setIsLoading(false)
         );
       } else {
-        getPermissions(newPage).finally(() => setIsLoading(false));
+        searchPermission(searchTerm, newPage).finally(() => setIsLoading(false));
       }
     }
   };
@@ -164,7 +164,7 @@ const ListPermissions = () => {
           setIsLoading(false)
         );
       } else {
-        getPermissions(newPage).finally(() => setIsLoading(false));
+        searchPermission(searchTerm, newPage).finally(() => setIsLoading(false));
       }
     }
   };

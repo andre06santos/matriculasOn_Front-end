@@ -63,7 +63,7 @@ export type AdminContextType = {
   deleteCourse: (id: string) => Promise<CursoType>;
   permissions: PermissionsType[];
   addPermission: (newPermission: PermissionsType) => Promise<PermissionsType>;
-  getPermissions: (page: number) => Promise<void>;
+  getPermissions: () => Promise<void>;
   searchPermission: (descricao: string, page: number) => Promise<void>;
   editPermission: (params: {
     id: string;
@@ -465,10 +465,10 @@ export const AdminProvider = ({ children }: AdminProviderProps) => {
   );
 
   const getPermissions = useCallback(
-    async (page: number) => {
+    async () => {
       try {
         const userRequest = {
-          endpoint: `/permissoes?page=${page}`,
+          endpoint: `/permissoes`,
           config: {
             method: "GET",
           },
