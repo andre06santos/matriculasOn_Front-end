@@ -186,9 +186,9 @@ const EditStudent = () => {
               <div className="button-container">
                 <Button
                   label={
-                    isLoadingMoreCourses
-                      ? "Carregando..."
-                      : "Carregar mais cursos"
+                    courses.length
+                    ? "Carregar mais cursos"
+                    : "Todos os cursos foram carregados!"
                   }
                   onClick={loadMoreCourses}
                   type="load"

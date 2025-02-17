@@ -204,9 +204,9 @@ const RegisterStudent = () => {
               <div className="button-container">
                 <Button
                   label={
-                    isLoadingMoreCourses
-                      ? "Carregando..."
-                      : "Carregar mais cursos"
+                    courses.length
+                      ? "Carregar mais cursos"
+                      : "Todos os cursos foram carregados!"
                   }
                   onClick={() => loadCourses(page + 1)}
                   type="load"
