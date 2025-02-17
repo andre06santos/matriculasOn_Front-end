@@ -144,7 +144,7 @@ const RegisterStudent = () => {
         label: course.nome,
         value: course.id,
       }));
-      setCursoOptions((prevOptions) => [...prevOptions, ...updatedOptions]);
+      setCursoOptions((updatedOptions));
     }
   }, [courses]);
 
