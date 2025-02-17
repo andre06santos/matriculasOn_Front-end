@@ -14,9 +14,9 @@ import {
   StatusOption,
   FormEventType,
 } from "../../../modules/administradores/infrastructure/types";
-
+import { Pagination } from "../../../ui/paginacao";
 const ListUser = () => {
-  const { users, getUsers, searchUser, deleteUser } = useAdmin();
+  const { users, getUsers, searchUser, deleteUser, totalPage } = useAdmin();
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -33,9 +33,10 @@ const ListUser = () => {
     nome: "",
     status: "",
   });
+
   const [userId, setUserId] = useState<string>("");
   const [isSearching, setIsSearching] = useState<boolean>(false);
-
+  const [currentPage, setCurrentPage] = useState<number>(0);
   const nameInput = useRef<HTMLInputElement | null>(null);
   const usernameInput = useRef<HTMLInputElement | null>(null);
   const statusInput = useRef<HTMLSelectElement | null>(null);
@@ -68,7 +69,7 @@ const ListUser = () => {
 
   const checkFields = () => {
     if (nome === "" && username === "" && !status?.value) {
-      getUsers();
+      getUsers(currentPage);
       onClean();
     }
   };
@@ -96,9 +97,8 @@ const ListUser = () => {
 
   const onReset = () => {
     if (nome === "" && username === "" && !status?.value) return;
-
     onClean();
-    getUsers();
+    getUsers(0);
   };
 
   useEffect(() => {
@@ -122,7 +122,7 @@ const ListUser = () => {
 
     try {
       setIsLoading(true);
-      await searchUser(username, nome, status);
+      await searchUser(username, nome, totalPage, status);
       setIsSearching(true);
       setSearchTerm({ username, nome, status: status?.label || "" });
       setIsLoading(false);
@@ -138,6 +138,25 @@ const ListUser = () => {
 
   const userStatusLabel = (status: boolean) => {
     return status ? "Ativo" : "Inativo";
+  };
+
+  const onPageChange = (page: number) => {
+    setCurrentPage(page);
+    getUsers(page);
+  };
+
+  const onNext = () => {
+    if (currentPage < totalPage - 1) {
+      setCurrentPage((prevPage) => prevPage + 1);
+      getUsers(currentPage + 1);
+    }
+  };
+
+  const onPrev = () => {
+    if (currentPage > 0) {
+      setCurrentPage((prevPage) => prevPage - 1);
+      getUsers(currentPage - 1);
+    }
   };
 
   return (
@@ -245,6 +264,14 @@ const ListUser = () => {
               ))}
             </tbody>
           </table>
+
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPage}
+            onPageChange={onPageChange}
+            onNext={onNext}
+            onPrev={onPrev}
+          />
         </>
       )}
     </div>
@@ -262,13 +289,10 @@ const options = [
 ];
 
 const upperCaseToCapitalCase = (userType: string): string => {
-  const tipoArray = userType.toLowerCase().split("");
-  tipoArray[0] = tipoArray[0].toUpperCase();
-
-  return tipoArray.join("");
+  return userType.charAt(0).toUpperCase() + userType.slice(1).toLowerCase();
 };
 
 const statusOptions: StatusOption[] = [
-  { label: "Ativo", value: "true "},
+  { label: "Ativo", value: "true " },
   { label: "Inativo", value: "false" },
 ];

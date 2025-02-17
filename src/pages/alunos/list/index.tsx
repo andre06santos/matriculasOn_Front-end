@@ -14,6 +14,8 @@ import {
   FormEventType,
   UserType,
 } from "../../../modules/administradores/infrastructure/types";
+import { Pagination } from "../../../ui/paginacao";
+
 const ListStudents = () => {
   const {
     users,
@@ -21,11 +23,12 @@ const ListStudents = () => {
     students,
     getStudent,
     deleteStudent,
+    totalPage,
     searchStudent,
   } = useAdmin();
+
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
   const [matricula, setMatricula] = useState<string>("");
   const [cpf, setCpf] = useState<string>("");
   const [nome, setNome] = useState<string>("");
@@ -36,20 +39,14 @@ const ListStudents = () => {
   });
   const [studentId, setStudentId] = useState<string>("");
   const [isSearching, setIsSearching] = useState<boolean>(false);
+  const [currentPage, setCurrentPage] = useState(0);
 
   const nameInput = useRef<HTMLInputElement | null>(null);
   const cpfInput = useRef<HTMLInputElement | null>(null);
   const matriculaInput = useRef<HTMLInputElement | null>(null);
 
-  let statusMessage;
-
-  if (searchTerm.nome) {
-    statusMessage = searchTerm.nome;
-  } else if (searchTerm.matricula) {
-    statusMessage = searchTerm.matricula;
-  } else if (searchTerm.cpf) {
-    statusMessage = searchTerm.cpf;
-  }
+  const statusMessage =
+    searchTerm.nome || searchTerm.matricula || searchTerm.cpf;
 
   const closeModal = () => {
     setIsModalOpen(false);
@@ -62,8 +59,8 @@ const ListStudents = () => {
 
   const checkFields = () => {
     if (nome === "" && matricula === "" && cpf === "") {
-      getStudent();
-      getUsers();
+      getStudent(0);
+      getUsers(0);
       onClean();
     }
   };
@@ -102,7 +99,7 @@ const ListStudents = () => {
 
   const onReset = () => {
     onClean();
-    getStudent();
+    getStudent(0);
   };
 
   const onSubmit = async (e: FormEventType) => {
@@ -123,7 +120,7 @@ const ListStudents = () => {
     }
     try {
       setIsLoading(true);
-      await searchStudent(nome, cpf, matricula);
+      await searchStudent(nome, totalPage, cpf, matricula);
       setIsSearching(true);
       setSearchTerm({ nome, cpf, matricula });
       setIsLoading(false);
@@ -155,6 +152,57 @@ const ListStudents = () => {
   const studentsOnly = users
     .filter((user: UserType) => user.pessoa.tipo === "ALUNO")
     .map(mapUserToAluno);
+
+  const onPageChange = (page: number) => {
+    setCurrentPage(page);
+    setIsLoading(true);
+    if (isSearching) {
+      searchStudent(
+        searchTerm.nome,
+        page,
+        searchTerm.cpf,
+        searchTerm.matricula
+      ).finally(() => setIsLoading(false));
+    } else {
+      getStudent(page).finally(() => setIsLoading(false));
+    }
+  };
+
+  const onNext = () => {
+    if (currentPage < totalPage - 1) {
+      const newPage = currentPage + 1;
+      setCurrentPage(newPage);
+      setIsLoading(true);
+      if (isSearching) {
+        searchStudent(
+          searchTerm.nome,
+          newPage,
+          searchTerm.cpf,
+          searchTerm.matricula
+        ).finally(() => setIsLoading(false));
+      } else {
+        getStudent(newPage).finally(() => setIsLoading(false));
+      }
+    }
+  };
+
+  const onPrev = () => {
+    if (currentPage > 0) {
+      const newPage = currentPage - 1;
+      setCurrentPage(newPage);
+      setIsLoading(true);
+      if (isSearching) {
+        searchStudent(
+          searchTerm.nome,
+          newPage,
+          searchTerm.cpf,
+          searchTerm.matricula
+        ).finally(() => setIsLoading(false));
+      } else {
+        getStudent(newPage).finally(() => setIsLoading(false));
+      }
+    }
+  };
 
   return (
     <div className="flex-column-gap20">
@@ -246,6 +294,14 @@ const ListStudents = () => {
               ))}
             </tbody>
           </table>
+
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPage}
+            onPageChange={onPageChange}
+            onNext={onNext}
+            onPrev={onPrev}
+          />
         </>
       )}
     </div>

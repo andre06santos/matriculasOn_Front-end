@@ -38,6 +38,9 @@ const RegisterStudent = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isLoadingCourses, setIsLoadingCourses] = useState<boolean>(true);
   const [coursesLoaded, setCoursesLoaded] = useState<boolean>(false);
+  const [page, setPage] = useState<number>(0);
+  const [isLoadingMoreCourses, setIsLoadingMoreCourses] =
+    useState<boolean>(false);
   const navigate = useNavigate();
   const { addStudents, courses, getCourses } = useAdmin();
 
@@ -100,8 +103,21 @@ const RegisterStudent = () => {
     setErrorMessages([]);
   };
 
+  const loadCourses = async (pageNumber: number) => {
+    setIsLoadingMoreCourses(true);
+
+    try {
+      await getCourses(pageNumber);
+      setPage(pageNumber);
+    } catch (error) {
+      console.error("Erro ao carregar cursos:", error);
+    } finally {
+      setIsLoadingMoreCourses(false);
+    }
+  };
+
   useEffect(() => {
-    const loadCourses = async () => {
+    const loadInitialCourses = async () => {
       try {
         if (!coursesLoaded) {
           await getCourses(0);
@@ -119,8 +135,18 @@ const RegisterStudent = () => {
       }
     };
 
-    loadCourses();
+    loadInitialCourses();
   }, [courses, getCourses, coursesLoaded]);
+
+  useEffect(() => {
+    if (courses.length > 0) {
+      const updatedOptions = courses.map((course) => ({
+        label: course.nome,
+        value: course.id,
+      }));
+      setCursoOptions((prevOptions) => [...prevOptions, ...updatedOptions]);
+    }
+  }, [courses]);
 
   return (
     <div className="flex-column-gap20">
@@ -175,6 +201,17 @@ const RegisterStudent = () => {
                 value={curso}
                 onChange={setCurso}
               />
+              <div className="button-container">
+                <Button
+                  label={
+                    isLoadingMoreCourses
+                      ? "Carregando..."
+                      : "Carregar mais cursos"
+                  }
+                  onClick={() => loadCourses(page + 1)}
+                  type="load"
+                />
+              </div>
               <Input
                 label="Senha"
                 type="password"
