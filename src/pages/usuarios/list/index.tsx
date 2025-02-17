@@ -36,8 +36,7 @@ const ListUser = () => {
 
   const [userId, setUserId] = useState<string>("");
   const [isSearching, setIsSearching] = useState<boolean>(false);
-  const [currentPage, setCurrentPage] = useState<number>(0); // Track the current page
-
+  const [currentPage, setCurrentPage] = useState<number>(0);
   const nameInput = useRef<HTMLInputElement | null>(null);
   const usernameInput = useRef<HTMLInputElement | null>(null);
   const statusInput = useRef<HTMLSelectElement | null>(null);
@@ -70,7 +69,7 @@ const ListUser = () => {
 
   const checkFields = () => {
     if (nome === "" && username === "" && !status?.value) {
-      getUsers(currentPage); // Atualizar para pegar os usuários na página atual
+      getUsers(currentPage);
       onClean();
     }
   };
