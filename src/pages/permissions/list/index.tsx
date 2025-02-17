@@ -95,8 +95,6 @@ const ListPermissions = () => {
       setIsLoading(true);
       setCurrentPage(0);
       await searchPermission(descricao, 0);
-      console.log(`ENTREI AQUI:` + totalPage);
-
       setIsSearching(true);
       setSearchTerm(descricao);
       setIsLoading(false);
