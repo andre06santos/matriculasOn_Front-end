@@ -13,16 +13,23 @@ import {
   FormEventType,
   PermissionsType,
 } from "../../../modules/administradores/infrastructure/types";
+import { Pagination } from "../../../ui/paginacao";
 
 const ListPermissions = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { permissions, getPermissions, searchPermission, deletePermission } =
-    useAdmin();
+  const {
+    permissions,
+    getPermissions,
+    searchPermission,
+    deletePermission,
+    totalPage,
+  } = useAdmin();
   const [descricao, setDescricao] = useState("");
   const [isSearching, setIsSearching] = useState<boolean>(false);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [permissionId, setPermissionId] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [currentPage, setCurrentPage] = useState(0);
   const descricaoInput = useRef<HTMLInputElement | null>(null);
 
   const closeModal = () => {
@@ -51,11 +58,22 @@ const ListPermissions = () => {
   };
 
   useEffect(() => {
+    setIsLoading(true);
+    if (isSearching) {
+      searchPermission(searchTerm, currentPage).finally(() =>
+        setIsLoading(false)
+      );
+    } else {
+      searchPermission(searchTerm,currentPage).finally(() => setIsLoading(false));
+    }
+  }, [currentPage, isSearching, searchTerm, getPermissions, searchPermission]);
+
+  useEffect(() => {
     if (descricao === "") {
       setIsSearching(false);
       getPermissions();
     }
-  }, [descricao]);
+  }, [descricao, getPermissions]);
 
   const onSubmit = async (e: FormEventType) => {
     e.preventDefault();
@@ -75,7 +93,8 @@ const ListPermissions = () => {
 
     try {
       setIsLoading(true);
-      await searchPermission(descricao);
+      setCurrentPage(0);
+      await searchPermission(descricao, 0);
       setIsSearching(true);
       setSearchTerm(descricao);
       setIsLoading(false);
@@ -107,6 +126,46 @@ const ListPermissions = () => {
       console.error((error as Error).message);
     } finally {
       closeModal();
+    }
+  };
+
+  const onPageChange = (page: number) => {
+    setCurrentPage(page);
+    setIsLoading(true);
+    if (isSearching) {
+      searchPermission(searchTerm, page).finally(() => setIsLoading(false));
+    } else {
+      searchPermission(searchTerm, page).finally(() => setIsLoading(false));
+    }
+  };
+
+  const onNext = () => {
+    if (currentPage < totalPage - 1) {
+      const newPage = currentPage + 1;
+      setCurrentPage(newPage);
+      setIsLoading(true);
+      if (isSearching) {
+        searchPermission(searchTerm, newPage).finally(() =>
+          setIsLoading(false)
+        );
+      } else {
+        searchPermission(searchTerm, newPage).finally(() => setIsLoading(false));
+      }
+    }
+  };
+
+  const onPrev = () => {
+    if (currentPage > 0) {
+      const newPage = currentPage - 1;
+      setCurrentPage(newPage);
+      setIsLoading(true);
+      if (isSearching) {
+        searchPermission(searchTerm, newPage).finally(() =>
+          setIsLoading(false)
+        );
+      } else {
+        searchPermission(searchTerm, newPage).finally(() => setIsLoading(false));
+      }
     }
   };
 
@@ -188,6 +247,14 @@ const ListPermissions = () => {
               ))}
             </tbody>
           </table>
+
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPage}
+            onPageChange={onPageChange}
+            onNext={onNext}
+            onPrev={onPrev}
+          />
         </>
       )}
     </div>

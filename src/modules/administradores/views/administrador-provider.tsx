@@ -29,6 +29,7 @@ export type AdminContextType = {
   searchUser: (
     username: string,
     name: string,
+    page: number,
     status:
       | {
           label: string;
@@ -40,10 +41,11 @@ export type AdminContextType = {
   editStudent: (params: { newStudent: AlunoType }) => Promise<AlunoType>;
   searchStudent: (
     name: string,
+    page: number,
     cpf: string,
     matricula: string
   ) => Promise<void>;
-  getStudent: () => Promise<void>;
+  getStudent: (page: number) => Promise<void>;
   addStudents: (newStudent: AlunoType) => Promise<AlunoType>;
   deleteStudent: (id: string) => Promise<AlunoType>;
   courses: CursoType[];
@@ -52,7 +54,7 @@ export type AdminContextType = {
     id: string;
     newCourse: CursoType;
   }) => Promise<CursoType>;
-  getCourses: (page: number) => Promise<void>;
+  getCourses: () => Promise<void>;
   searchCourse: (
     name: string,
     page?: number,
@@ -62,7 +64,7 @@ export type AdminContextType = {
   permissions: PermissionsType[];
   addPermission: (newPermission: PermissionsType) => Promise<PermissionsType>;
   getPermissions: () => Promise<void>;
-  searchPermission: (descricao: string) => Promise<void>;
+  searchPermission: (descricao: string, page: number) => Promise<void>;
   editPermission: (params: {
     id: string;
     newPermission: PermissionsType;
@@ -87,26 +89,23 @@ export const AdminProvider = ({ children }: AdminProviderProps) => {
   const [users, setUsers] = useState<UserType[]>([]);
   const [permissions, setPermissions] = useState<PermissionsType[]>([]);
 
-  const getCourses = useCallback(
-    async (page: number) => {
-      try {
-        const userRequest = {
-          endpoint: `/cursos?page=${page}`,
-          method: "GET",
-        };
+  const getCourses = useCallback(async () => {
+    try {
+      const userRequest = {
+        endpoint: `/cursos`,
+        method: "GET",
+      };
 
-        const response = await fetchData(userRequest);
+      const response = await fetchData(userRequest);
 
-        setCourses(response.content);
-        setTotalPages(response.totalPages);
-      } catch (error) {
-        console.error("Erro ao buscar cursos:", (error as Error).message);
-        setCourses([]);
-        setTotalPages(0);
-      }
-    },
-    [fetchData, setCourses, setTotalPages]
-  );
+      setCourses(response.content);
+      setTotalPages(response.totalPages);
+    } catch (error) {
+      console.error("Erro ao buscar cursos:", (error as Error).message);
+      setCourses([]);
+      setTotalPages(0);
+    }
+  }, [fetchData, setCourses, setTotalPages]);
 
   const searchCourse = useCallback(async (name: string, page: number = 0) => {
     try {
@@ -126,14 +125,15 @@ export const AdminProvider = ({ children }: AdminProviderProps) => {
       throw new Error((error as Error).message);
     }
   }, []);
-
   const searchStudent = useCallback(
-    async (name: string, cpf: string, matricula: string) => {
+    async (name: string, page: number = 0, cpf: string, matricula: string) => {
       try {
         const queryParams = new URLSearchParams();
         if (name) queryParams.append("nome", name.trim());
         if (matricula) queryParams.append("matricula", matricula.trim());
         if (cpf) queryParams.append("cpf", cpf.trim());
+
+        queryParams.append("page", page.toString());
 
         const endpoint = `/alunos?${queryParams.toString()}`;
         const userRequest = { endpoint };
@@ -141,8 +141,10 @@ export const AdminProvider = ({ children }: AdminProviderProps) => {
         const response = await fetchData(userRequest);
 
         const _students = response.content;
+        const totalPages = response.totalPages;
 
         setStudents(_students);
+        setTotalPages(totalPages);
       } catch (error) {
         console.error((error as Error).message);
         throw new Error((error as Error).message);
@@ -150,32 +152,33 @@ export const AdminProvider = ({ children }: AdminProviderProps) => {
     },
     []
   );
-
   const searchUser = useCallback(
     async (
       username: string,
       name: string,
-      status:
-        | {
-            label: string;
-            value: string;
-          }
-        | undefined
+      page: number = 0,
+      status: { label: string; value: string } | undefined
     ): Promise<UserType[]> => {
       try {
         const queryParams = new URLSearchParams();
+
         if (username) queryParams.append("username", username.trim());
         if (name) queryParams.append("nome", name.trim());
         if (status) queryParams.append("status", status.value);
 
-        const endpoint = `/usuarios?${queryParams.toString()}`;
+        queryParams.append("page", page.toString());
+
+        const endpoint = `/usuarios?page=${page}&${queryParams.toString()}`;
         const userRequest = { endpoint };
 
         const response = await fetchData(userRequest);
 
         const _users = response.content;
+        const totalPages = response.totalPages;
 
         setUsers(_users);
+        setTotalPages(totalPages);
+
         return _users;
       } catch (error) {
         console.error((error as Error).message);
@@ -286,16 +289,17 @@ export const AdminProvider = ({ children }: AdminProviderProps) => {
     []
   );
 
-  const getStudent = useCallback(async () => {
+  const getStudent = useCallback(async (page: number) => {
     try {
       const userRequest = {
-        endpoint: "/alunos",
+        endpoint: `/alunos?page=${page}`,
         method: "GET",
       };
 
       const response = await fetchData(userRequest);
 
       const _students = response.content;
+      setTotalPages(response.totalPages);
       setStudents(_students);
     } catch (error) {
       console.error((error as Error).message);
@@ -349,7 +353,7 @@ export const AdminProvider = ({ children }: AdminProviderProps) => {
   const getUsers = useCallback(async () => {
     try {
       const userRequest = {
-        endpoint: "/usuarios",
+        endpoint: `/usuarios`,
         config: {
           method: "GET",
         },
@@ -358,7 +362,7 @@ export const AdminProvider = ({ children }: AdminProviderProps) => {
       const response = await fetchData(userRequest);
 
       const _users = response.content;
-
+      setTotalPages(response.totalPages);
       setUsers(_users);
     } catch (error) {
       console.error((error as Error).message);
@@ -460,7 +464,7 @@ export const AdminProvider = ({ children }: AdminProviderProps) => {
   const getPermissions = useCallback(async () => {
     try {
       const userRequest = {
-        endpoint: "permissoes",
+        endpoint: `/permissoes`,
         config: {
           method: "GET",
         },
@@ -469,13 +473,14 @@ export const AdminProvider = ({ children }: AdminProviderProps) => {
       const response = await fetchData(userRequest);
 
       const _permissions = response.content;
-
+      setTotalPages(response.totalPages);
       setPermissions(_permissions);
     } catch (error) {
-      console.error((error as Error).message);
-      throw new Error((error as Error).message);
+      console.error("Erro ao buscar cursos:", (error as Error).message);
+      setPermissions([]);
+      setTotalPages(0);
     }
-  }, []);
+  }, [fetchData, setPermissions, setTotalPages]);
 
   const addPermission = useCallback(async (newPermission: PermissionsType) => {
     try {
@@ -500,22 +505,25 @@ export const AdminProvider = ({ children }: AdminProviderProps) => {
     }
   }, []);
 
-  const searchPermission = useCallback(async (descricao: string) => {
-    try {
-      const userRequest = {
-        endpoint: `/permissoes?descricao=${descricao}`,
-      };
+  const searchPermission = useCallback(
+    async (descricao: string, page: number = 0) => {
+      try {
+        const userRequest = {
+          endpoint: `/permissoes?descricao=${descricao}&page=${page}`,
+        };
 
-      const response = await fetchData(userRequest);
+        const response = await fetchData(userRequest);
 
-      const _permissions = response.content;
-
-      setPermissions(_permissions);
-    } catch (error) {
-      console.error((error as Error).message);
-      throw new Error((error as Error).message);
-    }
-  }, []);
+        const _permissions = response.content;
+        setTotalPages(response.totalPages);
+        setPermissions(_permissions);
+      } catch (error) {
+        console.error((error as Error).message);
+        throw new Error((error as Error).message);
+      }
+    },
+    []
+  );
 
   const editPermission = useCallback(
     async ({

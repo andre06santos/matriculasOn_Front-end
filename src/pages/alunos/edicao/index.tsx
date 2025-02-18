@@ -18,13 +18,16 @@ import {
   CursoOption,
   ErrorMessagesType,
   FormEventType,
-  ObjectCursoType,
 } from "../../../modules/administradores/infrastructure/types";
 
 const EditStudent = () => {
   const { state: student } = useLocation();
   const { editStudent, courses, getCourses } = useAdmin();
   const [cursoOptions, setCursoOptions] = useState<CursoOption[]>([]);
+  const [isLoadingMoreCourses, setIsLoadingMoreCourses] =
+    useState<boolean>(false);
+  const [page, setPage] = useState<number>(0);
+  const [coursesLoaded, setCoursesLoaded] = useState<boolean>(false);
   const id = student.pessoa.id;
 
   const tipo = "ALUNO";
@@ -41,10 +44,7 @@ const EditStudent = () => {
   const [errorMessages, setErrorMessages] = useState<ErrorMessagesType>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isLoadingCourses, setIsLoadingCourses] = useState<boolean>(true);
-  const [coursesLoaded, setCoursesLoaded] = useState<boolean>(false);
   const navigate = useNavigate();
-
-  console.log(student.pessoa);
 
   const handleSubmit = async (e: FormEventType) => {
     e.preventDefault();
@@ -89,6 +89,19 @@ const EditStudent = () => {
         type: "error",
       });
       console.error((error as Error).message);
+    }
+  };
+
+  const loadMoreCourses = async () => {
+    setIsLoadingMoreCourses(true);
+
+    try {
+      await getCourses(page + 1);
+      setPage(page + 1);
+    } catch (error) {
+      console.error("Erro ao carregar mais cursos:", error);
+    } finally {
+      setIsLoadingMoreCourses(false);
     }
   };
 
@@ -170,6 +183,17 @@ const EditStudent = () => {
                 onChange={setCurso}
                 required
               />
+              <div className="button-container">
+                <Button
+                  label={
+                    courses.length
+                    ? "Carregar mais cursos"
+                    : "Todos os cursos foram carregados!"
+                  }
+                  onClick={loadMoreCourses}
+                  type="load"
+                />
+              </div>
             </div>
             <div className="form-actions flex-column-gap20">
               <Link to="/usuarios">
