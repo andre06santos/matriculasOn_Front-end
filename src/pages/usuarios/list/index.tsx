@@ -69,7 +69,7 @@ const ListUser = () => {
 
   const checkFields = () => {
     if (nome === "" && username === "" && !status?.value) {
-      getUsers(currentPage);
+      getUsers();
       onClean();
     }
   };
@@ -98,7 +98,7 @@ const ListUser = () => {
   const onReset = () => {
     if (nome === "" && username === "" && !status?.value) return;
     onClean();
-    getUsers(0);
+    getUsers();
   };
 
   useEffect(() => {
@@ -142,20 +142,22 @@ const ListUser = () => {
 
   const onPageChange = (page: number) => {
     setCurrentPage(page);
-    getUsers(page);
+    searchUser(username, nome, page, status);
   };
 
   const onNext = () => {
     if (currentPage < totalPage - 1) {
-      setCurrentPage((prevPage) => prevPage + 1);
-      getUsers(currentPage + 1);
+      const nextPage = currentPage + 1;
+      setCurrentPage(nextPage);
+      searchUser(username, nome, nextPage, status);
     }
   };
 
   const onPrev = () => {
     if (currentPage > 0) {
-      setCurrentPage((prevPage) => prevPage - 1);
-      getUsers(currentPage - 1);
+      const prevPage = currentPage - 1;
+      setCurrentPage(prevPage);
+      searchUser(username, nome, prevPage, status);
     }
   };
 

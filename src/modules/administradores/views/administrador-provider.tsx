@@ -24,7 +24,7 @@ export type AdminContextType = {
   }) => Promise<AdminType>;
   deleteAdmin: (id: string) => Promise<AdminType>;
   users: UserType[];
-  getUsers: (page: number) => Promise<void>;
+  getUsers: () => Promise<void>;
   deleteUser: (id: string) => Promise<UserType>;
   searchUser: (
     username: string,
@@ -353,10 +353,10 @@ export const AdminProvider = ({ children }: AdminProviderProps) => {
     }
   }, []);
 
-  const getUsers = useCallback(async (page: number = 0) => {
+  const getUsers = useCallback(async () => {
     try {
       const userRequest = {
-        endpoint: `/usuarios?page=${page}`,
+        endpoint: `/usuarios`,
         config: {
           method: "GET",
         },
@@ -464,29 +464,26 @@ export const AdminProvider = ({ children }: AdminProviderProps) => {
     []
   );
 
-  const getPermissions = useCallback(
-    async () => {
-      try {
-        const userRequest = {
-          endpoint: `/permissoes`,
-          config: {
-            method: "GET",
-          },
-        };
+  const getPermissions = useCallback(async () => {
+    try {
+      const userRequest = {
+        endpoint: `/permissoes`,
+        config: {
+          method: "GET",
+        },
+      };
 
-        const response = await fetchData(userRequest);
+      const response = await fetchData(userRequest);
 
-        const _permissions = response.content;
-        setTotalPages(response.totalPages);
-        setPermissions(_permissions);
-      } catch (error) {
-        console.error("Erro ao buscar cursos:", (error as Error).message);
-        setPermissions([]);
-        setTotalPages(0);
-      }
-    },
-    [fetchData, setPermissions, setTotalPages]
-  );
+      const _permissions = response.content;
+      setTotalPages(response.totalPages);
+      setPermissions(_permissions);
+    } catch (error) {
+      console.error("Erro ao buscar cursos:", (error as Error).message);
+      setPermissions([]);
+      setTotalPages(0);
+    }
+  }, [fetchData, setPermissions, setTotalPages]);
 
   const addPermission = useCallback(async (newPermission: PermissionsType) => {
     try {
