@@ -35,16 +35,15 @@ const ListCourses = () => {
     if (isSearching) {
       searchCourse(searchTerm, currentPage).finally(() => setIsLoading(false));
     } else {
-      getCourses(currentPage).finally(() => setIsLoading(false));
+      searchCourse(searchTerm, currentPage).finally(() => setIsLoading(false));
     }
   }, [currentPage, isSearching, searchTerm, getCourses, searchCourse]);
 
   useEffect(() => {
     if (name === "") {
       setIsSearching(false);
-      getCourses(0);
     }
-  }, [name, getCourses]);
+  }, [name]);
 
   const openModal = (courseId: string) => {
     setIsModalOpen(true);
@@ -63,7 +62,7 @@ const ListCourses = () => {
   const onReset = () => {
     if (name === "") return;
     onClean();
-    getCourses(0);
+    getCourses();
   };
 
   const onDelete = async () => {
@@ -74,7 +73,7 @@ const ListCourses = () => {
       const newPage =
         currentPage > 0 && courses.length === 1 ? currentPage - 1 : currentPage;
       setCurrentPage(newPage);
-      getCourses(newPage);
+      searchCourse(searchTerm, newPage);
     } catch (error) {
       toast.error("Ocorreu um erro ao tentar excluir o curso!");
       console.error(error);
@@ -109,11 +108,7 @@ const ListCourses = () => {
   const onPageChange = (page: number) => {
     setCurrentPage(page);
     setIsLoading(true);
-    if (isSearching) {
-      searchCourse(searchTerm, page).finally(() => setIsLoading(false));
-    } else {
-      getCourses(page).finally(() => setIsLoading(false));
-    }
+    searchCourse(searchTerm, page).finally(() => setIsLoading(false));
   };
 
   const onNext = () => {
@@ -121,11 +116,7 @@ const ListCourses = () => {
       const newPage = currentPage + 1;
       setCurrentPage(newPage);
       setIsLoading(true);
-      if (isSearching) {
-        searchCourse(searchTerm, newPage).finally(() => setIsLoading(false));
-      } else {
-        getCourses(newPage).finally(() => setIsLoading(false));
-      }
+      searchCourse(searchTerm, newPage).finally(() => setIsLoading(false));
     }
   };
 
@@ -134,11 +125,7 @@ const ListCourses = () => {
       const newPage = currentPage - 1;
       setCurrentPage(newPage);
       setIsLoading(true);
-      if (isSearching) {
-        searchCourse(searchTerm, newPage).finally(() => setIsLoading(false));
-      } else {
-        getCourses(newPage).finally(() => setIsLoading(false));
-      }
+      searchCourse(searchTerm, newPage).finally(() => setIsLoading(false));
     }
   };
 

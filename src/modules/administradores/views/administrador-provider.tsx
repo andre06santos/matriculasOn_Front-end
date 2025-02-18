@@ -54,7 +54,7 @@ export type AdminContextType = {
     id: string;
     newCourse: CursoType;
   }) => Promise<CursoType>;
-  getCourses: (page: number) => Promise<void>;
+  getCourses: () => Promise<void>;
   searchCourse: (
     name: string,
     page?: number,
@@ -89,26 +89,23 @@ export const AdminProvider = ({ children }: AdminProviderProps) => {
   const [users, setUsers] = useState<UserType[]>([]);
   const [permissions, setPermissions] = useState<PermissionsType[]>([]);
 
-  const getCourses = useCallback(
-    async (page: number) => {
-      try {
-        const userRequest = {
-          endpoint: `/cursos?page=${page}`,
-          method: "GET",
-        };
+  const getCourses = useCallback(async () => {
+    try {
+      const userRequest = {
+        endpoint: `/cursos`,
+        method: "GET",
+      };
 
-        const response = await fetchData(userRequest);
+      const response = await fetchData(userRequest);
 
-        setCourses(response.content);
-        setTotalPages(response.totalPages);
-      } catch (error) {
-        console.error("Erro ao buscar cursos:", (error as Error).message);
-        setCourses([]);
-        setTotalPages(0);
-      }
-    },
-    [fetchData, setCourses, setTotalPages]
-  );
+      setCourses(response.content);
+      setTotalPages(response.totalPages);
+    } catch (error) {
+      console.error("Erro ao buscar cursos:", (error as Error).message);
+      setCourses([]);
+      setTotalPages(0);
+    }
+  }, [fetchData, setCourses, setTotalPages]);
 
   const searchCourse = useCallback(async (name: string, page: number = 0) => {
     try {
