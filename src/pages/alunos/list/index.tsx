@@ -15,6 +15,7 @@ import {
   UserType,
 } from "../../../modules/administradores/infrastructure/types";
 import { Pagination } from "../../../ui/paginacao";
+import { cpfMask } from "../../../modules/alunosAdmFormValidation";
 
 const ListStudents = () => {
   const {
@@ -52,15 +53,10 @@ const ListStudents = () => {
     setIsModalOpen(false);
   };
 
-  const openModal = (studentId: string) => {
-    setIsModalOpen(true);
-    setStudentId(studentId);
-  };
-
   const checkFields = () => {
     if (nome === "" && matricula === "" && cpf === "") {
       getStudent(0);
-      getUsers(0);
+      getUsers();
       onClean();
     }
   };
@@ -154,17 +150,19 @@ const ListStudents = () => {
     .map(mapUserToAluno);
 
   const onPageChange = (page: number) => {
-    setCurrentPage(page);
-    setIsLoading(true);
-    if (isSearching) {
-      searchStudent(
-        searchTerm.nome,
-        page,
-        searchTerm.cpf,
-        searchTerm.matricula
-      ).finally(() => setIsLoading(false));
-    } else {
-      getStudent(page).finally(() => setIsLoading(false));
+    if (page != currentPage) {
+      setCurrentPage(page);
+      setIsLoading(true);
+      if (isSearching) {
+        searchStudent(
+          searchTerm.nome,
+          page,
+          searchTerm.cpf,
+          searchTerm.matricula
+        ).finally(() => setIsLoading(false));
+      } else {
+        getStudent(page).finally(() => setIsLoading(false));
+      }
     }
   };
 
@@ -270,25 +268,21 @@ const ListStudents = () => {
                 <th>Nome</th>
                 <th>E-mail</th>
                 <th>Curso</th>
-                <th className="table-actions action-column">Ações</th>
+                <th className="table-action action-column">Ações</th>
               </tr>
             </thead>
             <tbody>
               {studentsOnly.map((student: AlunoType, index: number) => (
                 <tr key={index}>
                   <td>{student?.pessoa?.matricula}</td>
-                  <td>{student?.pessoa?.cpf}</td>
+                  <td>{cpfMask(student?.pessoa?.cpf)}</td>
                   <td>{student?.pessoa?.nome}</td>
                   <td>{student?.pessoa?.email}</td>
                   <td>{student?.pessoa?.curso?.nome} </td>
-                  <td className="table-actions action-column">
+                  <td className="table-action action-column">
                     <Link to="/alunos/editar-aluno" state={student}>
                       <i className="fa-solid fa-pen-to-square"></i>
                     </Link>
-                    <i
-                      className="fa-solid fa-trash-can"
-                      onClick={() => openModal(student.id!)}
-                    ></i>
                   </td>
                 </tr>
               ))}

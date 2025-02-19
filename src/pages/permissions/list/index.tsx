@@ -64,7 +64,7 @@ const ListPermissions = () => {
         setIsLoading(false)
       );
     } else {
-      searchPermission(searchTerm,currentPage).finally(() => setIsLoading(false));
+      searchPermission(searchTerm, currentPage).finally(() => setIsLoading(false));
     }
   }, [currentPage, isSearching, searchTerm, getPermissions, searchPermission]);
 
@@ -130,13 +130,17 @@ const ListPermissions = () => {
   };
 
   const onPageChange = (page: number) => {
-    setCurrentPage(page);
-    setIsLoading(true);
-    if (isSearching) {
-      searchPermission(searchTerm, page).finally(() => setIsLoading(false));
-    } else {
-      searchPermission(searchTerm, page).finally(() => setIsLoading(false));
+    if (page != currentPage) {
+      setCurrentPage(page);
+      setIsLoading(true);
+
+      if (isSearching) {
+        searchPermission(searchTerm, page).finally(() => setIsLoading(false));
+      } else {
+        searchPermission(searchTerm, page).finally(() => setIsLoading(false));
+      }
     }
+
   };
 
   const onNext = () => {

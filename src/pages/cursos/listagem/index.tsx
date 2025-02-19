@@ -106,9 +106,11 @@ const ListCourses = () => {
   };
 
   const onPageChange = (page: number) => {
-    setCurrentPage(page);
-    setIsLoading(true);
-    searchCourse(searchTerm, page).finally(() => setIsLoading(false));
+    if (page != currentPage) {
+      setCurrentPage(page);
+      setIsLoading(true);
+      searchCourse(searchTerm, page).finally(() => setIsLoading(false));
+    }
   };
 
   const onNext = () => {

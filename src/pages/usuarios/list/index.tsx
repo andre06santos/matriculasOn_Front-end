@@ -141,8 +141,10 @@ const ListUser = () => {
   };
 
   const onPageChange = (page: number) => {
-    setCurrentPage(page);
-    searchUser(username, nome, page, status);
+    if (page != currentPage) {
+      setCurrentPage(page);
+      searchUser(username, nome, page, status);
+    }
   };
 
   const onNext = () => {
