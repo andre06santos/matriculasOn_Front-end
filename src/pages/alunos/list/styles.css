@@ -83,12 +83,12 @@ thead th:first-child {
 }
 
 
-.table-actions {
+.table-action {
   display: block;
 
   & i {
     cursor: pointer;
-    margin-right: 6px;
+    margin-right: 15px;
     transition: scale 0.1s ease;
   }
 
@@ -96,9 +96,6 @@ thead th:first-child {
     scale: 1.1;
   }
 
-  & .fa-trash-can {
-    color: #852221;
-  }
 
   & .fa-pen-to-square {
     color: black;
