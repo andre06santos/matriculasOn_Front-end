@@ -272,20 +272,24 @@ const ListStudents = () => {
               </tr>
             </thead>
             <tbody>
-              {studentsOnly.map((student: AlunoType, index: number) => (
-                <tr key={index}>
-                  <td>{student?.pessoa?.matricula}</td>
-                  <td>{cpfMask(student?.pessoa?.cpf)}</td>
-                  <td>{student?.pessoa?.nome}</td>
-                  <td>{student?.pessoa?.email}</td>
-                  <td>{student?.pessoa?.curso?.nome} </td>
-                  <td className="table-action action-column">
-                    <Link to="/alunos/editar-aluno" state={student}>
-                      <i className="fa-solid fa-pen-to-square"></i>
-                    </Link>
-                  </td>
-                </tr>
-              ))}
+            {studentsOnly.map((student: AlunoType, index: number) => {
+                const { pessoa } = student;
+                const cpfFormatado = cpfMask(pessoa?.cpf); 
+                return (
+                  <tr key={index}>
+                    <td>{pessoa.matricula}</td>
+                    <td>{cpfFormatado}</td>
+                    <td>{pessoa?.nome}</td>
+                    <td>{pessoa?.email}</td>
+                    <td>{pessoa?.curso?.nome} </td>
+                    <td className="table-action action-column">
+                      <Link to="/alunos/editar-aluno" state={student}>
+                        <i className="fa-solid fa-pen-to-square"></i>
+                      </Link>
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
 
