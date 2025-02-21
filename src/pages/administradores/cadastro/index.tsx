@@ -8,6 +8,7 @@ import {
   ChangeEventType,
   FormEventType,
   ErrorMessagesType,
+  UserType,
 } from "../../../modules/administradores/infrastructure/types";
 import {
   handleChangeCargo,
@@ -52,7 +53,7 @@ const AdministratorRegistration = () => {
     try {
       setIsLoading(true);
 
-      const admin: AdminType = {
+      const admin: UserType = {
         pessoa: {
           tipo,
           cpf,
