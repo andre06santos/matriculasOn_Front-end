@@ -17,7 +17,7 @@ import {
 export type AdminContextType = {
   totalPage: number;
   admins: AdminType[];
-  addAdmin: (newAdmin: AdminType) => Promise<AdminType>;
+  addAdmin: (newAdmin: UserType) => Promise<UserType>;
   editAdmin: (params: {
     id: string;
     newAdmin: AdminType;
@@ -29,24 +29,25 @@ export type AdminContextType = {
   searchUser: (
     username: string,
     name: string,
-    page: number,
     status:
       | {
-          label: string;
-          value: string;
-        }
+        label: string;
+        value: string;
+      }
       | undefined
+    ,
+    page?: number,
   ) => Promise<UserType[]>;
   students: AlunoType[];
   editStudent: (params: { newStudent: AlunoType }) => Promise<AlunoType>;
   searchStudent: (
     name: string,
-    page: number,
     cpf: string,
-    matricula: string
+    matricula: string,
+    page?: number
   ) => Promise<void>;
-  getStudent: (page: number) => Promise<void>;
-  addStudents: (newStudent: AlunoType) => Promise<AlunoType>;
+  getStudent: () => Promise<void>;
+  addStudents: (newStudent: UserType) => Promise<UserType>;
   deleteStudent: (id: string) => Promise<AlunoType>;
   courses: CursoType[];
   addCourse: (newCourse: CursoType) => Promise<CursoType>;
@@ -126,14 +127,13 @@ export const AdminProvider = ({ children }: AdminProviderProps) => {
     }
   }, []);
   const searchStudent = useCallback(
-    async (name: string, page: number = 0, cpf: string, matricula: string) => {
+    async (name: string, cpf: string, matricula: string, page?: number) => {
       try {
         const queryParams = new URLSearchParams();
         if (name) queryParams.append("nome", name.trim());
         if (matricula) queryParams.append("matricula", matricula.trim());
         if (cpf) queryParams.append("cpf", cpf.trim());
-
-        queryParams.append("page", page.toString());
+        if (page) queryParams.append("page", page.toString());
 
         const endpoint = `/alunos?${queryParams.toString()}`;
         const userRequest = { endpoint };
@@ -156,8 +156,8 @@ export const AdminProvider = ({ children }: AdminProviderProps) => {
     async (
       username: string,
       name: string,
-      page: number = 0,
-      status: { label: string; value: string } | undefined
+      status: { label: string; value: string } | undefined,
+      page?: number,
     ): Promise<UserType[]> => {
       try {
         const queryParams = new URLSearchParams();
@@ -166,9 +166,9 @@ export const AdminProvider = ({ children }: AdminProviderProps) => {
         if (name) queryParams.append("nome", name.trim());
         if (status) queryParams.append("status", status.value);
 
-        queryParams.append("page", page.toString());
+        if (page) queryParams.append("page", page.toString());
 
-        const endpoint = `/usuarios?page=${page}&${queryParams.toString()}`;
+        const endpoint = `/usuarios?${queryParams.toString()}`;
         const userRequest = { endpoint };
 
         const response = await fetchData(userRequest);
@@ -266,10 +266,10 @@ export const AdminProvider = ({ children }: AdminProviderProps) => {
     async ({ newStudent }: { newStudent: AlunoType }) => {
       try {
         const userRequest = {
-          endpoint: `/alunos/${newStudent.pessoa.id}`,
+          endpoint: `/alunos/${newStudent.id}`,
           config: {
             method: "PUT",
-            data: JSON.stringify(newStudent.pessoa),
+            data: JSON.stringify(newStudent),
           },
         };
 
@@ -289,10 +289,10 @@ export const AdminProvider = ({ children }: AdminProviderProps) => {
     []
   );
 
-  const getStudent = useCallback(async (page: number) => {
+  const getStudent = useCallback(async () => {
     try {
       const userRequest = {
-        endpoint: `/alunos?page=${page}`,
+        endpoint: `/alunos`,
         method: "GET",
       };
 
@@ -307,7 +307,7 @@ export const AdminProvider = ({ children }: AdminProviderProps) => {
     }
   }, []);
 
-  const addStudents = useCallback(async (newStudent: AlunoType) => {
+  const addStudents = useCallback(async (newStudent: UserType) => {
     try {
       const userRequest = {
         endpoint: "/usuarios/alunos/novo-aluno",
@@ -370,7 +370,7 @@ export const AdminProvider = ({ children }: AdminProviderProps) => {
     }
   }, []);
 
-  const addAdmin = useCallback(async (newAdmin: AdminType) => {
+  const addAdmin = useCallback(async (newAdmin: UserType) => {
     try {
       const userRequest = {
         endpoint: "/usuarios/administradores/novo-administrador",
