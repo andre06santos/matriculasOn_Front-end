@@ -12,14 +12,12 @@ import {
   AlunosSearchTermType,
   AlunoType,
   FormEventType,
-  UserType,
 } from "../../../modules/administradores/infrastructure/types";
 import { Pagination } from "../../../ui/paginacao";
 import { cpfMask } from "../../../modules/alunosAdmFormValidation";
 
 const ListStudents = () => {
   const {
-    users,
     getUsers,
     students,
     getStudent,
@@ -55,7 +53,7 @@ const ListStudents = () => {
 
   const checkFields = () => {
     if (nome === "" && matricula === "" && cpf === "") {
-      getStudent(0);
+      getStudent();
       getUsers();
       onClean();
     }
@@ -95,7 +93,7 @@ const ListStudents = () => {
 
   const onReset = () => {
     onClean();
-    getStudent(0);
+    getStudent();
   };
 
   const onSubmit = async (e: FormEventType) => {
@@ -116,7 +114,7 @@ const ListStudents = () => {
     }
     try {
       setIsLoading(true);
-      await searchStudent(nome, totalPage, cpf, matricula);
+      await searchStudent(nome, cpf, matricula);
       setIsSearching(true);
       setSearchTerm({ nome, cpf, matricula });
       setIsLoading(false);
@@ -130,39 +128,17 @@ const ListStudents = () => {
     }
   };
 
-  const mapUserToAluno = (user: UserType): AlunoType => {
-    return {
-      id: user.id,
-      pessoa: {
-        id: user.pessoa.id,
-        tipo: user.pessoa.tipo,
-        cpf: user.pessoa.cpf,
-        matricula: user.pessoa.matricula || null,
-        nome: user.pessoa.nome,
-        email: user.pessoa.email,
-        curso: user.pessoa.curso || null,
-      },
-    };
-  };
-
-  const studentsOnly = users
-    .filter((user: UserType) => user.pessoa.tipo === "ALUNO")
-    .map(mapUserToAluno);
 
   const onPageChange = (page: number) => {
     if (page != currentPage) {
       setCurrentPage(page);
-      setIsLoading(true);
-      if (isSearching) {
-        searchStudent(
-          searchTerm.nome,
-          page,
-          searchTerm.cpf,
-          searchTerm.matricula
-        ).finally(() => setIsLoading(false));
-      } else {
-        getStudent(page).finally(() => setIsLoading(false));
-      }
+
+      searchStudent(
+        searchTerm.nome,
+        searchTerm.cpf,
+        searchTerm.matricula,
+        page
+      ).finally(() => setIsLoading(false));
     }
   };
 
@@ -170,17 +146,14 @@ const ListStudents = () => {
     if (currentPage < totalPage - 1) {
       const newPage = currentPage + 1;
       setCurrentPage(newPage);
-      setIsLoading(true);
-      if (isSearching) {
-        searchStudent(
-          searchTerm.nome,
-          newPage,
-          searchTerm.cpf,
-          searchTerm.matricula
-        ).finally(() => setIsLoading(false));
-      } else {
-        getStudent(newPage).finally(() => setIsLoading(false));
-      }
+
+      searchStudent(
+        searchTerm.nome,
+        searchTerm.cpf,
+        searchTerm.matricula,
+        newPage
+      ).finally(() => setIsLoading(false));
+
     }
   };
 
@@ -188,17 +161,13 @@ const ListStudents = () => {
     if (currentPage > 0) {
       const newPage = currentPage - 1;
       setCurrentPage(newPage);
-      setIsLoading(true);
-      if (isSearching) {
-        searchStudent(
-          searchTerm.nome,
-          newPage,
-          searchTerm.cpf,
-          searchTerm.matricula
-        ).finally(() => setIsLoading(false));
-      } else {
-        getStudent(newPage).finally(() => setIsLoading(false));
-      }
+
+      searchStudent(
+        searchTerm.nome,
+        searchTerm.cpf,
+        searchTerm.matricula,
+        newPage
+      ).finally(() => setIsLoading(false));
     }
   };
 
@@ -257,7 +226,7 @@ const ListStudents = () => {
             {isSearching
               ? `Total de alunos encontrados ao filtrar por "${statusMessage}": `
               : "Total de alunos encontrados: "}
-            <span className="permissions-quantity">{studentsOnly.length}</span>
+            <span className="permissions-quantity">{students.length}</span>
           </p>
 
           <table className="table">
@@ -272,16 +241,15 @@ const ListStudents = () => {
               </tr>
             </thead>
             <tbody>
-            {studentsOnly.map((student: AlunoType, index: number) => {
-                const { pessoa } = student;
-                const cpfFormatado = cpfMask(pessoa?.cpf); 
+              {students.map((student: AlunoType, index: number) => {
+                const cpfFormatado = cpfMask(student.cpf);
                 return (
                   <tr key={index}>
-                    <td>{pessoa.matricula}</td>
+                    <td>{student.matricula}</td>
                     <td>{cpfFormatado}</td>
-                    <td>{pessoa?.nome}</td>
-                    <td>{pessoa?.email}</td>
-                    <td>{pessoa?.curso?.nome} </td>
+                    <td>{student.nome}</td>
+                    <td>{student.email}</td>
+                    <td>{student.curso?.nome} </td>
                     <td className="table-action action-column">
                       <Link to="/alunos/editar-aluno" state={student}>
                         <i className="fa-solid fa-pen-to-square"></i>
