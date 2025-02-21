@@ -122,7 +122,7 @@ const ListUser = () => {
 
     try {
       setIsLoading(true);
-      await searchUser(username, nome, totalPage, status);
+      await searchUser(username, nome, status);
       setIsSearching(true);
       setSearchTerm({ username, nome, status: status?.label || "" });
       setIsLoading(false);
@@ -143,7 +143,7 @@ const ListUser = () => {
   const onPageChange = (page: number) => {
     if (page != currentPage) {
       setCurrentPage(page);
-      searchUser(username, nome, page, status);
+      searchUser(username, nome, status, page);
     }
   };
 
@@ -151,7 +151,7 @@ const ListUser = () => {
     if (currentPage < totalPage - 1) {
       const nextPage = currentPage + 1;
       setCurrentPage(nextPage);
-      searchUser(username, nome, nextPage, status);
+      searchUser(username, nome, status, nextPage);
     }
   };
 
@@ -159,7 +159,7 @@ const ListUser = () => {
     if (currentPage > 0) {
       const prevPage = currentPage - 1;
       setCurrentPage(prevPage);
-      searchUser(username, nome, prevPage, status);
+      searchUser(username, nome, status, prevPage);
     }
   };
 
@@ -245,7 +245,7 @@ const ListUser = () => {
                   <td>{upperCaseToCapitalCase(user.pessoa.tipo)}</td>
                   <td className={user.status ? "td-ativo" : "td-inativo"}>
                     <span className="status-label">
-                      {userStatusLabel(user.status)}
+                      {userStatusLabel(user.status!)}
                     </span>
                   </td>
                   <td className="table-actions action-column">
@@ -261,7 +261,7 @@ const ListUser = () => {
                     </Link>
                     <i
                       className="fa-solid fa-trash-can"
-                      onClick={() => openModal(user.id)}
+                      onClick={() => openModal(user.id!)}
                     ></i>
                   </td>
                 </tr>
