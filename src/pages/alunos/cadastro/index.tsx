@@ -16,12 +16,12 @@ import { useAdmin } from "../../../modules/administradores/views/hooks/use-admin
 import { Spinner } from "../../../ui/spinner";
 import { toast } from "react-toastify";
 import {
-  AlunoType,
   ChangeEventType,
   CursoOption,
   ErrorMessagesType,
   FormEventType,
   ObjectCursoType,
+  UserType,
 } from "../../../modules/administradores/infrastructure/types";
 
 const RegisterStudent = () => {
@@ -39,8 +39,6 @@ const RegisterStudent = () => {
   const [isLoadingCourses, setIsLoadingCourses] = useState<boolean>(true);
   const [coursesLoaded, setCoursesLoaded] = useState<boolean>(false);
   const [page, setPage] = useState<number>(0);
-  const [isLoadingMoreCourses, setIsLoadingMoreCourses] =
-    useState<boolean>(false);
   const navigate = useNavigate();
   const { addStudents, courses, getCourses } = useAdmin();
 
@@ -58,7 +56,7 @@ const RegisterStudent = () => {
 
     try {
       setIsLoading(true);
-      const aluno: AlunoType = {
+      const aluno: UserType = {
         senha,
         pessoa: {
           tipo,
@@ -68,7 +66,7 @@ const RegisterStudent = () => {
           email,
           curso: {
             id: curso?.value,
-          },
+          }
         },
       };
 
@@ -104,15 +102,12 @@ const RegisterStudent = () => {
   };
 
   const loadCourses = async (pageNumber: number) => {
-    setIsLoadingMoreCourses(true);
 
     try {
-      await getCourses(pageNumber);
+      await getCourses();
       setPage(pageNumber);
     } catch (error) {
       console.error("Erro ao carregar cursos:", error);
-    } finally {
-      setIsLoadingMoreCourses(false);
     }
   };
 
@@ -120,7 +115,7 @@ const RegisterStudent = () => {
     const loadInitialCourses = async () => {
       try {
         if (!coursesLoaded) {
-          await getCourses(0);
+          await getCourses();
           setCoursesLoaded(true);
         }
         const updatedOptions = courses.map((course) => ({
