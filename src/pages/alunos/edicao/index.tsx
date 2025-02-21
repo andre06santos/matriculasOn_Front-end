@@ -22,22 +22,19 @@ import {
 
 const EditStudent = () => {
   const { state: student } = useLocation();
+
+
   const { editStudent, courses, getCourses } = useAdmin();
   const [cursoOptions, setCursoOptions] = useState<CursoOption[]>([]);
-  const [isLoadingMoreCourses, setIsLoadingMoreCourses] =
-    useState<boolean>(false);
   const [page, setPage] = useState<number>(0);
   const [coursesLoaded, setCoursesLoaded] = useState<boolean>(false);
-  const id = student.pessoa.id;
-
-  const tipo = "ALUNO";
-  const [cpf, setCpf] = useState<string>(student.pessoa.cpf);
-  const [matricula, setMatricula] = useState<string>(student.pessoa.matricula);
-  const [nome, setNome] = useState<string>(student.pessoa.nome);
-  const [email, setEmail] = useState<string>(student.pessoa.email);
+  const [cpf, setCpf] = useState<string>(student.cpf);
+  const [matricula, setMatricula] = useState<string>(student.matricula);
+  const [nome, setNome] = useState<string>(student.nome);
+  const [email, setEmail] = useState<string>(student.email);
   const [curso, setCurso] = useState<CursoOption | undefined>(
-    student.pessoa.curso
-      ? { label: student.pessoa.curso.nome, value: student.pessoa.curso.id }
+    student.curso
+      ? { label: student.curso.nome, value: student.curso.id }
       : undefined
   );
 
@@ -61,17 +58,13 @@ const EditStudent = () => {
     try {
       setIsLoading(true);
       const newStudent: AlunoType = {
-        pessoa: {
-          tipo,
-          id,
-          cpf,
-          nome,
-          matricula,
-          email,
-          curso: {
-            id: curso?.value ? Number(curso.value) : undefined,
-          },
-        },
+        cpf,
+        nome,
+        matricula,
+        email,
+        curso: {
+          id: curso?.value ? Number(curso.value) : undefined,
+        }
       };
 
       await editStudent({ newStudent });
@@ -93,15 +86,12 @@ const EditStudent = () => {
   };
 
   const loadMoreCourses = async () => {
-    setIsLoadingMoreCourses(true);
 
     try {
-      await getCourses(page + 1);
+      await getCourses();
       setPage(page + 1);
     } catch (error) {
       console.error("Erro ao carregar mais cursos:", error);
-    } finally {
-      setIsLoadingMoreCourses(false);
     }
   };
 
@@ -109,7 +99,7 @@ const EditStudent = () => {
     const loadCourses = async () => {
       try {
         if (!coursesLoaded) {
-          await getCourses(0);
+          await getCourses();
           setCoursesLoaded(true);
         }
 
@@ -187,8 +177,8 @@ const EditStudent = () => {
                 <Button
                   label={
                     courses.length
-                    ? "Carregar mais cursos"
-                    : "Todos os cursos foram carregados!"
+                      ? "Carregar mais cursos"
+                      : "Todos os cursos foram carregados!"
                   }
                   onClick={loadMoreCourses}
                   type="load"
