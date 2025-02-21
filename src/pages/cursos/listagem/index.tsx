@@ -30,14 +30,8 @@ const ListCourses = () => {
   const nameInput = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
-    setIsLoading(true);
-
-    if (isSearching) {
-      searchCourse(searchTerm, currentPage).finally(() => setIsLoading(false));
-    } else {
-      searchCourse(searchTerm, currentPage).finally(() => setIsLoading(false));
-    }
-  }, [currentPage, isSearching, searchTerm, getCourses, searchCourse]);
+    searchCourse(searchTerm, currentPage).finally(() => setIsLoading(false));
+  }, [currentPage, searchTerm, searchCourse]);
 
   useEffect(() => {
     if (name === "") {

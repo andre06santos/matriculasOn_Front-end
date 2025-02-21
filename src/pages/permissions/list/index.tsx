@@ -58,15 +58,8 @@ const ListPermissions = () => {
   };
 
   useEffect(() => {
-    setIsLoading(true);
-    if (isSearching) {
-      searchPermission(searchTerm, currentPage).finally(() =>
-        setIsLoading(false)
-      );
-    } else {
-      searchPermission(searchTerm, currentPage).finally(() => setIsLoading(false));
-    }
-  }, [currentPage, isSearching, searchTerm, getPermissions, searchPermission]);
+    searchPermission(searchTerm, currentPage).finally(() => setIsLoading(false));
+  }, [currentPage, searchTerm,searchPermission]);
 
   useEffect(() => {
     if (descricao === "") {
@@ -134,11 +127,7 @@ const ListPermissions = () => {
       setCurrentPage(page);
       setIsLoading(true);
 
-      if (isSearching) {
-        searchPermission(searchTerm, page).finally(() => setIsLoading(false));
-      } else {
-        searchPermission(searchTerm, page).finally(() => setIsLoading(false));
-      }
+      searchPermission(searchTerm, page).finally(() => setIsLoading(false));
     }
 
   };
