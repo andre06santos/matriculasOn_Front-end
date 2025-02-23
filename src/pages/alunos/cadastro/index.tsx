@@ -66,7 +66,7 @@ const RegisterStudent = () => {
           email,
           curso: {
             id: curso?.value,
-          }
+          },
         },
       };
 
@@ -102,7 +102,6 @@ const RegisterStudent = () => {
   };
 
   const loadCourses = async (pageNumber: number) => {
-
     try {
       await getCourses();
       setPage(pageNumber);
@@ -139,7 +138,7 @@ const RegisterStudent = () => {
         label: course.nome,
         value: course.id,
       }));
-      setCursoOptions((updatedOptions));
+      setCursoOptions(updatedOptions);
     }
   }, [courses]);
 
@@ -196,17 +195,6 @@ const RegisterStudent = () => {
                 value={curso}
                 onChange={setCurso}
               />
-              <div className="button-container">
-                <Button
-                  label={
-                    courses.length
-                      ? "Carregar mais cursos"
-                      : "Todos os cursos foram carregados!"
-                  }
-                  onClick={() => loadCourses(page + 1)}
-                  type="load"
-                />
-              </div>
               <Input
                 label="Senha"
                 type="password"
