@@ -18,11 +18,11 @@ import { cpfMask } from "../../../modules/alunosAdmFormValidation";
 
 const ListStudents = () => {
   const {
-    getUsers,
     students,
     getStudent,
     deleteStudent,
     totalPage,
+    totalElements,
     searchStudent,
   } = useAdmin();
 
@@ -51,14 +51,6 @@ const ListStudents = () => {
     setIsModalOpen(false);
   };
 
-  const checkFields = () => {
-    if (nome === "" && matricula === "" && cpf === "") {
-      getStudent();
-      getUsers();
-      onClean();
-    }
-  };
-
   const onDelete = async () => {
     try {
       setIsLoading(true);
@@ -81,19 +73,39 @@ const ListStudents = () => {
   };
 
   useEffect(() => {
-    checkFields();
-  }, [nome, matricula, cpf]);
+    if (isSearching) {
+      searchStudent(
+        searchTerm.nome,
+        searchTerm.cpf,
+        searchTerm.matricula,
+        currentPage
+      ).finally(() => setIsLoading(false));
+    } else {
+      getStudent();
+    }
+  }, [currentPage, searchTerm, isSearching, searchStudent]);
+
+  useEffect(() => {
+    if (nome === "" && isSearching) {
+      setIsSearching(false);
+      getStudent();
+      onClean();
+    }
+  }, [nome]);
 
   const onClean = () => {
     setMatricula("");
     setCpf("");
     setNome("");
+    setSearchTerm({ nome: "", cpf: "", matricula: "" });
     setIsSearching(false);
   };
 
   const onReset = () => {
-    onClean();
+    if (!nome && !cpf && !matricula) return;
     getStudent();
+    onClean();
+    console.log(nome);
   };
 
   const onSubmit = async (e: FormEventType) => {
@@ -109,11 +121,12 @@ const ListStudents = () => {
         type: "error",
       });
       onClean();
-
       return;
     }
+
     try {
       setIsLoading(true);
+      setCurrentPage(0);
       await searchStudent(nome, cpf, matricula);
       setIsSearching(true);
       setSearchTerm({ nome, cpf, matricula });
@@ -128,11 +141,11 @@ const ListStudents = () => {
     }
   };
 
-
   const onPageChange = (page: number) => {
-    if (page != currentPage) {
+    if (page !== currentPage) {
       setCurrentPage(page);
-
+      setIsSearching(true);
+      setIsLoading(true);
       searchStudent(
         searchTerm.nome,
         searchTerm.cpf,
@@ -146,14 +159,14 @@ const ListStudents = () => {
     if (currentPage < totalPage - 1) {
       const newPage = currentPage + 1;
       setCurrentPage(newPage);
-
+      setIsSearching(true);
+      setIsLoading(true);
       searchStudent(
         searchTerm.nome,
         searchTerm.cpf,
         searchTerm.matricula,
         newPage
       ).finally(() => setIsLoading(false));
-
     }
   };
 
@@ -161,7 +174,8 @@ const ListStudents = () => {
     if (currentPage > 0) {
       const newPage = currentPage - 1;
       setCurrentPage(newPage);
-
+      setIsSearching(true);
+      setIsLoading(true);
       searchStudent(
         searchTerm.nome,
         searchTerm.cpf,
@@ -183,7 +197,7 @@ const ListStudents = () => {
       )}
       <h1>Alunos</h1>
 
-      {students.length === 0 ? (
+      {totalElements === 0 ? (
         isSearching ? (
           <>
             <Filter
@@ -223,10 +237,10 @@ const ListStudents = () => {
           />
 
           <p>
-            {isSearching
+            {isSearching && statusMessage
               ? `Total de alunos encontrados ao filtrar por "${statusMessage}": `
               : "Total de alunos encontrados: "}
-            <span className="permissions-quantity">{students.length}</span>
+            <span className="permissions-quantity">{totalElements}</span>
           </p>
 
           <table className="table">
@@ -242,7 +256,7 @@ const ListStudents = () => {
             </thead>
             <tbody>
               {students.map((student: AlunoType, index: number) => {
-                const cpfFormatado = cpfMask(student.cpf);
+                const cpfFormatado = cpfMask(student.cpf || "");
                 return (
                   <tr key={index}>
                     <td>{student.matricula}</td>
