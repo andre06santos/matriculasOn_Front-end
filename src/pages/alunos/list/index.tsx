@@ -36,7 +36,6 @@ const ListStudents = () => {
     cpf: "",
     matricula: "",
   });
-  const [studentId, setStudentId] = useState<string>("");
   const [isSearching, setIsSearching] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState(0);
 
@@ -49,27 +48,6 @@ const ListStudents = () => {
 
   const closeModal = () => {
     setIsModalOpen(false);
-  };
-
-  const onDelete = async () => {
-    try {
-      setIsLoading(true);
-      await deleteStudent(studentId);
-      setIsLoading(false);
-      toast("Aluno excluído com sucesso!", {
-        position: "top-center",
-        type: "success",
-      });
-    } catch (error) {
-      setIsLoading(false);
-      toast("Ocorreu um erro ao tentar excluir o cadastro do aluno!", {
-        position: "top-center",
-        type: "error",
-      });
-      console.error((error as Error).message);
-    } finally {
-      closeModal();
-    }
   };
 
   useEffect(() => {
@@ -86,12 +64,12 @@ const ListStudents = () => {
   }, [currentPage, searchTerm, isSearching, searchStudent]);
 
   useEffect(() => {
-    if (nome === "" && isSearching) {
+    if (nome === "" && cpf === "" && matricula === "" && isSearching) {
       setIsSearching(false);
       getStudent();
       onClean();
     }
-  }, [nome]);
+  }, [nome, cpf, matricula]);
 
   const onClean = () => {
     setMatricula("");
@@ -188,13 +166,6 @@ const ListStudents = () => {
   return (
     <div className="flex-column-gap20">
       {isLoading && <Spinner />}
-      {isModalOpen && (
-        <Modal
-          message="Tem certeza que deseja excluir o cadastro deste aluno?"
-          onCancel={closeModal}
-          onDelete={onDelete}
-        />
-      )}
       <h1>Alunos</h1>
 
       {totalElements === 0 ? (
