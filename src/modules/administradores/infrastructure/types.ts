@@ -118,12 +118,12 @@ export type UserFilterType = {
   name: string;
   setName: React.Dispatch<React.SetStateAction<string>>;
   status:
-  | {
-    label: string;
-    value: string;
-  }
-  | undefined;
-  setStatus: React.Dispatch<React.SetStateAction<StatusOption | undefined>>;
+    | {
+        label: string;
+        value: string;
+      }
+    | undefined;
+  setStatus: React.Dispatch<React.SetStateAction<StatusOption>>;
   statusOptions: { label: string; value: string }[];
   usernameInput: React.MutableRefObject<HTMLInputElement | null>;
   nameInput: React.MutableRefObject<HTMLInputElement | null>;
