@@ -23,6 +23,7 @@ const ListPermissions = () => {
     searchPermission,
     deletePermission,
     totalPage,
+    totalElements,
   } = useAdmin();
   const [descricao, setDescricao] = useState("");
   const [isSearching, setIsSearching] = useState<boolean>(false);
@@ -51,22 +52,27 @@ const ListPermissions = () => {
 
   const onReset = () => {
     if (descricao === "") return;
-
     onClean();
     onFocus();
     getPermissions();
   };
 
   useEffect(() => {
-    searchPermission(searchTerm, currentPage).finally(() => setIsLoading(false));
-  }, [currentPage, searchTerm,searchPermission]);
+    if (isSearching) {
+      searchPermission(searchTerm, currentPage).finally(() =>
+        setIsLoading(false)
+      );
+    } else {
+      getPermissions();
+    }
+  }, [currentPage, searchTerm, isSearching, searchPermission]);
 
   useEffect(() => {
-    if (descricao === "") {
+    if (descricao === "" && isSearching) {
       setIsSearching(false);
       getPermissions();
     }
-  }, [descricao, getPermissions]);
+  }, [descricao]);
 
   const onSubmit = async (e: FormEventType) => {
     e.preventDefault();
@@ -74,13 +80,12 @@ const ListPermissions = () => {
     const emptyField = validateEmptyString(descricao);
 
     if (emptyField) {
-      toast("Digite um nome para filtrar!", {
+      toast("Digite uma descrição para filtrar!", {
         position: "top-center",
         type: "error",
       });
       onClean();
       onFocus();
-
       return;
     }
 
@@ -93,7 +98,7 @@ const ListPermissions = () => {
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
-      toast("Ocorreu um erro ao tentar filtrar permissões!", {
+      toast("Erro ao buscar permissões!", {
         position: "top-center",
         type: "error",
       });
@@ -110,9 +115,16 @@ const ListPermissions = () => {
         position: "top-center",
         type: "success",
       });
+
+      const newPage =
+        currentPage > 0 && permissions.length === 1
+          ? currentPage - 1
+          : currentPage;
+      setCurrentPage(newPage);
+      searchPermission(searchTerm, newPage);
     } catch (error) {
       setIsLoading(false);
-      toast("Ocorreu um erro ao tentar excluir a permissão!", {
+      toast("Erro ao excluir permissão!", {
         position: "top-center",
         type: "error",
       });
@@ -123,27 +135,21 @@ const ListPermissions = () => {
   };
 
   const onPageChange = (page: number) => {
-    if (page != currentPage) {
+    if (page !== currentPage) {
       setCurrentPage(page);
+      setIsSearching(true);
       setIsLoading(true);
-
       searchPermission(searchTerm, page).finally(() => setIsLoading(false));
     }
-
   };
 
   const onNext = () => {
     if (currentPage < totalPage - 1) {
       const newPage = currentPage + 1;
       setCurrentPage(newPage);
+      setIsSearching(true);
       setIsLoading(true);
-      if (isSearching) {
-        searchPermission(searchTerm, newPage).finally(() =>
-          setIsLoading(false)
-        );
-      } else {
-        searchPermission(searchTerm, newPage).finally(() => setIsLoading(false));
-      }
+      searchPermission(searchTerm, newPage).finally(() => setIsLoading(false));
     }
   };
 
@@ -151,14 +157,9 @@ const ListPermissions = () => {
     if (currentPage > 0) {
       const newPage = currentPage - 1;
       setCurrentPage(newPage);
+      setIsSearching(true);
       setIsLoading(true);
-      if (isSearching) {
-        searchPermission(searchTerm, newPage).finally(() =>
-          setIsLoading(false)
-        );
-      } else {
-        searchPermission(searchTerm, newPage).finally(() => setIsLoading(false));
-      }
+      searchPermission(searchTerm, newPage).finally(() => setIsLoading(false));
     }
   };
 
@@ -173,45 +174,32 @@ const ListPermissions = () => {
           onDelete={onDelete}
         />
       )}
+
       <div className="add-button">
         <Link to="/permissoes/nova-permissao">
           <Button type="success" label="Adicionar" />
         </Link>
       </div>
+
       <h1>Permissões</h1>
 
-      {permissions.length === 0 ? (
-        isSearching ? (
-          <>
-            <PermissionsFilter
-              onSubmit={onSubmit}
-              descricao={descricao}
-              setDescricao={setDescricao}
-              descricaoInput={descricaoInput}
-              onReset={onReset}
-            />
-            <NotFound
-              message={`A busca por "${searchTerm}" não retornou nenhuma permissão!`}
-            />
-          </>
-        ) : (
-          <NotFound message="Nenhuma permissão foi encontrada!" />
-        )
+      <PermissionsFilter
+        onSubmit={onSubmit}
+        descricao={descricao}
+        setDescricao={setDescricao}
+        descricaoInput={descricaoInput}
+        onReset={onReset}
+      />
+
+      {totalElements === 0 ? (
+        <NotFound message="Nenhuma permissão encontrada!" />
       ) : (
         <>
-          <PermissionsFilter
-            onSubmit={onSubmit}
-            descricao={descricao}
-            setDescricao={setDescricao}
-            descricaoInput={descricaoInput}
-            onReset={onReset}
-          />
-
           <p>
-            {isSearching
-              ? `Total de permissões encontradas ao filtrar por "${searchTerm}": `
+            {isSearching && searchTerm
+              ? `Total de permissões encontradas para "${searchTerm}": `
               : "Total de permissões encontradas: "}
-            <span className="permissions-quantity">{permissions.length}</span>
+            <span className="permissions-quantity">{totalElements}</span>
           </p>
 
           <table className="table">
@@ -219,7 +207,7 @@ const ListPermissions = () => {
               <tr>
                 <th>Role</th>
                 <th>Descrição</th>
-                <th className="table-actions action-column">Ações</th>
+                <th className="table-actions">Ações</th>
               </tr>
             </thead>
             <tbody>
@@ -227,7 +215,7 @@ const ListPermissions = () => {
                 <tr key={index}>
                   <td>{permission.role}</td>
                   <td>{permission.descricao}</td>
-                  <td className="table-actions action-column">
+                  <td className="table-actions">
                     <Link to="/permissoes/editar-permissao" state={permission}>
                       <i className="fa-solid fa-pen-to-square"></i>
                     </Link>
