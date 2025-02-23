@@ -16,8 +16,14 @@ import {
 import { Pagination } from "../../../ui/paginacao";
 
 const ListCourses = () => {
-  const { courses, getCourses, searchCourse, deleteCourse, totalPage } =
-    useAdmin();
+  const {
+    courses,
+    getCourses,
+    searchCourse,
+    deleteCourse,
+    totalPage,
+    totalElements,
+  } = useAdmin();
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -30,12 +36,17 @@ const ListCourses = () => {
   const nameInput = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
-    searchCourse(searchTerm, currentPage).finally(() => setIsLoading(false));
+    if (isSearching) {
+      searchCourse(searchTerm, currentPage).finally(() => setIsLoading(false));
+    } else {
+      getCourses();
+    }
   }, [currentPage, searchTerm, searchCourse]);
 
   useEffect(() => {
-    if (name === "") {
+    if (name === "" && isSearching) {
       setIsSearching(false);
+      getCourses();
     }
   }, [name]);
 
@@ -102,6 +113,7 @@ const ListCourses = () => {
   const onPageChange = (page: number) => {
     if (page != currentPage) {
       setCurrentPage(page);
+      setIsSearching(true);
       setIsLoading(true);
       searchCourse(searchTerm, page).finally(() => setIsLoading(false));
     }
@@ -111,6 +123,7 @@ const ListCourses = () => {
     if (currentPage < totalPage - 1) {
       const newPage = currentPage + 1;
       setCurrentPage(newPage);
+      setIsSearching(true);
       setIsLoading(true);
       searchCourse(searchTerm, newPage).finally(() => setIsLoading(false));
     }
@@ -120,6 +133,7 @@ const ListCourses = () => {
     if (currentPage > 0) {
       const newPage = currentPage - 1;
       setCurrentPage(newPage);
+      setIsSearching(true);
       setIsLoading(true);
       searchCourse(searchTerm, newPage).finally(() => setIsLoading(false));
     }
@@ -153,7 +167,7 @@ const ListCourses = () => {
         onReset={onReset}
       />
 
-      {courses.length === 0 ? (
+      {totalElements === 0 ? (
         <NotFound
           message={
             isSearching
@@ -164,10 +178,10 @@ const ListCourses = () => {
       ) : (
         <>
           <p>
-            {isSearching
+            {isSearching && searchTerm
               ? `Total de cursos encontrados ao filtrar por "${searchTerm}": `
               : "Total de cursos encontrados: "}
-            <span className="courses-quantity">{courses.length}</span>
+            <span className="courses-quantity">{totalElements}</span>
           </p>
 
           <table className="table">
