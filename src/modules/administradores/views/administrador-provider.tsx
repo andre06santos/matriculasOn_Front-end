@@ -15,6 +15,7 @@ import {
 } from "../infrastructure/types";
 
 export type AdminContextType = {
+  totalElements: number;
   totalPage: number;
   admins: AdminType[];
   addAdmin: (newAdmin: UserType) => Promise<UserType>;
@@ -31,12 +32,11 @@ export type AdminContextType = {
     name: string,
     status:
       | {
-        label: string;
-        value: string;
-      }
-      | undefined
-    ,
-    page?: number,
+          label: string;
+          value: string;
+        }
+      | undefined,
+    page?: number
   ) => Promise<UserType[]>;
   students: AlunoType[];
   editStudent: (params: { newStudent: AlunoType }) => Promise<AlunoType>;
@@ -45,7 +45,7 @@ export type AdminContextType = {
     cpf: string,
     matricula: string,
     page?: number
-  ) => Promise<void>;
+  ) => Promise<AlunoType[]>;
   getStudent: () => Promise<void>;
   addStudents: (newStudent: UserType) => Promise<UserType>;
   deleteStudent: (id: string) => Promise<AlunoType>;
@@ -65,7 +65,10 @@ export type AdminContextType = {
   permissions: PermissionsType[];
   addPermission: (newPermission: PermissionsType) => Promise<PermissionsType>;
   getPermissions: () => Promise<void>;
-  searchPermission: (descricao: string, page: number) => Promise<void>;
+  searchPermission: (
+    descricao: string,
+    page: number
+  ) => Promise<PermissionsType[]>;
   editPermission: (params: {
     id: string;
     newPermission: PermissionsType;
@@ -83,6 +86,7 @@ export const AdminContext = createContext<AdminContextType | undefined>(
 
 export const AdminProvider = ({ children }: AdminProviderProps) => {
   const [courses, setCourses] = useState<CursoType[]>([]);
+  const [totalElements, setTotalElements] = useState<number>(0);
   const [totalPage, setTotalPages] = useState<number>(0);
 
   const [admins, setAdmins] = useState<AdminType[]>([]);
@@ -99,12 +103,16 @@ export const AdminProvider = ({ children }: AdminProviderProps) => {
 
       const response = await fetchData(userRequest);
 
-      setCourses(response.content);
-      setTotalPages(response.totalPages);
+      const __courses = response.content;
+      const _totalPages = response.totalPages;
+      const _totalElements = response.totalElements;
+
+      setCourses(__courses);
+      setTotalPages(_totalPages);
+      setTotalElements(_totalElements);
     } catch (error) {
       console.error("Erro ao buscar cursos:", (error as Error).message);
-      setCourses([]);
-      setTotalPages(0);
+      throw new Error((error as Error).message);
     }
   }, [fetchData, setCourses, setTotalPages]);
 
@@ -116,11 +124,15 @@ export const AdminProvider = ({ children }: AdminProviderProps) => {
 
       const response = await fetchData(userRequest);
 
-      const _courses = response.content;
+      const __courses = response.content;
+      const _totalPages = response.totalPages;
+      const _totalElements = response.totalElements;
 
-      setTotalPages(response.totalPages);
-      setCourses(_courses);
-      return _courses;
+      setCourses(__courses);
+      setTotalPages(_totalPages);
+      setTotalElements(_totalElements);
+
+      return courses;
     } catch (error) {
       console.error((error as Error).message);
       throw new Error((error as Error).message);
@@ -141,10 +153,14 @@ export const AdminProvider = ({ children }: AdminProviderProps) => {
         const response = await fetchData(userRequest);
 
         const _students = response.content;
-        const totalPages = response.totalPages;
+        const _totalPages = response.totalPages;
+        const _totalElements = response.totalElements;
 
         setStudents(_students);
-        setTotalPages(totalPages);
+        setTotalPages(_totalPages);
+        setTotalElements(_totalElements);
+
+        return _students;
       } catch (error) {
         console.error((error as Error).message);
         throw new Error((error as Error).message);
@@ -157,7 +173,7 @@ export const AdminProvider = ({ children }: AdminProviderProps) => {
       username: string,
       name: string,
       status: { label: string; value: string } | undefined,
-      page?: number,
+      page?: number
     ): Promise<UserType[]> => {
       try {
         const queryParams = new URLSearchParams();
@@ -165,7 +181,6 @@ export const AdminProvider = ({ children }: AdminProviderProps) => {
         if (username) queryParams.append("username", username.trim());
         if (name) queryParams.append("nome", name.trim());
         if (status) queryParams.append("status", status.value);
-
         if (page) queryParams.append("page", page.toString());
 
         const endpoint = `/usuarios?${queryParams.toString()}`;
@@ -174,10 +189,12 @@ export const AdminProvider = ({ children }: AdminProviderProps) => {
         const response = await fetchData(userRequest);
 
         const _users = response.content;
-        const totalPages = response.totalPages;
+        const _totalPages = response.totalPages;
+        const _totalElements = response.totalElements;
 
         setUsers(_users);
-        setTotalPages(totalPages);
+        setTotalPages(_totalPages);
+        setTotalElements(_totalElements);
 
         return _users;
       } catch (error) {
@@ -297,10 +314,13 @@ export const AdminProvider = ({ children }: AdminProviderProps) => {
       };
 
       const response = await fetchData(userRequest);
-
       const _students = response.content;
-      setTotalPages(response.totalPages);
+      const _totalPages = response.totalPages;
+      const _totalElements = response.totalElements;
+
       setStudents(_students);
+      setTotalPages(_totalPages);
+      setTotalElements(_totalElements);
     } catch (error) {
       console.error((error as Error).message);
       throw new Error((error as Error).message);
@@ -362,8 +382,12 @@ export const AdminProvider = ({ children }: AdminProviderProps) => {
       const response = await fetchData(userRequest);
 
       const _users = response.content;
-      setTotalPages(response.totalPages);
+      const _totalPages = response.totalPages;
+      const _totalElements = response.totalElements;
+
       setUsers(_users);
+      setTotalPages(_totalPages);
+      setTotalElements(_totalElements);
     } catch (error) {
       console.error((error as Error).message);
       throw new Error((error as Error).message);
@@ -473,12 +497,15 @@ export const AdminProvider = ({ children }: AdminProviderProps) => {
       const response = await fetchData(userRequest);
 
       const _permissions = response.content;
-      setTotalPages(response.totalPages);
+      const _totalPages = response.totalPages;
+      const _totalElements = response.totalElements;
+
       setPermissions(_permissions);
+      setTotalPages(_totalPages);
+      setTotalElements(_totalElements);
     } catch (error) {
       console.error("Erro ao buscar cursos:", (error as Error).message);
-      setPermissions([]);
-      setTotalPages(0);
+      throw new Error((error as Error).message);
     }
   }, [fetchData, setPermissions, setTotalPages]);
 
@@ -515,8 +542,14 @@ export const AdminProvider = ({ children }: AdminProviderProps) => {
         const response = await fetchData(userRequest);
 
         const _permissions = response.content;
-        setTotalPages(response.totalPages);
+        const _totalPages = response.totalPages;
+        const _totalElements = response.totalElements;
+
         setPermissions(_permissions);
+        setTotalPages(_totalPages);
+        setTotalElements(_totalElements);
+
+        return _permissions;
       } catch (error) {
         console.error((error as Error).message);
         throw new Error((error as Error).message);
@@ -586,6 +619,7 @@ export const AdminProvider = ({ children }: AdminProviderProps) => {
   const value = useMemo(
     () => ({
       admins,
+      totalElements,
       totalPage,
       addAdmin,
       editAdmin,
@@ -615,6 +649,7 @@ export const AdminProvider = ({ children }: AdminProviderProps) => {
     }),
     [
       admins,
+      totalElements,
       totalPage,
       addAdmin,
       editAdmin,
