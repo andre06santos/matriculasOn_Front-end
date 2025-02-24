@@ -18,6 +18,12 @@ type InputProps = {
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   isPassword?: boolean;
   value?: string;
+  isLoading?: boolean;
+  loadMoreText?: string;
+  onLoadMore?: () => void;
+  showLoadMore?: boolean;
+  allCoursesLoaded?: boolean;
+  totalElements?: number;
   [key: string]: any;
 };
 
@@ -34,6 +40,12 @@ const Input = React.forwardRef<
       onChange,
       isPassword,
       value,
+      isLoading = false,
+      loadMoreText = "Carregar mais cursos...",
+      onLoadMore,
+      showLoadMore = false,
+      allCoursesLoaded = false,
+      totalElements = 0,
       ...rest
     },
     ref
@@ -46,25 +58,66 @@ const Input = React.forwardRef<
       bgSuccess: "bg-success",
     };
 
-    const inputClass = `input ${inputType === "reset" || inputType === "submit"
-      ? `${inputCollors[variant]} input-button`
-      : "input-text"
-      }`;
+    const inputClass = `input ${
+      inputType === "reset" || inputType === "submit"
+        ? `${inputCollors[variant]} input-button`
+        : "input-text"
+    }`;
+    const optionsWithLoadMore = selectOptions
+      ? [
+          ...selectOptions,
+          ...(showLoadMore && selectOptions.length < totalElements
+            ? [
+                {
+                  value: "load-more",
+                  label: allCoursesLoaded
+                    ? "Todos os cursos já foram carregados"
+                    : loadMoreText,
+                },
+              ]
+            : []),
+        ]
+      : [];
+
+    const handleLoadMore = () => {
+      if (onLoadMore) {
+        onLoadMore();
+      }
+    };
 
     return (
       <div className="input-component">
         {label && <label>{label}</label>}
 
         {selectOptions ? (
-          <Select
-            options={selectOptions}
-            placeholder="Escolha uma opção"
-            noOptionsMessage={() => "Nenhuma opção encontrada!"}
-            className="input-select"
-            value={value}
-            onChange={onChange}
-            {...rest}
-          />
+          <div className="input-select-container">
+            <Select
+              options={optionsWithLoadMore}
+              placeholder="Escolha uma opção"
+              noOptionsMessage={() => "Nenhuma opção encontrada!"}
+              className="input-select"
+              value={value}
+              onChange={onChange}
+              {...rest}
+              getOptionLabel={(e) => {
+                if (e.value === "load-more") {
+                  return (
+                    <div
+                      style={{
+                        color: "black",
+                        cursor: "pointer",
+                      }}
+                      onClick={handleLoadMore}
+                    >
+                      {e.label}
+                    </div>
+                  );
+                }
+                return e.label;
+              }}
+              getOptionValue={(e) => (e.value === "load-more" ? "" : e.value)}
+            />
+          </div>
         ) : (
           <>
             <div className={isPassword ? "input-container" : ""}>

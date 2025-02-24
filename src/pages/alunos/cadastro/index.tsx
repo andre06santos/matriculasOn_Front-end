@@ -40,7 +40,8 @@ const RegisterStudent = () => {
   const [coursesLoaded, setCoursesLoaded] = useState<boolean>(false);
   const [page, setPage] = useState<number>(0);
   const navigate = useNavigate();
-  const { addStudents, courses, getCourses } = useAdmin();
+  const { addStudents, courses, getCourses, searchCourse, totalElements } =
+    useAdmin();
 
   const handleSubmit = async (e: FormEventType) => {
     e.preventDefault();
@@ -101,26 +102,30 @@ const RegisterStudent = () => {
     setErrorMessages([]);
   };
 
-  const loadCourses = async (pageNumber: number) => {
+  const loadMoreCourses = async () => {
     try {
-      await getCourses();
-      setPage(pageNumber);
+      setIsLoadingCourses(true);
+      await searchCourse("", page + 1);
+      setPage(page + 1);
     } catch (error) {
-      console.error("Erro ao carregar cursos:", error);
+      console.error("Erro ao carregar mais cursos:", error);
+      setIsLoadingCourses(false);
     }
   };
 
   useEffect(() => {
-    const loadInitialCourses = async () => {
+    const loadCourses = async () => {
       try {
         if (!coursesLoaded) {
           await getCourses();
           setCoursesLoaded(true);
         }
+
         const updatedOptions = courses.map((course) => ({
           label: course.nome,
           value: course.id,
         }));
+
         setCursoOptions(updatedOptions);
         setIsLoadingCourses(false);
       } catch (error) {
@@ -129,7 +134,7 @@ const RegisterStudent = () => {
       }
     };
 
-    loadInitialCourses();
+    loadCourses();
   }, [courses, getCourses, coursesLoaded]);
 
   useEffect(() => {
@@ -191,9 +196,11 @@ const RegisterStudent = () => {
               <Input
                 label="Curso"
                 selectOptions={cursoOptions}
-                required
                 value={curso}
                 onChange={setCurso}
+                showLoadMore={courses.length}
+                onLoadMore={loadMoreCourses}
+                totalElements={totalElements}
               />
               <Input
                 label="Senha"
