@@ -46,10 +46,6 @@ const ListStudents = () => {
   const statusMessage =
     searchTerm.nome || searchTerm.matricula || searchTerm.cpf;
 
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
-
   useEffect(() => {
     if (isSearching) {
       searchStudent(
@@ -58,18 +54,16 @@ const ListStudents = () => {
         searchTerm.matricula,
         currentPage
       ).finally(() => setIsLoading(false));
-    } else {
-      getStudent();
     }
   }, [currentPage, searchTerm, isSearching, searchStudent]);
 
   useEffect(() => {
-    if (nome === "" && cpf === "" && matricula === "" && isSearching) {
+    if (nome === "" && cpf === "" && matricula === "" && currentPage === 0) {
       setIsSearching(false);
       getStudent();
       onClean();
     }
-  }, [nome, cpf, matricula]);
+  }, [nome, cpf, matricula, currentPage]);
 
   const onClean = () => {
     setMatricula("");
