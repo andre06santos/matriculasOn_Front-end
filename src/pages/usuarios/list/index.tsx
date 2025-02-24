@@ -243,7 +243,7 @@ const ListUser = () => {
 
           <p>
             {isSearching && statusMessage
-              ? `Total de usuários encontrados ao filtrar ${statusMessage}: `
+              ? `Total de usuários encontrados ao filtrar por ${statusMessage}: `
               : "Total de usuários encontrados:"}
             <span className="permissions-quantity">{totalElements}</span>
           </p>

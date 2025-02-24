@@ -122,7 +122,7 @@ const ListPermissions = () => {
       searchPermission(searchTerm, newPage);
     } catch (error) {
       setIsLoading(false);
-      toast("Erro ao excluir permissão!", {
+      toast("Erro ao tentar excluir permissão!", {
         position: "top-center",
         type: "error",
       });
@@ -195,7 +195,7 @@ const ListPermissions = () => {
         <>
           <p>
             {isSearching && searchTerm
-              ? `Total de permissões encontradas para "${searchTerm}": `
+              ? `Total de permissões encontradas ao filtrar por "${searchTerm}": `
               : "Total de permissões encontradas: "}
             <span className="permissions-quantity">{totalElements}</span>
           </p>
