@@ -224,7 +224,7 @@ const ListStudents = () => {
             </thead>
             <tbody>
               {students.map((student: AlunoType, index: number) => {
-                const cpfFormatado = cpfMask(student.cpf || "");
+                const cpfFormatado = cpfMask(student.cpf);
                 return (
                   <tr key={index}>
                     <td>{student.matricula}</td>
