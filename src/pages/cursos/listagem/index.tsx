@@ -38,17 +38,15 @@ const ListCourses = () => {
   useEffect(() => {
     if (isSearching) {
       searchCourse(searchTerm, currentPage).finally(() => setIsLoading(false));
-    } else {
-      getCourses();
     }
   }, [currentPage, searchTerm, searchCourse]);
 
   useEffect(() => {
-    if (name === "" && isSearching) {
+    if (name === "" && currentPage === 0) {
       setIsSearching(false);
       getCourses();
     }
-  }, [name]);
+  }, [name, currentPage]);
 
   const openModal = (courseId: string) => {
     setIsModalOpen(true);
