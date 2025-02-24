@@ -73,24 +73,22 @@ const ListUser = () => {
     });
     setIsSearching(false);
   };
-
   const onDelete = async () => {
     try {
       setIsLoading(true);
       await deleteUser(userId);
-      setIsLoading(false);
-      toast("Usuário excluído com sucesso!", {
-        position: "top-center",
-        type: "success",
-      });
+      toast.success("Usuário excluído com sucesso!");
+
+      const newPage =
+        currentPage > 0 && users.length === 1 ? currentPage - 1 : currentPage;
+      setCurrentPage(newPage);
+
+      searchUser(username, nome, status, newPage);
     } catch (error) {
-      setIsLoading(false);
-      toast("Ocorreu um erro ao tentar excluir o cadastro do usuário!", {
-        position: "top-center",
-        type: "error",
-      });
-      console.error((error as Error).message);
+      toast.error("Ocorreu um erro ao tentar excluir o cadastro do usuário!");
+      console.error(error);
     } finally {
+      setIsLoading(false);
       closeModal();
     }
   };
