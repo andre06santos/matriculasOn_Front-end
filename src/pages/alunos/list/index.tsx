@@ -81,7 +81,6 @@ const ListStudents = () => {
     if (!nome && !cpf && !matricula) return;
     getStudent();
     onClean();
-    console.log(nome);
   };
 
   const onSubmit = async (e: FormEventType) => {
