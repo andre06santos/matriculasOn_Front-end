@@ -62,17 +62,15 @@ const ListPermissions = () => {
       searchPermission(searchTerm, currentPage).finally(() =>
         setIsLoading(false)
       );
-    } else {
-      getPermissions();
     }
   }, [currentPage, searchTerm, isSearching, searchPermission]);
 
   useEffect(() => {
-    if (descricao === "" && isSearching) {
+    if (descricao === "" && currentPage == 0) {
       setIsSearching(false);
       getPermissions();
     }
-  }, [descricao]);
+  }, [descricao, currentPage]);
 
   const onSubmit = async (e: FormEventType) => {
     e.preventDefault();
