@@ -85,6 +85,23 @@ const Input = React.forwardRef<
       }
     };
 
+    const renderOptionLabel = (e: any) => {
+      if (e.value === "load-more") {
+        return (
+          <div
+            style={{
+              color: "black",
+              cursor: "pointer",
+            }}
+            onClick={handleLoadMore}
+          >
+            {e.label}
+          </div>
+        );
+      }
+      return e.label;
+    };
+
     return (
       <div className="input-component">
         {label && <label>{label}</label>}
@@ -99,22 +116,7 @@ const Input = React.forwardRef<
               value={value}
               onChange={onChange}
               {...rest}
-              getOptionLabel={(e) => {
-                if (e.value === "load-more") {
-                  return (
-                    <div
-                      style={{
-                        color: "black",
-                        cursor: "pointer",
-                      }}
-                      onClick={handleLoadMore}
-                    >
-                      {e.label}
-                    </div>
-                  );
-                }
-                return e.label;
-              }}
+              getOptionLabel={renderOptionLabel}
               getOptionValue={(e) => (e.value === "load-more" ? "" : e.value)}
             />
           </div>
