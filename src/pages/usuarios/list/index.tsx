@@ -102,6 +102,13 @@ const ListUser = () => {
   };
 
   useEffect(() => {
+    if (nome === "" && username === "" && status.value === "" && currentPage === 0) {
+      setIsSearching(false);
+      getUsers();
+    }
+  }, [nome, username, status, currentPage]);
+
+  useEffect(() => {
     if (isSearching) {
       searchUser(
         searchTerm.username,
@@ -109,17 +116,10 @@ const ListUser = () => {
         searchTerm.status,
         currentPage
       ).finally(() => setIsLoading(false));
-    } else {
-      getUsers();
     }
   }, [currentPage, searchTerm, isSearching, searchUser]);
 
-  useEffect(() => {
-    if (nome === "" && isSearching) {
-      setIsSearching(false);
-      getUsers();
-    }
-  }, [nome]);
+
 
   const onSubmit = async (e: FormEventType) => {
     e.preventDefault();
