@@ -65,11 +65,15 @@ const ListStudents = () => {
     }
   }, [nome, cpf, matricula, currentPage]);
 
+  const resetSearchTerm = () => {
+    setSearchTerm({ nome: "", cpf: "", matricula: "" });
+  };
+
   const onClean = () => {
     setMatricula("");
     setCpf("");
     setNome("");
-    setSearchTerm({ nome: "", cpf: "", matricula: "" });
+    resetSearchTerm();
     setIsSearching(false);
   };
 
