@@ -100,33 +100,38 @@ const ListUser = () => {
     getUsers();
   };
 
-
   useEffect(() => {
-    if (isSearching) {
-      searchUser(
-        searchTerm.nome,
-        searchTerm.username,
-        searchTerm.status,
-        currentPage
-      ).finally(() => setIsLoading(false));
-      setIsLoadingUsers(false)
-    }
-  }, [currentPage, searchTerm, isSearching, searchUser]);
-
-  useEffect(() => {
-    if (nome === "" && username === "" && status.value === "" && currentPage === 0 && !isLoadingUsers) {
-      setIsLoadingUsers(true);
+    if (
+      nome === "" &&
+      username === "" &&
+      status.value === "" &&
+      currentPage === 0 &&
+      !isLoadingUsers
+    ) {
       setIsSearching(false);
       getUsers();
     }
   }, [nome, username, status, currentPage]);
 
-
+  useEffect(() => {
+    if (isSearching) {
+      searchUser(
+        searchTerm.username,
+        searchTerm.nome,
+        searchTerm.status,
+        currentPage
+      ).finally(() => setIsLoading(false));
+      setIsLoadingUsers(false);
+    }
+  }, [currentPage, searchTerm, isSearching, searchUser]);
   const onSubmit = async (e: FormEventType) => {
     e.preventDefault();
 
     const emptyFieldName = validateEmptyString(nome);
     const emptyFieldUsername = validateEmptyString(username);
+    if (status.value === "") {
+      setStatus(undefined);
+    }
 
     if (emptyFieldName && emptyFieldUsername && !status.value) {
       toast("Preencha um dos campos para filtrar!", {
@@ -134,6 +139,7 @@ const ListUser = () => {
         type: "error",
       });
       onClean();
+      setIsLoadingUsers(true);
       return;
     }
 
@@ -326,6 +332,6 @@ const upperCaseToCapitalCase = (userType: string): string => {
 };
 
 const statusOptions: StatusOption[] = [
-  { label: "Ativo", value: "true " },
+  { label: "Ativo", value: "true" },
   { label: "Inativo", value: "false" },
 ];
