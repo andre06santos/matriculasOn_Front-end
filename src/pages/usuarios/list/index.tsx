@@ -37,6 +37,7 @@ const ListUser = () => {
   });
 
   const [userId, setUserId] = useState<string>("");
+  const [isLoadingUsers, setIsLoadingUsers] = useState<boolean>(false);
   const [isSearching, setIsSearching] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState<number>(0);
   const nameInput = useRef<HTMLInputElement | null>(null);
@@ -99,24 +100,26 @@ const ListUser = () => {
     getUsers();
   };
 
-  useEffect(() => {
-    if (nome === "" && username === "" && status.value === "" && currentPage === 0) {
-      setIsSearching(false);
-      getUsers();
-    }
-  }, [nome, username, status, currentPage]);
 
   useEffect(() => {
     if (isSearching) {
       searchUser(
-        searchTerm.username,
         searchTerm.nome,
+        searchTerm.username,
         searchTerm.status,
         currentPage
       ).finally(() => setIsLoading(false));
+      setIsLoadingUsers(false)
     }
   }, [currentPage, searchTerm, isSearching, searchUser]);
 
+  useEffect(() => {
+    if (nome === "" && username === "" && status.value === "" && currentPage === 0 && !isLoadingUsers) {
+      setIsLoadingUsers(true);
+      setIsSearching(false);
+      getUsers();
+    }
+  }, [nome, username, status, currentPage]);
 
 
   const onSubmit = async (e: FormEventType) => {
