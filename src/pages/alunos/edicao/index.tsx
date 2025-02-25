@@ -26,6 +26,7 @@ const EditStudent = () => {
   const [cursoOptions, setCursoOptions] = useState<CursoOption[]>([]);
   const [page, setPage] = useState<number>(0);
   const [coursesLoaded, setCoursesLoaded] = useState<boolean>(false);
+  const [id, setId] = useState<string>(student.id);
   const [cpf, setCpf] = useState<string>(student.cpf);
   const [matricula, setMatricula] = useState<string>(student.matricula);
   const [nome, setNome] = useState<string>(student.nome);
@@ -55,6 +56,7 @@ const EditStudent = () => {
     try {
       setIsLoading(true);
       const newStudent: AlunoType = {
+        id,
         cpf,
         nome,
         matricula,
