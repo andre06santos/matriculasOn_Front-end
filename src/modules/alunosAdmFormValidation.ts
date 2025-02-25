@@ -18,6 +18,8 @@ import { ErrorMessagesType } from "./administradores/infrastructure/types";
 import { SetStateAction } from "react";
 
 export const cpfMask = (cpf: string) => {
+  if (!cpf) return;
+
   const cpfNumber = cpf.replace(/\D/g, "");
   const cpfWithMask = cpfNumber
     .replace(/^(\d{3})(\d)/, "$1.$2")
@@ -48,7 +50,7 @@ export const handleChangeCpf = (
     return;
   }
 
-  setCpf(formattedCpf);
+  setCpf(formattedCpf!);
 
   if (cleanedCpf.length < CPF_LENGTH) {
     const messageObject = { cpf: "Digite o CPF corretamente" };

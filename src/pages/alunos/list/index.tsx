@@ -17,16 +17,9 @@ import { Pagination } from "../../../ui/paginacao";
 import { cpfMask } from "../../../modules/alunosAdmFormValidation";
 
 const ListStudents = () => {
-  const {
-    students,
-    getStudent,
-    deleteStudent,
-    totalPage,
-    totalElements,
-    searchStudent,
-  } = useAdmin();
+  const { students, getStudent, totalPage, totalElements, searchStudent } =
+    useAdmin();
 
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [matricula, setMatricula] = useState<string>("");
   const [cpf, setCpf] = useState<string>("");
@@ -224,7 +217,7 @@ const ListStudents = () => {
             </thead>
             <tbody>
               {students.map((student: AlunoType, index: number) => {
-                const cpfFormatado = cpfMask(student.cpf);
+                const cpfFormatado = cpfMask(student.cpf!);
                 return (
                   <tr key={index}>
                     <td>{student.matricula}</td>
