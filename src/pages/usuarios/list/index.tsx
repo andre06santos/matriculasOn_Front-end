@@ -129,9 +129,6 @@ const ListUser = () => {
 
     const emptyFieldName = validateEmptyString(nome);
     const emptyFieldUsername = validateEmptyString(username);
-    if (status.value === "") {
-      setStatus(undefined);
-    }
 
     if (emptyFieldName && emptyFieldUsername && !status.value) {
       toast("Preencha um dos campos para filtrar!", {
