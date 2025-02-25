@@ -69,6 +69,7 @@ const ListPermissions = () => {
     if (descricao === "" && currentPage == 0) {
       setIsSearching(false);
       getPermissions();
+      onClean();
     }
   }, [descricao, currentPage]);
 

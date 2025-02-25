@@ -45,6 +45,7 @@ const ListCourses = () => {
     if (name === "" && currentPage === 0) {
       setIsSearching(false);
       getCourses();
+      onClean();
     }
   }, [name, currentPage]);
 
