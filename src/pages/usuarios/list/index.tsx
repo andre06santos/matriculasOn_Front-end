@@ -47,11 +47,11 @@ const ListUser = () => {
   let statusMessage;
 
   if (searchTerm.username) {
-    statusMessage = `por "${searchTerm.username}"`;
+    statusMessage = searchTerm.username;
   } else if (searchTerm.nome) {
-    statusMessage = `por "${searchTerm.nome}"`;
+    statusMessage = searchTerm.nome;
   } else if (searchTerm.status.label) {
-    statusMessage = "pelo status";
+    statusMessage = "status";
   }
 
   const closeModal = () => {
