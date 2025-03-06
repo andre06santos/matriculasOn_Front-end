@@ -100,14 +100,11 @@ const ListUser = () => {
     getUsers();
   };
 
+  const isFormEmpty =
+    nome === "" && username === "" && status.value === "" && currentPage === 0;
+
   useEffect(() => {
-    if (
-      nome === "" &&
-      username === "" &&
-      status.value === "" &&
-      currentPage === 0 &&
-      !isLoadingUsers
-    ) {
+    if (isFormEmpty) {
       setIsSearching(false);
       getUsers();
     }
