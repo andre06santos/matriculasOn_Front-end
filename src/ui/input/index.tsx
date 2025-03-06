@@ -1,6 +1,6 @@
+import React, { useState } from "react";
 import Select from "react-select";
 import "./styles.css";
-import React, { useState } from "react";
 
 type inputTypeProps =
   | "text"
@@ -17,7 +17,7 @@ type InputProps = {
   selectOptions?: { value: string; label: string }[];
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   isPassword?: boolean;
-  value?: string;
+  value?: string | { label: string; value: string };
   isLoading?: boolean;
   loadMoreText?: string;
   onLoadMore?: () => void;
@@ -63,6 +63,7 @@ const Input = React.forwardRef<
         ? `${inputCollors[variant]} input-button`
         : "input-text"
     }`;
+
     const optionsWithLoadMore = selectOptions
       ? [
           ...selectOptions,
@@ -113,7 +114,7 @@ const Input = React.forwardRef<
               placeholder="Escolha uma opção"
               noOptionsMessage={() => "Nenhuma opção encontrada!"}
               className="input-select"
-              value={value}
+              value={value && value.value ? value : null}
               onChange={onChange}
               {...rest}
               getOptionLabel={renderOptionLabel}
