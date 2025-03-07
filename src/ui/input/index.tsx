@@ -103,6 +103,7 @@ const Input = React.forwardRef<
       return e.label;
     };
 
+    const selectedOption = value && value.value ? value : null;
     return (
       <div className="input-component">
         {label && <label>{label}</label>}
@@ -114,7 +115,7 @@ const Input = React.forwardRef<
               placeholder="Escolha uma opção"
               noOptionsMessage={() => "Nenhuma opção encontrada!"}
               className="input-select"
-              value={value && value.value ? value : null}
+              value={selectedOption}
               onChange={onChange}
               {...rest}
               getOptionLabel={renderOptionLabel}
