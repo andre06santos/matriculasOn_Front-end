@@ -17,7 +17,7 @@ type InputProps = {
   selectOptions?: { value: string; label: string }[];
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   isPassword?: boolean;
-  value?: string | { label: string; value: string };
+  optionValue?: string | { label: string; value: string };
   isLoading?: boolean;
   loadMoreText?: string;
   onLoadMore?: () => void;
@@ -39,7 +39,7 @@ const Input = React.forwardRef<
       selectOptions,
       onChange,
       isPassword,
-      value,
+      optionValue,
       isLoading = false,
       loadMoreText = "Carregar mais cursos...",
       onLoadMore,
@@ -102,7 +102,7 @@ const Input = React.forwardRef<
       return e.label;
     };
 
-    const selectedOption = value && value.hasOwnProperty('value') && value['value'] ? value : null;
+    const selectedOption = optionValue && optionValue.hasOwnProperty('value') && optionValue['value'] ? optionValue : null;
     return (
       <div className="input-component">
         {label && <label>{label}</label>}
@@ -129,7 +129,7 @@ const Input = React.forwardRef<
                 type={inputType}
                 className={isPassword ? "password-input" : inputClass}
                 onChange={onChange}
-                value={value}
+                value={optionValue}
                 ref={ref as React.RefObject<HTMLInputElement>}
                 autoComplete="off"
                 {...rest}
