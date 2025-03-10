@@ -58,26 +58,25 @@ const Input = React.forwardRef<
       bgSuccess: "bg-success",
     };
 
-    const inputClass = `input ${
-      inputType === "reset" || inputType === "submit"
-        ? `${inputCollors[variant]} input-button`
-        : "input-text"
-    }`;
+    const inputClass = `input ${inputType === "reset" || inputType === "submit"
+      ? `${inputCollors[variant]} input-button`
+      : "input-text"
+      }`;
 
     const optionsWithLoadMore = selectOptions
       ? [
-          ...selectOptions,
-          ...(showLoadMore && selectOptions.length < totalElements
-            ? [
-                {
-                  value: "load-more",
-                  label: allCoursesLoaded
-                    ? "Todos os cursos já foram carregados"
-                    : loadMoreText,
-                },
-              ]
-            : []),
-        ]
+        ...selectOptions,
+        ...(showLoadMore && selectOptions.length < totalElements
+          ? [
+            {
+              value: "load-more",
+              label: allCoursesLoaded
+                ? "Todos os cursos já foram carregados"
+                : loadMoreText,
+            },
+          ]
+          : []),
+      ]
       : [];
 
     const handleLoadMore = () => {
@@ -103,7 +102,7 @@ const Input = React.forwardRef<
       return e.label;
     };
 
-    const selectedOption = value && value.value ? value : null;
+    const selectedOption = value && value.hasOwnProperty('value') && value['value'] ? value : null;
     return (
       <div className="input-component">
         {label && <label>{label}</label>}
