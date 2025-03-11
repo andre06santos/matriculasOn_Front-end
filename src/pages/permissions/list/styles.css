@@ -84,6 +84,8 @@ table tbody tr:nth-child(odd) {
 
   & i {
     cursor: pointer;
+    margin-right: 6px;
+
     transition: scale 0.1s ease;
   }
 

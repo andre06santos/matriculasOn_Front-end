@@ -15,9 +15,10 @@ import {
 } from "../infrastructure/types";
 
 export type AdminContextType = {
+  totalElements: number;
   totalPage: number;
   admins: AdminType[];
-  addAdmin: (newAdmin: AdminType) => Promise<AdminType>;
+  addAdmin: (newAdmin: UserType) => Promise<UserType>;
   editAdmin: (params: {
     id: string;
     newAdmin: AdminType;
@@ -34,17 +35,19 @@ export type AdminContextType = {
           label: string;
           value: string;
         }
-      | undefined
+      | undefined,
+    page?: number
   ) => Promise<UserType[]>;
   students: AlunoType[];
   editStudent: (params: { newStudent: AlunoType }) => Promise<AlunoType>;
   searchStudent: (
     name: string,
     cpf: string,
-    matricula: string
-  ) => Promise<void>;
+    matricula: string,
+    page?: number
+  ) => Promise<AlunoType[]>;
   getStudent: () => Promise<void>;
-  addStudents: (newStudent: AlunoType) => Promise<AlunoType>;
+  addStudents: (newStudent: UserType) => Promise<UserType>;
   deleteStudent: (id: string) => Promise<AlunoType>;
   courses: CursoType[];
   addCourse: (newCourse: CursoType) => Promise<CursoType>;
@@ -52,7 +55,7 @@ export type AdminContextType = {
     id: string;
     newCourse: CursoType;
   }) => Promise<CursoType>;
-  getCourses: (page: number) => Promise<void>;
+  getCourses: () => Promise<void>;
   searchCourse: (
     name: string,
     page?: number,
@@ -62,7 +65,10 @@ export type AdminContextType = {
   permissions: PermissionsType[];
   addPermission: (newPermission: PermissionsType) => Promise<PermissionsType>;
   getPermissions: () => Promise<void>;
-  searchPermission: (descricao: string) => Promise<void>;
+  searchPermission: (
+    descricao: string,
+    page: number
+  ) => Promise<PermissionsType[]>;
   editPermission: (params: {
     id: string;
     newPermission: PermissionsType;
@@ -80,6 +86,7 @@ export const AdminContext = createContext<AdminContextType | undefined>(
 
 export const AdminProvider = ({ children }: AdminProviderProps) => {
   const [courses, setCourses] = useState<CursoType[]>([]);
+  const [totalElements, setTotalElements] = useState<number>(0);
   const [totalPage, setTotalPages] = useState<number>(0);
 
   const [admins, setAdmins] = useState<AdminType[]>([]);
@@ -87,26 +94,27 @@ export const AdminProvider = ({ children }: AdminProviderProps) => {
   const [users, setUsers] = useState<UserType[]>([]);
   const [permissions, setPermissions] = useState<PermissionsType[]>([]);
 
-  const getCourses = useCallback(
-    async (page: number) => {
-      try {
-        const userRequest = {
-          endpoint: `/cursos?page=${page}`,
-          method: "GET",
-        };
+  const getCourses = useCallback(async () => {
+    try {
+      const userRequest = {
+        endpoint: `/cursos`,
+        method: "GET",
+      };
 
-        const response = await fetchData(userRequest);
+      const response = await fetchData(userRequest);
 
-        setCourses(response.content);
-        setTotalPages(response.totalPages);
-      } catch (error) {
-        console.error("Erro ao buscar cursos:", (error as Error).message);
-        setCourses([]);
-        setTotalPages(0);
-      }
-    },
-    [fetchData, setCourses, setTotalPages]
-  );
+      const __courses = response.content;
+      const _totalPages = response.totalPages;
+      const _totalElements = response.totalElements;
+
+      setCourses(__courses);
+      setTotalPages(_totalPages);
+      setTotalElements(_totalElements);
+    } catch (error) {
+      console.error("Erro ao buscar cursos:", (error as Error).message);
+      throw new Error((error as Error).message);
+    }
+  }, [fetchData, setCourses, setTotalPages]);
 
   const searchCourse = useCallback(async (name: string, page: number = 0) => {
     try {
@@ -116,24 +124,28 @@ export const AdminProvider = ({ children }: AdminProviderProps) => {
 
       const response = await fetchData(userRequest);
 
-      const _courses = response.content;
+      const __courses = response.content;
+      const _totalPages = response.totalPages;
+      const _totalElements = response.totalElements;
 
-      setTotalPages(response.totalPages);
-      setCourses(_courses);
-      return _courses;
+      setCourses(__courses);
+      setTotalPages(_totalPages);
+      setTotalElements(_totalElements);
+
+      return courses;
     } catch (error) {
       console.error((error as Error).message);
       throw new Error((error as Error).message);
     }
   }, []);
-
   const searchStudent = useCallback(
-    async (name: string, cpf: string, matricula: string) => {
+    async (name: string, cpf: string, matricula: string, page?: number) => {
       try {
         const queryParams = new URLSearchParams();
         if (name) queryParams.append("nome", name.trim());
         if (matricula) queryParams.append("matricula", matricula.trim());
         if (cpf) queryParams.append("cpf", cpf.trim());
+        if (page) queryParams.append("page", page.toString());
 
         const endpoint = `/alunos?${queryParams.toString()}`;
         const userRequest = { endpoint };
@@ -141,8 +153,14 @@ export const AdminProvider = ({ children }: AdminProviderProps) => {
         const response = await fetchData(userRequest);
 
         const _students = response.content;
+        const _totalPages = response.totalPages;
+        const _totalElements = response.totalElements;
 
         setStudents(_students);
+        setTotalPages(_totalPages);
+        setTotalElements(_totalElements);
+
+        return _students;
       } catch (error) {
         console.error((error as Error).message);
         throw new Error((error as Error).message);
@@ -150,23 +168,20 @@ export const AdminProvider = ({ children }: AdminProviderProps) => {
     },
     []
   );
-
   const searchUser = useCallback(
     async (
       username: string,
       name: string,
-      status:
-        | {
-            label: string;
-            value: string;
-          }
-        | undefined
+      status: { label: string; value: string } | undefined,
+      page?: number
     ): Promise<UserType[]> => {
       try {
         const queryParams = new URLSearchParams();
+
         if (username) queryParams.append("username", username.trim());
         if (name) queryParams.append("nome", name.trim());
         if (status) queryParams.append("status", status.value);
+        if (page) queryParams.append("page", page.toString());
 
         const endpoint = `/usuarios?${queryParams.toString()}`;
         const userRequest = { endpoint };
@@ -174,8 +189,13 @@ export const AdminProvider = ({ children }: AdminProviderProps) => {
         const response = await fetchData(userRequest);
 
         const _users = response.content;
+        const _totalPages = response.totalPages;
+        const _totalElements = response.totalElements;
 
         setUsers(_users);
+        setTotalPages(_totalPages);
+        setTotalElements(_totalElements);
+
         return _users;
       } catch (error) {
         console.error((error as Error).message);
@@ -263,10 +283,10 @@ export const AdminProvider = ({ children }: AdminProviderProps) => {
     async ({ newStudent }: { newStudent: AlunoType }) => {
       try {
         const userRequest = {
-          endpoint: `/alunos/${newStudent.pessoa.id}`,
+          endpoint: `/alunos/${newStudent.id}`,
           config: {
             method: "PUT",
-            data: JSON.stringify(newStudent.pessoa),
+            data: JSON.stringify(newStudent),
           },
         };
 
@@ -289,21 +309,25 @@ export const AdminProvider = ({ children }: AdminProviderProps) => {
   const getStudent = useCallback(async () => {
     try {
       const userRequest = {
-        endpoint: "/alunos",
+        endpoint: `/alunos`,
         method: "GET",
       };
 
       const response = await fetchData(userRequest);
-
       const _students = response.content;
+      const _totalPages = response.totalPages;
+      const _totalElements = response.totalElements;
+
       setStudents(_students);
+      setTotalPages(_totalPages);
+      setTotalElements(_totalElements);
     } catch (error) {
       console.error((error as Error).message);
       throw new Error((error as Error).message);
     }
   }, []);
 
-  const addStudents = useCallback(async (newStudent: AlunoType) => {
+  const addStudents = useCallback(async (newStudent: UserType) => {
     try {
       const userRequest = {
         endpoint: "/usuarios/alunos/novo-aluno",
@@ -349,7 +373,7 @@ export const AdminProvider = ({ children }: AdminProviderProps) => {
   const getUsers = useCallback(async () => {
     try {
       const userRequest = {
-        endpoint: "/usuarios",
+        endpoint: `/usuarios`,
         config: {
           method: "GET",
         },
@@ -358,15 +382,19 @@ export const AdminProvider = ({ children }: AdminProviderProps) => {
       const response = await fetchData(userRequest);
 
       const _users = response.content;
+      const _totalPages = response.totalPages;
+      const _totalElements = response.totalElements;
 
       setUsers(_users);
+      setTotalPages(_totalPages);
+      setTotalElements(_totalElements);
     } catch (error) {
       console.error((error as Error).message);
       throw new Error((error as Error).message);
     }
   }, []);
 
-  const addAdmin = useCallback(async (newAdmin: AdminType) => {
+  const addAdmin = useCallback(async (newAdmin: UserType) => {
     try {
       const userRequest = {
         endpoint: "/usuarios/administradores/novo-administrador",
@@ -460,7 +488,7 @@ export const AdminProvider = ({ children }: AdminProviderProps) => {
   const getPermissions = useCallback(async () => {
     try {
       const userRequest = {
-        endpoint: "permissoes",
+        endpoint: `/permissoes`,
         config: {
           method: "GET",
         },
@@ -469,13 +497,17 @@ export const AdminProvider = ({ children }: AdminProviderProps) => {
       const response = await fetchData(userRequest);
 
       const _permissions = response.content;
+      const _totalPages = response.totalPages;
+      const _totalElements = response.totalElements;
 
       setPermissions(_permissions);
+      setTotalPages(_totalPages);
+      setTotalElements(_totalElements);
     } catch (error) {
-      console.error((error as Error).message);
+      console.error("Erro ao buscar cursos:", (error as Error).message);
       throw new Error((error as Error).message);
     }
-  }, []);
+  }, [fetchData, setPermissions, setTotalPages]);
 
   const addPermission = useCallback(async (newPermission: PermissionsType) => {
     try {
@@ -500,22 +532,31 @@ export const AdminProvider = ({ children }: AdminProviderProps) => {
     }
   }, []);
 
-  const searchPermission = useCallback(async (descricao: string) => {
-    try {
-      const userRequest = {
-        endpoint: `/permissoes?descricao=${descricao}`,
-      };
+  const searchPermission = useCallback(
+    async (descricao: string, page: number = 0) => {
+      try {
+        const userRequest = {
+          endpoint: `/permissoes?descricao=${descricao}&page=${page}`,
+        };
 
-      const response = await fetchData(userRequest);
+        const response = await fetchData(userRequest);
 
-      const _permissions = response.content;
+        const _permissions = response.content;
+        const _totalPages = response.totalPages;
+        const _totalElements = response.totalElements;
 
-      setPermissions(_permissions);
-    } catch (error) {
-      console.error((error as Error).message);
-      throw new Error((error as Error).message);
-    }
-  }, []);
+        setPermissions(_permissions);
+        setTotalPages(_totalPages);
+        setTotalElements(_totalElements);
+
+        return _permissions;
+      } catch (error) {
+        console.error((error as Error).message);
+        throw new Error((error as Error).message);
+      }
+    },
+    []
+  );
 
   const editPermission = useCallback(
     async ({
@@ -578,6 +619,7 @@ export const AdminProvider = ({ children }: AdminProviderProps) => {
   const value = useMemo(
     () => ({
       admins,
+      totalElements,
       totalPage,
       addAdmin,
       editAdmin,
@@ -607,6 +649,7 @@ export const AdminProvider = ({ children }: AdminProviderProps) => {
     }),
     [
       admins,
+      totalElements,
       totalPage,
       addAdmin,
       editAdmin,

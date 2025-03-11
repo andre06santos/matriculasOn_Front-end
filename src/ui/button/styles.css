@@ -22,7 +22,13 @@
     background-color: rgba(128, 128, 128, 0.9);
   }
 }
+.btn-load {
+  background-color: yellowgreen;
 
+  &:hover {
+    background-color: rgb(137, 187, 39);
+  }
+}
 .btn-success {
   background-color: #008245;
 

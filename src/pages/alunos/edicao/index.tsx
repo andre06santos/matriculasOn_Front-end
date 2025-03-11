@@ -1,15 +1,7 @@
-import "./styles.css";
+import { useEffect, useState } from "react";
 import { Input } from "../../../ui/input";
 import { Button } from "../../../ui/button";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
-import {
-  handleChangeCpf,
-  handleChangeEmail,
-  handleChangeMatricula,
-  handleChangeNome,
-} from "../../../modules/alunosAdmFormValidation";
-import { useAdmin } from "../../../modules/administradores/views/hooks/use-administrador";
 import { Spinner } from "../../../ui/spinner";
 import { toast } from "react-toastify";
 import {
@@ -18,33 +10,36 @@ import {
   CursoOption,
   ErrorMessagesType,
   FormEventType,
-  ObjectCursoType,
 } from "../../../modules/administradores/infrastructure/types";
+import { useAdmin } from "../../../modules/administradores/views/hooks/use-administrador";
+import {
+  handleChangeCpf,
+  handleChangeEmail,
+  handleChangeMatricula,
+  handleChangeNome,
+} from "../../../modules/alunosAdmFormValidation";
 
 const EditStudent = () => {
   const { state: student } = useLocation();
-  const { editStudent, courses, getCourses } = useAdmin();
+  const { editStudent, courses, getCourses, searchCourse, totalElements } =
+    useAdmin();
   const [cursoOptions, setCursoOptions] = useState<CursoOption[]>([]);
-  const id = student.pessoa.id;
-
-  const tipo = "ALUNO";
-  const [cpf, setCpf] = useState<string>(student.pessoa.cpf);
-  const [matricula, setMatricula] = useState<string>(student.pessoa.matricula);
-  const [nome, setNome] = useState<string>(student.pessoa.nome);
-  const [email, setEmail] = useState<string>(student.pessoa.email);
+  const [page, setPage] = useState<number>(0);
+  const [coursesLoaded, setCoursesLoaded] = useState<boolean>(false);
+  const [id, setId] = useState<string>(student.id);
+  const [cpf, setCpf] = useState<string>(student.cpf);
+  const [matricula, setMatricula] = useState<string>(student.matricula);
+  const [nome, setNome] = useState<string>(student.nome);
+  const [email, setEmail] = useState<string>(student.email);
   const [curso, setCurso] = useState<CursoOption | undefined>(
-    student.pessoa.curso
-      ? { label: student.pessoa.curso.nome, value: student.pessoa.curso.id }
+    student.curso
+      ? { label: student.curso.nome, value: student.curso.id }
       : undefined
   );
-
   const [errorMessages, setErrorMessages] = useState<ErrorMessagesType>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isLoadingCourses, setIsLoadingCourses] = useState<boolean>(true);
-  const [coursesLoaded, setCoursesLoaded] = useState<boolean>(false);
   const navigate = useNavigate();
-
-  console.log(student.pessoa);
 
   const handleSubmit = async (e: FormEventType) => {
     e.preventDefault();
@@ -61,16 +56,13 @@ const EditStudent = () => {
     try {
       setIsLoading(true);
       const newStudent: AlunoType = {
-        pessoa: {
-          tipo,
-          id,
-          cpf,
-          nome,
-          matricula,
-          email,
-          curso: {
-            id: curso?.value ? Number(curso.value) : undefined,
-          },
+        id,
+        cpf,
+        nome,
+        matricula,
+        email,
+        curso: {
+          id: curso?.value ? Number(curso.value) : undefined,
         },
       };
 
@@ -92,11 +84,22 @@ const EditStudent = () => {
     }
   };
 
+  const loadMoreCourses = async () => {
+    try {
+      setIsLoadingCourses(true);
+      await searchCourse("", page + 1);
+      setPage(page + 1);
+    } catch (error) {
+      console.error("Erro ao carregar mais cursos:", error);
+      setIsLoadingCourses(false);
+    }
+  };
+
   useEffect(() => {
     const loadCourses = async () => {
       try {
         if (!coursesLoaded) {
-          await getCourses(0);
+          await getCourses();
           setCoursesLoaded(true);
         }
 
@@ -168,7 +171,9 @@ const EditStudent = () => {
                 selectOptions={cursoOptions}
                 value={curso}
                 onChange={setCurso}
-                required
+                showLoadMore={courses.length < totalElements}
+                onLoadMore={loadMoreCourses}
+                totalElements={totalElements}
               />
             </div>
             <div className="form-actions flex-column-gap20">

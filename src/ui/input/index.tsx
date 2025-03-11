@@ -1,6 +1,6 @@
+import React, { useState } from "react";
 import Select from "react-select";
 import "./styles.css";
-import React, { useState } from "react";
 
 type inputTypeProps =
   | "text"
@@ -17,7 +17,13 @@ type InputProps = {
   selectOptions?: { value: string; label: string }[];
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   isPassword?: boolean;
-  value?: string;
+  optionValue?: string | { label: string; value: string };
+  isLoading?: boolean;
+  loadMoreText?: string;
+  onLoadMore?: () => void;
+  showLoadMore?: boolean;
+  allCoursesLoaded?: boolean;
+  totalElements?: number;
   [key: string]: any;
 };
 
@@ -33,7 +39,13 @@ const Input = React.forwardRef<
       selectOptions,
       onChange,
       isPassword,
-      value,
+      optionValue,
+      isLoading = false,
+      loadMoreText = "Carregar mais cursos...",
+      onLoadMore,
+      showLoadMore = false,
+      allCoursesLoaded = false,
+      totalElements = 0,
       ...rest
     },
     ref
@@ -51,20 +63,64 @@ const Input = React.forwardRef<
       : "input-text"
       }`;
 
+    const optionsWithLoadMore = selectOptions
+      ? [
+        ...selectOptions,
+        ...(showLoadMore && selectOptions.length < totalElements
+          ? [
+            {
+              value: "load-more",
+              label: allCoursesLoaded
+                ? "Todos os cursos já foram carregados"
+                : loadMoreText,
+            },
+          ]
+          : []),
+      ]
+      : [];
+
+    const handleLoadMore = () => {
+      if (onLoadMore) {
+        onLoadMore();
+      }
+    };
+
+    const renderOptionLabel = (e: any) => {
+      if (e.value === "load-more") {
+        return (
+          <div
+            style={{
+              color: "black",
+              cursor: "pointer",
+            }}
+            onClick={handleLoadMore}
+          >
+            {e.label}
+          </div>
+        );
+      }
+      return e.label;
+    };
+
+    const selectedOption = optionValue && optionValue.hasOwnProperty('value') && optionValue['value'] ? optionValue : null;
     return (
       <div className="input-component">
         {label && <label>{label}</label>}
 
         {selectOptions ? (
-          <Select
-            options={selectOptions}
-            placeholder="Escolha uma opção"
-            noOptionsMessage={() => "Nenhuma opção encontrada!"}
-            className="input-select"
-            value={value}
-            onChange={onChange}
-            {...rest}
-          />
+          <div className="input-select-container">
+            <Select
+              options={optionsWithLoadMore}
+              placeholder="Escolha uma opção"
+              noOptionsMessage={() => "Nenhuma opção encontrada!"}
+              className="input-select"
+              value={selectedOption}
+              onChange={onChange}
+              {...rest}
+              getOptionLabel={renderOptionLabel}
+              getOptionValue={(e) => (e.value === "load-more" ? "" : e.value)}
+            />
+          </div>
         ) : (
           <>
             <div className={isPassword ? "input-container" : ""}>
@@ -73,7 +129,7 @@ const Input = React.forwardRef<
                 type={inputType}
                 className={isPassword ? "password-input" : inputClass}
                 onChange={onChange}
-                value={value}
+                value={optionValue}
                 ref={ref as React.RefObject<HTMLInputElement>}
                 autoComplete="off"
                 {...rest}

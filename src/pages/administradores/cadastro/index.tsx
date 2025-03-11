@@ -8,6 +8,7 @@ import {
   ChangeEventType,
   FormEventType,
   ErrorMessagesType,
+  UserType,
 } from "../../../modules/administradores/infrastructure/types";
 import {
   handleChangeCargo,
@@ -47,12 +48,14 @@ const AdministratorRegistration = () => {
         position: "top-center",
         type: "error",
       });
+      return;
     }
 
     try {
       setIsLoading(true);
 
-      const admin: AdminType = {
+      const admin: UserType = {
+        senha,
         pessoa: {
           tipo,
           cpf,
@@ -61,7 +64,6 @@ const AdministratorRegistration = () => {
           email,
           departamento,
         },
-        senha,
       };
 
       await addAdmin(admin);
@@ -156,7 +158,11 @@ const AdministratorRegistration = () => {
             isPassword
             onChange={(e: ChangeEventType) => {
               handleChangeSenha(e.target.value, setErrorMessages, setSenha);
-              verificaSenhasIguais(senha, conferirSenha, setErrorMessages);
+              verificaSenhasIguais(
+                e.target.value,
+                conferirSenha,
+                setErrorMessages
+              );
             }}
           />
           <Input
@@ -171,7 +177,7 @@ const AdministratorRegistration = () => {
                 setErrorMessages,
                 setConferirSenha
               );
-              verificaSenhasIguais(senha, e.target.value, setErrorMessages);
+              verificaSenhasIguais(e.target.value, senha, setErrorMessages);
             }}
           />
         </div>

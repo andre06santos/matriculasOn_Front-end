@@ -16,8 +16,14 @@ import {
 import { Pagination } from "../../../ui/paginacao";
 
 const ListCourses = () => {
-  const { courses, getCourses, searchCourse, deleteCourse, totalPage } =
-    useAdmin();
+  const {
+    courses,
+    getCourses,
+    searchCourse,
+    deleteCourse,
+    totalPage,
+    totalElements,
+  } = useAdmin();
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -30,21 +36,18 @@ const ListCourses = () => {
   const nameInput = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
-    setIsLoading(true);
-
     if (isSearching) {
       searchCourse(searchTerm, currentPage).finally(() => setIsLoading(false));
-    } else {
-      getCourses(currentPage).finally(() => setIsLoading(false));
     }
-  }, [currentPage, isSearching, searchTerm, getCourses, searchCourse]);
+  }, [currentPage, searchTerm, searchCourse]);
 
   useEffect(() => {
-    if (name === "") {
+    if (name === "" && currentPage === 0) {
       setIsSearching(false);
-      getCourses(0);
+      getCourses();
+      onClean();
     }
-  }, [name, getCourses]);
+  }, [name, currentPage]);
 
   const openModal = (courseId: string) => {
     setIsModalOpen(true);
@@ -63,7 +66,7 @@ const ListCourses = () => {
   const onReset = () => {
     if (name === "") return;
     onClean();
-    getCourses(0);
+    getCourses();
   };
 
   const onDelete = async () => {
@@ -74,7 +77,7 @@ const ListCourses = () => {
       const newPage =
         currentPage > 0 && courses.length === 1 ? currentPage - 1 : currentPage;
       setCurrentPage(newPage);
-      getCourses(newPage);
+      searchCourse(searchTerm, newPage);
     } catch (error) {
       toast.error("Ocorreu um erro ao tentar excluir o curso!");
       console.error(error);
@@ -107,12 +110,11 @@ const ListCourses = () => {
   };
 
   const onPageChange = (page: number) => {
-    setCurrentPage(page);
-    setIsLoading(true);
-    if (isSearching) {
+    if (page != currentPage) {
+      setCurrentPage(page);
+      setIsSearching(true);
+      setIsLoading(true);
       searchCourse(searchTerm, page).finally(() => setIsLoading(false));
-    } else {
-      getCourses(page).finally(() => setIsLoading(false));
     }
   };
 
@@ -120,12 +122,9 @@ const ListCourses = () => {
     if (currentPage < totalPage - 1) {
       const newPage = currentPage + 1;
       setCurrentPage(newPage);
+      setIsSearching(true);
       setIsLoading(true);
-      if (isSearching) {
-        searchCourse(searchTerm, newPage).finally(() => setIsLoading(false));
-      } else {
-        getCourses(newPage).finally(() => setIsLoading(false));
-      }
+      searchCourse(searchTerm, newPage).finally(() => setIsLoading(false));
     }
   };
 
@@ -133,12 +132,9 @@ const ListCourses = () => {
     if (currentPage > 0) {
       const newPage = currentPage - 1;
       setCurrentPage(newPage);
+      setIsSearching(true);
       setIsLoading(true);
-      if (isSearching) {
-        searchCourse(searchTerm, newPage).finally(() => setIsLoading(false));
-      } else {
-        getCourses(newPage).finally(() => setIsLoading(false));
-      }
+      searchCourse(searchTerm, newPage).finally(() => setIsLoading(false));
     }
   };
 
@@ -170,7 +166,7 @@ const ListCourses = () => {
         onReset={onReset}
       />
 
-      {courses.length === 0 ? (
+      {totalElements === 0 ? (
         <NotFound
           message={
             isSearching
@@ -181,10 +177,10 @@ const ListCourses = () => {
       ) : (
         <>
           <p>
-            {isSearching
+            {isSearching && searchTerm
               ? `Total de cursos encontrados ao filtrar por "${searchTerm}": `
               : "Total de cursos encontrados: "}
-            <span className="courses-quantity">{courses.length}</span>
+            <span className="courses-quantity">{totalElements}</span>
           </p>
 
           <table className="table">

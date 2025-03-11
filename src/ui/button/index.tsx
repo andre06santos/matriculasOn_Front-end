@@ -10,7 +10,7 @@ type SelectOption = {
 type ButtonProps = {
   label: string;
   onClick?: () => void;
-  type?: "success" | "cancel" | "danger";
+  type?: "success" | "cancel" | "danger" | "load";
   selectOptions?: SelectOption[];
 };
 const Button = ({
@@ -26,6 +26,7 @@ const Button = ({
     success: "btn-success",
     cancel: "btn-cancel",
     danger: "btn-danger",
+    load: "btn-load",
   };
 
   const buttonClass = `button ${buttonClasses[type]} ${

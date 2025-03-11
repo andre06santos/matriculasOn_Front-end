@@ -17,6 +17,10 @@
   max-width: 1050px;
 }
 
+.button-container {
+  margin-top: 17px;
+}
+
 .form-actions {
   display: flex;
   flex-direction: row;

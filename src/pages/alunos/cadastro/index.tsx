@@ -16,12 +16,12 @@ import { useAdmin } from "../../../modules/administradores/views/hooks/use-admin
 import { Spinner } from "../../../ui/spinner";
 import { toast } from "react-toastify";
 import {
-  AlunoType,
   ChangeEventType,
   CursoOption,
   ErrorMessagesType,
   FormEventType,
   ObjectCursoType,
+  UserType,
 } from "../../../modules/administradores/infrastructure/types";
 
 const RegisterStudent = () => {
@@ -38,8 +38,10 @@ const RegisterStudent = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isLoadingCourses, setIsLoadingCourses] = useState<boolean>(true);
   const [coursesLoaded, setCoursesLoaded] = useState<boolean>(false);
+  const [page, setPage] = useState<number>(0);
   const navigate = useNavigate();
-  const { addStudents, courses, getCourses } = useAdmin();
+  const { addStudents, courses, getCourses, searchCourse, totalElements } =
+    useAdmin();
 
   const handleSubmit = async (e: FormEventType) => {
     e.preventDefault();
@@ -55,7 +57,7 @@ const RegisterStudent = () => {
 
     try {
       setIsLoading(true);
-      const aluno: AlunoType = {
+      const aluno: UserType = {
         senha,
         pessoa: {
           tipo,
@@ -100,17 +102,30 @@ const RegisterStudent = () => {
     setErrorMessages([]);
   };
 
+  const loadMoreCourses = async () => {
+    try {
+      setIsLoadingCourses(true);
+      await searchCourse("", page + 1);
+      setPage(page + 1);
+    } catch (error) {
+      console.error("Erro ao carregar mais cursos:", error);
+      setIsLoadingCourses(false);
+    }
+  };
+
   useEffect(() => {
     const loadCourses = async () => {
       try {
         if (!coursesLoaded) {
-          await getCourses(0);
+          await getCourses();
           setCoursesLoaded(true);
         }
+
         const updatedOptions = courses.map((course) => ({
           label: course.nome,
           value: course.id,
         }));
+
         setCursoOptions(updatedOptions);
         setIsLoadingCourses(false);
       } catch (error) {
@@ -121,6 +136,16 @@ const RegisterStudent = () => {
 
     loadCourses();
   }, [courses, getCourses, coursesLoaded]);
+
+  useEffect(() => {
+    if (courses.length > 0) {
+      const updatedOptions = courses.map((course) => ({
+        label: course.nome,
+        value: course.id,
+      }));
+      setCursoOptions(updatedOptions);
+    }
+  }, [courses]);
 
   return (
     <div className="flex-column-gap20">
@@ -171,9 +196,11 @@ const RegisterStudent = () => {
               <Input
                 label="Curso"
                 selectOptions={cursoOptions}
-                required
                 value={curso}
                 onChange={setCurso}
+                showLoadMore={courses.length}
+                onLoadMore={loadMoreCourses}
+                totalElements={totalElements}
               />
               <Input
                 label="Senha"

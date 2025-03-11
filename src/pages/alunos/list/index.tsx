@@ -12,20 +12,15 @@ import {
   AlunosSearchTermType,
   AlunoType,
   FormEventType,
-  UserType,
 } from "../../../modules/administradores/infrastructure/types";
-const ListStudents = () => {
-  const {
-    users,
-    getUsers,
-    students,
-    getStudent,
-    deleteStudent,
-    searchStudent,
-  } = useAdmin();
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+import { Pagination } from "../../../ui/paginacao";
+import { cpfMask } from "../../../modules/alunosAdmFormValidation";
 
+const ListStudents = () => {
+  const { students, getStudent, totalPage, totalElements, searchStudent } =
+    useAdmin();
+
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [matricula, setMatricula] = useState<string>("");
   const [cpf, setCpf] = useState<string>("");
   const [nome, setNome] = useState<string>("");
@@ -34,75 +29,51 @@ const ListStudents = () => {
     cpf: "",
     matricula: "",
   });
-  const [studentId, setStudentId] = useState<string>("");
   const [isSearching, setIsSearching] = useState<boolean>(false);
+  const [currentPage, setCurrentPage] = useState(0);
 
   const nameInput = useRef<HTMLInputElement | null>(null);
   const cpfInput = useRef<HTMLInputElement | null>(null);
   const matriculaInput = useRef<HTMLInputElement | null>(null);
 
-  let statusMessage;
-
-  if (searchTerm.nome) {
-    statusMessage = searchTerm.nome;
-  } else if (searchTerm.matricula) {
-    statusMessage = searchTerm.matricula;
-  } else if (searchTerm.cpf) {
-    statusMessage = searchTerm.cpf;
-  }
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
-
-  const openModal = (studentId: string) => {
-    setIsModalOpen(true);
-    setStudentId(studentId);
-  };
-
-  const checkFields = () => {
-    if (nome === "" && matricula === "" && cpf === "") {
-      getStudent();
-      getUsers();
-      onClean();
-    }
-  };
-
-  const onDelete = async () => {
-    try {
-      setIsLoading(true);
-      await deleteStudent(studentId);
-      setIsLoading(false);
-      toast("Aluno excluído com sucesso!", {
-        position: "top-center",
-        type: "success",
-      });
-    } catch (error) {
-      setIsLoading(false);
-      toast("Ocorreu um erro ao tentar excluir o cadastro do aluno!", {
-        position: "top-center",
-        type: "error",
-      });
-      console.error((error as Error).message);
-    } finally {
-      closeModal();
-    }
-  };
+  const statusMessage =
+    searchTerm.nome || searchTerm.matricula || searchTerm.cpf;
 
   useEffect(() => {
-    checkFields();
-  }, [nome, matricula, cpf]);
+    if (isSearching) {
+      searchStudent(
+        searchTerm.nome,
+        searchTerm.cpf,
+        searchTerm.matricula,
+        currentPage
+      ).finally(() => setIsLoading(false));
+    }
+  }, [currentPage, searchTerm, isSearching, searchStudent]);
+
+  useEffect(() => {
+    if (nome === "" && cpf === "" && matricula === "" && currentPage === 0) {
+      setIsSearching(false);
+      getStudent();
+      onClean();
+    }
+  }, [nome, cpf, matricula, currentPage]);
+
+  const resetSearchTerm = () => {
+    setSearchTerm({ nome: "", cpf: "", matricula: "" });
+  };
 
   const onClean = () => {
     setMatricula("");
     setCpf("");
     setNome("");
+    resetSearchTerm();
     setIsSearching(false);
   };
 
   const onReset = () => {
-    onClean();
+    if (!nome && !cpf && !matricula) return;
     getStudent();
+    onClean();
   };
 
   const onSubmit = async (e: FormEventType) => {
@@ -118,11 +89,12 @@ const ListStudents = () => {
         type: "error",
       });
       onClean();
-
       return;
     }
+
     try {
       setIsLoading(true);
+      setCurrentPage(0);
       await searchStudent(nome, cpf, matricula);
       setIsSearching(true);
       setSearchTerm({ nome, cpf, matricula });
@@ -137,38 +109,56 @@ const ListStudents = () => {
     }
   };
 
-  const mapUserToAluno = (user: UserType): AlunoType => {
-    return {
-      id: user.id,
-      pessoa: {
-        id: user.pessoa.id,
-        tipo: user.pessoa.tipo,
-        cpf: user.pessoa.cpf,
-        matricula: user.pessoa.matricula || null,
-        nome: user.pessoa.nome,
-        email: user.pessoa.email,
-        curso: user.pessoa.curso || null,
-      },
-    };
+  const onPageChange = (page: number) => {
+    if (page !== currentPage) {
+      setCurrentPage(page);
+      setIsSearching(true);
+      setIsLoading(true);
+      searchStudent(
+        searchTerm.nome,
+        searchTerm.cpf,
+        searchTerm.matricula,
+        page
+      ).finally(() => setIsLoading(false));
+    }
   };
 
-  const studentsOnly = users
-    .filter((user: UserType) => user.pessoa.tipo === "ALUNO")
-    .map(mapUserToAluno);
+  const onNext = () => {
+    if (currentPage < totalPage - 1) {
+      const newPage = currentPage + 1;
+      setCurrentPage(newPage);
+      setIsSearching(true);
+      setIsLoading(true);
+      searchStudent(
+        searchTerm.nome,
+        searchTerm.cpf,
+        searchTerm.matricula,
+        newPage
+      ).finally(() => setIsLoading(false));
+    }
+  };
+
+  const onPrev = () => {
+    if (currentPage > 0) {
+      const newPage = currentPage - 1;
+      setCurrentPage(newPage);
+      setIsSearching(true);
+      setIsLoading(true);
+      searchStudent(
+        searchTerm.nome,
+        searchTerm.cpf,
+        searchTerm.matricula,
+        newPage
+      ).finally(() => setIsLoading(false));
+    }
+  };
 
   return (
     <div className="flex-column-gap20">
       {isLoading && <Spinner />}
-      {isModalOpen && (
-        <Modal
-          message="Tem certeza que deseja excluir o cadastro deste aluno?"
-          onCancel={closeModal}
-          onDelete={onDelete}
-        />
-      )}
       <h1>Alunos</h1>
 
-      {students.length === 0 ? (
+      {totalElements === 0 ? (
         isSearching ? (
           <>
             <Filter
@@ -208,10 +198,10 @@ const ListStudents = () => {
           />
 
           <p>
-            {isSearching
+            {isSearching && statusMessage
               ? `Total de alunos encontrados ao filtrar por "${statusMessage}": `
               : "Total de alunos encontrados: "}
-            <span className="permissions-quantity">{studentsOnly.length}</span>
+            <span className="permissions-quantity">{totalElements}</span>
           </p>
 
           <table className="table">
@@ -222,30 +212,37 @@ const ListStudents = () => {
                 <th>Nome</th>
                 <th>E-mail</th>
                 <th>Curso</th>
-                <th className="table-actions action-column">Ações</th>
+                <th className="table-action action-column">Ações</th>
               </tr>
             </thead>
             <tbody>
-              {studentsOnly.map((student: AlunoType, index: number) => (
-                <tr key={index}>
-                  <td>{student?.pessoa?.matricula}</td>
-                  <td>{student?.pessoa?.cpf}</td>
-                  <td>{student?.pessoa?.nome}</td>
-                  <td>{student?.pessoa?.email}</td>
-                  <td>{student?.pessoa?.curso?.nome} </td>
-                  <td className="table-actions action-column">
-                    <Link to="/alunos/editar-aluno" state={student}>
-                      <i className="fa-solid fa-pen-to-square"></i>
-                    </Link>
-                    <i
-                      className="fa-solid fa-trash-can"
-                      onClick={() => openModal(student.id!)}
-                    ></i>
-                  </td>
-                </tr>
-              ))}
+              {students.map((student: AlunoType, index: number) => {
+                const cpfFormatado = cpfMask(student.cpf!);
+                return (
+                  <tr key={index}>
+                    <td>{student.matricula}</td>
+                    <td>{cpfFormatado}</td>
+                    <td>{student.nome}</td>
+                    <td>{student.email}</td>
+                    <td>{student.curso?.nome} </td>
+                    <td className="table-action action-column">
+                      <Link to="/alunos/editar-aluno" state={student}>
+                        <i className="fa-solid fa-pen-to-square"></i>
+                      </Link>
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
+
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPage}
+            onPageChange={onPageChange}
+            onNext={onNext}
+            onPrev={onPrev}
+          />
         </>
       )}
     </div>

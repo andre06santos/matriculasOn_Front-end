@@ -14,28 +14,32 @@ import {
   StatusOption,
   FormEventType,
 } from "../../../modules/administradores/infrastructure/types";
+import { Pagination } from "../../../ui/paginacao";
 
 const ListUser = () => {
-  const { users, getUsers, searchUser, deleteUser } = useAdmin();
+  const { users, getUsers, searchUser, deleteUser, totalPage, totalElements } =
+    useAdmin();
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [username, setUsername] = useState<string>("");
   const [nome, setNome] = useState<string>("");
-  const [status, setStatus] = useState<StatusOption | undefined>(undefined);
+  const [status, setStatus] = useState<StatusOption>({ label: "", value: "" });
 
   const [searchTerm, setSearchTerm] = useState<{
     username: string;
     nome: string;
-    status: string;
+    status: StatusOption;
   }>({
     username: "",
     nome: "",
-    status: "",
+    status: { label: "", value: "" },
   });
-  const [userId, setUserId] = useState<string>("");
-  const [isSearching, setIsSearching] = useState<boolean>(false);
 
+  const [userId, setUserId] = useState<string>("");
+  const [isLoadingUsers, setIsLoadingUsers] = useState<boolean>(false);
+  const [isSearching, setIsSearching] = useState<boolean>(false);
+  const [currentPage, setCurrentPage] = useState<number>(0);
   const nameInput = useRef<HTMLInputElement | null>(null);
   const usernameInput = useRef<HTMLInputElement | null>(null);
   const statusInput = useRef<HTMLSelectElement | null>(null);
@@ -43,11 +47,11 @@ const ListUser = () => {
   let statusMessage;
 
   if (searchTerm.username) {
-    statusMessage = `por "${searchTerm.username}"`;
+    statusMessage = searchTerm.username;
   } else if (searchTerm.nome) {
-    statusMessage = `por "${searchTerm.nome}"`;
-  } else if (searchTerm.status) {
-    statusMessage = "pelo status";
+    statusMessage = searchTerm.nome;
+  } else if (searchTerm.status.label) {
+    statusMessage = "status";
   }
 
   const closeModal = () => {
@@ -62,69 +66,83 @@ const ListUser = () => {
   const onClean = () => {
     setUsername("");
     setNome("");
-    setStatus(undefined);
+    setStatus({ label: "", value: "" });
+    setSearchTerm({
+      username: "",
+      nome: "",
+      status: { label: "", value: "" },
+    });
     setIsSearching(false);
   };
-
-  const checkFields = () => {
-    if (nome === "" && username === "" && !status?.value) {
-      getUsers();
-      onClean();
-    }
-  };
-
   const onDelete = async () => {
     try {
       setIsLoading(true);
       await deleteUser(userId);
-      setIsLoading(false);
-      toast("Usuário excluído com sucesso!", {
-        position: "top-center",
-        type: "success",
-      });
+      toast.success("Usuário excluído com sucesso!");
+
+      const newPage =
+        currentPage > 0 && users.length === 1 ? currentPage - 1 : currentPage;
+      setCurrentPage(newPage);
+
+      searchUser(username, nome, status, newPage);
     } catch (error) {
-      setIsLoading(false);
-      toast("Ocorreu um erro ao tentar excluir o cadastro do usuário!", {
-        position: "top-center",
-        type: "error",
-      });
-      console.error((error as Error).message);
+      toast.error("Ocorreu um erro ao tentar excluir o cadastro do usuário!");
+      console.error(error);
     } finally {
+      setIsLoading(false);
       closeModal();
     }
   };
 
   const onReset = () => {
-    if (nome === "" && username === "" && !status?.value) return;
-
+    if (nome === "" && username === "" && !status.value) return;
     onClean();
     getUsers();
   };
 
-  useEffect(() => {
-    checkFields();
-  }, [nome, username, status]);
+  const isFormEmpty =
+    nome === "" && username === "" && status.value === "" && currentPage === 0;
 
+  useEffect(() => {
+    if (isFormEmpty) {
+      setIsSearching(false);
+      getUsers();
+    }
+  }, [nome, username, status, currentPage]);
+
+  useEffect(() => {
+    if (isSearching) {
+      searchUser(
+        searchTerm.username,
+        searchTerm.nome,
+        searchTerm.status,
+        currentPage
+      ).finally(() => setIsLoading(false));
+      setIsLoadingUsers(false);
+    }
+  }, [currentPage, searchTerm, isSearching, searchUser]);
   const onSubmit = async (e: FormEventType) => {
     e.preventDefault();
 
     const emptyFieldName = validateEmptyString(nome);
     const emptyFieldUsername = validateEmptyString(username);
 
-    if (emptyFieldName && emptyFieldUsername && !status?.value) {
+    if (emptyFieldName && emptyFieldUsername && !status.value) {
       toast("Preencha um dos campos para filtrar!", {
         position: "top-center",
         type: "error",
       });
       onClean();
+      setIsLoadingUsers(true);
       return;
     }
 
     try {
       setIsLoading(true);
+      setCurrentPage(0);
       await searchUser(username, nome, status);
       setIsSearching(true);
-      setSearchTerm({ username, nome, status: status?.label || "" });
+      setSearchTerm({ username, nome, status });
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
@@ -138,6 +156,35 @@ const ListUser = () => {
 
   const userStatusLabel = (status: boolean) => {
     return status ? "Ativo" : "Inativo";
+  };
+
+  const onPageChange = (page: number) => {
+    if (page != currentPage) {
+      setIsSearching(true);
+      setIsLoading(true);
+      setCurrentPage(page);
+      searchUser(username, nome, status, page);
+    }
+  };
+
+  const onNext = () => {
+    if (currentPage < totalPage - 1) {
+      const nextPage = currentPage + 1;
+      setIsSearching(true);
+      setIsLoading(true);
+      setCurrentPage(nextPage);
+      searchUser(username, nome, status, nextPage);
+    }
+  };
+
+  const onPrev = () => {
+    if (currentPage > 0) {
+      const prevPage = currentPage - 1;
+      setIsSearching(true);
+      setIsLoading(true);
+      setCurrentPage(prevPage);
+      searchUser(username, nome, status, prevPage);
+    }
   };
 
   return (
@@ -156,7 +203,7 @@ const ListUser = () => {
       </div>
       <h1>Usuários</h1>
 
-      {users.length === 0 ? (
+      {totalElements === 0 ? (
         isSearching ? (
           <>
             <Filter
@@ -198,10 +245,10 @@ const ListUser = () => {
           />
 
           <p>
-            {isSearching
-              ? `Total de usuários encontrados ao filtrar ${statusMessage}: `
+            {isSearching && statusMessage
+              ? `Total de usuários encontrados ao filtrar por ${statusMessage}: `
               : "Total de usuários encontrados:"}
-            <span className="permissions-quantity">{users.length}</span>
+            <span className="permissions-quantity">{totalElements}</span>
           </p>
 
           <table>
@@ -215,36 +262,49 @@ const ListUser = () => {
               </tr>
             </thead>
             <tbody>
-              {users.map((user: UserType, index: number) => (
-                <tr key={index}>
-                  <td>{user.username}</td>
-                  <td>{user.pessoa.nome}</td>
-                  <td>{upperCaseToCapitalCase(user.pessoa.tipo)}</td>
-                  <td className={user.status ? "td-ativo" : "td-inativo"}>
-                    <span className="status-label">
-                      {userStatusLabel(user.status)}
-                    </span>
-                  </td>
-                  <td className="table-actions action-column">
-                    <Link
-                      to={
-                        user.pessoa.tipo === "ALUNO"
-                          ? "/alunos/editar-aluno"
-                          : "/administradores/editar-administrador"
-                      }
-                      state={user}
-                    >
-                      <i className="fa-solid fa-pen-to-square"></i>
-                    </Link>
-                    <i
-                      className="fa-solid fa-trash-can"
-                      onClick={() => openModal(user.id)}
-                    ></i>
-                  </td>
-                </tr>
-              ))}
+              {users.map((user: UserType, index: number) => {
+                const tipoCapitalizado = upperCaseToCapitalCase(
+                  user.pessoa.tipo
+                );
+                return (
+                  <tr key={index}>
+                    <td>{user.username}</td>
+                    <td>{user.pessoa.nome}</td>
+                    <td>{tipoCapitalizado}</td>
+                    <td className={user.status ? "td-ativo" : "td-inativo"}>
+                      <span className="status-label">
+                        {userStatusLabel(user.status!)}
+                      </span>
+                    </td>
+                    <td className="table-actions action-column">
+                      <Link
+                        to={
+                          user.pessoa.tipo === "ALUNO"
+                            ? "/alunos/editar-aluno"
+                            : "/administradores/editar-administrador"
+                        }
+                        state={user}
+                      >
+                        <i className="fa-solid fa-pen-to-square"></i>
+                      </Link>
+                      <i
+                        className="fa-solid fa-trash-can"
+                        onClick={() => openModal(user.id!)}
+                      ></i>
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
+
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPage}
+            onPageChange={onPageChange}
+            onNext={onNext}
+            onPrev={onPrev}
+          />
         </>
       )}
     </div>
@@ -262,13 +322,10 @@ const options = [
 ];
 
 const upperCaseToCapitalCase = (userType: string): string => {
-  const tipoArray = userType.toLowerCase().split("");
-  tipoArray[0] = tipoArray[0].toUpperCase();
-
-  return tipoArray.join("");
+  return userType.charAt(0).toUpperCase() + userType.slice(1).toLowerCase();
 };
 
 const statusOptions: StatusOption[] = [
-  { label: "Ativo", value: "true "},
+  { label: "Ativo", value: "true" },
   { label: "Inativo", value: "false" },
 ];

@@ -45,16 +45,11 @@ export type ErrorMessagesType = Record<string, string>[];
 
 export type AlunoType = {
   id?: string;
-  pessoa: {
-    id?: string;
-    tipo: string;
-    cpf: string;
-    nome: string;
-    matricula: string | null;
-    email: string;
-    curso: { id?: number; nome?: string } | null;
-  };
-  senha?: string;
+  cpf: string;
+  nome: string;
+  matricula: string | null;
+  email: string;
+  curso: { id?: number; nome?: string } | null;
 };
 
 export type ObjectCursoType = {
@@ -68,12 +63,12 @@ export type AlunosSearchTermType = {
   matricula: string;
 };
 export type UserType = {
-  id: string;
-  username: string;
-  status: boolean;
+  id?: string;
+  username?: string;
+  status?: boolean;
   pessoa: {
     id?: string;
-    tipo: "ALUNO" | "ADMINISTRADOR";
+    tipo: "ALUNO" | "ADMIN";
     nome: string;
     email: string;
     cpf: string;
@@ -82,6 +77,7 @@ export type UserType = {
     cargo?: string;
     departamento?: string;
   };
+  senha?: string;
 };
 
 /* Tipagem de components de filtragem */
@@ -127,7 +123,7 @@ export type UserFilterType = {
         value: string;
       }
     | undefined;
-  setStatus: React.Dispatch<React.SetStateAction<StatusOption | undefined>>;
+  setStatus: React.Dispatch<React.SetStateAction<StatusOption>>;
   statusOptions: { label: string; value: string }[];
   usernameInput: React.MutableRefObject<HTMLInputElement | null>;
   nameInput: React.MutableRefObject<HTMLInputElement | null>;
