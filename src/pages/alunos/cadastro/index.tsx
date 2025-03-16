@@ -126,7 +126,14 @@ const RegisterStudent = () => {
           value: course.id,
         }));
 
-        setCursoOptions(updatedOptions);
+        setCursoOptions((prevOptions) => {
+          const existingValues = prevOptions.map((option) => option.value);
+          const newCourses = updatedOptions.filter(
+            (course) => !existingValues.includes(course.value)
+          );
+          return [...prevOptions, ...newCourses];
+        });
+
         setIsLoadingCourses(false);
       } catch (error) {
         console.error("Erro ao carregar cursos:", error);
@@ -143,7 +150,13 @@ const RegisterStudent = () => {
         label: course.nome,
         value: course.id,
       }));
-      setCursoOptions(updatedOptions);
+      setCursoOptions((prevOptions) => {
+        const existingValues = prevOptions.map((option) => option.value);
+        const newCourses = updatedOptions.filter(
+          (course) => !existingValues.includes(course.value)
+        );
+        return [...prevOptions, ...newCourses];
+      });
     }
   }, [courses]);
 
@@ -198,7 +211,7 @@ const RegisterStudent = () => {
                 selectOptions={cursoOptions}
                 value={curso}
                 onChange={setCurso}
-                showLoadMore={courses.length}
+                showLoadMore={courses.length < totalElements}
                 onLoadMore={loadMoreCourses}
                 totalElements={totalElements}
               />
