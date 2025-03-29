@@ -107,6 +107,10 @@ const RegisterStudent = () => {
       setIsLoadingCourses(true);
       await searchCourse("", page + 1);
       setPage(page + 1);
+      toast("Carregamento de curso feito com sucesso!", {
+        position: "top-center",
+        type: "success",
+      });
     } catch (error) {
       console.error("Erro ao carregar mais cursos:", error);
       setIsLoadingCourses(false);

@@ -58,25 +58,26 @@ const Input = React.forwardRef<
       bgSuccess: "bg-success",
     };
 
-    const inputClass = `input ${inputType === "reset" || inputType === "submit"
-      ? `${inputCollors[variant]} input-button`
-      : "input-text"
-      }`;
+    const inputClass = `input ${
+      inputType === "reset" || inputType === "submit"
+        ? `${inputCollors[variant]} input-button`
+        : "input-text"
+    }`;
 
     const optionsWithLoadMore = selectOptions
       ? [
-        ...selectOptions,
-        ...(showLoadMore && selectOptions.length < totalElements
-          ? [
-            {
-              value: "load-more",
-              label: allCoursesLoaded
-                ? "Todos os cursos já foram carregados"
-                : loadMoreText,
-            },
-          ]
-          : []),
-      ]
+          ...selectOptions,
+          ...(showLoadMore && selectOptions.length < totalElements
+            ? [
+                {
+                  value: "load-more",
+                  label: allCoursesLoaded
+                    ? "Todos os cursos já foram carregados"
+                    : loadMoreText,
+                },
+              ]
+            : []),
+        ]
       : [];
 
     const handleLoadMore = () => {
@@ -89,11 +90,11 @@ const Input = React.forwardRef<
       if (e.value === "load-more") {
         return (
           <div
-            style={{
-              color: "black",
-              cursor: "pointer",
+            style={{ color: "black", cursor: "pointer", padding: "8px" }}
+            onMouseDown={(event) => {
+              event.preventDefault();
+              handleLoadMore();
             }}
-            onClick={handleLoadMore}
           >
             {e.label}
           </div>
@@ -102,7 +103,11 @@ const Input = React.forwardRef<
       return e.label;
     };
 
-    const selectedOption = optionValue && optionValue.hasOwnProperty('value') && optionValue['value'] ? optionValue : null;
+    const selectedOption =
+      optionValue && optionValue.hasOwnProperty("value") && optionValue["value"]
+        ? optionValue
+        : null;
+
     return (
       <div className="input-component">
         {label && <label>{label}</label>}
@@ -122,35 +127,33 @@ const Input = React.forwardRef<
             />
           </div>
         ) : (
-          <>
-            <div className={isPassword ? "input-container" : ""}>
-              <input
-                id="input"
-                type={inputType}
-                className={isPassword ? "password-input" : inputClass}
-                onChange={onChange}
-                value={optionValue}
-                ref={ref as React.RefObject<HTMLInputElement>}
-                autoComplete="off"
-                {...rest}
+          <div className={isPassword ? "input-container" : ""}>
+            <input
+              id="input"
+              type={inputType}
+              className={isPassword ? "password-input" : inputClass}
+              onChange={onChange}
+              value={optionValue}
+              ref={ref as React.RefObject<HTMLInputElement>}
+              autoComplete="off"
+              {...rest}
+            />
+            {isPassword ? (
+              <img
+                src="/visibility_off.svg"
+                onClick={(e: React.MouseEvent<HTMLImageElement>) => {
+                  if (inputType === "password") {
+                    setInputType("text");
+                    e.currentTarget.src = "/visibility.svg";
+                  } else {
+                    setInputType("password");
+                    e.currentTarget.src = "/visibility_off.svg";
+                  }
+                }}
+                alt="toggle visibility"
               />
-              {isPassword ? (
-                <img
-                  src="/visibility_off.svg"
-                  onClick={(e: React.MouseEvent<HTMLImageElement>) => {
-                    if (inputType === "password") {
-                      setInputType("text");
-                      e.currentTarget.src = "/visibility.svg";
-                    } else {
-                      setInputType("password");
-                      e.currentTarget.src = "/visibility_off.svg";
-                    }
-                  }}
-                  alt="toggle visibility"
-                />
-              ) : null}
-            </div>
-          </>
+            ) : null}
+          </div>
         )}
       </div>
     );
