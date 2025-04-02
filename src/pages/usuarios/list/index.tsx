@@ -283,7 +283,9 @@ const ListUser = () => {
                             ? "/alunos/editar-aluno"
                             : "/administradores/editar-administrador"
                         }
-                        state={user}
+                        state={
+                          user.pessoa.tipo === "ALUNO" ? user.pessoa : user
+                        }
                       >
                         <i className="fa-solid fa-pen-to-square"></i>
                       </Link>
