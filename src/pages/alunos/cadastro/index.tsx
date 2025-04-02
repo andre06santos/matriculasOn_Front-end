@@ -2,7 +2,7 @@ import "./styles.css";
 import { Input } from "../../../ui/input";
 import { Button } from "../../../ui/button";
 import { Link, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import {
   handleChangeConfSenha,
   handleChangeCpf,
@@ -40,6 +40,10 @@ const RegisterStudent = () => {
   const [coursesLoaded, setCoursesLoaded] = useState<boolean>(false);
   const [page, setPage] = useState<number>(0);
   const navigate = useNavigate();
+  const cursoInputRef = useRef<HTMLInputElement | HTMLSelectElement | null>(
+    null
+  );
+  const [menuOpen, setMenuOpen] = useState(false);
   const { addStudents, courses, getCourses, searchCourse, totalElements } =
     useAdmin();
 
@@ -107,10 +111,10 @@ const RegisterStudent = () => {
       setIsLoadingCourses(true);
       await searchCourse("", page + 1);
       setPage(page + 1);
-      toast("Carregamento de curso feito com sucesso!", {
-        position: "top-center",
-        type: "success",
-      });
+      setTimeout(() => {
+        setMenuOpen(true);
+        cursoInputRef.current?.focus();
+      }, 100);
     } catch (error) {
       console.error("Erro ao carregar mais cursos:", error);
       setIsLoadingCourses(false);
@@ -213,12 +217,17 @@ const RegisterStudent = () => {
               <Input
                 label="Curso"
                 selectOptions={cursoOptions}
+                ref={cursoInputRef}
                 value={curso}
                 onChange={setCurso}
                 showLoadMore={courses.length < totalElements}
                 onLoadMore={loadMoreCourses}
                 totalElements={totalElements}
+                menuIsOpen={menuOpen}
+                onMenuOpen={() => setMenuOpen(true)}
+                onMenuClose={() => setMenuOpen(false)}
               />
+
               <Input
                 label="Senha"
                 type="password"

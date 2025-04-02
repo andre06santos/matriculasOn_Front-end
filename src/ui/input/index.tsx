@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, Ref } from "react";
 import Select from "react-select";
 import "./styles.css";
 
@@ -24,6 +24,7 @@ type InputProps = {
   showLoadMore?: boolean;
   allCoursesLoaded?: boolean;
   totalElements?: number;
+  ref?: Ref<HTMLInputElement | Select>;
   [key: string]: any;
 };
 
@@ -51,6 +52,7 @@ const Input = React.forwardRef<
     ref
   ) => {
     const [inputType, setInputType] = useState<inputTypeProps>(type);
+    const [menuOpen, setMenuOpen] = useState(false);
 
     const inputCollors: Record<string, string> = {
       bgNeutral: "bg-neutral",
@@ -83,6 +85,7 @@ const Input = React.forwardRef<
     const handleLoadMore = () => {
       if (onLoadMore) {
         onLoadMore();
+        setTimeout(() => setMenuOpen(true));
       }
     };
 
@@ -115,12 +118,16 @@ const Input = React.forwardRef<
         {selectOptions ? (
           <div className="input-select-container">
             <Select
+              ref={ref as Ref<any>}
               options={optionsWithLoadMore}
               placeholder="Escolha uma opção"
               noOptionsMessage={() => "Nenhuma opção encontrada!"}
               className="input-select"
               value={selectedOption}
               onChange={onChange}
+              menuIsOpen={menuOpen}
+              onMenuOpen={() => setMenuOpen(true)}
+              onMenuClose={() => setMenuOpen(false)}
               {...rest}
               getOptionLabel={renderOptionLabel}
               getOptionValue={(e) => (e.value === "load-more" ? "" : e.value)}
