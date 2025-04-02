@@ -127,20 +127,20 @@ const RegisterStudent = () => {
         if (!coursesLoaded) {
           await getCourses();
           setCoursesLoaded(true);
+        } else {
+          const updatedOptions = courses.map((course) => ({
+            label: course.nome,
+            value: course.id,
+          }));
+
+          setCursoOptions((prevOptions) => {
+            const existingValues = prevOptions.map((option) => option.value);
+            const newCourses = updatedOptions.filter(
+              (course) => !existingValues.includes(course.value)
+            );
+            return [...prevOptions, ...newCourses];
+          });
         }
-
-        const updatedOptions = courses.map((course) => ({
-          label: course.nome,
-          value: course.id,
-        }));
-
-        setCursoOptions((prevOptions) => {
-          const existingValues = prevOptions.map((option) => option.value);
-          const newCourses = updatedOptions.filter(
-            (course) => !existingValues.includes(course.value)
-          );
-          return [...prevOptions, ...newCourses];
-        });
 
         setIsLoadingCourses(false);
       } catch (error) {
@@ -151,23 +151,6 @@ const RegisterStudent = () => {
 
     loadCourses();
   }, [courses, getCourses, coursesLoaded]);
-
-  useEffect(() => {
-    if (courses.length > 0) {
-      const updatedOptions = courses.map((course) => ({
-        label: course.nome,
-        value: course.id,
-      }));
-      setCursoOptions((prevOptions) => {
-        const existingValues = prevOptions.map((option) => option.value);
-        const newCourses = updatedOptions.filter(
-          (course) => !existingValues.includes(course.value)
-        );
-        return [...prevOptions, ...newCourses];
-      });
-    }
-  }, [courses]);
-
   return (
     <div className="flex-column-gap20">
       {isLoading || isLoadingCourses ? (

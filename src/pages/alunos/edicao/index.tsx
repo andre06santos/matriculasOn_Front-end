@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Input } from "../../../ui/input";
 import { Button } from "../../../ui/button";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -36,6 +36,10 @@ const EditStudent = () => {
       ? { label: student.curso.nome, value: student.curso.id }
       : undefined
   );
+  const cursoInputRef = useRef<HTMLInputElement | HTMLSelectElement | null>(
+    null
+  );
+  const [menuOpen, setMenuOpen] = useState(false);
   const [errorMessages, setErrorMessages] = useState<ErrorMessagesType>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isLoadingCourses, setIsLoadingCourses] = useState<boolean>(true);
@@ -89,6 +93,10 @@ const EditStudent = () => {
       setIsLoadingCourses(true);
       await searchCourse("", page + 1);
       setPage(page + 1);
+      setTimeout(() => {
+        setMenuOpen(true);
+        cursoInputRef.current?.focus();
+      }, 100);
     } catch (error) {
       console.error("Erro ao carregar mais cursos:", error);
       setIsLoadingCourses(false);
@@ -101,14 +109,21 @@ const EditStudent = () => {
         if (!coursesLoaded) {
           await getCourses();
           setCoursesLoaded(true);
+        } else {
+          const updatedOptions = courses.map((course) => ({
+            label: course.nome,
+            value: course.id,
+          }));
+
+          setCursoOptions((prevOptions) => {
+            const existingValues = prevOptions.map((option) => option.value);
+            const newCourses = updatedOptions.filter(
+              (course) => !existingValues.includes(course.value)
+            );
+            return [...prevOptions, ...newCourses];
+          });
         }
 
-        const updatedOptions = courses.map((course) => ({
-          label: course.nome,
-          value: course.id,
-        }));
-
-        setCursoOptions(updatedOptions);
         setIsLoadingCourses(false);
       } catch (error) {
         console.error("Erro ao carregar cursos:", error);
@@ -169,11 +184,15 @@ const EditStudent = () => {
               <Input
                 label="Curso"
                 selectOptions={cursoOptions}
+                ref={cursoInputRef}
                 value={curso}
                 onChange={setCurso}
                 showLoadMore={courses.length < totalElements}
                 onLoadMore={loadMoreCourses}
                 totalElements={totalElements}
+                menuIsOpen={menuOpen}
+                onMenuOpen={() => setMenuOpen(true)}
+                onMenuClose={() => setMenuOpen(false)}
               />
             </div>
             <div className="form-actions flex-column-gap20">
